@@ -7,4 +7,5 @@ In-browser literal notebook runtime used in [Starboard](https://starboard.gg) wh
 * Open source
 
 ## License
-This program is free software; you can redistribute it and/or modify it under the terms of the [Mozilla Public License Version 2.0](./LICENSE).
+This is free software; you can redistribute it and/or modify it under the terms of the [Mozilla Public License Version 2.0](./LICENSE).
+ 
