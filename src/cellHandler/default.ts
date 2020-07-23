@@ -6,7 +6,7 @@ import { Cell } from "../notebookContent";
 import { CellHandler, CellHandlerAttachParameters } from "./base";
 import { render, html } from "lit-html";
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import {highlight} from "../highlight";
+import { highlight } from "../highlight";
 
 /**
  * The cell handler that gets used when there is an unknown cell type

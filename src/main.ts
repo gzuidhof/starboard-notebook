@@ -2,11 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-
 import "./styles/main.scss";
-
 import "./components/notebook";
-// import "../../starboard-direflow/build/direflowBundle";
 
 import "iframe-resizer/js/iframeResizer.contentWindow.js";
 
@@ -23,8 +20,6 @@ import * as lithtml from "lit-html";
 (window as any).html = lithtml.html;
 (window as any).svg = lithtml.svg;
 (window as any).lithtml = lithtml;
-
-(window as any).initialNotebookContent = `%%javascript\nconsole.log("test")`;
 
 document.body.innerHTML += `
 <starboard-notebook></starboard-notebook>

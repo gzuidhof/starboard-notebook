@@ -29,38 +29,37 @@ export class Runtime {
   }
 
   async run(command: string): Promise<RunResult> {
-    return new Promise(resolve => {
-      const res: RunResult = {
-        error: false,
-        command,
-      };
+    const res: RunResult = {
+      error: false,
+      command,
+    };
 
-      try {
-        // // trick from devtools
-        // // via https://chromium.googlesource.com/chromium/src.git/+/4fd348fdb9c0b3842829acdfb2b82c86dacd8e0a%5E%21/#F2
-        if (/^\s*\{/.test(command) && /\}\s*$/.test(command)) {
-          command = `(${command})`;
-        }
-
-        const { content } = preProcess(command);
-
-        if (!window) {
-          res.error = true;
-          res.value = "Run error: container or window is null";
-          return resolve(res);
-        }
-        
-        res.value = window.eval(content);
-
-        (window)["$_"] = res.value;
-        return resolve(res);
-
-      } catch (error) {
-        res.error = true;
-        res.value = error;
-        return resolve(res);
+    try {
+      // // trick from devtools
+      // // via https://chromium.googlesource.com/chromium/src.git/+/4fd348fdb9c0b3842829acdfb2b82c86dacd8e0a%5E%21/#F2
+      if (/^\s*\{/.test(command) && /\}\s*$/.test(command)) {
+        command = `(${command})`;
       }
-    });
+
+      const { content } = preProcess(command);
+
+      if (!window) {
+        res.error = true;
+        res.value = "Run error: container or window is null";
+        return res;
+      }
+      
+      res.value = await window.eval(content);
+
+      (window)["$_"] = res.value;
+      return res;
+
+    } catch (error) {
+      res.error = true;
+      res.value = error;
+      return res;
+    }
+
   }
 }
 
@@ -155,8 +154,6 @@ export function preProcess(content: string) {
       change.text +
       wrapped.substr(change.end);
   }
-
-  // console.log(wrapped)
 
   return { content: wrapped };
 }

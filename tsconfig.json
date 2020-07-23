@@ -9,15 +9,14 @@
       "es2017",
       "dom"
     ],
-    "declaration": false,
+    "declaration": true,
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
-    "inlineSources": true,
     "strict": true,
     "outDir": "./dist",
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
   },
   "include": [
     "src",

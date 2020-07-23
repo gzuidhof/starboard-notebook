@@ -4,13 +4,13 @@
 
 .cell-container {
     display: grid;
-    grid-template-columns: 40px auto;
+    grid-template-columns: 36px calc(100% - 36px);
     grid-template-rows: 24px auto auto;
     grid-template-areas: 
     "controls-corner controls-above"
     "controls-left-top top"
     "controls-left-bottom bottom";
-    padding: 0px 16px 8px 8px;
+    padding: 0px 6px 6px 6px;
     background-color: #fdfdfd;
     border: 1px solid transparent;
 }
@@ -49,13 +49,13 @@ starboard-cell:focus-within .cell-container{
 
 /* Line hover effect */
 .cell-controls-left:before {
-    top: 6px;
+    top: 4px;
     left: 0;
     content: '';
     border-left: 2px #fafafa solid;
-    height: calc(100% - 12px);
-    width: 50%;
-    transform: translateX(50%);
+    height: calc(100% - 8px);
+    width: 12px;
+    transform: translateX(-2px);
     position: absolute;
     z-index: 0;
 }
@@ -75,14 +75,11 @@ starboard-cell:focus .cell-controls-left:before {
 }
 
 
-.cell-controls .cell-controls-button {
+.cell-controls .cell-controls-button.auto-hide {
     opacity: 0;
 }
 
-.cell-container:hover .cell-controls-button {
-    opacity: 1;
-}
-
+.cell-container:hover .cell-controls-button.auto-hide,
 starboard-cell:focus-within .cell-controls-button,
 starboard-cell:focus .cell-controls-button
 {
@@ -90,8 +87,8 @@ starboard-cell:focus .cell-controls-button
 }
 
 .cell-controls-button {
-    background: white;
-    color: #eaeaea;
+    background: transparent;
+    color: #d6d6d6;
     font-size: 1em;
     cursor: pointer;
     user-select: none;
@@ -111,7 +108,7 @@ starboard-cell:focus .cell-controls-button
 }
 
 .cell-controls-button:hover {
-    color: #9c9c9c;
+    color: #7e7e7e;
 }
 .cell-controls-button:focus {
     outline: none;

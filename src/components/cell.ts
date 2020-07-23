@@ -42,7 +42,7 @@ export class CellElement extends LitElement {
     @property({ type: Object })
     public cell: Cell;
 
-    @property()
+    @property({ attribute: false})
     private runtime: Runtime;
 
     @property()
@@ -119,20 +119,20 @@ export class CellElement extends LitElement {
         <div class="cell-container">
             <div class="cell-controls cell-controls-corner"></div>
             <div class="cell-controls cell-controls-above">
-            <sp-dropdown
-                value=${this.cellTypeDefinition.name}
-                placement="top-end"
-            >
-                <sp-menu style="color: #ccc">
-                    ${getAvailableCellTypes().map((ct) => html`
-                    <sp-menu-item .value=${ct.name} @click=${() => this.changeCellType(ct.cellType)}>${ct.name}</span></sp-menu-item>
-                    `)}
-                    <sp-menu-divider></sp-menu-divider>
-                    <sp-menu-item disabled>
-                        More coming later..
-                    </sp-menu-item>
-                </sp-menu>
-            </sp-dropdown>
+                <sp-dropdown
+                    value=${this.cellTypeDefinition.name}
+                    placement="top-end"
+                >
+                    <sp-menu style="color: #ccc">
+                        ${getAvailableCellTypes().map((ct) => html`
+                        <sp-menu-item .value=${ct.name} @click=${() => this.changeCellType(ct.cellType)}>${ct.name}</span></sp-menu-item>
+                        `)}
+                        <sp-menu-divider></sp-menu-divider>
+                        <sp-menu-item disabled>
+                            More coming later..
+                        </sp-menu-item>
+                    </sp-menu>
+                </sp-dropdown>
                 <button @click="${() => this.emit({ type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
                     ${DeleteIcon({ width: 18, height: 18 })}
                 </button>

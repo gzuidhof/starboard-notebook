@@ -99,13 +99,13 @@ export class JavascriptCellHandler extends CellHandler {
                 data: ["Is this a module?", Object.assign({}, val),]
             });
         } else if (val instanceof HTMLElement) {
-            console.log("Val is HTML el");
+            // console.log("Val is HTML el");
             htmlOutput.appendChild(val);  
         } else if (isProbablyTemplateResult(val)) {
-            console.log("Val is TemplateResult");
+            // console.log("Val is TemplateResult");
             render(html`${val}`, htmlOutput);
-        }else {
-            console.log(val, val instanceof TemplateResult);
+        } else {
+            // console.log(val, val instanceof TemplateResult);
             if (val !== undefined) { // Don't show undefined output
                 if (outVal.error) {
                     output.push({

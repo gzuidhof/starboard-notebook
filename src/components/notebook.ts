@@ -10,6 +10,9 @@ import { IFramePage } from 'iframe-resizer';
 import { createCellProxy } from '../cellProxy';
 import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';
 import { debounce } from '@github/mini-throttle/decorators';
+import { starboardLogo } from './logo';
+
+declare const STARBOARD_NOTEBOOK_VERSION: string;
 
 declare global {
   interface Window {
@@ -187,9 +190,15 @@ export class StarboardNotebook extends LitElement {
     return html`
     <sp-theme> 
         <div class="cells-container"></div>
-        <button @click="${() => this.insertCell("end")}" class="cell-controls-button" title="Add Cell" style="float: right; opacity: 1; padding: 0px 8px 0px 16px; margin-right: 8px">
-                    ${AssetsAddedIcon({ width: 20, height: 20 })}
-                </button> 
+
+          <div class="starboard-notebook-footer">
+          <span>${starboardLogo(10, 10)}</span> Starboard Notebook v${STARBOARD_NOTEBOOK_VERSION}
+          <button @click="${() => this.insertCell("end")}" class="cell-controls-button" title="Add Cell" style="float: right; opacity: 1; padding: 0px 8px 0px 16px; margin-right: 2px">
+            ${AssetsAddedIcon({ width: 20, height: 20 })}
+          </button>
+          </div>
+          
+
     </sp-theme>
         `;
   }
