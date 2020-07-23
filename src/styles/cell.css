@@ -1,0 +1,139 @@
+.cell-container {
+    display: grid;
+    grid-template-columns: 40px auto;
+    grid-template-rows: 24px auto auto;
+    grid-template-areas: 
+    "controls-corner controls-above"
+    "controls-left-top top"
+    "controls-left-bottom bottom";
+    padding: 0px 16px 8px 8px;
+    background-color: #fdfdfd;
+    border: 1px solid transparent;
+}
+
+
+starboard-cell:focus {
+    outline: none;
+}
+
+starboard-cell:focus-within .cell-container{
+    border: 1px solid #f1f1f1;
+}
+
+.cell-controls {
+    text-align: center;
+    height: 100%;
+    position: relative;
+}
+
+.cell-controls-corner {
+    grid-area: controls-corner;
+}
+
+.cell-controls-above {
+    grid-area: controls-above;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cell-controls-left-top {
+    grid-area: controls-left-top;
+}
+.cell-controls-left-bottom {
+    grid-area: controls-left-bottom;
+}
+
+/* Line hover effect */
+.cell-controls-left:before {
+    top: 6px;
+    left: 0;
+    content: '';
+    border-left: 2px #fafafa solid;
+    height: calc(100% - 12px);
+    width: 50%;
+    transform: translateX(50%);
+    position: absolute;
+    z-index: 0;
+}
+
+
+.cell-container:hover .cell-controls-left:before {
+    border-left: 2px #f4f4f4 solid;
+}
+
+starboard-cell:focus-within .cell-controls-left:before {
+    border-left: 4px #f4f4f4 solid !important;
+}
+
+
+starboard-cell:focus .cell-controls-left:before {
+    border-left: 4px #ffec8d solid !important;
+}
+
+
+.cell-controls .cell-controls-button {
+    opacity: 0;
+}
+
+.cell-container:hover .cell-controls-button {
+    opacity: 1;
+}
+
+starboard-cell:focus-within .cell-controls-button,
+starboard-cell:focus .cell-controls-button
+{
+    opacity: 1;
+}
+
+.cell-controls-button {
+    background: white;
+    color: #eaeaea;
+    font-size: 1em;
+    cursor: pointer;
+    user-select: none;
+    padding: 2px 4px;
+    margin-bottom: 2px;
+
+    border-radius: 4px;
+    border: 1px solid #ffffff00;
+    z-index: 1;
+
+    transition: opacity 120ms ease-in-out;
+    opacity: 1;
+}
+
+.with-hover-border:hover {
+    border: 1px solid #f3f3f3;
+}
+
+.cell-controls-button:hover {
+    color: #9c9c9c;
+}
+.cell-controls-button:focus {
+    outline: none;
+    border: 1px solid #eee;
+}
+
+.cell-controls-left {
+    text-align: center;
+    height: 100%;
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: column;
+}
+
+.cell-top {
+    grid-area: top;
+    min-height: 40px;
+}
+
+.cell-editor {
+    border: 1px solid #ececec;
+    background-color: #fbfbfb;
+    width: 100%;
+}
+
+.cell-bottom {
+    grid-area: bottom;
+    max-height: 40em;
+}

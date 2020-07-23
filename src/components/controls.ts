@@ -1,0 +1,27 @@
+import { html, TemplateResult } from "lit-html";
+
+// Note: These controls are not "Components" in the lit-element sense
+
+export interface ControlButton {
+    icon: (iconOpts: {width: number; height: number} | undefined) => (string | TemplateResult);
+    tooltip: string;
+    callback: () => any | Promise<any>;
+}
+
+export interface ControlsDefinition {
+    buttons: ControlButton[];
+}
+
+export function getDefaultControlsTemplate(controls: ControlsDefinition) {
+    const buttons = controls.buttons;
+
+    return html`
+        ${buttons.map((button) => 
+            html`
+            <button @click="${button.callback}" class="cell-controls-button" title="${button.tooltip}">
+                ${button.icon({width: 20, height:20})}
+            </button>
+            `
+        )}
+    `;
+}
