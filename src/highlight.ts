@@ -1,48 +1,55 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+import prism from 'markdown-it-prism';
 
-/* eslint-disable */
-import 'highlight.js/styles/vs.css';
 
-// By not supporting every language we can save around 700KB in the final build
-const highlight = require("highlight.js/lib/highlight.js");
+import "prismjs/themes/prism.css";
 
-// Web languages
-highlight.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
-highlight.registerLanguage('typescript', require('highlight.js/lib/languages/typescript'));
-highlight.registerLanguage('css', require('highlight.js/lib/languages/css'));
-highlight.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
-highlight.registerLanguage('html', require('highlight.js/lib/languages/xml'));
-highlight.registerLanguage('glsl', require('highlight.js/lib/languages/glsl'));
-highlight.registerLanguage('json', require('highlight.js/lib/languages/json'));
-highlight.registerLanguage('plaintext', require('highlight.js/lib/languages/plaintext'));
+import "prismjs/components/prism-markup";
+import "prismjs/components/prism-markup-templating";
+import "prismjs/components/prism-css";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
 
-// Web++ languages
-highlight.registerLanguage('less', require('highlight.js/lib/languages/less'));
-highlight.registerLanguage('scss', require('highlight.js/lib/languages/scss'));
-highlight.registerLanguage('stylus', require('highlight.js/lib/languages/stylus'));
-highlight.registerLanguage('markdown', require('highlight.js/lib/languages/markdown'));
-highlight.registerLanguage('coffeescript', require('highlight.js/lib/languages/coffeescript'));
+import "prismjs/components/prism-asciidoc";
+import "prismjs/components/prism-brainfuck";
+import "prismjs/components/prism-c";
+import "prismjs/components/prism-cpp";
+import "prismjs/components/prism-coffeescript";
 
-// Some other common languages
-highlight.registerLanguage('bash', require('highlight.js/lib/languages/bash'));
-highlight.registerLanguage('cpp', require('highlight.js/lib/languages/cpp'));
-highlight.registerLanguage('cs', require('highlight.js/lib/languages/cs'));
-highlight.registerLanguage('d', require('highlight.js/lib/languages/d'));
-highlight.registerLanguage('dart', require('highlight.js/lib/languages/dart'));
-highlight.registerLanguage('go', require('highlight.js/lib/languages/go'));
-highlight.registerLanguage('java', require('highlight.js/lib/languages/java'));
-highlight.registerLanguage('julia', require('highlight.js/lib/languages/julia'));
-highlight.registerLanguage('kotlin', require('highlight.js/lib/languages/kotlin'));
-highlight.registerLanguage('perl', require('highlight.js/lib/languages/perl'));
-highlight.registerLanguage('php', require('highlight.js/lib/languages/php'));
-highlight.registerLanguage('r', require('highlight.js/lib/languages/r'));
-highlight.registerLanguage('rust', require('highlight.js/lib/languages/rust'));
-highlight.registerLanguage('scala', require('highlight.js/lib/languages/scala'));
-highlight.registerLanguage('shell', require('highlight.js/lib/languages/shell'));
-highlight.registerLanguage('sql', require('highlight.js/lib/languages/sql'));
-highlight.registerLanguage('swift', require('highlight.js/lib/languages/swift'));
-highlight.registerLanguage('yaml', require('highlight.js/lib/languages/yaml'));
+import "prismjs/components/prism-dart";
+import "prismjs/components/prism-docker";
+import "prismjs/components/prism-elixir";
+import "prismjs/components/prism-erlang";
+import "prismjs/components/prism-glsl";
+import "prismjs/components/prism-go";
+import "prismjs/components/prism-graphql";
+import "prismjs/components/prism-java";
+import "prismjs/components/prism-julia";
+import "prismjs/components/prism-lua";
+import "prismjs/components/prism-markdown";
+import "prismjs/components/prism-ocaml";
+import "prismjs/components/prism-perl";
+import "prismjs/components/prism-php";
+import "prismjs/components/prism-python";
+import "prismjs/components/prism-jsx";
+import "prismjs/components/prism-tsx";
+import "prismjs/components/prism-r";
+import "prismjs/components/prism-ruby";
+import "prismjs/components/prism-scss";
+import "prismjs/components/prism-scala";
+import "prismjs/components/prism-scheme";
+import "prismjs/components/prism-smalltalk";
+import "prismjs/components/prism-sql";
+import "prismjs/components/prism-swift";
+import "prismjs/components/prism-typescript";
+import "prismjs/components/prism-wasm";
+import "prismjs/components/prism-yaml";
 
-export {highlight};
+// Depends on Ruby so must be imported later
+import "prismjs/components/prism-crystal";
+
+
+export function hookMarkdownIt(markdownItInstance: any) {
+    markdownItInstance.use(prism, {
+        plugins: ["autolinker", /*"toolbar", "line-numbers",*/ "highlight-keywords"],
+        defaultLanguage: "javascript"});
+}

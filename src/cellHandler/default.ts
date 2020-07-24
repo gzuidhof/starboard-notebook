@@ -6,7 +6,12 @@ import { Cell } from "../notebookContent";
 import { CellHandler, CellHandlerAttachParameters } from "./base";
 import { render, html } from "lit-html";
 import { unsafeHTML } from 'lit-html/directives/unsafe-html';
-import { highlight } from "../highlight";
+
+import mdlib from "markdown-it";
+import { hookMarkdownIt } from "../highlight";
+
+const md = new mdlib();
+hookMarkdownIt(md);
 
 /**
  * The cell handler that gets used when there is an unknown cell type
@@ -17,13 +22,7 @@ export class DefaultCellHandler extends CellHandler {
     }
 
     attach(params: CellHandlerAttachParameters) {
-        const highlightLanguage = highlight.getLanguage(this.cell.cellType);
-        let highlightedText = "";
-        if (highlightLanguage) {
-            highlightedText = highlight(this.cell.cellType, this.cell.textContent).value;
-        } else {
-            highlightedText = highlight.highlightAuto(this.cell.textContent).value;
-        }
-        render(html`<pre class="cell-editor"><code>${unsafeHTML(highlightedText)}</code></pre>`, params.elements.topElement);
+        const mdText =  md.render(`\`\`\`\n${this.cell.cellType}\n${this.cell.textContent}\n\`\`\``);
+        render(html`<pre class="cell-editor" style="margin: 0"><code style="margin: 4px">${unsafeHTML(mdText)}</code></pre>`, params.elements.topElement);
     }
 }

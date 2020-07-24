@@ -13,8 +13,24 @@ import * as lithtml from "lit-html";
 (window as any).svg = lithtml.svg;
 (window as any).lithtml = lithtml;
 
-(window as any).initialNotebookContent = "%% javascript\nconsole.log('hello!')";
+(window as any).initialNotebookContent = `
+%% js
+console.log('hello!')
+
+%% md
+\`\`\`java
+private string bla() {
+    string boo = "a";
+}
+}
+\`\`\`
+
+`
+
+
+;
 
 document.body.innerHTML += `
+<base target="_parent" />
 <starboard-notebook></starboard-notebook>
 `;

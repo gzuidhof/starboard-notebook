@@ -72,3 +72,12 @@ starboard-notebook {
 .starboard-text-editor {
     height: 100%;
 }
+
+
+:not(pre) > code[class*="language-"], pre[class*="language-"] {
+    background-color: #f5f5f5 !important;
+}
+
+pre[class*="language-"] {
+    margin: 0 !important;
+}

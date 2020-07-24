@@ -85,7 +85,7 @@ export function addCellToNotebookContent(nb: NotebookContent, position: "end" | 
     const cell: Cell = {
             cellType,
             textContent: "",
-            id: (id ?? uuid()),
+            id: (id || uuid()),
     };
     nb.cells.splice(idx, 0, cell);
 }

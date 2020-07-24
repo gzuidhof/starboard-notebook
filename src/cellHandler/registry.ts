@@ -7,22 +7,24 @@ import { DefaultCellHandler } from "./default";
 import { MARKDOWN_CELL_TYPE_DEFINITION } from "./markdown";
 import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript";
 import { HTML_CELL_TYPE_DEFINITION } from "./html";
-import { Cell } from "../notebookContent";
 import { CSS_CELL_TYPE_DEFINITION } from "./css";
+
+import { Cell } from "../notebookContent";
 
 export interface CellTypeDefinition {
     createHandler(cell: Cell): CellHandler;
+
+    /**
+     * Name for human consumption, e.g. "Javascript"
+     */
     name: string;
     cellType: string;
-    createHandler: (cell: Cell) => CellHandler;
-    icon: string;
 }
 
 const defaultCellTypeDefinition = {
     name: "Unknown",
     cellType: "",
     createHandler: (c: Cell) => new DefaultCellHandler(c),
-    icon: "fas fa-question-circle"
 };
 
 const builtinCellTypes = [

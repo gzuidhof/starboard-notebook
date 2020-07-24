@@ -12,15 +12,12 @@ import { isProbablyTemplateResult } from "../util";
 import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 
 import { ConsoleOutputElement } from "../components/consoleOutput";
-
-
 import {StarboardTextEditor} from '../components/textEditor';
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
     name: "Javascript",
-    cellType: "javascript",
+    cellType: "js",
     createHandler: (c: Cell) => new JavascriptCellHandler(c),
-    icon: "fab fa-js-square"
 };
 
 

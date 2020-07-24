@@ -27,16 +27,13 @@ import { searchKeymap } from "@codemirror/next/search";
 import { Cell } from "../notebookContent";
 import { CellEvent } from "../components/cell";
 
-export type CodeMirrorSupportedLanguage = "javascript" | "css" | "html" | "python";
-
 function createJSCompletion() {
     return completeFromList(
         "break case catch class const continue debugger default delete do else enum export extends false finally for function if implements import interface in instanceof let new package private protected public return static super switch this throw true try typeof var void while with yield".split(" ")
         .concat(Object.getOwnPropertyNames(window)));
 }
 
-export async function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {language?: CodeMirrorSupportedLanguage; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, _emit?: (event: CellEvent) => void) {
-        
+export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {language?: string; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, _emit?: (event: CellEvent) => void) {
     const listen = EditorView.updateListener.of(update => {
         if (update.docChanged) {
             cell.textContent = update.state.doc.toString();
@@ -47,7 +44,7 @@ export async function createCodeMirrorEditor(element: HTMLElement, cell: Cell, o
         {
             state: EditorState.create(
                 {
-                    doc: cell.textContent,
+                    doc: cell.textContent.length === 0 ? cell.textContent : undefined,
                     extensions:[
                         bracketMatching(),
                         closeBrackets(),

@@ -16,7 +16,6 @@ export const HTML_CELL_TYPE_DEFINITION = {
     name: "HTML",
     cellType: "html",
     createHandler: (c: Cell) => new HTMLCellHandler(c),
-    icon: "fab fa-html5"
 };
 
 export class HTMLCellHandler extends CellHandler {

@@ -4,34 +4,23 @@
 
 import { render, TemplateResult } from "lit-html";
 import { Cell } from "../notebookContent";
-import * as mdlib from "markdown-it";
-import { highlight } from "../highlight";
+import mdlib from "markdown-it";
+import { hookMarkdownIt } from "../highlight";
+
 import { CellHandler, CellHandlerAttachParameters, CellElements } from "./base";
 import { getDefaultControlsTemplate, ControlButton } from "../components/controls";
 import { CellEvent } from "../components/cell";
 import { TextEditIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 
-const md = (mdlib as any)({
-    highlight: function (str:string, lang:string) {
-        if (lang && highlight.getLanguage(lang)) {
-          try {
-            return highlight(lang, str).value;
-          } catch (__) {/*Do nothing*/}
-        }
-
-        return ''; // use external default escaping
-    }
-});
-
+const md = new mdlib();
+hookMarkdownIt(md);
 
 export const MARKDOWN_CELL_TYPE_DEFINITION = {
     name: "Markdown",
-    cellType: "markdown",
+    cellType: "md",
     createHandler: (c: Cell) => new MarkdownCellHandler(c),
-    icon: "fab fa-markdown"
 };
-
 
 export class MarkdownCellHandler extends CellHandler {
     private isInEditMode = true;
@@ -78,7 +67,7 @@ export class MarkdownCellHandler extends CellHandler {
         const topElement = this.elements.topElement;
         topElement.innerHTML = "";
         topElement.classList.add("cell-editor");
-        this.editor = new StarboardTextEditor(this.cell, {language: undefined}, this.emit);
+        this.editor = new StarboardTextEditor(this.cell, {language: "markdown"}, this.emit);
         topElement.appendChild(this.editor);
     }
 
@@ -97,7 +86,7 @@ export class MarkdownCellHandler extends CellHandler {
         }
 
         const htmlContent = md.render(this.cell.textContent);
-        const wrapped = `<div class="markdown-body" style="margin: 0px 10px">${htmlContent}</div>`;
+        const wrapped = `<div class="markdown-body">${htmlContent}</div>`;
         topElement.classList.remove("cell-editor");
         topElement.innerHTML = wrapped;
         topElement.children[0].addEventListener("dblclick", (_event: any) => this.enterEditMode());

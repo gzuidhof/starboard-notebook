@@ -135,13 +135,82 @@ starboard-cell:focus .cell-controls-button
 }
 
 .cell-editor {
-    border: 1px solid #ececec;
+    position: relative;
+    /* outline: 1px solid #ececec;
+    outline-offset: -1px; */
     background-color: #fbfbfb;
     width: 100%;
     height: 100%;
+    font-size: 14px;
 }
 
 .cell-bottom {
     grid-area: bottom;
     max-height: 40em;
+}
+
+.cell-popover-root {
+    position: relative
+}
+.cell-popover {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background-color: #fff;
+    z-index: 10;
+    box-shadow: 0 0 2px 1px #0000001a;
+    padding: 6px;
+    font-size: 0.75rem;
+    text-align: initial;
+    min-width: 180px;
+    flex-direction: column;
+    color: #555;
+    display: none;
+}
+
+.cell-popover.popover-active {
+    display: flex;
+}
+
+.cell-popover-close-button {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+}
+
+.cell-popover-selection-button {
+    background-color: #fdfdfd;
+    border: 0;
+    text-align: initial;
+    padding: 4px 0;
+    cursor: pointer;
+}
+.cell-popover-selection-button:hover {
+    background-color: #f2f2f2;
+}
+
+.cell-popover-icon-button {
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 0 2px;
+    font-size: 12px;
+    padding: 2px 6px;
+}
+
+.cell-popover-icon-button:hover {
+    background-color: #ededed;
+}
+
+.cell-select-editor-popover {
+    right: initial;
+    top: 100%;
+    display: none;
+    transition: all ease-in-out 100ms;
+    box-shadow: none;
+}
+
+.starboard-text-editor:hover .cell-select-editor-popover {
+    display: flex;
 }

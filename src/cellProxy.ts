@@ -12,7 +12,6 @@ export function createCellProxy(cell: Cell, changedCallback: () => void) {
                 if (typeof value !== "string") {
                     throw new TypeError("textContent must be a string");
                 }
-
             } else if (prop === "id") {
                 throw new Error("ID can not be changed.");
             }

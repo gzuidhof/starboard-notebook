@@ -1,11 +1,31 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 import { customElement, LitElement, html, query } from "lit-element";
 import { Cell } from "../notebookContent";
 import { CellEvent } from "./cell";
-import { createCodeMirrorEditor } from "../editor/codeMirror";
 
+import mdlib from "markdown-it";
+import { hookMarkdownIt } from "../highlight";
+import { render } from "lit-html";
+import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import { DeviceDesktopIcon, DevicePhoneIcon } from "@spectrum-web-components/icons-workflow";
 
-export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html";
+export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";
 export type WordWrapSetting = "off" | "on" | "wordWrapColumn" | "bounded";
+
+// Note: somewhat problematic for garbage collection if no editor is ever chosen..
+let notifyOnEditorChosen: (() => any)[] = [];
+
+let codeMirrorModule: Promise<{createCodeMirrorEditor: any}> | undefined;
+let monacoModule: Promise<{createMonacoEditor: any}> | undefined;
+
+// Global state shared between all editors
+let currentEditor: "monaco" | "codemirror" | "" = "";
+
+const md = new mdlib();
+hookMarkdownIt(md);
 
 /**
  * StarboardTextEditor abstracts over different text editors that are loaded dynamically.
@@ -13,9 +33,6 @@ export type WordWrapSetting = "off" | "on" | "wordWrapColumn" | "bounded";
  */
 @customElement('starboard-text-editor')
 export class StarboardTextEditor extends LitElement {
-
-    // @property({ type: String })
-    // public editorName: "choice" | "monaco" | "simple" = "choice";
 
     @query(".starboard-text-editor")
     private editorMountpoint!: HTMLElement;
@@ -38,25 +55,80 @@ export class StarboardTextEditor extends LitElement {
 
     firstUpdated(changedProperties: any) {
         super.firstUpdated(changedProperties);
-        if (this.opts.language === "typescript") {
-            this.opts.language = undefined;
+
+        if (currentEditor === "codemirror" || currentEditor === "monaco") {
+            this.initEditor();
+        } else {
+            const mdText =  md.render("```" + `${this.opts.language}\n${this.cell.textContent}\n` + "```");
+            render(html`
+            <div class="cell-popover cell-select-editor-popover">
+                    <div style="display: flex; align-items: center;">
+                        <b style="font-size: 1em; margin-right: 4px">Select a text editor</b>
+                        <button @click=${() => this.switchToMonacoEditor()} title="Monaco Editor (advanced, desktop only)" class="cell-popover-icon-button">${DeviceDesktopIcon({width:12, height:12})} Monaco</button>
+                        <button @click=${() => this.switchToCodeMirrorEditor()} title="CodeMirror Editor (simpler, touchscreen friendly)" class="cell-popover-icon-button">${DevicePhoneIcon({width:12, height:12})} CodeMirror</button>
+                    </div>
+                    <span style="font-size: 0.85em"><b>Monaco</b> is more powerful, but is larger (4MB) and has poor touchscreen support.</span>
+                </div>
+            ${unsafeHTML(mdText)}
+            `, this.editorMountpoint);
+            notifyOnEditorChosen.push(() => this.initEditor());
         }
-        this.editorInstance = createCodeMirrorEditor(this.editorMountpoint, this.cell, this.opts as any, this.emit);
+
+        // this.editorInstance = createCodeMirrorEditor(this.editorMountpoint, this.cell, this.opts as any, this.emit);
+        // this.switchToMonacoEditor();
     }
 
+    initEditor() {
+        if (currentEditor === "codemirror") {
+            this.switchToCodeMirrorEditor();
+        } else if (currentEditor === "monaco") {
+            this.switchToMonacoEditor();
+        }
+    }
+
+    switchToCodeMirrorEditor() {
+        if (currentEditor === "monaco" && this.editorInstance) {
+            this.editorInstance.dispose();
+        }
+
+        currentEditor = "codemirror";
+        if (!codeMirrorModule) {
+            codeMirrorModule = import(/* webpackChunkName: codemirror-editor */  "../editor/codeMirror" as any);
+            notifyOnEditorChosen.forEach((c) => c());
+            notifyOnEditorChosen = [];
+        }
+    
+        codeMirrorModule.then((m) => {
+            this.editorMountpoint.innerHTML = "";
+            this.editorInstance = m.createCodeMirrorEditor(this.editorMountpoint, this.cell, this.opts as any, this.emit);
+        });
+    }
+
+    switchToMonacoEditor() {
+        if (currentEditor === "codemirror" && this.editorInstance) {
+            this.editorInstance.dom.remove();
+        }
+
+        currentEditor = "monaco";
+        if (!monacoModule) {
+            monacoModule = import(/* webpackChunkName: monaco-editor */  "../editor/monaco" as any);
+            notifyOnEditorChosen.forEach((c) => c());
+            notifyOnEditorChosen = [];
+        }
+
+        monacoModule.then((m) => {
+            this.editorMountpoint.innerHTML = "";
+            this.editorInstance = m.createMonacoEditor(this.editorMountpoint, this.cell, this.opts as any, this.emit);
+        });
+    }
+ 
     createRenderRoot() {
         return this;
     }
 
     render() {
         return html`
-        <div class="starboard-text-editor">
-            <div class="starboard-editor-picker-overlay">
-                <h2 style="font-size: 1em">Choose an editor</h2>
-                <p style="font-size: 0.75em">The <b>Advanced Editor</b> is a powerful Monaco-based editor, but is 4MB in size and has poor touchscreen support.</p>
-                <div><button class="">Advanced Editor</button> <button class="">Simple Editor</button></div>
-            </div>
-        </div>
+        <div class="starboard-text-editor"></div>
         `;
     }
 

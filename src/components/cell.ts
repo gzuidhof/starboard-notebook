@@ -114,53 +114,11 @@ export class CellElement extends LitElement {
 
     render() {
         return html`
-        <style>
-            .cell-popover-root {
-                position: relative
-            }
-            .cell-popover {
-                position: absolute;
-                top: calc(100% + 4px);
-                right: 0;
-                background-color: #fff;
-                z-index: 10;
-                box-shadow: 0 0 2px 1px #0000001a;
-                padding: 6px;
-                font-size: 0.75rem;
-                text-align: initial;
-                min-width: 180px;
-                flex-direction: column;
-                color: #555;
-                display: none;
-            }
-
-            .cell-popover.popover-active {
-                display: flex;
-            }
-
-            .cell-popover-close-button {
-                position: absolute;
-                top: 6px;
-                right: 6px;
-            }
-
-            .cell-popover-selection-button {
-                background-color: #fdfdfd;
-                border: 0;
-                text-align: initial;
-                padding: 4px 0;
-                cursor: pointer;
-            }
-            .cell-popover-selection-button:hover {
-                background-color: #f2f2f2;
-            }
-
-</style>
         <div class="cell-container">
             <div class="cell-controls cell-controls-corner"></div>
             <div class="cell-controls cell-controls-above">
                 <div class="cell-popover-root">
-                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${() => this.cellTypePickerElement?.classList.toggle("popover-active")}>${this.cell.cellType}</button>
+                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${() => this.cellTypePickerElement.classList.toggle("popover-active")}>${this.cell.cellType}</button>
                     <div class="cell-popover cell-type-popover">
                         <b style="margin-bottom: 6px">Change Cell Type</b>
 
@@ -169,7 +127,7 @@ export class CellElement extends LitElement {
                         `)
                         }
 
-                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.cellTypePickerElement?.classList.toggle("popover-active")}>Cancel</button>
+                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.cellTypePickerElement.classList.toggle("popover-active")}>Cancel</button>
 
                         
                     </div>

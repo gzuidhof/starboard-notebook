@@ -7,7 +7,7 @@ import { Cell } from '../notebookContent';
 import { CellEvent } from '../components/cell';
 import { debounce } from '@github/mini-throttle';
 
-export type MonacoEditorSupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html";
+export type MonacoEditorSupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";
 
 monaco.editor.defineTheme('starboard-theme', {
     base: 'vs',
@@ -59,7 +59,8 @@ function makeEditorResizeToFitContent(editor: monaco.editor.IStandaloneCodeEdito
         }
 
         const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
-        const lineCount = editor.getModel()?.getLineCount() || 1;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const lineCount = editor.getModel() && editor.getModel()!.getLineCount() || 1;
         const height = editor.getTopForLineNumber(lineCount + 1) + lineHeight;
 
         if (prevHeight !== height) {
@@ -152,6 +153,5 @@ export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts:
     } else {
         console.error("Monaco editor model was not truthy, change detection will not work");
     }
-
     return editor;
 }

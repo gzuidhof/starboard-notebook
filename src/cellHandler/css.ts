@@ -16,7 +16,6 @@ export const CSS_CELL_TYPE_DEFINITION = {
     name: "CSS",
     cellType: "css",
     createHandler: (c: Cell) => new CSSCellHandler(c),
-    icon: "fab fa-css3-alt"
 };
 
 

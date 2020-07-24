@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -12,10 +13,10 @@ export function isProbablyTemplateResult(value: any) {
         return true;
     }
 
-    if (value.prototype?.hasOwnProperty("strings")
-    && value.prototype?.hasOwnProperty("values")
-    && value.prototype?.hasOwnProperty("type")
-    && value.prototype?.hasOwnProperty("processor")
+    if (value.prototype && value.prototype.hasOwnProperty("strings")
+    && value.prototype.hasOwnProperty("values")
+    && value.prototype.hasOwnProperty("type")
+    && value.prototype.hasOwnProperty("processor")
     && !!(value as any)["getHTML"]
     ) {
         return true;
