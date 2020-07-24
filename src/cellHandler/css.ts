@@ -6,10 +6,10 @@ import { html, render, TemplateResult } from "lit-html";
 import { Cell } from "../notebookContent";
 import { CellHandler, CellHandlerAttachParameters, CellElements } from "./base";
 import { getDefaultControlsTemplate, ControlButton } from "../components/controls";
-import { createMonacoEditor } from "../editor/monaco";
 import { CellEvent } from "../components/cell";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
+import { StarboardTextEditor } from "../components/textEditor";
 
 
 export const CSS_CELL_TYPE_DEFINITION = {
@@ -50,7 +50,8 @@ export class CSSCellHandler extends CellHandler {
         topElement.classList.add("cell-editor");
 
         render(this.getControls(), this.elements.topControlsElement);
-        this.editor = createMonacoEditor(topElement, this.cell, { language: "css" }, this.emit);
+        this.editor = new StarboardTextEditor(this.cell, {language: "css"}, this.emit);
+        topElement.appendChild(this.editor);
     }
 
     async run() {

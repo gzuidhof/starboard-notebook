@@ -6,7 +6,6 @@ import { html, render, TemplateResult } from "lit-html";
 import { Cell } from "../notebookContent";
 import { CellHandler, CellHandlerAttachParameters, CellElements } from "./base";
 import { getDefaultControlsTemplate, ControlButton } from "../components/controls";
-import { createMonacoEditor } from "../editor/monaco";
 import { Runtime } from "../run";
 import { CellEvent } from "../components/cell";
 import { isProbablyTemplateResult } from "../util";
@@ -14,6 +13,8 @@ import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 
 import { ConsoleOutputElement } from "../components/consoleOutput";
 
+
+import {StarboardTextEditor} from '../components/textEditor';
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
     name: "Javascript",
@@ -24,9 +25,9 @@ export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
 
 
 export class JavascriptCellHandler extends CellHandler {
-
     private elements!: CellElements;
-    private editor: any;
+
+    private editor!: StarboardTextEditor;
     private runtime!: Runtime;
     private emit!: (event: CellEvent) => void;
 
@@ -34,6 +35,7 @@ export class JavascriptCellHandler extends CellHandler {
 
     constructor(cell: Cell) {
         super(cell);
+        
     }
 
     private getControls(): TemplateResult {
@@ -51,12 +53,14 @@ export class JavascriptCellHandler extends CellHandler {
         this.elements = params.elements;
         this.runtime = params.runtime;
         this.emit = params.emit;
+        
 
         const topElement = this.elements.topElement;
         topElement.classList.add("cell-editor");
 
         render(this.getControls(), this.elements.topControlsElement);
-        this.editor = createMonacoEditor(topElement, this.cell, {language: "javascript"}, this.emit);
+        this.editor = new StarboardTextEditor(this.cell, {language: "javascript"}, this.emit);
+        topElement.appendChild(this.editor);
     }
 
     async run() {
@@ -125,14 +129,10 @@ export class JavascriptCellHandler extends CellHandler {
     }
 
     focusEditor() {
-        if (this.editor) {
-            this.editor.focus();
-        }
+        this.editor.focus();
     }
 
     async dispose() {
-        if (this.editor) {
-            this.editor.dispose();
-        }
+        this.editor.remove();
     }
 }

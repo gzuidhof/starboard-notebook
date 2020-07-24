@@ -21,6 +21,8 @@ import * as lithtml from "lit-html";
 (window as any).svg = lithtml.svg;
 (window as any).lithtml = lithtml;
 
+(window as any).initialNotebookContent = "%% javascript\nconsole.log('hello!')";
+
 document.body.innerHTML += `
 <starboard-notebook></starboard-notebook>
 `;

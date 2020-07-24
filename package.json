@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "@babel/parser": "^7.8.4",
+    "@codemirror/next": "^0.8.0",
     "@github/mini-throttle": "^2.0.1",
     "@spectrum-web-components/button": "^0.5.2",
     "@spectrum-web-components/dropdown": "^0.5.3",

@@ -115,7 +115,7 @@ function addEditorKeyboardShortcuts(
 
 }
 
-export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {language?: MonacoEditorSupportedLanguage; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, emit?: (event: CellEvent) => void) {
+export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {language?: MonacoEditorSupportedLanguage; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, emit?: (event: CellEvent) => void) {
     const editor = monaco.editor.create(element, {
         value: cell.textContent,
         language: opts.language,

@@ -132,6 +132,7 @@ starboard-cell:focus .cell-controls-button
     border: 1px solid #ececec;
     background-color: #fbfbfb;
     width: 100%;
+    height: 100%;
 }
 
 .cell-bottom {

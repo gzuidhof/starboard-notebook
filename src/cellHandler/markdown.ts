@@ -8,9 +8,9 @@ import * as mdlib from "markdown-it";
 import { highlight } from "../highlight";
 import { CellHandler, CellHandlerAttachParameters, CellElements } from "./base";
 import { getDefaultControlsTemplate, ControlButton } from "../components/controls";
-import { createMonacoEditor } from "../editor/monaco";
 import { CellEvent } from "../components/cell";
 import { TextEditIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
+import { StarboardTextEditor } from "../components/textEditor";
 
 const md = (mdlib as any)({
     highlight: function (str:string, lang:string) {
@@ -78,7 +78,8 @@ export class MarkdownCellHandler extends CellHandler {
         const topElement = this.elements.topElement;
         topElement.innerHTML = "";
         topElement.classList.add("cell-editor");
-        this.editor = createMonacoEditor(topElement, this.cell, {language: "markdown", wordWrap: "on"}, this.emit);
+        this.editor = new StarboardTextEditor(this.cell, {language: undefined}, this.emit);
+        topElement.appendChild(this.editor);
     }
 
     enterEditMode() {

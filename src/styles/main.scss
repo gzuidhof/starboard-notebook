@@ -33,3 +33,42 @@ starboard-notebook {
     font-size: 11px;
     margin-left: 2px;
 }
+
+.cm-gutters {
+    background-color: #fdfdfd;
+}
+
+.cm-gutter-lineNumber {
+    min-width: 2rem;
+}
+
+.cm-wrap.cm-focused {
+    outline: 1px solid #ccc !important;
+}
+
+.cm-wrap {
+    height: calc(100% - 2px);
+}
+
+.cm-activeLine {
+    background-color: #33333308 !important;
+}
+
+.starboard-editor-picker-overlay {
+    position: absolute;
+    width: 80%;
+    padding: 1rem;
+    color: #222;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    display: none;
+}
+
+.starboard-editor-picker-overlay * {
+    margin: 0;
+}
+
+.starboard-text-editor {
+    height: 100%;
+}
