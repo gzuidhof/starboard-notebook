@@ -35,7 +35,7 @@ function createJSCompletion() {
         .concat(Object.getOwnPropertyNames(window)));
 }
 
-export async function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {language?: CodeMirrorSupportedLanguage; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, emit?: (event: CellEvent) => void) {
+export async function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {language?: CodeMirrorSupportedLanguage; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, _emit?: (event: CellEvent) => void) {
         
     const listen = EditorView.updateListener.of(update => {
         if (update.docChanged) {
@@ -80,6 +80,5 @@ export async function createCodeMirrorEditor(element: HTMLElement, cell: Cell, o
         );
     
     element.appendChild(editorView.dom);
-
     return editorView;
 }

@@ -19,11 +19,6 @@ export type CellEvent =
     | { id?: string; type: "SAVE" };
 
 
-
-function _cellTypeToDropdownValue(cellType: CellTypeDefinition) {
-    return html`${cellType.name} <span style="font-size: 0.9em; float:right; font-style: monospace; color:#ddd; margin-left:4px">${cellType.cellType}</span>`;
-}
-
 @customElement('starboard-cell')
 export class CellElement extends LitElement {
 
@@ -35,6 +30,9 @@ export class CellElement extends LitElement {
     private bottomElement!: HTMLElement;
     @query('.cell-controls-left-bottom')
     private bottomControlsElement!: HTMLElement;
+
+    @query('.cell-type-popover')
+    private cellTypePickerElement!: HTMLElement;
 
     private cellTypeDefinition!: CellTypeDefinition;
     private cellHandler!: CellHandler;
@@ -116,23 +114,66 @@ export class CellElement extends LitElement {
 
     render() {
         return html`
+        <style>
+            .cell-popover-root {
+                position: relative
+            }
+            .cell-popover {
+                position: absolute;
+                top: calc(100% + 4px);
+                right: 0;
+                background-color: #fff;
+                z-index: 10;
+                box-shadow: 0 0 2px 1px #0000001a;
+                padding: 6px;
+                font-size: 0.75rem;
+                text-align: initial;
+                min-width: 180px;
+                flex-direction: column;
+                color: #555;
+                display: none;
+            }
+
+            .cell-popover.popover-active {
+                display: flex;
+            }
+
+            .cell-popover-close-button {
+                position: absolute;
+                top: 6px;
+                right: 6px;
+            }
+
+            .cell-popover-selection-button {
+                background-color: #fdfdfd;
+                border: 0;
+                text-align: initial;
+                padding: 4px 0;
+                cursor: pointer;
+            }
+            .cell-popover-selection-button:hover {
+                background-color: #f2f2f2;
+            }
+
+</style>
         <div class="cell-container">
             <div class="cell-controls cell-controls-corner"></div>
             <div class="cell-controls cell-controls-above">
-                <sp-dropdown
-                    value=${this.cellTypeDefinition.name}
-                    placement="top-end"
-                >
-                    <sp-menu style="color: #ccc">
+                <div class="cell-popover-root">
+                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${() => this.cellTypePickerElement?.classList.toggle("popover-active")}>${this.cell.cellType}</button>
+                    <div class="cell-popover cell-type-popover">
+                        <b style="margin-bottom: 6px">Change Cell Type</b>
+
                         ${getAvailableCellTypes().map((ct) => html`
-                        <sp-menu-item .value=${ct.name} @click=${() => this.changeCellType(ct.cellType)}>${ct.name}</span></sp-menu-item>
-                        `)}
-                        <sp-menu-divider></sp-menu-divider>
-                        <sp-menu-item disabled>
-                            More coming later..
-                        </sp-menu-item>
-                    </sp-menu>
-                </sp-dropdown>
+                        <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float:right; font-size: 11px; font-family: monospace">${ct.cellType}</span></button>
+                        `)
+                        }
+
+                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.cellTypePickerElement?.classList.toggle("popover-active")}>Cancel</button>
+
+                        
+                    </div>
+                </div>
                 <button @click="${() => this.emit({ type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
                     ${DeleteIcon({ width: 18, height: 18 })}
                 </button>

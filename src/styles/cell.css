@@ -5,7 +5,7 @@
 .cell-container {
     display: grid;
     grid-template-columns: 36px calc(100% - 36px);
-    grid-template-rows: 24px auto auto;
+    grid-template-rows: 26px auto auto;
     grid-template-areas: 
     "controls-corner controls-above"
     "controls-left-top top"
@@ -88,7 +88,7 @@ starboard-cell:focus .cell-controls-button
 
 .cell-controls-button {
     background: transparent;
-    color: #d6d6d6;
+    color: #c3c3c3;
     font-size: 1em;
     cursor: pointer;
     user-select: none;
@@ -101,6 +101,12 @@ starboard-cell:focus .cell-controls-button
 
     transition: opacity 120ms ease-in-out;
     opacity: 1;
+}
+
+.cell-controls-button-language {
+    padding: 2px 8px;
+    text-transform: uppercase;
+    font-size: 11px;
 }
 
 .with-hover-border:hover {

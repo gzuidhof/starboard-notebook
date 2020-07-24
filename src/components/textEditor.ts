@@ -23,7 +23,7 @@ export class StarboardTextEditor extends LitElement {
     private emit: (event: any) => void;
     private cell: Cell;
     private opts: {language?: SupportedLanguage; wordWrap?: WordWrapSetting} = {};
-    editorInstance: any;
+    editorInstance?: any;
 
     constructor(cell: Cell, opts: {language?: SupportedLanguage; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, emit: (event: CellEvent) => void) {
         super();
@@ -57,8 +57,17 @@ export class StarboardTextEditor extends LitElement {
                 <div><button class="">Advanced Editor</button> <button class="">Simple Editor</button></div>
             </div>
         </div>
-        
         `;
+    }
+
+    focus() {
+        if (this.editorInstance) {
+            this.editorInstance.focus();
+        }
+    }
+
+    dispose() {
+        this.remove();
     }
 
 }
