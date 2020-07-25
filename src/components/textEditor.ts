@@ -53,12 +53,19 @@ export class StarboardTextEditor extends LitElement {
         super.connectedCallback();        
     }
 
+    handleDblClick() {
+        if (currentEditor === "") {
+            this.switchToMonacoEditor();
+        }
+    }
+
     firstUpdated(changedProperties: any) {
         super.firstUpdated(changedProperties);
 
         if (currentEditor === "codemirror" || currentEditor === "monaco") {
             this.initEditor();
         } else {
+            this.editorMountpoint.addEventListener("dblclick", () => this.handleDblClick(), {once: true, passive: true});
             const mdText =  md.render("```" + `${this.opts.language}\n${this.cell.textContent}\n` + "```");
             render(html`
             <div class="cell-popover cell-select-editor-popover">

@@ -191,7 +191,7 @@ export class StarboardNotebook extends LitElement {
       <div class="cells-container"></div>
       <div class="starboard-notebook-footer">
         <span>${starboardLogo(10, 10)}</span> Starboard Notebook v${STARBOARD_NOTEBOOK_VERSION}
-        <button @click="${() => this.insertCell("end")}" class="cell-controls-button" title="Add Cell" style="float: right; opacity: 1; padding: 0px 8px 0px 16px; margin-right: 2px">
+        <button @click="${() => this.insertCell("end")}" class="cell-controls-button" title="Add Cell Here" style="float: right; opacity: 1; padding: 0px 8px 0px 16px; margin-right: 2px">
           ${AssetsAddedIcon({ width: 20, height: 20 })}
         </button>
       </div>

@@ -14,8 +14,9 @@ import * as lithtml from "lit-html";
 (window as any).lithtml = lithtml;
 
 (window as any).initialNotebookContent = `
-%% unknown
+%% js
 console.log('hello!')
+asdf
 %% md
 Here's some Java-ish code!
 \`\`\`java

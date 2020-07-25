@@ -107,9 +107,16 @@ export class JavascriptCellHandler extends CellHandler {
             // console.log(val, val instanceof TemplateResult);
             if (val !== undefined) { // Don't show undefined output
                 if (outVal.error) {
+                    console.error(val); // NOTE: perhaps problematic for async code, don't want to loop this!
+
+                    let stackToPrint: string = val.stack;
+                    const errMsg: string = val.toString();
+                    if (stackToPrint.startsWith(errMsg)) { // Prevent duplicate error msg in Chrome
+                        stackToPrint = stackToPrint.substr(errMsg.length);
+                    }
                     output.push({
                         method: "error",
-                        data: [val.stack.split("at eval")[0].trimEnd()]
+                        data: [errMsg, stackToPrint]
                     });
 
                 } else {
