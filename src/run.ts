@@ -4,7 +4,7 @@
 
 /* Adapted from jsconsole, MIT licensed */
 import { parse } from '@babel/parser';
-import {simple} from 'babylon-walk';
+import { simple } from 'babel-walk';
 import { ConsoleCatcher } from './console/console';
  
 declare global {
@@ -127,7 +127,8 @@ export function preProcess(content: string) {
     },
   };
 
-  simple(body, visitors, undefined);
+  const modify = simple(visitors);
+  modify(root);
 
   const last = body.body[body.body.length - 1];
   if (last === undefined) {
@@ -145,6 +146,16 @@ export function preProcess(content: string) {
     if (wrapped[last.end - 1] !== ';')
       changes.push({ text: ')', start: last.end, end: last.end });
     else changes.push({ text: ')', start: last.end - 1, end: last.end - 1 });
+
+    // We need to offset changes in the final expression with 20, the length of 
+    // `return window.$_ = (`
+    changes.forEach((change, i) => {
+      if (i >= changes.length - 2) return;
+      if (change.start >= last.start && change.start < last.end) {
+        change.start += 20;
+        change.end += 20;
+      }
+    });
   }
 
   while (changes.length) {

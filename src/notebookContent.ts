@@ -73,10 +73,10 @@ export function addCellToNotebookContent(nb: NotebookContent, position: "end" | 
 
     if (position === "end") {
         idx = nb.cells.length;
-        cellType = nb.cells.length === 0 ? "javascript": nb.cells[nb.cells.length-1].cellType;
+        cellType = nb.cells.length === 0 ? "js": nb.cells[nb.cells.length-1].cellType;
     } else {
         idx = requireIndexOfCellId(nb.cells, adjacentCellId);
-        cellType = idx === 0 && adjacentCellId === undefined ? "javascript" : nb.cells[idx].cellType;
+        cellType = idx === 0 && adjacentCellId === undefined ? "js" : nb.cells[idx].cellType;
     }
 
     if (position === "after") {

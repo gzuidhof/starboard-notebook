@@ -22,8 +22,6 @@
     "node": "10.x"
   },
   "devDependencies": {
-    "@types/babylon-walk": "^3.10.1",
-    "@types/highlight.js": "^9.12.3",
     "@types/iframe-resizer": "^3.5.8",
     "@types/jest": "^25.2.1",
     "@types/markdown-it": "0.0.9",
@@ -54,17 +52,14 @@
     "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
-    "@babel/parser": "^7.8.4",
+    "@babel/parser": "^7.10.5",
     "@codemirror/next": "^0.8.0",
     "@github/mini-throttle": "^2.0.1",
-    "@spectrum-web-components/icon": "^0.4.7",
     "@spectrum-web-components/icons-ui": "^0.1.0",
     "@spectrum-web-components/icons-workflow": "^0.2.0",
-    "babylon": "^6.18.0",
-    "babylon-walk": "^1.0.2",
+    "babel-walk": "^3.0.0",
     "console-feed": "^2.8.11",
     "eol": "^0.9.1",
-    "highlight.js": "^9.18.1",
     "idb-keyval": "^3.2.0",
     "iframe-resizer": "^4.2.10",
     "jest": "^25.1.0",
