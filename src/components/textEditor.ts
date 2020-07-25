@@ -101,6 +101,7 @@ export class StarboardTextEditor extends LitElement {
         currentEditor = "codemirror";
         if (!codeMirrorModule) {
             codeMirrorModule = import(/* webpackChunkName: codemirror-editor */  "../editor/codeMirror" as any);
+            document.querySelector(".cell-select-editor-popover")!.innerHTML = "<b>Loading CodeMirror editor..</b>";
             notifyOnEditorChosen.forEach((c) => c());
             notifyOnEditorChosen = [];
         }
@@ -119,6 +120,7 @@ export class StarboardTextEditor extends LitElement {
         currentEditor = "monaco";
         if (!monacoModule) {
             monacoModule = import(/* webpackChunkName: monaco-editor */  "../editor/monaco" as any);
+            document.querySelector(".cell-select-editor-popover")!.innerHTML = "<b>Loading Monaco editor..</b>";
             notifyOnEditorChosen.forEach((c) => c());
             notifyOnEditorChosen = [];
         }

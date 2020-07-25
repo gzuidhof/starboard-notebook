@@ -123,7 +123,7 @@ export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts:
         minimap: {
             enabled: false
         },
-        fontSize: 15,
+        fontSize: 14,
         theme: "starboard-theme",
         scrollbar: {
             useShadows: false,
@@ -131,6 +131,7 @@ export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts:
             horizontal: 'auto',
             verticalScrollbarSize: 12,
             horizontalScrollbarSize: 12,
+            alwaysConsumeMouseWheel: false,
         },
         overviewRulerBorder: false,
         lineNumbersMinChars: 3,

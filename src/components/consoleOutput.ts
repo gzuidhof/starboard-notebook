@@ -31,7 +31,7 @@ export class ConsoleOutputElement extends LitElement {
     render() {
         const el = StarboardConsoleOutput({logs: this.logs});
         const rootEl = document.createElement('div');
-        rootEl.setAttribute("style", "background-color: #2c2c2c");
+        rootEl.setAttribute("style", "background-color: rgb(36, 36, 36)");
         render(el, rootEl);
         if (el) {
             return html`${rootEl}`;

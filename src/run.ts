@@ -64,7 +64,7 @@ export class Runtime {
 }
 
 export function preProcess(content: string) {
-  let wrapped = '(async () => {\n' + content + '\n})()';
+  let wrapped = '(async () => {' + content + '\n})()';
   const root = parse(wrapped, { ecmaVersion: 8 } as any);
   const body = (root.program.body[0] as any).expression.callee.body;
 

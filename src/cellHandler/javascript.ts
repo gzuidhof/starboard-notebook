@@ -8,11 +8,12 @@ import { CellHandler, CellHandlerAttachParameters, CellElements } from "./base";
 import { getDefaultControlsTemplate, ControlButton } from "../components/controls";
 import { Runtime } from "../run";
 import { CellEvent } from "../components/cell";
-import { isProbablyTemplateResult } from "../util";
+import { isProbablyTemplateResult, isProbablyModule } from "../util";
 import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 
 import { ConsoleOutputElement } from "../components/consoleOutput";
 import {StarboardTextEditor} from '../components/textEditor';
+import { Message } from "console-feed/lib/Hook";
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
     name: "Javascript",
@@ -72,7 +73,15 @@ export class JavascriptCellHandler extends CellHandler {
         // For deduplication, limits the updates to only one per animation frame.
         let hasUpdateScheduled = false;
 
-        const callback = (msg: any) => {
+        const callback = (msg: Message) => {
+            
+
+            msg.data.forEach((e, i) => {
+                if (isProbablyModule(e)) {
+                    msg.data[i] = Object.assign({}, e);
+                }
+            });
+
             output.push(msg); 
             if (!hasUpdateScheduled) {
                 window.setTimeout(() => {
@@ -91,14 +100,14 @@ export class JavascriptCellHandler extends CellHandler {
             this.runtime.consoleCatcher.unhook(callback)
         );
         
+
         const val = outVal.value;
-        if (val && !val.propertyIsEnumerable && !Object.isExtensible(val)) {
+        if (isProbablyModule(val)) {
             output.push({
                 method: "result",
-                data: ["Is this a module?", Object.assign({}, val),]
+                data: [Object.assign({}, val)]
             });
         } else if (val instanceof HTMLElement) {
-            // console.log("Val is HTML el");
             htmlOutput.appendChild(val);  
         } else if (isProbablyTemplateResult(val)) {
             // console.log("Val is TemplateResult");

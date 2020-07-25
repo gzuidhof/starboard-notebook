@@ -12,20 +12,7 @@ import * as lithtml from "lit-html";
 (window as any).html = lithtml.html;
 (window as any).svg = lithtml.svg;
 (window as any).lithtml = lithtml;
-
-(window as any).initialNotebookContent = `
-%% js
-console.log('hello!')
-asdf
-%% md
-Here's some Java-ish code!
-\`\`\`java
-private string bla() {
-    string boo = "a";
-}
-\`\`\`
-`
-;
+// (window as any).initialNotebookContent = undefined;
 
 document.body.innerHTML += `
 <base target="_parent" />

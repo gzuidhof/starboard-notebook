@@ -11,14 +11,11 @@ import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 
-
 export const CSS_CELL_TYPE_DEFINITION = {
     name: "CSS",
     cellType: "css",
     createHandler: (c: Cell) => new CSSCellHandler(c),
 };
-
-
 
 export class CSSCellHandler extends CellHandler {
 

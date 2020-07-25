@@ -30,7 +30,7 @@ declare module "console-feed/lib/Hook" {
     
     declare interface Message {
         method: Methods;
-        data?: any[];
+        data: any[];
     }
     
     declare type Callback = (encoded: Message, message: Message) => void;

@@ -50,7 +50,7 @@ import "prismjs/components/prism-crystal";
 
 export function hookMarkdownIt(markdownItInstance: any) {
     markdownItInstance.use(prism, {
-        plugins: ["autolinker", "highlight-keywords"]});
+        plugins: [/*"autolinker",*/ "highlight-keywords"]});
     
     const originalHighlight = markdownItInstance.options.highlight;
 

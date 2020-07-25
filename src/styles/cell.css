@@ -136,7 +136,8 @@ starboard-cell:focus .cell-controls-button
 
 .cell-bottom {
     grid-area: bottom;
-    max-height: 40em;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .cell-popover-root {
@@ -197,7 +198,6 @@ starboard-cell:focus .cell-controls-button
     right: initial;
     top: 100%;
     display: none;
-    transition: all ease-in-out 100ms;
     box-shadow: none;
     background-color: #bbffb5;
 }

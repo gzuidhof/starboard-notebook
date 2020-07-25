@@ -23,3 +23,7 @@ export function isProbablyTemplateResult(value: any) {
     }
     return false;
 }
+
+export function isProbablyModule(value: any) {
+    return Object.prototype.toString.call(value) === "[object Module]";
+}
