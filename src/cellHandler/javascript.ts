@@ -53,8 +53,6 @@ export class JavascriptCellHandler extends CellHandler {
         
 
         const topElement = this.elements.topElement;
-        topElement.classList.add("cell-editor");
-
         render(this.getControls(), this.elements.topControlsElement);
         this.editor = new StarboardTextEditor(this.cell, {language: "javascript"}, this.emit);
         topElement.appendChild(this.editor);

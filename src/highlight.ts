@@ -44,12 +44,21 @@ import "prismjs/components/prism-typescript";
 import "prismjs/components/prism-wasm";
 import "prismjs/components/prism-yaml";
 
+
 // Depends on Ruby so must be imported later
 import "prismjs/components/prism-crystal";
 
-
 export function hookMarkdownIt(markdownItInstance: any) {
     markdownItInstance.use(prism, {
-        plugins: ["autolinker", /*"toolbar", "line-numbers",*/ "highlight-keywords"],
-        defaultLanguage: "javascript"});
+        plugins: ["autolinker", "highlight-keywords"]});
+    
+    const originalHighlight = markdownItInstance.options.highlight;
+
+    // Monkeypatch for webpack build support for unknown languages
+    markdownItInstance.options.highlight = (...args: any) => {
+        if ((globalThis as any).Prism.languages[args[1]] === undefined) {
+            args[1] = "clike";
+        }
+        return originalHighlight(...args);
+    };
 }

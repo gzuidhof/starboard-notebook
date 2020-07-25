@@ -13,7 +13,8 @@
     "strict": true,
     "outDir": "./dist",
     "skipLibCheck": true,
-    "esModuleInterop": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true
   },
   "include": [

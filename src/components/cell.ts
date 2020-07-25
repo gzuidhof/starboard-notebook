@@ -123,13 +123,11 @@ export class CellElement extends LitElement {
                         <b style="margin-bottom: 6px">Change Cell Type</b>
 
                         ${getAvailableCellTypes().map((ct) => html`
-                        <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float:right; font-size: 11px; font-family: monospace">${ct.cellType}</span></button>
+                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float:right; font-size: 11px; font-family: monospace">${ct.cellType}</span></button>
                         `)
                         }
 
                         <button class="cell-controls-button cell-popover-close-button" @click=${() => this.cellTypePickerElement.classList.toggle("popover-active")}>Cancel</button>
-
-                        
                     </div>
                 </div>
                 <button @click="${() => this.emit({ type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">

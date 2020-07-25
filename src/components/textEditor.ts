@@ -63,7 +63,7 @@ export class StarboardTextEditor extends LitElement {
             render(html`
             <div class="cell-popover cell-select-editor-popover">
                     <div style="display: flex; align-items: center;">
-                        <b style="font-size: 1em; margin-right: 4px">Select a text editor</b>
+                        <b style="font-size: 1em; margin-right: 4px">Please select an editor</b>
                         <button @click=${() => this.switchToMonacoEditor()} title="Monaco Editor (advanced, desktop only)" class="cell-popover-icon-button">${DeviceDesktopIcon({width:12, height:12})} Monaco</button>
                         <button @click=${() => this.switchToCodeMirrorEditor()} title="CodeMirror Editor (simpler, touchscreen friendly)" class="cell-popover-icon-button">${DevicePhoneIcon({width:12, height:12})} CodeMirror</button>
                     </div>

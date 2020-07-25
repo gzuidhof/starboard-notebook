@@ -27,11 +27,18 @@ const defaultCellTypeDefinition = {
     createHandler: (c: Cell) => new DefaultCellHandler(c),
 };
 
+const PLAINTEXT_CELL_TYPE_DEFINITION = {
+    name: "Plaintext",
+    cellType: "plaintext",
+    createHandler: (c: Cell) => new DefaultCellHandler(c),
+};
+
 const builtinCellTypes = [
     MARKDOWN_CELL_TYPE_DEFINITION,
     JAVASCRIPT_CELL_TYPE_DEFINITION,
     HTML_CELL_TYPE_DEFINITION,
     CSS_CELL_TYPE_DEFINITION,
+    PLAINTEXT_CELL_TYPE_DEFINITION,
 ];
 
 const registry = new Map<string, CellTypeDefinition>();

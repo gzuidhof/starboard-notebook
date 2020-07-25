@@ -44,7 +44,7 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
         {
             state: EditorState.create(
                 {
-                    doc: cell.textContent.length === 0 ? cell.textContent : undefined,
+                    doc: cell.textContent.length === 0 ? undefined : cell.textContent,
                     extensions:[
                         bracketMatching(),
                         closeBrackets(),

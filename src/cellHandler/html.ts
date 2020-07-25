@@ -43,12 +43,10 @@ export class HTMLCellHandler extends CellHandler {
         this.elements = params.elements;
         this.emit = params.emit;
 
-        const topElement = this.elements.topElement;
-        topElement.classList.add("cell-editor");
 
         render(this.getControls(), this.elements.topControlsElement);
         this.editor = new StarboardTextEditor(this.cell, {language: "html"}, this.emit);
-        topElement.appendChild(this.editor);
+        this.elements.topElement.appendChild(this.editor);
     }
 
     async run() {

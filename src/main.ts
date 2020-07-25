@@ -14,20 +14,16 @@ import * as lithtml from "lit-html";
 (window as any).lithtml = lithtml;
 
 (window as any).initialNotebookContent = `
-%% js
+%% unknown
 console.log('hello!')
-
 %% md
+Here's some Java-ish code!
 \`\`\`java
 private string bla() {
     string boo = "a";
 }
-}
 \`\`\`
-
 `
-
-
 ;
 
 document.body.innerHTML += `

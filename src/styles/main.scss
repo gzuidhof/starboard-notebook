@@ -70,7 +70,13 @@ starboard-notebook {
 }
 
 .starboard-text-editor {
+    position: relative;
+    outline: 1px solid #ececec;
+    outline-offset: -1px;
+    background-color: #fbfbfb;
+    width: 100%;
     height: 100%;
+    font-size: 14px;
 }
 
 
@@ -80,4 +86,9 @@ starboard-notebook {
 
 pre[class*="language-"] {
     margin: 0 !important;
+}
+
+.monaco-editor {
+    outline: 1px solid #eee;
+    outline-offset: -1px;
 }
