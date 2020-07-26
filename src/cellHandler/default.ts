@@ -16,7 +16,7 @@ export class DefaultCellHandler extends CellHandler {
     }
 
     attach(params: CellHandlerAttachParameters) {
-        const ed = new StarboardTextEditor(this.cell, {}, (e) => 0);
+        const ed = new StarboardTextEditor(this.cell, {}, () => {/*Do nothing*/});
         render(html`${ed}`, params.elements.topElement);
     }
 }

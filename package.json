@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Starboard Notebook",
   "author": "Guido Zuidhof <me@guido.io>",
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/gzuidhof"
+  },
   "license": "MPL-2.0",
   "repository": {
     "type": "git",

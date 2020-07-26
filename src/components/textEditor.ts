@@ -30,6 +30,8 @@ hookMarkdownIt(md);
 /**
  * StarboardTextEditor abstracts over different text editors that are loaded dynamically.
  * The user can choose: monaco for desktop devices, or a more minimal editor for mobile phones.
+ * 
+ * TODO: this file needs a big cleanup..
  */
 @customElement('starboard-text-editor')
 export class StarboardTextEditor extends LitElement {
@@ -39,10 +41,10 @@ export class StarboardTextEditor extends LitElement {
 
     private emit: (event: any) => void;
     private cell: Cell;
-    private opts: {language?: SupportedLanguage; wordWrap?: WordWrapSetting} = {};
+    private opts: {language?: SupportedLanguage} = {};
     editorInstance?: any;
 
-    constructor(cell: Cell, opts: {language?: SupportedLanguage; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, emit: (event: CellEvent) => void) {
+    constructor(cell: Cell, opts: {language?: SupportedLanguage}, emit: (event: CellEvent) => void) {
         super();
         this.emit = emit;
         this.cell = cell;
@@ -101,7 +103,7 @@ export class StarboardTextEditor extends LitElement {
         currentEditor = "codemirror";
         if (!codeMirrorModule) {
             codeMirrorModule = import(/* webpackChunkName: codemirror-editor */  "../editor/codeMirror" as any);
-            document.querySelector(".cell-select-editor-popover")!.innerHTML = "<b>Loading CodeMirror editor..</b>";
+            document.querySelectorAll(".cell-select-editor-popover").forEach((e) => e.innerHTML = "<b>Loading CodeMirror editor..</b>");
             notifyOnEditorChosen.forEach((c) => c());
             notifyOnEditorChosen = [];
         }
@@ -120,7 +122,7 @@ export class StarboardTextEditor extends LitElement {
         currentEditor = "monaco";
         if (!monacoModule) {
             monacoModule = import(/* webpackChunkName: monaco-editor */  "../editor/monaco" as any);
-            document.querySelector(".cell-select-editor-popover")!.innerHTML = "<b>Loading Monaco editor..</b>";
+            document.querySelectorAll(".cell-select-editor-popover").forEach((e) => e.innerHTML = "<b>Loading Monaco editor..</b>");
             notifyOnEditorChosen.forEach((c) => c());
             notifyOnEditorChosen = [];
         }
