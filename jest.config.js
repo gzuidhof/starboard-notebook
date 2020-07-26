@@ -21,6 +21,9 @@ module.exports = {
             "statements": 55
         }
     },
+    "testPathIgnorePatterns": [
+        "/dist/"
+    ],
     "collectCoverageFrom": [
         "src/**/*.{js,ts}"
     ]
