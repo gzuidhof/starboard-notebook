@@ -91,6 +91,7 @@ pre[class*="language-"] {
 .monaco-editor {
     outline: 1px solid #eee;
     outline-offset: -1px;
+    min-height: 40px;
 }
 
 .starboard-text-editor pre[class*="language-"] {
