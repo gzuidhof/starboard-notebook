@@ -14,7 +14,7 @@ const baseConfig = {
     output: {
         path: path.resolve(__dirname, 'dist/'),
         filename: "starboard-notebook.js",
-        publicPath: "/",
+        publicPath: "./",
         chunkFilename: '[name].bundle.js',
     },
     resolve: {
