@@ -1,12 +1,14 @@
 # 🌑 starboard-notebook
 [![NPM badge](https://img.shields.io/npm/v/starboard-notebook)](https://www.npmjs.com/package/starboard-notebook)
 
-In-browser literal notebook runtime used in [**Starboard**](https://starboard.gg). It's
+In-browser literal notebook runtime used in [**Starboard**](https://starboard.gg). 
 
+### **Features**
 * Browser-native
 * Portable
 * Hackable
 * Open source
+* Works on mobile devices
 
 Read more about the project on the [Starboard About](https://starboard.gg/about) page.
 

@@ -1,7 +1,7 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-
+ 
 @import "./cell.css";
 @import "./github-markdown.css";
 
@@ -84,8 +84,9 @@ starboard-notebook {
     background-color: #f5f5f5 !important;
 }
 
-pre[class*="language-"] {
+.starboard-text-editor pre[class*="language-"] {
     margin: 0 !important;
+    min-height: 40px;
 }
 
 .monaco-editor {

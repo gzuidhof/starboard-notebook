@@ -15,6 +15,12 @@
     border: 1px solid transparent;
 }
 
+@media screen and (max-width: 640px) {
+    .cell-container {
+        grid-template-columns: 28px calc(100% - 28px);
+        padding: 0px 1px 6px 1px;
+    }
+}
 
 starboard-cell:focus {
     outline: none;
