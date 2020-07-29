@@ -112,13 +112,30 @@ export class CellElement extends LitElement {
         });
     }
 
+    handleCellTypeSelectButton() {
+        this.cellTypePickerElement.classList.toggle("popover-active");
+
+        if (this.cellTypePickerElement.classList.contains("popover-active")) {
+        // TODO: refactor this. the idea is to detect clicks outside the element to close the popover.
+            setTimeout(() => {
+                const listenerFunc = (e: MouseEvent) => {
+                    if (!this.cellTypePickerElement.contains(e.target as Node)) {
+                        this.cellTypePickerElement.classList.remove("popover-active");
+                        document.removeEventListener("click", listenerFunc);
+                    }
+                };
+                document.addEventListener("click", listenerFunc);
+            });
+        }
+    }
+
     render() {
         return html`
-        <div class="cell-container">
+        <section class="cell-container">
             <div class="cell-controls cell-controls-corner"></div>
             <div class="cell-controls cell-controls-above">
                 <div class="cell-popover-root">
-                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${() => this.cellTypePickerElement.classList.toggle("popover-active")}>${this.cell.cellType}</button>
+                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${() => this.handleCellTypeSelectButton()}>${this.cell.cellType}</button>
                     <div class="cell-popover cell-type-popover">
                         <b style="margin-bottom: 6px">Change Cell Type</b>
 
@@ -127,7 +144,7 @@ export class CellElement extends LitElement {
                         `)
                         }
 
-                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.cellTypePickerElement.classList.toggle("popover-active")}>Cancel</button>
+                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.cellTypePickerElement.classList.remove("popover-active")}>Cancel</button>
                     </div>
                 </div>
                 <button @click="${() => this.emit({ type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
@@ -142,7 +159,7 @@ export class CellElement extends LitElement {
             <div class="cell-top"></div>
             <div class="cell-controls cell-controls-left cell-controls-left-bottom"></div>
             <div class="cell-bottom"></div>
-        </div>
+        </section>
     `;
     }
 
