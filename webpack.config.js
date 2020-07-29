@@ -107,6 +107,7 @@ module.exports = (env, argv) => {
 
     if (argv.mode === "development") {
         config.devtool = 'inline-source-map'
+        config.output.publicPath = "/"
     }
     return config;
 };

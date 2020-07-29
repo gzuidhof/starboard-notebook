@@ -9,6 +9,8 @@ html, body {
     min-height: auto;
     height: auto;
     background-color: #fdfdfd;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -17,11 +19,7 @@ body {
     font-size: 1em;
     font-weight: 400;
     line-height: 1.5;
-}
-
-starboard-notebook {
-    height: 100%;
-    min-height: 100%;
+    margin: 6px;
 }
 
 .cells-container {
@@ -32,6 +30,7 @@ starboard-notebook {
     color: #ddd;
     font-size: 11px;
     margin-left: 2px;
+    margin-bottom: 24px;
 }
 
 .cm-gutters {
@@ -39,7 +38,7 @@ starboard-notebook {
 }
 
 .cm-gutter-lineNumber {
-    min-width: 2rem;
+    min-width: 24px;
 }
 
 .cm-wrap.cm-focused {
