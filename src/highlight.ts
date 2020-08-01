@@ -1,6 +1,5 @@
 import prism from 'markdown-it-prism';
 
-
 import "prismjs/themes/prism.css";
 
 import "prismjs/components/prism-markup";

@@ -6,6 +6,7 @@
 import { parse } from '@babel/parser';
 import { simple } from 'babel-walk';
 import { ConsoleCatcher } from './console/console';
+import { promiseState } from './util';
  
 declare global {
   interface Window {
@@ -41,7 +42,7 @@ export class Runtime {
         command = `(${command})`;
       }
 
-      const { content } = preProcess(command);
+      const content = precompile(command);
 
       if (!window) {
         res.error = true;
@@ -49,12 +50,25 @@ export class Runtime {
         return res;
       }
       
-      res.value = await window.eval(content);
+      const cellResult = await window.eval(content);
+      if (cellResult === undefined) {
+        res.value = undefined;
+        (window)["$_"] = res.value;
+        return res;
+      }
 
+      const state = await promiseState(cellResult.returnValue);
+      if (state === "fulfilled") { // Result is not a promise
+        res.value = await cellResult.returnValue;
+      } else { // Result is a promise that was awaited, we must wait to continue.
+        res.value = cellResult.returnValue
+      }
       (window)["$_"] = res.value;
+
       return res;
 
     } catch (error) {
+      console.log("ERROR", error)
       res.error = true;
       res.value = error;
       return res;
@@ -63,7 +77,12 @@ export class Runtime {
   }
 }
 
-export function preProcess(content: string) {
+/**
+ * Precompile takes a cell's code as a string, parses it and transforms it.
+ * In particular it wraps everything in an async function, handles the var->global magic
+ * and sets $_ to the last statement.
+ */
+export function precompile(content: string): string {
   let wrapped = '(async () => {' + content + '\n})()';
   const root = parse(wrapped, { ecmaVersion: 8 } as any);
   const body = (root.program.body[0] as any).expression.callee.body;
@@ -132,28 +151,29 @@ export function preProcess(content: string) {
 
   const last = body.body[body.body.length - 1];
   if (last === undefined) {
-    return {
-      content,
-    };
+    return content;
   }
 
   if (last.type === 'ExpressionStatement') {
     changes.push({
-      text: 'return window.$_ = (',
+      text: 'return {returnValue: (',
+      // text: 'return new Promise((r)=>r({returnValue:(',
       start: last.start,
       end: last.start,
     });
     if (wrapped[last.end - 1] !== ';')
-      changes.push({ text: ')', start: last.end, end: last.end });
-    else changes.push({ text: ')', start: last.end - 1, end: last.end - 1 });
+      changes.push({ text: ')}', start: last.end, end: last.end });
+    else changes.push({ text: ')}', start: last.end - 1, end: last.end - 1 });
+    //   changes.push({ text: ')}))', start: last.end, end: last.end });
+    // else changes.push({ text: ')}))', start: last.end - 1, end: last.end - 1 });
 
-    // We need to offset changes in the final expression with 20, the length of 
-    // `return window.$_ = (`
+    // We need to offset changes in the final expression with 22, the length of 
+    // `return {returnValue: (`
     changes.forEach((change, i) => {
       if (i >= changes.length - 2) return;
       if (change.start >= last.start && change.start < last.end) {
-        change.start += 20;
-        change.end += 20;
+        change.start += 22;
+        change.end += 22;
       }
     });
   }
@@ -166,5 +186,6 @@ export function preProcess(content: string) {
       wrapped.substr(change.end);
   }
 
-  return { content: wrapped };
+  // console.log("Cell code\n", wrapped);
+  return wrapped;
 }

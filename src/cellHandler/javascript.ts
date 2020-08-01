@@ -6,9 +6,9 @@ import { html, render, TemplateResult } from "lit-html";
 import { Cell } from "../notebookContent";
 import { CellHandler, CellHandlerAttachParameters, CellElements } from "./base";
 import { getDefaultControlsTemplate, ControlButton } from "../components/controls";
-import { Runtime } from "../run";
+import { Runtime } from "../jsRuntime";
 import { CellEvent } from "../components/cell";
-import { isProbablyTemplateResult, isProbablyModule } from "../util";
+import { isProbablyTemplateResult, isProbablyModule, promiseState } from "../util";
 import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 
 import { ConsoleOutputElement } from "../components/consoleOutput";
@@ -51,7 +51,6 @@ export class JavascriptCellHandler extends CellHandler {
         this.elements = params.elements;
         this.runtime = params.runtime;
         this.emit = params.emit;
-        
 
         const topElement = this.elements.topElement;
         render(this.getControls(), this.elements.topControlsElement);
@@ -74,8 +73,6 @@ export class JavascriptCellHandler extends CellHandler {
         let hasUpdateScheduled = false;
 
         const callback = (msg: Message) => {
-            
-
             msg.data.forEach((e, i) => {
                 if (isProbablyModule(e)) {
                     msg.data[i] = Object.assign({}, e);
@@ -96,9 +93,15 @@ export class JavascriptCellHandler extends CellHandler {
         this.runtime.consoleCatcher.hook(callback);
         const outVal = await this.runtime.run(this.cell.textContent);
 
+        // console.log("Promise state of outval value", await promiseState(outVal.value))
+        
+        // console.log("Out value", outVal);
+
         window.setTimeout(() => 
             this.runtime.consoleCatcher.unhook(callback)
         );
+
+        
         
 
         const val = outVal.value;
@@ -118,15 +121,22 @@ export class JavascriptCellHandler extends CellHandler {
                 if (outVal.error) {
                     console.error(val); // NOTE: perhaps problematic for async code, don't want to loop this!
 
-                    let stackToPrint: string = val.stack;
-                    const errMsg: string = val.toString();
-                    if (stackToPrint.startsWith(errMsg)) { // Prevent duplicate error msg in Chrome
-                        stackToPrint = stackToPrint.substr(errMsg.length);
+                    if (val.stack !== undefined) {
+                        let stackToPrint: string = val.stack;
+                        const errMsg: string = val.toString();
+                        if (stackToPrint.startsWith(errMsg)) { // Prevent duplicate error msg in Chrome
+                            stackToPrint = stackToPrint.substr(errMsg.length);
+                        }
+                        output.push({
+                            method: "error",
+                            data: [errMsg, stackToPrint]
+                        });
+                    } else {
+                        output.push({
+                            method: "error",
+                            data: [val]
+                        });
                     }
-                    output.push({
-                        method: "error",
-                        data: [errMsg, stackToPrint]
-                    });
 
                 } else {
                     output.push({

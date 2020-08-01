@@ -20,6 +20,5 @@ You have two options:
 ## Screenshot
 ![Starboard Notebook Screenshot](https://i.imgur.com/7hH8mMM.png)
 
-
 ## License
 This is free software; you can redistribute it and/or modify it under the terms of the [Mozilla Public License Version 2.0](./LICENSE).

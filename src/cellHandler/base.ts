@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Cell } from "../notebookContent";
-import { Runtime } from "../run";
+import { Runtime } from "../jsRuntime";
 import { CellEvent } from "../components/cell";
 
 

@@ -49,7 +49,6 @@ export class CSSCellHandler extends CellHandler {
 
     async run() {
         const content = this.cell.textContent;
-        console.log("CSS content", content);
         render(html`${unsafeHTML("<style>" + content + "</style>")}`, this.elements.bottomElement);
     }
 

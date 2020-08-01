@@ -9,6 +9,9 @@ export function isProbablyTemplateResult(value: any) {
     if (typeof value !== "object") {
         return false;
     }
+    if (value === null) {
+        return false;
+    }
     if (value instanceof TemplateResult) {
         return true;
     }
@@ -27,3 +30,9 @@ export function isProbablyTemplateResult(value: any) {
 export function isProbablyModule(value: any) {
     return Object.prototype.toString.call(value) === "[object Module]";
 }
+
+export function promiseState(p: Promise<any>): Promise<"pending" | "fulfilled" | "rejected"> {
+    const t = {};
+    return Promise.race([p, t])
+      .then(v => (v === t)? "pending" : "fulfilled", () => "rejected");
+  }

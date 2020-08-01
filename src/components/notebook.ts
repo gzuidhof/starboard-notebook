@@ -4,7 +4,7 @@
 
 import { LitElement, html, customElement, query } from 'lit-element';
 import { addCellToNotebookContent, removeCellFromNotebookById, changeCellType, NotebookContent, textToNotebookContent, notebookContentToText } from '../notebookContent';
-import { Runtime } from '../run';
+import { Runtime } from '../jsRuntime';
 import { CellElement, CellEvent } from './cell';
 import { IFramePage } from 'iframe-resizer';
 import { createCellProxy } from '../cellProxy';

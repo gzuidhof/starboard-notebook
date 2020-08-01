@@ -48,8 +48,7 @@ export function getCellTypeDefinitionForCellType(cellType: string): CellTypeDefi
     if (registry.has(cellType)) {
         return registry.get(cellType) as CellTypeDefinition;
     } else {
-        console.log(`No cell handler found for cell type ${cellType}`);
-        console.log(`Available cell handlers: ${Array.from(registry.keys())}`);
+        console.log(`No cell handler found for cell type ${cellType}. Available cell handlers: ${Array.from(registry.keys())}`);
         return {
             ...defaultCellTypeDefinition,
             cellType: cellType,

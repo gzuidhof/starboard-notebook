@@ -12,9 +12,10 @@ import * as lithtml from "lit-html";
 (window as any).html = lithtml.html;
 (window as any).svg = lithtml.svg;
 (window as any).lithtml = lithtml;
-// (window as any).initialNotebookContent = undefined;
 
 document.body.innerHTML += `
 <base target="_parent" />
 <starboard-notebook></starboard-notebook>
 `;
+
+
