@@ -9,7 +9,7 @@ import { getDefaultControlsTemplate, ControlButton } from "../components/control
 import { Runtime } from "../jsRuntime";
 import { CellEvent } from "../components/cell";
 import { isProbablyTemplateResult, isProbablyModule, promiseState } from "../util";
-import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
+import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workflow";
 
 import { ConsoleOutputElement } from "../components/consoleOutput";
 import {StarboardTextEditor} from '../components/textEditor';
@@ -29,6 +29,11 @@ export class JavascriptCellHandler extends CellHandler {
     private runtime!: Runtime;
     private emit!: (event: CellEvent) => void;
 
+
+    private isCurrentlyRunning = false;
+    private lastRunId = 0;
+
+
     private outputElement?: {logs: any};
 
     constructor(cell: Cell) {
@@ -37,7 +42,7 @@ export class JavascriptCellHandler extends CellHandler {
     }
 
     private getControls(): TemplateResult {
-        const icon = PlayCircleIcon;
+        const icon = this.isCurrentlyRunning ? ClockIcon : PlayCircleIcon;
         const tooltip = "Run Cell";
         const runButton: ControlButton = {
             icon,
@@ -59,6 +64,11 @@ export class JavascriptCellHandler extends CellHandler {
     }
 
     async run() {
+        this.lastRunId++;
+        const currentRunId = this.lastRunId;
+        this.isCurrentlyRunning = true;
+        render(this.getControls(), this.elements.topControlsElement);
+        
         this.outputElement = new ConsoleOutputElement();
         this.outputElement.logs = [];
 
@@ -93,16 +103,9 @@ export class JavascriptCellHandler extends CellHandler {
         this.runtime.consoleCatcher.hook(callback);
         const outVal = await this.runtime.run(this.cell.textContent);
 
-        // console.log("Promise state of outval value", await promiseState(outVal.value))
-        
-        // console.log("Out value", outVal);
-
         window.setTimeout(() => 
             this.runtime.consoleCatcher.unhook(callback)
         );
-
-        
-        
 
         const val = outVal.value;
         if (isProbablyModule(val)) {
@@ -146,7 +149,13 @@ export class JavascriptCellHandler extends CellHandler {
                 }
             }
         }
+
+        if (this.lastRunId === currentRunId) {
+            this.isCurrentlyRunning = false;
+            render(this.getControls(), this.elements.topControlsElement);
+        }
         this.outputElement.logs = output;
+
     }
 
     focusEditor() {
