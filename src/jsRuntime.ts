@@ -61,14 +61,13 @@ export class Runtime {
       if (state === "fulfilled") { // Result is not a promise
         res.value = await cellResult.returnValue;
       } else { // Result is a promise that was awaited, we must wait to continue.
-        res.value = cellResult.returnValue
+        res.value = cellResult.returnValue;
       }
       (window)["$_"] = res.value;
 
       return res;
 
     } catch (error) {
-      console.log("ERROR", error)
       res.error = true;
       res.value = error;
       return res;
