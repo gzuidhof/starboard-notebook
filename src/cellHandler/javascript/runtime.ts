@@ -20,7 +20,7 @@ interface RunResult {
     value?: any;
 }
 
-export class Runtime {
+export class JavascriptRuntime {
   public consoleCatcher: ConsoleCatcher;
 
   constructor() {

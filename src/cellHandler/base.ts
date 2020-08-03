@@ -3,12 +3,12 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Cell } from "../notebookContent";
-import { Runtime } from "./javascript/runtime";
+import { JavascriptRuntime } from "./javascript/runtime";
 import { CellEvent } from "../components/cell";
 
 
 export interface CellHandlerAttachParameters {
-    runtime: Runtime;
+    runtime: JavascriptRuntime;
     elements: CellElements;
     emit: (event: CellEvent) => void;
 }

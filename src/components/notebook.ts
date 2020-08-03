@@ -4,7 +4,7 @@
 
 import { LitElement, html, customElement, query } from 'lit-element';
 import { addCellToNotebookContent, removeCellFromNotebookById, changeCellType, NotebookContent, textToNotebookContent, notebookContentToText } from '../notebookContent';
-import { Runtime } from '../cellHandler/javascript/runtime';
+import { JavascriptRuntime } from '../cellHandler/javascript/runtime';
 import { CellElement, CellEvent } from './cell';
 import { IFramePage } from 'iframe-resizer';
 import { createCellProxy } from '../cellProxy';
@@ -30,7 +30,7 @@ export class StarboardNotebook extends LitElement {
 
   private notebookContent: NotebookContent = { frontMatter: "", cells: [] };
 
-  private runtime!: Runtime;
+  private runtime!: JavascriptRuntime;
   private cellElements: CellElement[] = [];
 
   @query(".cells-container")
@@ -88,7 +88,7 @@ export class StarboardNotebook extends LitElement {
   connectedCallback() {
     super.connectedCallback();
 
-    this.runtime = new Runtime();
+    this.runtime = new JavascriptRuntime();
     this.notebookContent = (window as any).initialNotebookContent ? textToNotebookContent((window as any).initialNotebookContent) : { frontMatter: "", cells: [] };
 
     window.iFrameResizer = {

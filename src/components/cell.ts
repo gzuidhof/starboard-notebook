@@ -7,7 +7,7 @@ import { Cell } from '../notebookContent';
 
 import { CellHandler } from '../cellHandler/base';
 import { CellTypeDefinition, getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellHandler/registry';
-import { Runtime } from '../cellHandler/javascript/runtime';
+import { JavascriptRuntime } from '../cellHandler/javascript/runtime';
 
 import { AssetsAddedIcon, DeleteIcon } from "@spectrum-web-components/icons-workflow";
 
@@ -41,14 +41,14 @@ export class CellElement extends LitElement {
     public cell: Cell;
 
     @property({ attribute: false})
-    private runtime: Runtime;
+    private runtime: JavascriptRuntime;
 
     @property()
     private eventListener: (event: CellEvent) => void;
 
     constructor(
         cell: Cell,
-        runtime: Runtime,
+        runtime: JavascriptRuntime,
         eventListener: (event: CellEvent) => void) {
         super();
         this.cell = cell;
