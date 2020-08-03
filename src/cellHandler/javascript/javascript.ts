@@ -3,16 +3,16 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html, render, TemplateResult } from "lit-html";
-import { Cell } from "../notebookContent";
-import { CellHandler, CellHandlerAttachParameters, CellElements } from "./base";
-import { getDefaultControlsTemplate, ControlButton } from "../components/controls";
-import { Runtime } from "../jsRuntime";
-import { CellEvent } from "../components/cell";
-import { isProbablyTemplateResult, isProbablyModule, promiseState } from "../util";
+import { Cell } from "../../notebookContent";
+import { CellHandler, CellHandlerAttachParameters, CellElements } from "../base";
+import { getDefaultControlsTemplate, ControlButton } from "../../components/controls";
+import { Runtime } from "./jsRuntime";
+import { CellEvent } from "../../components/cell";
+import { isProbablyTemplateResult, isProbablyModule, promiseState } from "../../util";
 import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workflow";
 
-import { ConsoleOutputElement } from "../components/consoleOutput";
-import {StarboardTextEditor} from '../components/textEditor';
+import { ConsoleOutputElement } from "../../components/consoleOutput";
+import {StarboardTextEditor} from '../../components/textEditor';
 import { Message } from "console-feed/lib/Hook";
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
@@ -28,7 +28,6 @@ export class JavascriptCellHandler extends CellHandler {
     private editor!: StarboardTextEditor;
     private runtime!: Runtime;
     private emit!: (event: CellEvent) => void;
-
 
     private isCurrentlyRunning = false;
     private lastRunId = 0;

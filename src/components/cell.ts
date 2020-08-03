@@ -7,7 +7,7 @@ import { Cell } from '../notebookContent';
 
 import { CellHandler } from '../cellHandler/base';
 import { CellTypeDefinition, getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellHandler/registry';
-import { Runtime } from '../jsRuntime';
+import { Runtime } from '../cellHandler/javascript/runtime';
 
 import { AssetsAddedIcon, DeleteIcon } from "@spectrum-web-components/icons-workflow";
 

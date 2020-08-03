@@ -5,7 +5,7 @@
 import { CellHandler } from "./base";
 import { DefaultCellHandler } from "./default";
 import { MARKDOWN_CELL_TYPE_DEFINITION } from "./markdown";
-import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript";
+import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript/javascript";
 import { HTML_CELL_TYPE_DEFINITION } from "./html";
 import { CSS_CELL_TYPE_DEFINITION } from "./css";
 
@@ -41,7 +41,7 @@ const builtinCellTypes = [
     PLAINTEXT_CELL_TYPE_DEFINITION,
 ];
 
-const registry = new Map<string, CellTypeDefinition>();
+export const registry = new Map<string, CellTypeDefinition>();
 builtinCellTypes.forEach((e) => registry.set(e.cellType, e));
 
 export function getCellTypeDefinitionForCellType(cellType: string): CellTypeDefinition {
