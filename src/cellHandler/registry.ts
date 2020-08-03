@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { CellHandler } from "./base";
-import { DefaultCellHandler } from "./default";
+import { DefaultCellHandler, DEFAULT_CELL_TYPE_DEFINITION } from "./default";
 import { MARKDOWN_CELL_TYPE_DEFINITION } from "./markdown";
 import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript/javascript";
 import { HTML_CELL_TYPE_DEFINITION } from "./html";
@@ -20,12 +20,6 @@ export interface CellTypeDefinition {
     name: string;
     cellType: string;
 }
-
-const defaultCellTypeDefinition = {
-    name: "Unknown",
-    cellType: "",
-    createHandler: (c: Cell) => new DefaultCellHandler(c),
-};
 
 const PLAINTEXT_CELL_TYPE_DEFINITION = {
     name: "Plaintext",
@@ -50,7 +44,7 @@ export function getCellTypeDefinitionForCellType(cellType: string): CellTypeDefi
     } else {
         console.log(`No cell handler found for cell type ${cellType}. Available cell handlers: ${Array.from(registry.keys())}`);
         return {
-            ...defaultCellTypeDefinition,
+            ...DEFAULT_CELL_TYPE_DEFINITION,
             cellType: cellType,
             name: `Unknown type "${cellType}"`,
         };

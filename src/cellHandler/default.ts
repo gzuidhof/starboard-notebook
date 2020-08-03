@@ -7,6 +7,11 @@ import { CellHandler, CellHandlerAttachParameters } from "./base";
 import { render, html } from "lit-html";
 import { StarboardTextEditor } from "../components/textEditor";
 
+export const DEFAULT_CELL_TYPE_DEFINITION = {
+    name: "Unknown",
+    cellType: "",
+    createHandler: (c: Cell) => new DefaultCellHandler(c),
+};
 /**
  * The cell handler that gets used when there is an unknown cell type
  */

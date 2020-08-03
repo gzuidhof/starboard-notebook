@@ -7,6 +7,7 @@ import { parseNotebookContent } from "./parse";
 
 export interface Cell {
     cellType: string;
+
     textContent: string;
 
     /**

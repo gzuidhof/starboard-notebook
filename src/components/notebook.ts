@@ -11,6 +11,7 @@ import { createCellProxy } from '../cellProxy';
 import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';
 import { debounce } from '@github/mini-throttle/decorators';
 import { starboardLogo } from './logo';
+import { insertHTMLChildAtIndex } from '../util';
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
@@ -23,16 +24,6 @@ declare global {
     };
   }
 }
-
-function insertHTMLChildAtIndex(parent: HTMLElement, child: HTMLElement, index: number) {
-  if (!index) index = 0;
-  if (index >= parent.children.length) {
-    parent.appendChild(child);
-  } else {
-    parent.insertBefore(child, parent.children[index]);
-  }
-}
-
 
 @customElement('starboard-notebook')
 export class StarboardNotebook extends LitElement {
@@ -184,7 +175,6 @@ export class StarboardNotebook extends LitElement {
       window.parentIFrame.sendMessage({ type: "NOTEBOOK_CONTENT_UPDATE", data: notebookContentToText(this.notebookContent) });
     }
   }
-
 
   render() {
     return html`
