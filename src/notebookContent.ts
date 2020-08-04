@@ -3,12 +3,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { uuid } from 'uuidv4';
-import { parseNotebookContent } from "./parse";
+import { parseNotebookContent } from "./parser";
 
 export interface Cell {
     cellType: string;
 
     textContent: string;
+
+    properties: any[];
 
     /**
      * Every cell has a unique ID, this is not persisted between runs.
@@ -25,12 +27,13 @@ export interface NotebookContent {
 }
 
 export function textToNotebookContent(text: string) {
-    const {chunks, frontMatter} = parseNotebookContent(text);
+    const {cells: parsedCells, frontMatter} = parseNotebookContent(text);
 
-    const cells = chunks.map((parseChunk) => {
+    const cells = parsedCells.map((pc) => {
         return {
-            cellType: parseChunk.chunkType,
-            textContent: parseChunk.chunkContent,
+            cellType: pc.type,
+            textContent: pc.lines.join("\n"),
+            properties: pc.properties,
             id: uuid(),
         } as Cell;
     });
@@ -86,6 +89,7 @@ export function addCellToNotebookContent(nb: NotebookContent, position: "end" | 
     const cell: Cell = {
             cellType,
             textContent: "",
+            properties: [],
             id: (id || uuid()),
     };
     nb.cells.splice(idx, 0, cell);

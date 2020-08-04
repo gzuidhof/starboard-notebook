@@ -140,7 +140,7 @@ export class CellElement extends LitElement {
                         <b style="margin-bottom: 6px">Change Cell Type</b>
 
                         ${getAvailableCellTypes().map((ct) => html`
-                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float:right; font-size: 11px; font-family: monospace">${ct.cellType}</span></button>
+                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${this.cellTypeDefinition.name} <span style="opacity: 0.6; float:right; font-size: 11px; font-family: monospace">${ct.cellType}</span></button>
                         `)
                         }
 

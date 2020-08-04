@@ -82,9 +82,6 @@ export class StarboardTextEditor extends LitElement {
             `, this.editorMountpoint);
             notifyOnEditorChosen.push(() => this.initEditor());
         }
-
-        // this.editorInstance = createCodeMirrorEditor(this.editorMountpoint, this.cell, this.opts as any, this.emit);
-        // this.switchToMonacoEditor();
     }
 
     initEditor() {

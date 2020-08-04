@@ -6,9 +6,9 @@ import { html, render, TemplateResult } from "lit-html";
 import { Cell } from "../../notebookContent";
 import { CellHandler, CellHandlerAttachParameters, CellElements } from "../base";
 import { getDefaultControlsTemplate, ControlButton } from "../../components/controls";
-import { Runtime } from "./jsRuntime";
+import { JavascriptRuntime } from "./runtime";
 import { CellEvent } from "../../components/cell";
-import { isProbablyTemplateResult, isProbablyModule, promiseState } from "../../util";
+import { isProbablyTemplateResult, isProbablyModule } from "../../util";
 import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workflow";
 
 import { ConsoleOutputElement } from "../../components/consoleOutput";
@@ -26,7 +26,7 @@ export class JavascriptCellHandler extends CellHandler {
     private elements!: CellElements;
 
     private editor!: StarboardTextEditor;
-    private runtime!: Runtime;
+    private runtime!: JavascriptRuntime;
     private emit!: (event: CellEvent) => void;
 
     private isCurrentlyRunning = false;
