@@ -19,9 +19,9 @@
     "literal"
   ],
   "scripts": {
-    "build": "rm -rf ./dist && npm run build:notebook && tsc",
+    "build": "rimraf ./dist && npm run build:notebook && tsc",
     "build:notebook": "webpack --mode=production",
-    "build:stats": "rm -rf ./dist && mkdir dist && webpack --mode=production --json > dist/stats.json",
+    "build:stats": "rimraf ./dist && mkdir dist && webpack --mode=production --json > dist/stats.json",
     "start": "webpack-dev-server --mode=development",
     "test": "jest",
     "lint": "eslint src/**/*.ts test/**/*.ts",
