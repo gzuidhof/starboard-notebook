@@ -5,5 +5,5 @@ x
 const x = await new Promise((resolve) => setTimeout(() => resolve(234), 1000));
 const y = new Promise((resolve) => setTimeout(() => resolve(123), 2000));
 y
-%% js
+%% js collapsed
 const x = await new Promise((resolve, reject) => setTimeout(() => reject(new Error("err!")), 1000));

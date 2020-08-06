@@ -38,6 +38,21 @@ starboard-cell:focus-within .cell-container{
     flex-direction: column;
 }
 
+starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed .cell-top,
+starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed .cell-bottom,
+starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed .cell-controls-left-top,
+starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed .cell-controls-left-bottom,
+starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed .cell-gutter-top,
+starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed .cell-gutter-bottom
+{
+    display: none;
+}
+
+starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed * .collapsed-cell-line
+{
+    display: flex;
+}
+
 .cell-top {
     grid-area: top;
     min-height: 40px;

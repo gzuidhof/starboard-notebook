@@ -12,6 +12,7 @@ export interface Cell {
 
     properties: {
         runOnLoad?: true;
+        collapsed?: true;
         [key: string]: any;
     };
 
@@ -100,7 +101,7 @@ export function addCellToNotebookContent(nb: NotebookContent, position: "end" | 
     const cell: Cell = {
             cellType,
             textContent: "",
-            properties: [],
+            properties: {},
             id: (id || uuid()),
     };
     nb.cells.splice(idx, 0, cell);

@@ -16,6 +16,14 @@ the focus state of the cell */
     grid-area: gutter-corner;
 }
 
+.cell-gutter-top {
+    grid-area: gutter-top;
+}
+
+.cell-gutter-bottom {
+    grid-area: gutter-bottom;
+}
+
 .cell-gutter-button {
     box-sizing: border-box;
     width: 2px;

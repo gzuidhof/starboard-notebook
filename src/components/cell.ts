@@ -137,9 +137,8 @@ export class CellElement extends LitElement {
     }
 
     render() {
-        console.log(this.cell.properties);
         return html`
-        <section class="cell-container collapsed">
+        <section class="cell-container ${this.cell.properties.collapsed ? "collapsed" : ""}">
 
             <!-- Gutter (left line of the cell) -->
             <div class="cell-gutter cell-gutter-corner">
@@ -160,6 +159,10 @@ export class CellElement extends LitElement {
                 <!-- Properties section -->
                 ${getPropertiesIcons(this.cell, (propertyName: string) => this.toggleProperty(propertyName))}
                 <div style="margin-right: auto"></div>
+
+                <div class="collapsed-cell-line">
+
+                </div>
                 
                 <!-- Language selection -->
                 <div class="cell-popover-root">
@@ -191,7 +194,7 @@ export class CellElement extends LitElement {
                 <button @click="${() => this.emit({ type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
                     ${DeleteIcon({ width: 18, height: 18 })}
                 </button>
-                <button @click="${() => this.emit({ type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Here">
+                <button @click="${() => this.emit({ type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Above">
                     ${AssetsAddedIcon({ width: 20, height: 20 })}
                 </button>
 

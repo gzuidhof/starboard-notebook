@@ -19,6 +19,7 @@
     grid-area: controls-above;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 }
 
 .cell-controls-left-top {
@@ -74,4 +75,18 @@ starboard-cell:focus .cell-controls-button
 .cell-controls-button:focus {
     outline: none;
     border: 1px solid #eee;
+}
+
+.collapsed-cell-line {
+    display: none;
+    background-color: #f2f2f2;
+    height: 3px;
+    flex-grow: 1;
+    cursor: pointer;
+    transform: translateY(-1px);
+}
+
+.collapsed-cell-line:hover {
+    background-color: #eaeaea;
+    height: 5px;
 }
