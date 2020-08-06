@@ -10,8 +10,9 @@ Text before the first cell
 # Notebook
 Hello there!
 
-%% js
+%% js autoRun
 const x = 5;
+x;
 
 %% unknown-cell-type
 `;
@@ -65,7 +66,7 @@ describe("Text to notebook content", () => {
 
         expect(notebookContent.cells).toHaveLength(1);
         const firstCell = notebookContent.cells[0];
-        expect(firstCell.properties).toContain("autoRun");
+        expect(firstCell.properties["autoRun"]).toBeTruthy();
     });
 
     it("handles wrong cell header", () => {

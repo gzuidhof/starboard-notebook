@@ -3,6 +3,8 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html, TemplateResult } from "lit-html";
+import { ChevronUpDownIcon, ReplayIcon, AlertCircleIcon, VisibilityOffIcon } from "@spectrum-web-components/icons-workflow";
+import { Cell } from "../notebookContent";
 
 // Note: These controls are not "Components" in the lit-element sense
 
@@ -17,6 +19,29 @@ export interface ControlsDefinition {
     buttons: ControlButton[];
 }
 
+export interface PropertyDefinition {
+    icon: (o: {width: number; height: number}) => TemplateResult | string;
+    textEnabled: string;
+    textDisabled: string;
+    title: string;
+}
+
+
+const knownProperties = {
+    "runOnLoad": {
+        icon: ReplayIcon,
+        title: "Run on load",
+        textEnabled: "Cell will be executed when notebook is first loaded",
+        textDisabled: "Run Cell on load"
+    },
+    "collapsed": {
+        icon: VisibilityOffIcon,
+        title: "Collapse Cell",
+        textEnabled: "Cell is collapsed",
+        textDisabled: "Collapse cell",
+    },
+} as {[name: string]: PropertyDefinition};
+
 export function getDefaultControlsTemplate(controls: ControlsDefinition) {
     const buttons = controls.buttons;
 
@@ -28,5 +53,41 @@ export function getDefaultControlsTemplate(controls: ControlsDefinition) {
             </button>
             `
         )}
+    `;
+}
+
+export function getPropertiesIcons(cell: Cell, togglePropertyFunction: (name: string) => void) {
+    const iconTemplates = [];
+    for(const prop of Object.getOwnPropertyNames(cell.properties)) {
+        let propertyDef = knownProperties[prop as any];
+        if (!propertyDef) {
+            propertyDef = {icon: AlertCircleIcon, textEnabled: `Unknown property "${cell.properties}"`, textDisabled: ``, title: `Unknown`};
+        }
+        const templateResult = html`
+            <button @click=${() => togglePropertyFunction(prop)} class="cell-controls-button" title=${propertyDef.textEnabled}>
+                            ${propertyDef.icon({width: 16, height:16})}
+            </button>
+        `;
+        iconTemplates.push(templateResult);
+    }
+    return html`${iconTemplates}`;
+}
+
+export function getPropertiesPopoverIcons(cell: Cell, togglePropertyFunction: (name: string) => void) {
+    return html`
+        <div style="display: flex">
+        ${
+            Object.entries(knownProperties).map( ([prop, propertyDef]) => {
+                const isActive = cell.properties[prop] !== undefined;
+                const helpText = isActive ? propertyDef.textEnabled : propertyDef.textDisabled;
+                const style = isActive ? "color: #8d27f4":"";
+                return html`
+                    <button style=${style} @click=${() => togglePropertyFunction(prop)} class="cell-controls-button" title=${helpText}>
+                                    ${propertyDef.icon({width: 16, height:16})}
+                    </button>
+                `;
+            })
+        }
+        </div>
     `;
 }

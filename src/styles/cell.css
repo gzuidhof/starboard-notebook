@@ -4,13 +4,13 @@
 
 .cell-container {
     display: grid;
-    grid-template-columns: 36px calc(100% - 36px);
+    grid-template-columns: 6px 34px calc(100% - 40px);
     grid-template-rows: 26px auto auto;
     grid-template-areas: 
-    "controls-corner controls-above"
-    "controls-left-top top"
-    "controls-left-bottom bottom";
-    padding: 0px 6px 6px 6px;
+    "gutter-corner controls-corner controls-above"
+    "gutter-top controls-left-top top"
+    "gutter-bottom controls-left-bottom bottom";
+    padding: 0px 6px 6px 0px;
     background-color: #fdfdfd;
     border: 1px solid transparent;
 }
@@ -18,7 +18,7 @@
 @media screen and (max-width: 640px) {
     .cell-container {
         grid-template-columns: 28px calc(100% - 28px);
-        padding: 0px 1px 6px 1px;
+        padding: 0px 1px 6px 0px;
     }
 }
 
@@ -28,103 +28,6 @@ starboard-cell:focus {
 
 starboard-cell:focus-within .cell-container{
     border: 1px solid #f1f1f1;
-}
-
-.cell-controls {
-    text-align: center;
-    height: 100%;
-    position: relative;
-}
-
-.cell-controls-corner {
-    grid-area: controls-corner;
-}
-
-.cell-controls-above {
-    grid-area: controls-above;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.cell-controls-left-top {
-    grid-area: controls-left-top;
-}
-.cell-controls-left-bottom {
-    grid-area: controls-left-bottom;
-}
-
-/* Line hover effect */
-.cell-controls-left:before {
-    top: 4px;
-    left: 0;
-    content: '';
-    border-left: 2px #fafafa solid;
-    height: calc(100% - 8px);
-    width: 12px;
-    transform: translateX(-2px);
-    position: absolute;
-    z-index: 0;
-}
-
-
-.cell-container:hover .cell-controls-left:before {
-    border-left: 2px #f4f4f4 solid;
-}
-
-starboard-cell:focus-within .cell-controls-left:before {
-    border-left: 4px #f4f4f4 solid !important;
-}
-
-
-starboard-cell:focus .cell-controls-left:before {
-    border-left: 4px #ffec8d solid !important;
-}
-
-
-.cell-controls .cell-controls-button.auto-hide {
-    opacity: 0;
-}
-
-.cell-container:hover .cell-controls-button.auto-hide,
-starboard-cell:focus-within .cell-controls-button,
-starboard-cell:focus .cell-controls-button
-{
-    opacity: 1;
-}
-
-.cell-controls-button {
-    background: transparent;
-    color: #c3c3c3;
-    font-size: 1em;
-    cursor: pointer;
-    user-select: none;
-    padding: 2px 4px;
-    margin-bottom: 2px;
-
-    border-radius: 4px;
-    border: 1px solid #ffffff00;
-    z-index: 1;
-
-    transition: opacity 120ms ease-in-out;
-    opacity: 1;
-}
-
-.cell-controls-button-language {
-    padding: 2px 8px;
-    text-transform: uppercase;
-    font-size: 11px;
-}
-
-.with-hover-border:hover {
-    border: 1px solid #f3f3f3;
-}
-
-.cell-controls-button:hover {
-    color: #7e7e7e;
-}
-.cell-controls-button:focus {
-    outline: none;
-    border: 1px solid #eee;
 }
 
 .cell-controls-left {
@@ -146,68 +49,3 @@ starboard-cell:focus .cell-controls-button
     overflow-y: auto;
 }
 
-.cell-popover-root {
-    position: relative
-}
-.cell-popover {
-    position: absolute;
-    top: 2px;
-    right: calc(100% + 4px);
-    background-color: #fff;
-    z-index: 10;
-    box-shadow: 0 0 2px 1px #0000001a;
-    padding: 6px;
-    font-size: 0.75rem;
-    text-align: initial;
-    min-width: 180px;
-    flex-direction: column;
-    color: #555;
-    display: none;
-}
-
-.cell-popover.popover-active {
-    display: flex;
-}
-
-.cell-popover-close-button {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-}
-
-.cell-popover-selection-button {
-    background-color: #fdfdfd;
-    border: 0;
-    text-align: initial;
-    padding: 4px 0;
-    cursor: pointer;
-}
-.cell-popover-selection-button:hover {
-    background-color: #f2f2f2;
-}
-
-.cell-popover-icon-button {
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    cursor: pointer;
-    margin: 0 2px;
-    font-size: 12px;
-    padding: 2px 6px;
-}
-
-.cell-popover-icon-button:hover {
-    background-color: #ededed;
-}
-
-.cell-select-editor-popover {
-    right: initial;
-    top: 100%;
-    display: none;
-    box-shadow: none;
-    background-color: #bbffb5;
-}
-
-.starboard-text-editor:hover .cell-select-editor-popover {
-    display: flex;
-}
