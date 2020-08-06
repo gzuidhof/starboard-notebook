@@ -1,6 +1,11 @@
 # Changelog
 
 
+## Release 0.3.1
+**Date:** 2020-08-06  
+
+* Fix for `runOnLoad` not working in iframe mode in which content comes from outside the iframe.
+
 ## Release 0.3.0
 **Date:** 2020-08-06  
 
