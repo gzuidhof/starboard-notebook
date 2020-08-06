@@ -10,7 +10,11 @@ export interface Cell {
 
     textContent: string;
 
-    properties: any[];
+    properties: {
+        runOnLoad?: true;
+        collapsed?: true;
+        [key: string]: any;
+    };
 
     /**
      * Every cell has a unique ID, this is not persisted between runs.
@@ -29,13 +33,18 @@ export interface NotebookContent {
 export function textToNotebookContent(text: string) {
     const {cells: parsedCells, frontMatter} = parseNotebookContent(text);
 
-    const cells = parsedCells.map((pc) => {
+    const cells: Cell[] = parsedCells.map((pc) => {
+
+        // All properties right now are just boolean flags that are undefined by default
+        const properties: {[k: string]: true} = {};
+        pc.properties.forEach((k) => properties[k] = true);
+
         return {
             cellType: pc.type,
             textContent: pc.lines.join("\n"),
-            properties: pc.properties,
+            properties: properties,
             id: uuid(),
-        } as Cell;
+        };
     });
 
     const nbContent: NotebookContent = {
@@ -46,17 +55,14 @@ export function textToNotebookContent(text: string) {
 }
 
 export function notebookContentToText(nb: NotebookContent) {
-    let text = "";
-
-    if (nb.frontMatter.length > 0) {
-        text += nb.frontMatter + "\n";
-    }
-
-    return text + nb.cells.map(cellToText).join("\n");
+    return nb.frontMatter + nb.cells.map(cellToText).join("\n");
 }
 
 export function cellToText(cell: Cell) {
-    const cellText = `%% ${cell.cellType}\n${cell.textContent}`;
+    // Right now all properties are binary flags, in the future we might have to do something smarter.
+    const cellHeaderString = ['%%', cell.cellType, ...Object.getOwnPropertyNames(cell.properties)].filter((t) => t !== "").join(" ");
+
+    const cellText = `${cellHeaderString}\n${cell.textContent}`;
     return cellText;
 }
 
@@ -89,7 +95,7 @@ export function addCellToNotebookContent(nb: NotebookContent, position: "end" | 
     const cell: Cell = {
             cellType,
             textContent: "",
-            properties: [],
+            properties: {},
             id: (id || uuid()),
     };
     nb.cells.splice(idx, 0, cell);
@@ -107,4 +113,12 @@ export function changeCellType(nb: NotebookContent, id: string, newCellType: str
     const newCell = textToNotebookContent(cellAsString).cells[0];
     newCell.cellType = newCellType;
     nb.cells.splice(idx, 1, newCell);
+}
+
+export function toggleCellFlagProperty(cell: Cell, propertyName: string) {
+    if (cell.properties[propertyName]) {
+        delete cell.properties[propertyName];
+    } else {
+        cell.properties[propertyName] = true;
+    }
 }

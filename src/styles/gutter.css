@@ -1,0 +1,60 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* Gutters are the lines on the left of the notebook that change thickness and color based on
+the focus state of the cell */
+
+
+.cell-gutter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.cell-gutter-corner {
+    grid-area: gutter-corner;
+}
+
+.cell-gutter-top {
+    grid-area: gutter-top;
+}
+
+.cell-gutter-bottom {
+    grid-area: gutter-bottom;
+}
+
+.cell-gutter-button {
+    box-sizing: border-box;
+    width: 2px;
+    height: calc(100% - 4px);
+    padding: 0;
+    border: 0;
+    background-color: #fbfbfb; 
+    cursor: pointer;
+}
+
+.cell-gutter-button:hover {
+    width: 4px;
+    filter: brightness(0.95);
+}
+
+.cell-gutter-button:select {
+    width: 4px;
+    filter: brightness(0.925);
+}
+
+.cell-container:hover * .cell-gutter-button {
+    background-color: #f4f4f4;
+}
+
+starboard-cell:focus-within * .cell-gutter-button {
+    background-color: #f4f4f4;
+    width: 4px;
+}
+
+
+starboard-cell:focus * .cell-gutter-button {
+    background-color: #ffec8d !important;
+    width: 4px;
+}

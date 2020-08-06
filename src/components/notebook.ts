@@ -85,6 +85,15 @@ export class StarboardNotebook extends LitElement {
     }
   }
 
+  async runAllCells(opts: {onlyRunOnLoad?: boolean} = {}) {
+    for (const ce of this.cellElements ) {
+      if (opts.onlyRunOnLoad && !ce.cell.properties.runOnLoad) {
+        continue;
+      }
+      await ce.run();
+    }
+  }
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -99,6 +108,7 @@ export class StarboardNotebook extends LitElement {
         if (msg.type === "SET_NOTEBOOK_CONTENT") {
           this.notebookContent = textToNotebookContent(msg.data);
           this.performUpdate();
+          // this.runAllCells({onlyRunOnLoad: true});
         } else if (msg.type === "RELOAD") {
           window.location.reload();
         }
@@ -115,6 +125,7 @@ export class StarboardNotebook extends LitElement {
 
   firstUpdated(changedProperties: any) {
     super.firstUpdated(changedProperties);
+    this.updateComplete.then(() => { this.runAllCells({onlyRunOnLoad: true});});
   }
 
   performUpdate() {
@@ -169,7 +180,7 @@ export class StarboardNotebook extends LitElement {
     }
   }
 
-  @debounce(200)
+  @debounce(100)
   private onCellChanged() {
     if (window.parentIFrame) {
       window.parentIFrame.sendMessage({ type: "NOTEBOOK_CONTENT_UPDATE", data: notebookContentToText(this.notebookContent) });
@@ -180,11 +191,11 @@ export class StarboardNotebook extends LitElement {
     return html`
       <main class="cells-container"></main>
       
-      <footer class="starboard-notebook-footer">
-        <span>${starboardLogo(10, 10)}</span> Starboard Notebook v${STARBOARD_NOTEBOOK_VERSION}
-        <button @click="${() => this.insertCell("end")}" class="cell-controls-button" title="Add Cell Here" style="float: right; opacity: 1; padding: 0px 8px 0px 16px; margin-right: 2px">
+      <button @click="${() => this.insertCell("end")}" class="cell-controls-button" title="Add Cell Here" style="float: right; opacity: 1; padding: 0px 8px 0px 16px; margin-right: 2px">
           ${AssetsAddedIcon({ width: 20, height: 20 })}
         </button>
+      <footer class="starboard-notebook-footer">
+        <span>${starboardLogo(10, 10)}</span> Starboard Notebook v${STARBOARD_NOTEBOOK_VERSION}
       </footer>
         `;
   }

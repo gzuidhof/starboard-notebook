@@ -20,7 +20,7 @@ export function parseNotebookContent(notebookContentString: string) {
     // All lines before the first cell make up the front matter.
     for (const [i, line] of allLines.entries()) {
         if (line.slice(0, 2) === "%%") {
-          frontMatter = allLines.slice(0, i).join("\n");
+          frontMatter = i > 0 ? allLines.slice(0, i).join("\n") + "\n" : "";
           cellLines = allLines.slice(i);
           break;
         }
@@ -32,14 +32,14 @@ export function parseNotebookContent(notebookContentString: string) {
 
     for (const line of cellLines) {
 
-      if (line.slice(0, 2) === "%%") {
+      if (line.slice(0, 2) === "%%") { // Start a new cell
         const flags = line.split(/[ \t]+/).filter(s => s !== "" && s.match(/^%*$/) === null);
-        if (flags.length === 0) { // Invalid cell as it only has the "%%" bit
-          // To be robust against this error we will simply add this as text to the current cell or frontmatter
-          // but we can only do that if at least one cell was parsed so far, otherwise we add it to the frontmatter.
-
-          // No code here, it will continue with the code after the if so there is no need to repeat that
-
+        if (flags.length === 0) { // Invalid cell, it only has %%, we will handle this anyway by creating a cell with the empty string as cell type.
+          currentCell = {
+            type: "",
+            properties: [],
+            lines: []
+          };
         } else { // A new cell is started
           const [type, ...properties] = flags;
           currentCell = {
@@ -47,16 +47,15 @@ export function parseNotebookContent(notebookContentString: string) {
             properties,
             lines: []
           };
-          cells.push(currentCell);
-          continue;
         }
-      }
-
-      if (currentCell === undefined) { // This really only happens in case of an invalid notebook cell header
-        frontMatter += line + "\n";
-      }
-      else {
-        currentCell.lines.push(line);
+        cells.push(currentCell);
+      } else { // No new cell was started
+        if (!currentCell) { // This should never happen..
+          console.error("Current cell was undefined in parsing cell contents");
+          frontMatter += "\n" + line;
+        } else {
+          currentCell.lines.push(line);
+        }
       }
     }
 

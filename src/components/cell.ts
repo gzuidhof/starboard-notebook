@@ -3,13 +3,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { LitElement, html, property, customElement, query } from 'lit-element';
-import { Cell } from '../notebookContent';
+import { Cell, toggleCellFlagProperty } from '../notebookContent';
 
 import { CellHandler } from '../cellHandler/base';
 import { CellTypeDefinition, getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellHandler/registry';
 import { JavascriptRuntime } from '../cellHandler/javascript/runtime';
 
-import { AssetsAddedIcon, DeleteIcon } from "@spectrum-web-components/icons-workflow";
+import { AssetsAddedIcon, DeleteIcon, BooleanIcon, WatchIcon, ClockIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
+import { getPropertiesIcons, getPropertiesPopoverIcons } from './controls';
 
 export type CellEvent =
     { id?: string; type: "RUN_CELL"; focusNextCell?: boolean; insertNewCell?: boolean }
@@ -21,7 +22,6 @@ export type CellEvent =
 
 @customElement('starboard-cell')
 export class CellElement extends LitElement {
-
     @query('.cell-top')
     private topElement!: HTMLElement;
     @query('.cell-controls-left-top')
@@ -32,7 +32,9 @@ export class CellElement extends LitElement {
     private bottomControlsElement!: HTMLElement;
 
     @query('.cell-type-popover')
-    private cellTypePickerElement!: HTMLElement;
+    private typePickerElement!: HTMLElement;
+    @query('.cell-properties-popover')
+    private propertiesPickerElement!: HTMLElement;
 
     private cellTypeDefinition!: CellTypeDefinition;
     private cellHandler!: CellHandler;
@@ -45,6 +47,8 @@ export class CellElement extends LitElement {
 
     @property()
     private eventListener: (event: CellEvent) => void;
+
+    private isCurrentlyRunning = false;
 
     constructor(
         cell: Cell,
@@ -97,8 +101,12 @@ export class CellElement extends LitElement {
         this.eventListener(event);
     }
 
-    public run() {
-        this.cellHandler.run();
+    public async run() {
+        this.isCurrentlyRunning = true;
+        this.performUpdate();
+        await this.cellHandler.run();
+        this.isCurrentlyRunning = false;
+        this.performUpdate();
     }
 
     public focusEditor() {
@@ -112,15 +120,14 @@ export class CellElement extends LitElement {
         });
     }
 
-    handleCellTypeSelectButton() {
-        this.cellTypePickerElement.classList.toggle("popover-active");
-
-        if (this.cellTypePickerElement.classList.contains("popover-active")) {
+    togglePopover(element: HTMLElement) {
+        element.classList.toggle("popover-active");
+        if (element.classList.contains("popover-active")) {
         // TODO: refactor this. the idea is to detect clicks outside the element to close the popover.
             setTimeout(() => {
                 const listenerFunc = (e: MouseEvent) => {
-                    if (!this.cellTypePickerElement.contains(e.target as Node)) {
-                        this.cellTypePickerElement.classList.remove("popover-active");
+                    if (!element.contains(e.target as Node)) {
+                        element.classList.remove("popover-active");
                         document.removeEventListener("click", listenerFunc);
                     }
                 };
@@ -128,14 +135,54 @@ export class CellElement extends LitElement {
             });
         }
     }
+    
+
+    private toggleProperty(name: string) {
+        toggleCellFlagProperty(this.cell, name);
+        this.performUpdate();
+    }
 
     render() {
         return html`
-        <section class="cell-container">
-            <div class="cell-controls cell-controls-corner"></div>
+        <section class="cell-container ${this.cell.properties.collapsed ? "collapsed" : ""}">
+
+            <!-- Gutter (left line of the cell) -->
+            <div class="cell-gutter cell-gutter-corner">
+                <button @click=${() => this.toggleProperty("collapsed")} class="cell-gutter-button" title=${this.cell.properties.collapsed ? "Maximize cell" : "Minimize cell"})></button>
+            </div>
+            <div class="cell-gutter cell-gutter-top">
+                <button class="cell-gutter-button" title="This gutter button doesn't do anything yet.."></button>
+            </div>
+            <div class="cell-gutter cell-gutter-bottom">
+                <button class="cell-gutter-button" title="This gutter button doesn't do anything yet.."></button>
+            </div>
+
+            <!-- Top left corner, used to display a run button if cell is collapsed -->
+            <div class="cell-controls cell-controls-corner">
+                ${this.isCurrentlyRunning
+                ? html`
+                    <button @mousedown=${() => this.emit({ type: "RUN_CELL" })}  class="cell-controls-button display-when-collapsed" title="Cell is running">
+                        ${ClockIcon({ width: 20, height: 20 })}
+                </button>`
+                : html`
+                    <button @mousedown=${() => this.emit({ type: "RUN_CELL" })} class="cell-controls-button display-when-collapsed" title="Run cell">
+                        ${PlayCircleIcon({ width: 20, height: 20 })}
+                </button>`
+                }
+            </div>
+
+            <!-- Top bar of the cell -->
             <div class="cell-controls cell-controls-above">
+
+                <!-- Properties section -->
+                ${getPropertiesIcons(this.cell, (propertyName: string) => this.toggleProperty(propertyName))}
+                <div style="margin-right: auto"></div>
+
+                <div class="collapsed-cell-line" title="Click to reveal collapsed cell temporarily"></div>
+                
+                <!-- Language selection -->
                 <div class="cell-popover-root">
-                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${() => this.handleCellTypeSelectButton()}>${this.cellTypeDefinition.name}</button>
+                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${() => this.togglePopover(this.typePickerElement)}>${this.cellTypeDefinition.name}</button>
                     <div class="cell-popover cell-type-popover">
                         <b style="margin-bottom: 6px">Change Cell Type</b>
 
@@ -144,15 +191,29 @@ export class CellElement extends LitElement {
                         `)
                         }
 
-                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.cellTypePickerElement.classList.remove("popover-active")}>Cancel</button>
+                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.typePickerElement.classList.remove("popover-active")}>Cancel</button>
                     </div>
                 </div>
+
+                <!-- Properties change button -->
+                <div class="cell-popover-root">
+                    <button @click=${() => this.togglePopover(this.propertiesPickerElement)} class="cell-controls-button" title="Change Cell Properties">
+                        ${BooleanIcon({ width: 18, height: 18 })}
+                    </button>
+                    <div class="cell-popover cell-properties-popover">
+                        <b style="margin-bottom: 6px">Toggle cell properties</b>
+                        ${getPropertiesPopoverIcons(this.cell, (propertyName: string) => this.toggleProperty(propertyName))}
+                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.propertiesPickerElement.classList.remove("popover-active")}>Cancel</button>
+                    </div>
+                </div>
+
                 <button @click="${() => this.emit({ type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
                     ${DeleteIcon({ width: 18, height: 18 })}
                 </button>
-                <button @click="${() => this.emit({ type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Here">
+                <button @click="${() => this.emit({ type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Above">
                     ${AssetsAddedIcon({ width: 20, height: 20 })}
                 </button>
+
             </div>
 
             <div class="cell-controls cell-controls-left cell-controls-left-top"></div>
