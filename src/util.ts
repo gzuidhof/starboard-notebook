@@ -47,7 +47,7 @@ export function promiseState(p: Promise<any>): Promise<"pending" | "fulfilled" |
  * @param child element to be inserted
  * @param index where to insert, should be a positive number, defaults to 0.
 */
-export function insertHTMLChildAtIndex(parent: HTMLElement, child: HTMLElement, index: number = 0) {
+export function insertHTMLChildAtIndex(parent: HTMLElement, child: HTMLElement, index = 0) {
     if (index >= parent.children.length) {
       parent.appendChild(child);
     } else {

@@ -9,7 +9,7 @@ import { CellHandler } from '../cellHandler/base';
 import { CellTypeDefinition, getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellHandler/registry';
 import { JavascriptRuntime } from '../cellHandler/javascript/runtime';
 
-import { AssetsAddedIcon, DeleteIcon, BooleanIcon, WatchIcon, ClockIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
+import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { getPropertiesIcons, getPropertiesPopoverIcons } from './controls';
 
 export type CellEvent =
