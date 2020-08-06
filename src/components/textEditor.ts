@@ -44,7 +44,7 @@ export class StarboardTextEditor extends LitElement {
     private opts: {language?: SupportedLanguage} = {};
     editorInstance?: any;
 
-    constructor(cell: Cell, opts: {language?: SupportedLanguage}, emit: (event: CellEvent) => void) {
+    constructor(cell: Cell, opts: {language?: SupportedLanguage, wordWrap?: WordWrapSetting}, emit: (event: CellEvent) => void) {
         super();
         this.emit = emit;
         this.cell = cell;

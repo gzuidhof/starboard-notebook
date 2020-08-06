@@ -6,6 +6,7 @@ import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { Cell } from '../notebookContent';
 import { CellEvent } from '../components/cell';
 import { debounce } from '@github/mini-throttle';
+import { WordWrapSetting } from '../components/textEditor';
 
 export type MonacoEditorSupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";
 
@@ -116,7 +117,7 @@ function addEditorKeyboardShortcuts(
 
 }
 
-export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {language?: MonacoEditorSupportedLanguage; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, emit?: (event: CellEvent) => void) {
+export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {language?: MonacoEditorSupportedLanguage; wordWrap?: WordWrapSetting}, emit?: (event: CellEvent) => void) {
     const editor = monaco.editor.create(element, {
         value: cell.textContent,
         language: opts.language,

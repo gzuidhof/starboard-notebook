@@ -66,7 +66,7 @@ export class MarkdownCellHandler extends CellHandler {
     private setupEditor() {
         const topElement = this.elements.topElement;
         topElement.innerHTML = "";
-        this.editor = new StarboardTextEditor(this.cell, {language: "markdown"}, this.emit);
+        this.editor = new StarboardTextEditor(this.cell, {language: "markdown", wordWrap: "on"}, this.emit);
         topElement.appendChild(this.editor);
     }
 
