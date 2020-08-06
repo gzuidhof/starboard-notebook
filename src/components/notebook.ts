@@ -43,16 +43,19 @@ export class StarboardNotebook extends LitElement {
   insertCell(position: "end" | "before" | "after", adjacentCellId?: string) {
     addCellToNotebookContent(this.notebookContent, position, adjacentCellId);
     this.performUpdate();
+    this.onChanges();
   }
 
   removeCell(id: string) {
     removeCellFromNotebookById(this.notebookContent, id);
     this.performUpdate();
+    this.onChanges();
   }
 
   changeCellType(id: string, newCellType: string) {
     changeCellType(this.notebookContent, id, newCellType);
     this.performUpdate();
+    this.onChanges();
   }
 
   runCell(id: string, focusNext: boolean, insertNewCell: boolean) {
@@ -150,7 +153,7 @@ export class StarboardNotebook extends LitElement {
       }
 
       const cellProxy = createCellProxy(cell, () => {
-        this.onCellChanged();
+        this.onChanges();
       });
 
       // We need to insert a cell here
@@ -181,8 +184,11 @@ export class StarboardNotebook extends LitElement {
     }
   }
 
+  /**
+   * To be called when the notebook content text changes in any way.
+   */
   @debounce(100)
-  private onCellChanged() {
+  private onChanges() {
     if (window.parentIFrame) {
       window.parentIFrame.sendMessage({ type: "NOTEBOOK_CONTENT_UPDATE", data: notebookContentToText(this.notebookContent) });
     }

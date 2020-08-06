@@ -5,7 +5,22 @@
 import { Cell } from "./notebookContent";
 
 export function createCellProxy(cell: Cell, changedCallback: () => void) {
+
+    const propertiesProxy = new Proxy(cell.properties, {
+        set: (target: {[v: string]: any}, prop: string, value: any) => {
+            (target as any)[prop] = value;
+            changedCallback();
+            return true;
+        }
+    })
+
     return new Proxy(cell, {
+        get: (target: Cell, prop: string) => {
+            if (prop === "properties") {
+                return propertiesProxy;
+            }
+            return (target as any)[prop];
+        },
         set: (target: Cell, prop: string, value: any) => {
 
             if (prop === "textContent") {
