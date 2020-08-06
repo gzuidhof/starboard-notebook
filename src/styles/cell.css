@@ -17,7 +17,7 @@
 
 @media screen and (max-width: 640px) {
     .cell-container {
-        grid-template-columns: 28px calc(100% - 28px);
+        grid-template-columns: 4px 26px calc(100% - 30px);
         padding: 0px 1px 6px 0px;
     }
 }
