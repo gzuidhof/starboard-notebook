@@ -7,3 +7,9 @@ const y = new Promise((resolve) => setTimeout(() => resolve(123), 2000));
 y
 %% js
 const x = await new Promise((resolve, reject) => setTimeout(() => reject(new Error("err!")), 1000));
+
+%%
+Invalid cell type!
+
+%% unknown
+Unknown cell! oh no!

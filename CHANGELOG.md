@@ -1,7 +1,7 @@
 # Changelog
 
 
-## Release 0.2.3 
+## Release 0.3.0
 **Date:** 2020-08-06  
 
 * **Cell Properties**: Properties are 'settings' for a cell. Properties are stored in the notebook file as such:  
@@ -16,6 +16,9 @@
 * **`runOnLoad`** property added: if enabled the cell will be executed when the notebook is first loaded. This is especially useful for interactive articles in which you don't want to rely on the user clicking the tiny play button for a cell, or to run a hidden cell that loads dependencies.
 * A **properties button** was added to the top right of cells, here you can toggle cell properties.
 * **Reworked gutter** (the clickable line on the left of the cell).
+* **Parser improvements**: 
+  * **`%%`** without a cell type specifier now creates a cell with an empty cell type instead of considering it frontmatter.
+  * There were some cases in which the input document was altered if immediately saved when the frontmatter only consisted of newlines. 
 * *(internal change)*: Split the CSS of different sub-component into separate files.
 
 

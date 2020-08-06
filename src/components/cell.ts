@@ -157,16 +157,17 @@ export class CellElement extends LitElement {
                 <button class="cell-gutter-button" title="This gutter button doesn't do anything yet.."></button>
             </div>
 
+            <!-- Top left corner, used to display a run button if cell is collapsed -->
             <div class="cell-controls cell-controls-corner">
                 ${this.isCurrentlyRunning
                 ? html`
-                    <div @mousedown=${() => this.emit({ type: "RUN_CELL" })}  class="cell-controls-button display-when-collapsed" title="Cell is running">
+                    <button @mousedown=${() => this.emit({ type: "RUN_CELL" })}  class="cell-controls-button display-when-collapsed" title="Cell is running">
                         ${ClockIcon({ width: 20, height: 20 })}
-                </div>`
+                </button>`
                 : html`
-                    <div @mousedown=${() => this.emit({ type: "RUN_CELL" })} class="cell-controls-button display-when-collapsed" title="Run cell">
+                    <button @mousedown=${() => this.emit({ type: "RUN_CELL" })} class="cell-controls-button display-when-collapsed" title="Run cell">
                         ${PlayCircleIcon({ width: 20, height: 20 })}
-                </div>`
+                </button>`
                 }
             </div>
 

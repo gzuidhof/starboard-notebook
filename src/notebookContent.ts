@@ -55,20 +55,14 @@ export function textToNotebookContent(text: string) {
 }
 
 export function notebookContentToText(nb: NotebookContent) {
-    let text = "";
-
-    if (nb.frontMatter.length > 0) {
-        text += nb.frontMatter + "\n";
-    }
-
-    return text + nb.cells.map(cellToText).join("\n");
+    return nb.frontMatter + nb.cells.map(cellToText).join("\n");
 }
 
 export function cellToText(cell: Cell) {
     // Right now all properties are binary flags, in the future we might have to do something smarter.
-    const cellHeaderString = [cell.cellType, ...Object.getOwnPropertyNames(cell.properties)].join(" ");
+    const cellHeaderString = ['%%', cell.cellType, ...Object.getOwnPropertyNames(cell.properties)].filter((t) => t !== "").join(" ");
 
-    const cellText = `%% ${cellHeaderString}\n${cell.textContent}`;
+    const cellText = `${cellHeaderString}\n${cell.textContent}`;
     return cellText;
 }
 

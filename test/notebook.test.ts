@@ -35,6 +35,7 @@ const withInvalidFirstCell = `
 // There are actually zero cells now..
 `;
 
+const emptyNotebook = ``;
 
 describe("Text to notebook content", () => {
     it("can parse a simple notebook", async () => {
@@ -45,6 +46,13 @@ describe("Text to notebook content", () => {
         expect(firstCell.cellType).toEqual("md");
         expect(firstCell.textContent.split("\n")).toHaveLength(3);
         expect(notebookContent.cells[2].cellType).toEqual("unknown-cell-type");
+    });
+
+    it("can parse empty notebook", async () => {
+        const notebookContent = textToNotebookContent(emptyNotebook);
+        expect(notebookContent.cells).toHaveLength(0);
+        expect(notebookContent.frontMatter).toEqual("");
+        expect(notebookContentToText(notebookContent)).toEqual("");
     });
 
     it("stays the same in text -> nb -> text -> nb", () => {
@@ -71,13 +79,20 @@ describe("Text to notebook content", () => {
 
     it("handles wrong cell header", () => {
         const notebookContent = textToNotebookContent(withInvalidCell);
-        expect(notebookContent.cells).toHaveLength(1);
+        expect(notebookContent.cells).toHaveLength(2);
+        expect(notebookContent.cells[1].cellType).toEqual("");
     });
 
     it("handles wrong cell header for first cell", () => {
         const notebookContent = textToNotebookContent(withInvalidFirstCell);
-        expect(notebookContent.cells).toHaveLength(0);
-        expect(notebookContent.frontMatter === withInvalidFirstCell); // All text should be front matter
-        expect(notebookContentToText(notebookContent) === withInvalidFirstCell);
+        expect(notebookContent.cells).toHaveLength(1);
+        expect(notebookContentToText(notebookContent)).toEqual(withInvalidFirstCell);
+        expect(notebookContentToText(textToNotebookContent(notebookContentToText(notebookContent)))).toEqual(withInvalidFirstCell);
+    });
+
+    it("is stable in many conversions text->nb->text->nb->text", () => {
+        for(const nbContent of [simpleNotebookPlaintext, notebookWithCellProperties, withInvalidCell, withInvalidFirstCell, emptyNotebook]) {
+            expect(notebookContentToText(textToNotebookContent(notebookContentToText(textToNotebookContent(nbContent))))).toEqual(nbContent);
+        }
     });
 });
