@@ -107,8 +107,9 @@ export class StarboardNotebook extends LitElement {
       onMessage: (msg: any) => {
         if (msg.type === "SET_NOTEBOOK_CONTENT") {
           this.notebookContent = textToNotebookContent(msg.data);
+          
+          this.updateComplete.then(() => this.runAllCells({onlyRunOnLoad: true}));
           this.performUpdate();
-          // this.runAllCells({onlyRunOnLoad: true});
         } else if (msg.type === "RELOAD") {
           window.location.reload();
         }
