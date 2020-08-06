@@ -12,7 +12,7 @@ import { isProbablyTemplateResult, isProbablyModule } from "../../util";
 import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workflow";
 
 import { ConsoleOutputElement } from "../../components/consoleOutput";
-import {StarboardTextEditor} from '../../components/textEditor';
+import { StarboardTextEditor } from '../../components/textEditor';
 import { Message } from "console-feed/lib/Hook";
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
@@ -42,7 +42,7 @@ export class JavascriptCellHandler extends CellHandler {
 
     private getControls(): TemplateResult {
         const icon = this.isCurrentlyRunning ? ClockIcon : PlayCircleIcon;
-        const tooltip = "Run Cell";
+        const tooltip = this.isCurrentlyRunning ? "Run Cell": "Cell is running";
         const runButton: ControlButton = {
             icon,
             tooltip,

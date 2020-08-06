@@ -22,6 +22,15 @@
     align-items: center;
 }
 
+.cell-controls-left, .cell-controls-corner {
+    text-align: center;
+    height: 100%;
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .cell-controls-left-top {
     grid-area: controls-left-top;
 }
@@ -79,8 +88,8 @@ starboard-cell:focus .cell-controls-button
 
 .collapsed-cell-line {
     display: none;
-    background-color: #f2f2f2;
-    height: 3px;
+    background-color: #f4f4f4;
+    height: 2px;
     flex-grow: 1;
     cursor: pointer;
     transform: translateY(-1px);
@@ -88,5 +97,5 @@ starboard-cell:focus .cell-controls-button
 
 .collapsed-cell-line:hover {
     background-color: #eaeaea;
-    height: 5px;
+    height: 4px;
 }

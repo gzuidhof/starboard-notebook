@@ -30,12 +30,8 @@ starboard-cell:focus-within .cell-container{
     border: 1px solid #f1f1f1;
 }
 
-.cell-controls-left {
-    text-align: center;
-    height: 100%;
-    justify-content: flex-end;
-    display: flex;
-    flex-direction: column;
+.display-when-collapsed {
+    display: none;
 }
 
 starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed .cell-top,
@@ -48,10 +44,16 @@ starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed .cell-gu
     display: none;
 }
 
-starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed * .collapsed-cell-line
+starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed * .collapsed-cell-line,
+starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed * .display-when-collapsed
 {
     display: flex;
 }
+
+
+
+
+
 
 .cell-top {
     grid-area: top;

@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html, TemplateResult } from "lit-html";
-import { ChevronUpDownIcon, ReplayIcon, AlertCircleIcon, VisibilityOffIcon } from "@spectrum-web-components/icons-workflow";
+import { ReplayIcon, AlertCircleIcon, VisibilityOffIcon } from "@spectrum-web-components/icons-workflow";
 import { Cell } from "../notebookContent";
 
 // Note: These controls are not "Components" in the lit-element sense
@@ -31,13 +31,13 @@ const knownProperties = {
     "runOnLoad": {
         icon: ReplayIcon,
         title: "Run on load",
-        textEnabled: "Cell will be executed when notebook is first loaded",
+        textEnabled: "This cell is run automatically when the notebook is loaded",
         textDisabled: "Run Cell on when the notebook gets loaded"
     },
     "collapsed": {
         icon: VisibilityOffIcon,
         title: "Collapse Cell",
-        textEnabled: "Cell is collapsed (hidden when not focused)",
+        textEnabled: "This cell is collapsed (hidden when not focused)",
         textDisabled: "Collapse cell (hide cell when not focused)",
     },
 } as {[name: string]: PropertyDefinition};

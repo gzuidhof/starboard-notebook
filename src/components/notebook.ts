@@ -85,6 +85,15 @@ export class StarboardNotebook extends LitElement {
     }
   }
 
+  async runAllCells(opts: {onlyRunOnLoad?: boolean} = {}) {
+    for (const ce of this.cellElements ) {
+      if (opts.onlyRunOnLoad && !ce.cell.properties.runOnLoad) {
+        continue;
+      }
+      await ce.run();
+    }
+  }
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -99,6 +108,7 @@ export class StarboardNotebook extends LitElement {
         if (msg.type === "SET_NOTEBOOK_CONTENT") {
           this.notebookContent = textToNotebookContent(msg.data);
           this.performUpdate();
+          // this.runAllCells({onlyRunOnLoad: true});
         } else if (msg.type === "RELOAD") {
           window.location.reload();
         }
@@ -115,6 +125,7 @@ export class StarboardNotebook extends LitElement {
 
   firstUpdated(changedProperties: any) {
     super.firstUpdated(changedProperties);
+    this.updateComplete.then(() => { this.runAllCells({onlyRunOnLoad: true});});
   }
 
   performUpdate() {
@@ -169,7 +180,7 @@ export class StarboardNotebook extends LitElement {
     }
   }
 
-  @debounce(200)
+  @debounce(100)
   private onCellChanged() {
     if (window.parentIFrame) {
       window.parentIFrame.sendMessage({ type: "NOTEBOOK_CONTENT_UPDATE", data: notebookContentToText(this.notebookContent) });
