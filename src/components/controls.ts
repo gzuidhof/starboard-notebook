@@ -32,13 +32,13 @@ const knownProperties = {
         icon: ReplayIcon,
         title: "Run on load",
         textEnabled: "Cell will be executed when notebook is first loaded",
-        textDisabled: "Run Cell on load"
+        textDisabled: "Run Cell on when the notebook gets loaded"
     },
     "collapsed": {
         icon: VisibilityOffIcon,
         title: "Collapse Cell",
-        textEnabled: "Cell is collapsed",
-        textDisabled: "Collapse cell",
+        textEnabled: "Cell is collapsed (hidden when not focused)",
+        textDisabled: "Collapse cell (hide cell when not focused)",
     },
 } as {[name: string]: PropertyDefinition};
 
