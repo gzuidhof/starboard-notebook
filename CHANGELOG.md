@@ -5,6 +5,7 @@
 **Date:** 2020-08-06
 
 * Changes to cells (adding cells, removing cells, changing cell types and properties) now correctly are propagated as changes that should be saveable.
+* Monaco editor now wraps lines in Markdown cells
 * *(internal change)*: We now use rimraf instead of rm -rf to better support building the project on Windows.
 
 
