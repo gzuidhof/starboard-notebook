@@ -14,7 +14,7 @@ import * as lithtml from "lit-html";
 (window as any).litHtml = lithtml;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// (window as any).initialNotebookContent = require("./debugNotebooks/classDefinition.nb").default;
+// (window as any).initialNotebookContent = require("./debugNotebooks/metaprogramming.nb").default;
 
 document.body.innerHTML += `
 <base target="_parent" />

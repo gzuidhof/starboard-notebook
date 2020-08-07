@@ -1,6 +1,20 @@
 # Changelog
 
 
+## Release 0.4.0
+**Date:** 2020-08-07
+
+
+* A large refactor: Starboard Notebook is now built around a single **Runtime** that allows for metaprogramming and plugin support. This is a single source of truth for the state and functionality of a notebook. It is exposed as a global variable `runtime`. 
+    * This centralizes the logic for the notebook and makes plugins possible that change the notebook in meaningful ways, for instance adding new cell types.
+    * It allows for *metaprogramming*, you could for instance programmatically change or retrieve a cell's content, or trigger a cell run.
+    * It exports internal functions and imported libraries so you can use these in notebooks and plugins. This way plugins don't have to bundle these dependencies themselves (and risk using different versions that may break things in subtle ways).
+    * Try it in a notebook, run `console.log(runtime)`
+* **`class`** definitions at the top level are now available globally (as they should have been all along, a bug prevented this).
+* **`var`** definitions are only made global if they are in the top level of the cell. Before they were always made global.
+* Support for custom **Cell Properties**: they can now be programatically added or removed.
+* Fix for console output when running multiple cells on notebook load, before all console output would be shown in the last cell's output box instead of the respective cells.
+
 ## Release 0.3.2
 **Date:** 2020-08-06
 

@@ -1,0 +1,96 @@
+%% md
+# Introducing Starboard Notebook
+Starboard brings cell-by-cell notebooks to the browser, no code is running on the backend here!
+It's probably the quickest way to visualize some data with interactivity, do some prototyping, or build a rudimentary dashboard.
+
+#### Some features 
+* Mix Markdown, HTML, CSS and Javascript.
+* The file format is a plaintext file, which plays nice with version control systems like git.
+* Runs entirely in your browser, everything is static: no server, no setup and no build step.
+
+Let's see it in action!
+
+> Tip: Press the ▶ Play button on the left to run a cell's code.
+
+%% js
+// You write vanilla Javascript
+const greeting = "Hello world!";
+
+// The last statement in a cell will be displayed if it is not undefined.
+greeting
+%% html
+<div id="my-element" style="background-color: #ddf; margin: 1em; padding: 0 1em;">
+  <b>You can mix and match different types of cells</b>
+</div>
+%% js
+// Your browser does the work, so stuff like this just works
+document.querySelector("#my-element").style.backgroundColor = "#fdf";
+
+const titleElement = document.createElement("h3");
+titleElement.innerText = "Great!"
+
+// If you return a HTML element and it will be appended below
+titleElement
+%% js
+// There's a little bit of (optional) magic, if you use `var` your variable will be available globally.
+var magic = "I can print this in the next cell!";
+
+// The previous cell's result is available as $_
+console.log($_)
+%% js
+// Poof!
+console.log(magic);
+%% js
+// Everybody makes mistakes
+thisVariableDoesNotExist
+%% js
+// We can import code dynamically, top level await is supported.
+const {default: Confetti} = await import(
+    'https://cdn.jsdelivr.net/npm/canvas-confetti@0.2.0/dist/confetti.module.mjs'
+);
+
+function fireConfetti(event) {
+    const x = event.clientX / document.body.clientWidth;
+    const y = event.clientY / document.body.clientHeight;
+    Confetti({origin: {x, y}});
+}
+
+// You can use lit-html for templating if you want to
+html`<button @click=${fireConfetti}>Fire Confetti 🎉</button>`;
+%% css
+/* The editor itself also runs in the sandbox, you can modify or extend it however you wish as you go.
+In the future you will be able to load code that adds new cell types or language support (such as Python).
+
+For now: let's just make the editor a bit more funky by adding some CSS */
+
+.cell-container:focus-within {
+    background-color: rgb(255, 243, 175);
+    transition: all ease-in-out 200ms;
+}
+%% js
+// Finally, let's create a tiny API based app in just a few lines: an advice button.
+const adviceElement = document.createElement("span");
+
+async function onClick(event) {
+    // Example response: {"slip": { "id": 163, "advice": "Big things have small beginnings."}}
+    const data = await (await fetch(`https://api.adviceslip.com/advice`, {cache: "no-store"})).json();
+    adviceElement.innerText = data.slip.advice;
+
+    // Uncomment to make it fire confetti too
+    // fireConfetti(event);
+}
+
+
+html`
+<div style="padding: 0.4em 1em; margin: 1em; background-color: #fff; border: 1px solid">
+    <button @click=${onClick}>Give me advice</button>
+    ${adviceElement}
+</div>
+`
+%% md
+That's it! I hope that both the advice and Starboard are useful for you.
+
+### Next steps
+
+* Check out the other example notebooks, scroll back up!
+* Or, [**Sign up**](https://starboard.gg/signup) to create notebooks that can be instantly shared, or create an [offline-only notebook](https://starboard.gg/dashboard/new).
