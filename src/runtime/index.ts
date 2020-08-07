@@ -17,6 +17,7 @@ import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
 import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
 import { createCellProxy } from "../components/helpers/cellProxy";
 import { cellToText, notebookContentToText } from "../content/serialization";
+import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 
 export * from "../types";
 
@@ -82,6 +83,7 @@ export interface RuntimeExports {
         hookMarkdownItToPrismHighlighter: typeof hookMarkdownItToPrismHighlighter;
         cellToText: typeof cellToText;
         notebookContentToText: typeof notebookContentToText;
+        precompileJavascriptCode: typeof precompileJavascriptCode;
     };
 
     /**

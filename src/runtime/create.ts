@@ -26,6 +26,7 @@ import { ConsoleOutputElement } from "../components/consoleOutput";
 import * as LitElement from "lit-element";
 import * as LitHtml from "lit-html";
 import MarkdownIt from "markdown-it";
+import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
@@ -173,6 +174,7 @@ function createExports(): RuntimeExports {
       
       cellToText: cellToText,
       notebookContentToText: notebookContentToText,
+      precompileJavascriptCode: precompileJavascriptCode,
     },
     elements: {
       StarboardTextEditor: StarboardTextEditor,
