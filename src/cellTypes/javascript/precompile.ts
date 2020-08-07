@@ -10,12 +10,16 @@ export function precompileJavascriptCode(content: string): string {
     let wrapped = '(async () => {' + content + '\n})()';
     const root = parse(wrapped, { ecmaVersion: 8 } as any);
     const body = (root.program.body[0] as any).expression.callee.body;
+
+    const isTopLevel = (node: any) => {
+      return (body.body as Array<any>).indexOf(node) !== -1;
+    };
   
     const changes: any[] = [];
   
     const visitors = {
       ClassDeclaration(node: any) {
-        if (node.parent === body)
+        if (isTopLevel(node))
           changes.push({
             text: node.id.name + '=',
             start: node.start,
@@ -31,7 +35,7 @@ export function precompileJavascriptCode(content: string): string {
         return node;
       },
       VariableDeclaration(node: any) {
-        if (node.kind !== 'var' && node.parent !== body) return;
+        if (node.kind !== 'var' || !isTopLevel(node)) return;
         const onlyOneDeclaration = node.declarations.length === 1;
         changes.push({
           text: onlyOneDeclaration ? 'void' : 'void (',
@@ -70,8 +74,8 @@ export function precompileJavascriptCode(content: string): string {
       },
     };
   
-    const modify = simple(visitors);
-    modify(root);
+    const walk = simple(visitors);
+    walk(root, undefined);
   
     const last = body.body[body.body.length - 1];
     if (last === undefined) {
@@ -88,8 +92,6 @@ export function precompileJavascriptCode(content: string): string {
       if (wrapped[last.end - 1] !== ';')
         changes.push({ text: ')}', start: last.end, end: last.end });
       else changes.push({ text: ')}', start: last.end - 1, end: last.end - 1 });
-      //   changes.push({ text: ')}))', start: last.end, end: last.end });
-      // else changes.push({ text: ')}))', start: last.end - 1, end: last.end - 1 });
   
       // We need to offset changes in the final expression with 22, the length of 
       // `return {returnValue: (`

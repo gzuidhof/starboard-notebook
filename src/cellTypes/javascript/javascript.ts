@@ -98,9 +98,12 @@ export class JavascriptCellHandler extends BaseCellHandler {
         this.runtime.consoleCatcher.hook(callback);
         const outVal = await this.jsRunner.run(this.cell.textContent);
 
-        window.setTimeout(() => 
-            this.runtime.consoleCatcher.unhook(callback)
-        );
+        await new Promise(resolve => window.setTimeout(() => 
+            {
+                this.runtime.consoleCatcher.unhook(callback);
+                resolve();
+            }, 0
+        ));
 
         const val = outVal.value;
         if (isProbablyModule(val)) {
