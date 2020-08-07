@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {textToNotebookContent, notebookContentToText} from "../src/notebookContent";
+import { textToNotebookContent } from "../src/content/parsing";
+import { notebookContentToText } from "../src/content/serialization";
 
 const simpleNotebookPlaintext = `
 Text before the first cell

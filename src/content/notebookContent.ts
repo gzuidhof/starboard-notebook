@@ -3,68 +3,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { uuid } from 'uuidv4';
-import { parseNotebookContent } from "./parser";
-
-export interface Cell {
-    cellType: string;
-
-    textContent: string;
-
-    properties: {
-        runOnLoad?: true;
-        collapsed?: true;
-        [key: string]: any;
-    };
-
-    /**
-     * Every cell has a unique ID, this is not persisted between runs.
-     */
-    id: string;
-}
-
-export interface NotebookContent {
-    /**
-     * Text before the first cell
-     */
-    frontMatter: string;
-    cells: Cell[];
-}
-
-export function textToNotebookContent(text: string) {
-    const {cells: parsedCells, frontMatter} = parseNotebookContent(text);
-
-    const cells: Cell[] = parsedCells.map((pc) => {
-
-        // All properties right now are just boolean flags that are undefined by default
-        const properties: {[k: string]: true} = {};
-        pc.properties.forEach((k) => properties[k] = true);
-
-        return {
-            cellType: pc.type,
-            textContent: pc.lines.join("\n"),
-            properties: properties,
-            id: uuid(),
-        };
-    });
-
-    const nbContent: NotebookContent = {
-        frontMatter,
-        cells,
-    };
-    return nbContent;
-}
-
-export function notebookContentToText(nb: NotebookContent) {
-    return nb.frontMatter + nb.cells.map(cellToText).join("\n");
-}
-
-export function cellToText(cell: Cell) {
-    // Right now all properties are binary flags, in the future we might have to do something smarter.
-    const cellHeaderString = ['%%', cell.cellType, ...Object.getOwnPropertyNames(cell.properties)].filter((t) => t !== "").join(" ");
-
-    const cellText = `${cellHeaderString}\n${cell.textContent}`;
-    return cellText;
-}
+import { Cell, NotebookContent } from '../types';
+import { cellToText } from './serialization';
+import { textToNotebookContent } from './parsing';
 
 function requireIndexOfCellId(cells: Cell[], id?: string) {
     if (id === undefined) {

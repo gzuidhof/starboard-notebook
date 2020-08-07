@@ -3,10 +3,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { Cell } from '../notebookContent';
-import { CellEvent } from '../components/cell';
 import { debounce } from '@github/mini-throttle';
-import { WordWrapSetting } from '../components/textEditor';
+import { WordWrapSetting } from '../textEditor';
+import { CellEvent, Cell } from '../../types';
+import { Runtime } from '../../runtime';
 
 export type MonacoEditorSupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";
 
@@ -34,14 +34,13 @@ monaco.languages.typescript.javascriptDefaults.addExtraLib(`
          * render to and update a container.
          */
         declare const html: (strings: TemplateStringsArray, ...values: unknown[]) => any ;
-
         /**
         * Interprets a template literal as an SVG template that can efficiently
         * render to and update a container.
         */
         declare const svg: (strings: TemplateStringsArray, ...values: unknown[]) => any;
-
         declare const lithtml: any;
+        declare const runtime: any;
 `, 'global.d.ts');
 
 function makeEditorResizeToFitContent(editor: monaco.editor.IStandaloneCodeEditor) {
@@ -77,7 +76,8 @@ function makeEditorResizeToFitContent(editor: monaco.editor.IStandaloneCodeEdito
 
 function addEditorKeyboardShortcuts(
     editor: monaco.editor.IStandaloneCodeEditor,
-    emit: (event: CellEvent) => void) {
+    emit: (event: CellEvent) => void,
+    cellId: string) {
 
     editor.addAction({
         id: 'run-cell',
@@ -87,7 +87,7 @@ function addEditorKeyboardShortcuts(
         contextMenuGroupId: 'starboard',
         contextMenuOrder: 0,
         run: (_ed) => emit({
-            type: "RUN_CELL", focusNextCell: false, insertNewCell: false
+            id: cellId, type: "RUN_CELL", focusNextCell: false, insertNewCell: false
         })
     });
 
@@ -99,7 +99,7 @@ function addEditorKeyboardShortcuts(
         contextMenuGroupId: 'starboard',
         contextMenuOrder: 1,
         run: (_ed) => emit({
-            type: "RUN_CELL", focusNextCell: true, insertNewCell: false
+            id: cellId, type: "RUN_CELL", focusNextCell: true, insertNewCell: false
         })
     });
 
@@ -111,13 +111,13 @@ function addEditorKeyboardShortcuts(
         contextMenuGroupId: 'starboard',
         contextMenuOrder: 2,
         run: (_ed) => emit({
-            type: "RUN_CELL", focusNextCell: true, insertNewCell: true
+            id: cellId, type: "RUN_CELL", focusNextCell: true, insertNewCell: true
         })
     });
 
 }
 
-export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {language?: MonacoEditorSupportedLanguage; wordWrap?: WordWrapSetting}, emit?: (event: CellEvent) => void) {
+export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {language?: MonacoEditorSupportedLanguage; wordWrap?: WordWrapSetting}, runtime: Runtime) {
     const editor = monaco.editor.create(element, {
         value: cell.textContent,
         language: opts.language,
@@ -144,9 +144,8 @@ export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts:
     window.addEventListener("resize", resizeDebounced);
     makeEditorResizeToFitContent(editor);
 
-    if (emit) {
-        addEditorKeyboardShortcuts(editor, emit);
-    }
+
+    addEditorKeyboardShortcuts(editor, runtime.controls.emit, cell.id);
 
     const model = editor.getModel();
     if (model){

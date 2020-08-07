@@ -3,22 +3,15 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { LitElement, html, property, customElement, query } from 'lit-element';
-import { Cell, toggleCellFlagProperty } from '../notebookContent';
+import { toggleCellFlagProperty } from '../content/notebookContent';
 
-import { CellHandler } from '../cellHandler/base';
-import { CellTypeDefinition, getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellHandler/registry';
-import { JavascriptRuntime } from '../cellHandler/javascript/runtime';
+import { BaseCellHandler } from '../cellTypes/base';
+import { getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellTypes/registry';
 
 import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { getPropertiesIcons, getPropertiesPopoverIcons } from './controls';
-
-export type CellEvent =
-    { id?: string; type: "RUN_CELL"; focusNextCell?: boolean; insertNewCell?: boolean }
-    | { id?: string; type: "INSERT_CELL"; position: "before" | "after" }
-    | { id?: string; type: "REMOVE_CELL" }
-    | { id?: string; type: "CHANGE_CELL_TYPE"; newCellType: string }
-    | { id?: string; type: "SAVE" };
-
+import { Cell } from '../types';
+import { Runtime, CellTypeDefinition } from '../runtime';
 
 @customElement('starboard-cell')
 export class CellElement extends LitElement {
@@ -36,28 +29,24 @@ export class CellElement extends LitElement {
     @query('.cell-properties-popover')
     private propertiesPickerElement!: HTMLElement;
 
-    private cellTypeDefinition!: CellTypeDefinition;
-    private cellHandler!: CellHandler;
+    public cellTypeDefinition!: CellTypeDefinition;
+    public cellHandler!: BaseCellHandler;
 
     @property({ type: Object })
     public cell: Cell;
 
-    @property({ attribute: false})
-    private runtime: JavascriptRuntime;
-
-    @property()
-    private eventListener: (event: CellEvent) => void;
-
     private isCurrentlyRunning = false;
+
+    @property({attribute: false})
+    public runtime: Runtime;
 
     constructor(
         cell: Cell,
-        runtime: JavascriptRuntime,
-        eventListener: (event: CellEvent) => void) {
+        runtime: Runtime
+    ) {
         super();
         this.cell = cell;
         this.runtime = runtime;
-        this.eventListener = eventListener;
         this.setAttribute("tabindex", "0");
     }
 
@@ -68,7 +57,7 @@ export class CellElement extends LitElement {
     connectedCallback() {
         super.connectedCallback();
         this.cellTypeDefinition = getCellTypeDefinitionForCellType(this.cell.cellType);
-        this.cellHandler = this.cellTypeDefinition.createHandler(this.cell);
+        this.cellHandler = this.cellTypeDefinition.createHandler(this.cell, this.runtime);
     }
 
     firstUpdated(changedProperties: any) {
@@ -76,29 +65,23 @@ export class CellElement extends LitElement {
         this.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
                 if (event.ctrlKey) {
-                    this.emit({ type: "RUN_CELL", focusNextCell: false, insertNewCell: false });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: false, insertNewCell: false });
                 } else if (event.shiftKey) {
-                    this.emit({ type: "RUN_CELL", focusNextCell: true, insertNewCell: false });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: true, insertNewCell: false });
                 } else if (event.altKey) {
-                    this.emit({ type: "RUN_CELL", focusNextCell: true, insertNewCell: true });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: true, insertNewCell: true });
                 }
             }
         });
 
         this.cellHandler.attach({
-            runtime: this.runtime,
             elements: {
                 topElement: this.topElement,
                 topControlsElement: this.topControlsElement,
                 bottomElement: this.bottomElement,
                 bottomControlsElement: this.bottomControlsElement
             },
-            emit: (e: CellEvent) => this.emit(e),
         });
-    }
-
-    private emit(event: CellEvent) {
-        this.eventListener(event);
     }
 
     public async run() {
@@ -115,8 +98,8 @@ export class CellElement extends LitElement {
     }
 
     changeCellType(newCellType: string) {
-        this.emit({
-            type: "CHANGE_CELL_TYPE", newCellType: newCellType,
+        this.runtime.controls.emit({
+            id: this.cell.id, type: "CHANGE_CELL_TYPE", newCellType: newCellType,
         });
     }
 
@@ -143,6 +126,9 @@ export class CellElement extends LitElement {
     }
 
     render() {
+        const id = this.cell.id;
+        const emit = this.runtime.controls.emit;
+
         return html`
         <section class="cell-container ${this.cell.properties.collapsed ? "collapsed" : ""}">
 
@@ -161,11 +147,11 @@ export class CellElement extends LitElement {
             <div class="cell-controls cell-controls-corner">
                 ${this.isCurrentlyRunning
                 ? html`
-                    <button @mousedown=${() => this.emit({ type: "RUN_CELL" })}  class="cell-controls-button display-when-collapsed" title="Cell is running">
+                    <button @mousedown=${() => emit({ id, type: "RUN_CELL" })}  class="cell-controls-button display-when-collapsed" title="Cell is running">
                         ${ClockIcon({ width: 20, height: 20 })}
                 </button>`
                 : html`
-                    <button @mousedown=${() => this.emit({ type: "RUN_CELL" })} class="cell-controls-button display-when-collapsed" title="Run cell">
+                    <button @mousedown=${() => emit({ id, type: "RUN_CELL" })} class="cell-controls-button display-when-collapsed" title="Run cell">
                         ${PlayCircleIcon({ width: 20, height: 20 })}
                 </button>`
                 }
@@ -207,10 +193,10 @@ export class CellElement extends LitElement {
                     </div>
                 </div>
 
-                <button @click="${() => this.emit({ type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
+                <button @click="${() => emit({ id, type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
                     ${DeleteIcon({ width: 18, height: 18 })}
                 </button>
-                <button @click="${() => this.emit({ type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Above">
+                <button @click="${() => emit({ id, type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Above">
                     ${AssetsAddedIcon({ width: 20, height: 20 })}
                 </button>
 
@@ -223,5 +209,4 @@ export class CellElement extends LitElement {
         </section>
     `;
     }
-
 }

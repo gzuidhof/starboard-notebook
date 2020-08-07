@@ -4,8 +4,8 @@
 
 /* Adapted from jsconsole, MIT licensed */
 import { ConsoleCatcher } from '../../console/console';
-import { promiseState } from '../../util';
-import { precompile } from './precompile';
+import { precompileJavascriptCode } from './precompile';
+import { promiseState } from './util';
  
 declare global {
   interface Window {
@@ -16,31 +16,31 @@ declare global {
 
 interface RunResult {
     error: boolean;
-    command: string;
+    code: string;
     value?: any;
 }
 
-export class JavascriptRuntime {
+export class JavascriptEvaluator {
   public consoleCatcher: ConsoleCatcher;
 
-  constructor() {
-    this.consoleCatcher = new ConsoleCatcher(window.console);
+  constructor(consoleCatcher: ConsoleCatcher) {
+    this.consoleCatcher = consoleCatcher;
   }
 
-  async run(command: string): Promise<RunResult> {
+  public async run(code: string): Promise<RunResult> {
     const res: RunResult = {
       error: false,
-      command,
+      code,
     };
 
     try {
       // // trick from devtools
       // // via https://chromium.googlesource.com/chromium/src.git/+/4fd348fdb9c0b3842829acdfb2b82c86dacd8e0a%5E%21/#F2
-      if (/^\s*\{/.test(command) && /\}\s*$/.test(command)) {
-        command = `(${command})`;
+      if (/^\s*\{/.test(code) && /\}\s*$/.test(code)) {
+        code = `(${code})`;
       }
 
-      const codeToRun = precompile(command);
+      const codeToRun = this.precompile(code);
 
       if (!window) {
         res.error = true;
@@ -56,9 +56,9 @@ export class JavascriptRuntime {
       }
 
       const state = await promiseState(cellResult.returnValue);
-      if (state === "fulfilled") { // Result is not a promise
+      if (state === "fulfilled") { // Result is either a promise that was awaited, or an not a promise.
         res.value = await cellResult.returnValue;
-      } else { // Result is a promise that was awaited, we must wait to continue.
+      } else { // Result is a promise that was not awaited, "finish" the cell.
         res.value = cellResult.returnValue;
       }
       (window)["$_"] = res.value;
@@ -70,6 +70,9 @@ export class JavascriptRuntime {
       res.value = error;
       return res;
     }
+  }
 
+  public precompile(code: string): string {
+    return precompileJavascriptCode(code);
   }
 }

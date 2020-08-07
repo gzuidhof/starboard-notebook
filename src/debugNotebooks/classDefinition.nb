@@ -1,0 +1,10 @@
+%% js runOnLoad
+class MyClass {
+    constructor(a) {
+        this.x = a;
+    }
+}
+%% js runOnLoad
+console.log(MyClass);
+const instance = new MyClass(3);
+instance.x

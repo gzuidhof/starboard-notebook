@@ -3,41 +3,39 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html, render, TemplateResult } from "lit-html";
-import { Cell } from "../../notebookContent";
-import { CellHandler, CellHandlerAttachParameters, CellElements } from "../base";
-import { getDefaultControlsTemplate, ControlButton } from "../../components/controls";
-import { JavascriptRuntime } from "./runtime";
-import { CellEvent } from "../../components/cell";
-import { isProbablyTemplateResult, isProbablyModule } from "../../util";
+import { BaseCellHandler } from "../base";
+import { cellControlsTemplate } from "../../components/controls";
+import { JavascriptEvaluator } from "./eval";
 import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workflow";
 
 import { ConsoleOutputElement } from "../../components/consoleOutput";
 import { StarboardTextEditor } from '../../components/textEditor';
 import { Message } from "console-feed/lib/Hook";
+import { Cell } from "../../types";
+import { isProbablyModule, isProbablyTemplateResult } from "./util";
+import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../../runtime";
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
     name: "Javascript",
     cellType: "js",
-    createHandler: (c: Cell) => new JavascriptCellHandler(c),
+    createHandler: (c: Cell, r: Runtime) => new JavascriptCellHandler(c, r),
 };
 
 
-export class JavascriptCellHandler extends CellHandler {
+export class JavascriptCellHandler extends BaseCellHandler {
     private elements!: CellElements;
-
     private editor!: StarboardTextEditor;
-    private runtime!: JavascriptRuntime;
-    private emit!: (event: CellEvent) => void;
+
+    private jsRunner: JavascriptEvaluator;
 
     private isCurrentlyRunning = false;
     private lastRunId = 0;
 
-
     private outputElement?: {logs: any};
 
-    constructor(cell: Cell) {
-        super(cell);
-        
+    constructor(cell: Cell, runtime: Runtime) {
+        super(cell, runtime);
+        this.jsRunner = new JavascriptEvaluator(runtime.consoleCatcher);
     }
 
     private getControls(): TemplateResult {
@@ -46,19 +44,17 @@ export class JavascriptCellHandler extends CellHandler {
         const runButton: ControlButton = {
             icon,
             tooltip,
-            callback: () => this.emit({type: "RUN_CELL"}),
+            callback: () => this.runtime.controls.emit({id: this.cell.id, type: "RUN_CELL"}),
         };
-        return getDefaultControlsTemplate({ buttons: [runButton] });
+        return cellControlsTemplate({ buttons: [runButton] });
     }
 
     attach(params: CellHandlerAttachParameters) {
         this.elements = params.elements;
-        this.runtime = params.runtime;
-        this.emit = params.emit;
-
+        
         const topElement = this.elements.topElement;
         render(this.getControls(), this.elements.topControlsElement);
-        this.editor = new StarboardTextEditor(this.cell, {language: "javascript"}, this.emit);
+        this.editor = new StarboardTextEditor(this.cell, this.runtime, {language: "javascript"});
         topElement.appendChild(this.editor);
     }
 
@@ -100,11 +96,14 @@ export class JavascriptCellHandler extends CellHandler {
         };
 
         this.runtime.consoleCatcher.hook(callback);
-        const outVal = await this.runtime.run(this.cell.textContent);
+        const outVal = await this.jsRunner.run(this.cell.textContent);
 
-        window.setTimeout(() => 
-            this.runtime.consoleCatcher.unhook(callback)
-        );
+        await new Promise(resolve => window.setTimeout(() => 
+            {
+                this.runtime.consoleCatcher.unhook(callback);
+                resolve();
+            }, 0
+        ));
 
         const val = outVal.value;
         if (isProbablyModule(val)) {

@@ -3,17 +3,15 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { LitElement, html, customElement, query } from 'lit-element';
-import { addCellToNotebookContent, removeCellFromNotebookById, changeCellType, NotebookContent, textToNotebookContent, notebookContentToText } from '../notebookContent';
-import { JavascriptRuntime } from '../cellHandler/javascript/runtime';
-import { CellElement, CellEvent } from './cell';
+import { CellElement } from './cell';
 import { IFramePage } from 'iframe-resizer';
-import { createCellProxy } from '../cellProxy';
+import { createCellProxy } from './helpers/cellProxy';
 import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';
-import { debounce } from '@github/mini-throttle/decorators';
-import { starboardLogo } from './logo';
-import { insertHTMLChildAtIndex } from '../util';
-
-declare const STARBOARD_NOTEBOOK_VERSION: string;
+import { StarboardLogo } from './logo';
+import { insertHTMLChildAtIndex } from './helpers/dom';
+import { textToNotebookContent } from '../content/parsing';
+import { Runtime } from '../runtime';
+import { createRuntime } from '../runtime/create';
 
 declare global {
   interface Window {
@@ -22,16 +20,13 @@ declare global {
       onReady: () => void;
       onMessage: (msg: any) => void;
     };
+    runtime: Runtime;
   }
 }
 
 @customElement('starboard-notebook')
-export class StarboardNotebook extends LitElement {
-
-  private notebookContent: NotebookContent = { frontMatter: "", cells: [] };
-
-  private runtime!: JavascriptRuntime;
-  private cellElements: CellElement[] = [];
+export class StarboardNotebookElement extends LitElement {
+  private runtime!: Runtime;
 
   @query(".cells-container")
   private cellsParentElement!: HTMLElement;
@@ -40,68 +35,11 @@ export class StarboardNotebook extends LitElement {
     return this;
   }
 
-  insertCell(position: "end" | "before" | "after", adjacentCellId?: string) {
-    addCellToNotebookContent(this.notebookContent, position, adjacentCellId);
-    this.performUpdate();
-    this.onChanges();
-  }
-
-  removeCell(id: string) {
-    removeCellFromNotebookById(this.notebookContent, id);
-    this.performUpdate();
-    this.onChanges();
-  }
-
-  changeCellType(id: string, newCellType: string) {
-    changeCellType(this.notebookContent, id, newCellType);
-    this.performUpdate();
-    this.onChanges();
-  }
-
-  runCell(id: string, focusNext: boolean, insertNewCell: boolean) {
-    let idxOfCell = -1;
-    for (let i = 0; i < this.cellElements.length; i++) {
-      const cellElement = this.cellElements[i];
-      if (cellElement.cell.id === id) {
-        idxOfCell = i;
-        cellElement.run();
-        break; // IDs should be unique, so after we find it we can stop searching.
-      }
-    }
-    const isLastCell = idxOfCell === this.cellElements.length - 1;
-
-    if (insertNewCell || isLastCell) {
-      this.insertCell("after", id);
-    }
-    if (focusNext) {
-      window.setTimeout(() => {
-        this.cellElements[idxOfCell + 1].focusEditor();
-      });
-    }
-  }
-
-  save() {
-    if (window.parentIFrame) {
-      window.parentIFrame.sendMessage({ type: "SAVE", data: notebookContentToText(this.notebookContent) });
-    } else {
-      console.error("Can't save as parent frame is not listening for messages");
-    }
-  }
-
-  async runAllCells(opts: {onlyRunOnLoad?: boolean} = {}) {
-    for (const ce of this.cellElements ) {
-      if (opts.onlyRunOnLoad && !ce.cell.properties.runOnLoad) {
-        continue;
-      }
-      await ce.run();
-    }
-  }
-
   connectedCallback() {
     super.connectedCallback();
 
-    this.runtime = new JavascriptRuntime();
-    this.notebookContent = (window as any).initialNotebookContent ? textToNotebookContent((window as any).initialNotebookContent) : { frontMatter: "", cells: [] };
+    this.runtime = createRuntime(this);
+    window.runtime = this.runtime;
 
     window.iFrameResizer = {
       onReady: () => {
@@ -109,9 +47,9 @@ export class StarboardNotebook extends LitElement {
       },
       onMessage: (msg: any) => {
         if (msg.type === "SET_NOTEBOOK_CONTENT") {
-          this.notebookContent = textToNotebookContent(msg.data);
+          this.runtime.content = textToNotebookContent(msg.data);
           
-          this.updateComplete.then(() => this.runAllCells({onlyRunOnLoad: true}));
+          this.updateComplete.then(() => this.runtime.controls.runAllCells({onlyRunOnLoad: true}));
           this.performUpdate();
         } else if (msg.type === "RELOAD") {
           window.location.reload();
@@ -122,19 +60,24 @@ export class StarboardNotebook extends LitElement {
     document.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
         e.preventDefault();
-        this.save();
+        this.runtime.controls.save();
       }
     }, false);
   }
 
   firstUpdated(changedProperties: any) {
     super.firstUpdated(changedProperties);
-    this.updateComplete.then(() => { this.runAllCells({onlyRunOnLoad: true});});
+    this.updateComplete.then(() => { this.runtime.controls.runAllCells({onlyRunOnLoad: true});});
   }
 
   performUpdate() {
     super.performUpdate();
-    const desiredCellIds = new Set(this.notebookContent.cells.map((c) => c.id));
+
+    // We manually manage the cell elements, lit-html doesn't do a good job here
+    // (or put differently: a too good job, it reuses components which is problematic)
+
+    const content = this.runtime.content;
+    const desiredCellIds = new Set(content.cells.map((c) => c.id));
 
     const mounted = this.cellsParentElement.children;
     for (let i = 0; i < mounted.length; i++) {
@@ -143,54 +86,27 @@ export class StarboardNotebook extends LitElement {
         child.remove();
       }
     }
-    this.cellElements = this.cellElements.filter((c) => desiredCellIds.has(c.cell.id));
+    this.runtime.dom.cells = this.runtime.dom.cells.filter((c) => desiredCellIds.has(c.cell.id));
 
-    for (let i = 0; i < this.notebookContent.cells.length; i++) {
-      const cell = this.notebookContent.cells[i];
-      if (this.cellElements.length > i && cell.id === this.cellElements[i].cell.id) {
+    for (let i = 0; i < content.cells.length; i++) {
+      const cell = content.cells[i];
+      if (this.runtime.dom.cells.length > i && cell.id === this.runtime.dom.cells[i].cell.id) {
         // The cell is already present
         continue;
       }
 
       const cellProxy = createCellProxy(cell, () => {
-        this.onChanges();
+        this.runtime.controls.contentChanged();
       });
 
       // We need to insert a cell here
       const newCellElement = new CellElement(
         cellProxy,
         this.runtime,
-        (event: CellEvent) => {
-          // A cell can invoke this on another cell by passing the ID
-          // if no ID is specified, run it on the cell that emitted the event.
-          const id = event.id !== undefined ? event.id : cell.id;
-
-          if (event.type === "RUN_CELL") {
-            this.runCell(id, !!event.focusNextCell, !!event.insertNewCell);
-          } else if (event.type === "INSERT_CELL") {
-            this.insertCell(event.position, id);
-          } else if (event.type === "REMOVE_CELL") {
-            this.removeCell(id);
-          } else if (event.type === "CHANGE_CELL_TYPE") {
-            this.changeCellType(id, event.newCellType);
-          } else if (event.type === "SAVE") {
-            this.save();
-          }
-        }
       );
 
-      this.cellElements.splice(i, 0, newCellElement);
+      this.runtime.dom.cells.splice(i, 0, newCellElement);
       insertHTMLChildAtIndex(this.cellsParentElement, newCellElement, i);
-    }
-  }
-
-  /**
-   * To be called when the notebook content text changes in any way.
-   */
-  @debounce(100)
-  private onChanges() {
-    if (window.parentIFrame) {
-      window.parentIFrame.sendMessage({ type: "NOTEBOOK_CONTENT_UPDATE", data: notebookContentToText(this.notebookContent) });
     }
   }
 
@@ -198,13 +114,12 @@ export class StarboardNotebook extends LitElement {
     return html`
       <main class="cells-container"></main>
       
-      <button @click="${() => this.insertCell("end")}" class="cell-controls-button" title="Add Cell Here" style="float: right; opacity: 1; padding: 0px 8px 0px 16px; margin-right: 2px">
+      <button @click="${() => this.runtime.controls.insertCell("end")}" class="cell-controls-button" title="Add Cell Here" style="float: right; opacity: 1; padding: 0px 8px 0px 16px; margin-right: 2px">
           ${AssetsAddedIcon({ width: 20, height: 20 })}
         </button>
       <footer class="starboard-notebook-footer">
-        <span>${starboardLogo(10, 10)}</span> Starboard Notebook v${STARBOARD_NOTEBOOK_VERSION}
+        <span>${StarboardLogo({width: 10, height: 10})}</span> Starboard Notebook v${this.runtime.version}
       </footer>
         `;
   }
-
 }
