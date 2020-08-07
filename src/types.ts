@@ -84,7 +84,7 @@ export interface CellElements {
     bottomControlsElement: HTMLElement;
 }
 
-export type IconTemplate = (iconOpts?: {width: number; height: number}) => (TemplateResult | string);
+export type IconTemplate = (iconOpts?: { width?: number; height?: number; hidden?: boolean; title?:string }) => (TemplateResult | string);
 
 export interface ControlButton {
     icon: IconTemplate;

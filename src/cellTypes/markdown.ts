@@ -5,7 +5,7 @@
 import { render, TemplateResult } from "lit-html";
 import mdlib from "markdown-it";
 
-import { hookMarkdownItToHighlight } from "../components/helpers/highlight";
+import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
 import { BaseCellHandler } from "./base";
 import { cellControlsTemplate } from "../components/controls";
 import { TextEditIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
@@ -14,7 +14,7 @@ import { CellEvent, Cell } from "../types";
 import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
 
 const md = new mdlib();
-hookMarkdownItToHighlight(md);
+hookMarkdownItToPrismHighlighter(md);
 
 export const MARKDOWN_CELL_TYPE_DEFINITION = {
     name: "Markdown",
@@ -26,7 +26,6 @@ export class MarkdownCellHandler extends BaseCellHandler {
     private isInEditMode = true;
 
     private elements!: CellElements;
-    private emit!: (event: CellEvent) => void;
     private editor: any;
 
     constructor(cell: Cell, runtime: Runtime) {
@@ -39,7 +38,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
             editOrRunButton = {
                 icon: PlayCircleIcon,
                 tooltip: "Render as HTML",
-                callback: () => this.emit({id: this.cell.id, type: "RUN_CELL"}),
+                callback: () => this.runtime.controls.emit({id: this.cell.id, type: "RUN_CELL"}),
             };
         } else {
             editOrRunButton = {
@@ -65,7 +64,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
     private setupEditor() {
         const topElement = this.elements.topElement;
         topElement.innerHTML = "";
-        this.editor = new StarboardTextEditor(this.cell, {language: "markdown", wordWrap: "on"}, this.runtime);
+        this.editor = new StarboardTextEditor(this.cell, this.runtime, {language: "markdown", wordWrap: "on"});
         topElement.appendChild(this.editor);
     }
 

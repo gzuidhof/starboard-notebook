@@ -32,7 +32,7 @@ export class CSSCellHandler extends BaseCellHandler {
         const runButton: ControlButton = {
             icon,
             tooltip,
-            callback: () => this.runtime.emit({ id: this.cell.id, type: "RUN_CELL" }),
+            callback: () => this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL" }),
         };
         return cellControlsTemplate({ buttons: [runButton] });
     }
@@ -41,7 +41,7 @@ export class CSSCellHandler extends BaseCellHandler {
         this.elements = params.elements;
 
         render(this.getControls(), this.elements.topControlsElement);
-        this.editor = new StarboardTextEditor(this.cell, {language: "css"}, this.runtime);
+        this.editor = new StarboardTextEditor(this.cell, this.runtime, {language: "css"});
         this.elements.topElement.appendChild(this.editor);
     }
 

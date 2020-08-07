@@ -11,7 +11,7 @@ import "iframe-resizer/js/iframeResizer.contentWindow.js";
 import * as lithtml from "lit-html";
 (window as any).html = lithtml.html;
 (window as any).svg = lithtml.svg;
-(window as any).lithtml = lithtml;
+(window as any).litHtml = lithtml;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // (window as any).initialNotebookContent = require("./debugNotebooks/promises.nb").default;

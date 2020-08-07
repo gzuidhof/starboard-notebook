@@ -23,7 +23,7 @@ export class DefaultCellHandler extends BaseCellHandler {
     }
 
     attach(params: CellHandlerAttachParameters) {
-        const ed = new StarboardTextEditor(this.cell, {}, this.runtime);
+        const ed = new StarboardTextEditor(this.cell, this.runtime);
         render(html`${ed}`, params.elements.topElement);
     }
 }

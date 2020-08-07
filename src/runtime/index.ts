@@ -2,15 +2,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { CellEvent, NotebookContent, CellTypeDefinition, CellPropertyDefinition, ControlsDefinition } from "../types";
+import { CellEvent, NotebookContent, CellTypeDefinition, CellPropertyDefinition, ControlsDefinition, IconTemplate, Cell } from "../types";
 import { ConsoleCatcher } from "../console/console";
 import { CellElement } from "../components/cell";
 import { StarboardNotebookElement } from "../components/notebook";
 import { TemplateResult } from "lit-html";
+import { StarboardTextEditor } from "../components/textEditor";
+import { ConsoleOutputElement } from "../components/consoleOutput";
 
+import * as lithtmlLibrary from "lit-html";
+import * as litElementLibrary from "lit-element";
+import mdlib from "markdown-it";
+import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
+import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
+import { createCellProxy } from "../components/helpers/cellProxy";
+import { cellToText, notebookContentToText } from "../content/serialization";
 
 export * from "../types";
-
 
 export interface RuntimeControls {
     insertCell(position: "end" | "before" | "after", adjacentCellId?: string): void;
@@ -34,17 +42,55 @@ export interface RuntimeControls {
      * Returns whether a listening parent iframe is present (and thus if the message coudl be sent).
      */
     sendMessage(message: any, targetOrigin?: string): boolean;
+
+    /**
+     * Publish to the notebook event bus, used to propagate messages upwards such as "focus on the next cell".
+     */
+    emit: (e: CellEvent) => void;
 }
 
 
 /**
- * TODO
  * These are exposed functions and libraries. They are exposed so that they can be easily used within notebooks or
- * by plugins or extensions (so they don't have to bundle these themselves).
+ * by plugins or extensions (so they don't have to bundled again).
  */
 export interface RuntimeExports {
     templates: {
-        controls: (c: ControlsDefinition) => (TemplateResult | string);
+        cellControls: (c: ControlsDefinition) => (TemplateResult | string);
+        icons: {
+            StarboardLogo: IconTemplate;
+            AssetsAddedIcon: IconTemplate;
+            DeleteIcon: IconTemplate;
+            BooleanIcon: IconTemplate;
+            ClockIcon: IconTemplate;
+            PlayCircleIcon: IconTemplate;
+            TextEditIcon: IconTemplate;
+        };
+    };
+    elements: {
+        StarboardTextEditor: typeof StarboardTextEditor;
+        ConsoleOutputElement: typeof ConsoleOutputElement;
+    };
+
+    /**
+     * Starboard-notebook internal routines
+     */
+    core: {
+        JavascriptEvaluator: typeof JavascriptEvaluator;
+        ConsoleCatcher: typeof ConsoleCatcher;
+        createCellProxy: typeof createCellProxy;
+        hookMarkdownItToPrismHighlighter: typeof hookMarkdownItToPrismHighlighter;
+        cellToText: typeof cellToText;
+        notebookContentToText: typeof notebookContentToText;
+    };
+
+    /**
+     * Libraries that are re-exported
+     */
+    libraries: {
+        LitHtml: typeof lithtmlLibrary;
+        LitElement: typeof litElementLibrary;
+        MarkdownIt: typeof mdlib;
     };
 }
 
@@ -94,13 +140,5 @@ export interface Runtime {
      */
     controls: RuntimeControls;
 
-    /**
-     * Publish to the notebook event bus, used to propagate messages upwards such as "focus on the next cell".
-     */
-    emit: (e: CellEvent) => void;
-
-    /**
-     * Serializes notebook to it's plaintext representation
-     */
-    serialize(): string;
+    exports: RuntimeExports;
 }

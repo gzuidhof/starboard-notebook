@@ -7,7 +7,7 @@ import { CellElement } from './cell';
 import { IFramePage } from 'iframe-resizer';
 import { createCellProxy } from './helpers/cellProxy';
 import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';
-import { starboardLogo } from './logo';
+import { StarboardLogo } from './logo';
 import { insertHTMLChildAtIndex } from './helpers/dom';
 import { textToNotebookContent } from '../content/parsing';
 import { Runtime } from '../runtime';
@@ -20,7 +20,7 @@ declare global {
       onReady: () => void;
       onMessage: (msg: any) => void;
     };
-    runtime?: Runtime;
+    runtime: Runtime;
   }
 }
 
@@ -118,7 +118,7 @@ export class StarboardNotebookElement extends LitElement {
           ${AssetsAddedIcon({ width: 20, height: 20 })}
         </button>
       <footer class="starboard-notebook-footer">
-        <span>${starboardLogo(10, 10)}</span> Starboard Notebook v${this.runtime.version}
+        <span>${StarboardLogo({width: 10, height: 10})}</span> Starboard Notebook v${this.runtime.version}
       </footer>
         `;
   }

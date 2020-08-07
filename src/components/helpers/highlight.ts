@@ -50,15 +50,22 @@ import "prismjs/components/prism-yaml";
 
 // Depends on Ruby so must be imported later
 import "prismjs/components/prism-crystal";
+import MarkdownIt from 'markdown-it';
 
-export function hookMarkdownItToHighlight(markdownItInstance: any) {
+export function hookMarkdownItToPrismHighlighter(markdownItInstance: MarkdownIt) {
     markdownItInstance.use(prism, {
         plugins: [/*"autolinker",*/ "highlight-keywords"]});
+
+    /**
+     * The typing seems wrong, it is missing the options field.. Maybe we should verify it's existence at
+     * runtime too.
+     */
+    const markdownItThatHasOptions:  MarkdownIt & {options: any} = markdownItInstance as any;
     
-    const originalHighlight = markdownItInstance.options.highlight;
+    const originalHighlight = markdownItThatHasOptions.options.highlight;
 
     // Monkeypatch for webpack build support for unknown languages
-    markdownItInstance.options.highlight = (...args: any) => {
+    markdownItThatHasOptions.options.highlight = (...args: any) => {
         if ((globalThis as any).Prism.languages[args[1]] === undefined) {
             args[1] = "clike";
         }

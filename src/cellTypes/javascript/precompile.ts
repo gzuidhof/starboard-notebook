@@ -6,7 +6,7 @@ import { simple } from "babel-walk";
  * In particular it wraps everything in an async function, handles the var->global magic
  * and sets $_ to the last statement.
  */
-export function precompile(content: string): string {
+export function precompileJavascriptCode(content: string): string {
     let wrapped = '(async () => {' + content + '\n})()';
     const root = parse(wrapped, { ecmaVersion: 8 } as any);
     const body = (root.program.body[0] as any).expression.callee.body;

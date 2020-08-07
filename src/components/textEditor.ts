@@ -5,7 +5,7 @@
 import { customElement, LitElement, html, query } from "lit-element";
 
 import mdlib from "markdown-it";
-import { hookMarkdownItToHighlight } from "./helpers/highlight";
+import { hookMarkdownItToPrismHighlighter } from "./helpers/highlight";
 import { render } from "lit-html";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { DeviceDesktopIcon, DevicePhoneIcon } from "@spectrum-web-components/icons-workflow";
@@ -25,7 +25,7 @@ let monacoModule: Promise<{createMonacoEditor: any}> | undefined;
 let currentEditor: "monaco" | "codemirror" | "" = "";
 
 const md = new mdlib();
-hookMarkdownItToHighlight(md);
+hookMarkdownItToPrismHighlighter(md);
 
 /**
  * StarboardTextEditor abstracts over different text editors that are loaded dynamically.
@@ -44,7 +44,7 @@ export class StarboardTextEditor extends LitElement {
     private opts: {language?: SupportedLanguage} = {};
     editorInstance?: any;
 
-    constructor(cell: Cell, opts: {language?: SupportedLanguage; wordWrap?: WordWrapSetting}, runtime: Runtime) {
+    constructor(cell: Cell, runtime: Runtime, opts: {language?: SupportedLanguage; wordWrap?: WordWrapSetting} = {}) {
         super();
         this.runtime = runtime;
         this.cell = cell;

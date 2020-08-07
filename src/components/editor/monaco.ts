@@ -145,7 +145,7 @@ export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts:
     makeEditorResizeToFitContent(editor);
 
 
-    addEditorKeyboardShortcuts(editor, runtime.emit, cell.id);
+    addEditorKeyboardShortcuts(editor, runtime.controls.emit, cell.id);
 
     const model = editor.getModel();
     if (model){

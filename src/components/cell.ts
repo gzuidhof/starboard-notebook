@@ -65,11 +65,11 @@ export class CellElement extends LitElement {
         this.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
                 if (event.ctrlKey) {
-                    this.runtime.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: false, insertNewCell: false });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: false, insertNewCell: false });
                 } else if (event.shiftKey) {
-                    this.runtime.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: true, insertNewCell: false });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: true, insertNewCell: false });
                 } else if (event.altKey) {
-                    this.runtime.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: true, insertNewCell: true });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: true, insertNewCell: true });
                 }
             }
         });
@@ -98,7 +98,7 @@ export class CellElement extends LitElement {
     }
 
     changeCellType(newCellType: string) {
-        this.runtime.emit({
+        this.runtime.controls.emit({
             id: this.cell.id, type: "CHANGE_CELL_TYPE", newCellType: newCellType,
         });
     }
@@ -127,6 +127,7 @@ export class CellElement extends LitElement {
 
     render() {
         const id = this.cell.id;
+        const emit = this.runtime.controls.emit;
 
         return html`
         <section class="cell-container ${this.cell.properties.collapsed ? "collapsed" : ""}">
@@ -146,11 +147,11 @@ export class CellElement extends LitElement {
             <div class="cell-controls cell-controls-corner">
                 ${this.isCurrentlyRunning
                 ? html`
-                    <button @mousedown=${() => this.runtime.emit({ id, type: "RUN_CELL" })}  class="cell-controls-button display-when-collapsed" title="Cell is running">
+                    <button @mousedown=${() => emit({ id, type: "RUN_CELL" })}  class="cell-controls-button display-when-collapsed" title="Cell is running">
                         ${ClockIcon({ width: 20, height: 20 })}
                 </button>`
                 : html`
-                    <button @mousedown=${() => this.runtime.emit({ id, type: "RUN_CELL" })} class="cell-controls-button display-when-collapsed" title="Run cell">
+                    <button @mousedown=${() => emit({ id, type: "RUN_CELL" })} class="cell-controls-button display-when-collapsed" title="Run cell">
                         ${PlayCircleIcon({ width: 20, height: 20 })}
                 </button>`
                 }
@@ -192,10 +193,10 @@ export class CellElement extends LitElement {
                     </div>
                 </div>
 
-                <button @click="${() => this.runtime.emit({ id, type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
+                <button @click="${() => emit({ id, type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
                     ${DeleteIcon({ width: 18, height: 18 })}
                 </button>
-                <button @click="${() => this.runtime.emit({ id, type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Above">
+                <button @click="${() => emit({ id, type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Above">
                     ${AssetsAddedIcon({ width: 20, height: 20 })}
                 </button>
 

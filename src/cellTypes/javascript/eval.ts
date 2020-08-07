@@ -4,7 +4,7 @@
 
 /* Adapted from jsconsole, MIT licensed */
 import { ConsoleCatcher } from '../../console/console';
-import { precompile } from './precompile';
+import { precompileJavascriptCode } from './precompile';
 import { promiseState } from './util';
  
 declare global {
@@ -27,7 +27,7 @@ export class JavascriptEvaluator {
     this.consoleCatcher = consoleCatcher;
   }
 
-  async run(code: string): Promise<RunResult> {
+  public async run(code: string): Promise<RunResult> {
     const res: RunResult = {
       error: false,
       code,
@@ -40,7 +40,7 @@ export class JavascriptEvaluator {
         code = `(${code})`;
       }
 
-      const codeToRun = precompile(code);
+      const codeToRun = this.precompile(code);
 
       if (!window) {
         res.error = true;
@@ -70,6 +70,9 @@ export class JavascriptEvaluator {
       res.value = error;
       return res;
     }
+  }
 
+  public precompile(code: string): string {
+    return precompileJavascriptCode(code);
   }
 }
