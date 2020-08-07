@@ -123,12 +123,12 @@ export function createRuntime(this: any, notebook: StarboardNotebookElement): Ru
        /**
        * To be called when the notebook content text changes in any way.
        */
-        contentChanged: (function(controls: RuntimeControls) { // HACK: Self invoking function to get 'this' correct..
-        return debounce(
+        contentChanged: debounce(
           function() {
             controls.sendMessage(({ type: "NOTEBOOK_CONTENT_UPDATE", data: notebookContentToText(rt.content)}));
-          }, 100
-        );})(this),
+          },
+          100
+        ),
 
         emit (event: CellEvent) {
           if (event.type === "RUN_CELL") {
