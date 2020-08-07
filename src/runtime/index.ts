@@ -5,7 +5,7 @@
 import { CellEvent, NotebookContent, CellTypeDefinition } from "../types";
 import { ConsoleCatcher } from "../console/console";
 import { CellElement } from "../components/cell";
-import { StarboardNotebook } from "../components/notebook";
+import { StarboardNotebookElement } from "../components/notebook";
 
 export * from "../types";
 
@@ -29,14 +29,10 @@ export interface Runtime {
      * Contains HTML elements in this notebook runtime.
      */
     dom: {
-        notebook: StarboardNotebook;
+        notebook: StarboardNotebookElement;
         cells: CellElement[];
     };
 
-    /**
-     * Event bus for a notebook, used to propagate messages upwards such as "focus on the next cell".
-     */
-    emit: (e: CellEvent) => void;
     /**
      * Used to coordinate listening to the console hook.
      */
@@ -46,4 +42,22 @@ export interface Runtime {
      * Version of Starboard Notebook
      */
     version: string;
+
+
+    /**
+     * Event bus for a notebook, used to propagate messages upwards such as "focus on the next cell".
+     */
+    emit: (e: CellEvent) => void;
+
+    insertCell(position: "end" | "before" | "after", adjacentCellId?: string): void;
+    removeCell(id: string): void;
+    changeCellType(id: string, newCellType: string): void;
+    runCell(id: string, focusNext: boolean, insertNewCell: boolean): void;
+    runAllCells(opts: {onlyRunOnLoad?: boolean}): Promise<void>;
+
+    /** Requests a save operation in the parent iframe */
+    save(): void;
+
+    /** To be called to indicate that the notebook content has changed */
+    contentChanged(): void;
 }
