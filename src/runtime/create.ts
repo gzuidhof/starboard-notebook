@@ -4,62 +4,62 @@
 
 /* This file is internal and should never be imported externally if using starboard-notebook as a library */
 
-import { Runtime, CellEvent } from ".";
+import { Runtime, CellEvent, RuntimeControls } from ".";
 import { StarboardNotebookElement } from "../components/notebook";
 import { textToNotebookContent } from "../content/parsing";
 import { ConsoleCatcher } from "../console/console";
-import { registry } from "../cellHandler/registry";
+import { registry as cellTypeRegistry } from "../cellTypes/registry";
+import { registry as cellPropertiesRegistry } from "../cellProperties/registry";
 import { addCellToNotebookContent, removeCellFromNotebookById, changeCellType } from "../content/notebookContent";
 import { notebookContentToText } from "../content/serialization";
 import { debounce } from "@github/mini-throttle";
+import { CellElement } from "../components/cell";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
 export function createRuntime(this: any, notebook: StarboardNotebookElement): Runtime {
-    return {
-        consoleCatcher: new ConsoleCatcher(window.console),
-        content: (window as any).initialNotebookContent ? textToNotebookContent((window as any).initialNotebookContent) : { frontMatter: "", cells: [] },
-        emit: function(event: CellEvent) {
-          if (event.type === "RUN_CELL") {
-            this.runCell(event.id, !!event.focusNextCell, !!event.insertNewCell);
-          } else if (event.type === "INSERT_CELL") {
-            this.insertCell(event.position, event.id);
-          } else if (event.type === "REMOVE_CELL") {
-            this.removeCell(event.id);
-          } else if (event.type === "CHANGE_CELL_TYPE") {
-            this.changeCellType(event.id, event.newCellType);
-          } else if (event.type === "SAVE") {
-            this.save();
-          }
-        },
-        dom: {
-          cells: [],
-          notebook,
-        },
-        cellTypes: registry,
-        version: STARBOARD_NOTEBOOK_VERSION,
+
+    const content =  (window as any).initialNotebookContent ? textToNotebookContent((window as any).initialNotebookContent) : { frontMatter: "", cells: [] };
+  
+    /** Runtime without any of the functions **/
+    const rt = {
+      consoleCatcher: new ConsoleCatcher(window.console),
+      content,
+      dom: {
+        cells: [] as CellElement[],
+        notebook,
+      },
+
+      definitions: {
+        cellTypes: cellTypeRegistry,
+        cellProperties: cellPropertiesRegistry,
+      },
 
 
+      version: STARBOARD_NOTEBOOK_VERSION,
+    };
+
+    const controls: RuntimeControls = {
         insertCell(position: "end" | "before" | "after", adjacentCellId?: string) {
-          addCellToNotebookContent(this.content, position, adjacentCellId);
+          addCellToNotebookContent(rt.content, position, adjacentCellId);
           notebook.performUpdate();
           this.contentChanged();
         },
       
         removeCell(id: string) {
-          removeCellFromNotebookById(this.content, id);
+          removeCellFromNotebookById(rt.content, id);
           notebook.performUpdate();
           this.contentChanged();
         },
       
         changeCellType(id: string, newCellType: string) {
-          changeCellType(this.content, id, newCellType);
+          changeCellType(rt.content, id, newCellType);
           notebook.performUpdate();
           this.contentChanged();
         },
       
         runCell(id: string, focusNext: boolean, insertNewCell: boolean) {
-          const cellElements = this.dom.cells;
+          const cellElements = rt.dom.cells;
       
           let idxOfCell = -1;
           for (let i = 0; i < cellElements.length; i++) {
@@ -83,33 +83,60 @@ export function createRuntime(this: any, notebook: StarboardNotebookElement): Ru
         },
       
         save() {
-          if (window.parentIFrame) {
-            window.parentIFrame.sendMessage({ type: "SAVE", data: notebookContentToText(this.content) });
-          } else {
+          const couldSave = this.sendMessage({ type: "SAVE", data: notebookContentToText(rt.content) });
+          if (!couldSave) {
             console.error("Can't save as parent frame is not listening for messages");
           }
+          return couldSave;
         },
       
         async runAllCells(opts: {onlyRunOnLoad?: boolean} = {}) {
-          for (const ce of this.dom.cells ) {
+          for (const ce of rt.dom.cells ) {
             if (opts.onlyRunOnLoad && !ce.cell.properties.runOnLoad) {
               continue;
             }
             await ce.run();
           }
         },
-        
 
-        /**
-         * To be called when the notebook content text changes in any way.
-         */
-        contentChanged: (function(runtime: Runtime) { // HACK: Self invoking function to get 'this' correct..
-          return debounce(
-            function() {
-              if (window.parentIFrame) {
-                window.parentIFrame.sendMessage({ type: "NOTEBOOK_CONTENT_UPDATE", data: notebookContentToText(runtime.content) });
-              }
-            }, 100
-          );})(this)
+        sendMessage(message: any, targetOrigin?: string): boolean {
+          if (window.parentIFrame) {
+            window.parentIFrame.sendMessage(message, targetOrigin);
+            return true;
+          }
+          return false;
+        },
+
+       /**
+       * To be called when the notebook content text changes in any way.
+       */
+        contentChanged: (function(controls: RuntimeControls) { // HACK: Self invoking function to get 'this' correct..
+        return debounce(
+          function() {
+            controls.sendMessage(({ type: "NOTEBOOK_CONTENT_UPDATE", data: notebookContentToText(rt.content)}));
+          }, 100
+        );})(this)
+    };
+
+    const emit = (event: CellEvent) => {
+      if (event.type === "RUN_CELL") {
+        controls.runCell(event.id, !!event.focusNextCell, !!event.insertNewCell);
+      } else if (event.type === "INSERT_CELL") {
+        controls.insertCell(event.position, event.id);
+      } else if (event.type === "REMOVE_CELL") {
+        controls.removeCell(event.id);
+      } else if (event.type === "CHANGE_CELL_TYPE") {
+        controls.changeCellType(event.id, event.newCellType);
+      } else if (event.type === "SAVE") {
+        controls.save();
+      }
+    };
+    const serialize = () => notebookContentToText(rt.content);
+
+    return {
+      ...rt,
+      controls,
+      emit,
+      serialize,
     };
 }

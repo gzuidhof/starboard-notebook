@@ -3,6 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Runtime } from "./runtime";
+import { TemplateResult } from "lit-html";
 
 /**
  * Events that can be sent from the cell for central handling in the notebook component.
@@ -81,4 +82,33 @@ export interface CellElements {
 
     topControlsElement: HTMLElement;
     bottomControlsElement: HTMLElement;
+}
+
+export type IconTemplate = (iconOpts?: {width: number; height: number}) => (TemplateResult | string);
+
+export interface ControlButton {
+    icon: IconTemplate;
+    tooltip: string;
+    hide?: boolean;
+    callback: () => any | Promise<any>;
+}
+
+export interface ControlsDefinition {
+    buttons: ControlButton[];
+}
+
+export interface CellPropertyDefinition {
+    /**
+     * Identifier for the cell property, e.g. "collapsed"
+     */
+    cellProperty: string;
+
+    /**
+     * Name for human consumption, e.g. "Collapse Cell"
+     */
+    name: string;
+
+    icon: IconTemplate;
+    textEnabled: string;
+    textDisabled: string;
 }

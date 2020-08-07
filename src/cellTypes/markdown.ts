@@ -7,11 +7,11 @@ import mdlib from "markdown-it";
 
 import { hookMarkdownItToHighlight } from "../components/helpers/highlight";
 import { BaseCellHandler } from "./base";
-import { getDefaultControlsTemplate, ControlButton } from "../components/controls";
+import { cellControlsTemplate } from "../components/controls";
 import { TextEditIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 import { CellEvent, Cell } from "../types";
-import { Runtime, CellElements, CellHandlerAttachParameters } from "../runtime";
+import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
 
 const md = new mdlib();
 hookMarkdownItToHighlight(md);
@@ -49,7 +49,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
             };
         }
         
-        return getDefaultControlsTemplate({ buttons: [editOrRunButton] });
+        return cellControlsTemplate({ buttons: [editOrRunButton] });
     }
 
     attach(params: CellHandlerAttachParameters) {

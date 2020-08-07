@@ -5,8 +5,8 @@
 import { LitElement, html, property, customElement, query } from 'lit-element';
 import { toggleCellFlagProperty } from '../content/notebookContent';
 
-import { BaseCellHandler } from '../cellHandler/base';
-import { getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellHandler/registry';
+import { BaseCellHandler } from '../cellTypes/base';
+import { getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellTypes/registry';
 
 import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { getPropertiesIcons, getPropertiesPopoverIcons } from './controls';

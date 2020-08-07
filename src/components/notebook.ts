@@ -49,7 +49,7 @@ export class StarboardNotebookElement extends LitElement {
         if (msg.type === "SET_NOTEBOOK_CONTENT") {
           this.runtime.content = textToNotebookContent(msg.data);
           
-          this.updateComplete.then(() => this.runtime.runAllCells({onlyRunOnLoad: true}));
+          this.updateComplete.then(() => this.runtime.controls.runAllCells({onlyRunOnLoad: true}));
           this.performUpdate();
         } else if (msg.type === "RELOAD") {
           window.location.reload();
@@ -60,14 +60,14 @@ export class StarboardNotebookElement extends LitElement {
     document.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
         e.preventDefault();
-        this.runtime.save();
+        this.runtime.controls.save();
       }
     }, false);
   }
 
   firstUpdated(changedProperties: any) {
     super.firstUpdated(changedProperties);
-    this.updateComplete.then(() => { this.runtime.runAllCells({onlyRunOnLoad: true});});
+    this.updateComplete.then(() => { this.runtime.controls.runAllCells({onlyRunOnLoad: true});});
   }
 
   performUpdate() {
@@ -96,7 +96,7 @@ export class StarboardNotebookElement extends LitElement {
       }
 
       const cellProxy = createCellProxy(cell, () => {
-        this.runtime.contentChanged();
+        this.runtime.controls.contentChanged();
       });
 
       // We need to insert a cell here
@@ -114,7 +114,7 @@ export class StarboardNotebookElement extends LitElement {
     return html`
       <main class="cells-container"></main>
       
-      <button @click="${() => this.runtime.insertCell("end")}" class="cell-controls-button" title="Add Cell Here" style="float: right; opacity: 1; padding: 0px 8px 0px 16px; margin-right: 2px">
+      <button @click="${() => this.runtime.controls.insertCell("end")}" class="cell-controls-button" title="Add Cell Here" style="float: right; opacity: 1; padding: 0px 8px 0px 16px; margin-right: 2px">
           ${AssetsAddedIcon({ width: 20, height: 20 })}
         </button>
       <footer class="starboard-notebook-footer">

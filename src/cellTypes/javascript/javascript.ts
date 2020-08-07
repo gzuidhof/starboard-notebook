@@ -4,7 +4,7 @@
 
 import { html, render, TemplateResult } from "lit-html";
 import { BaseCellHandler } from "../base";
-import { getDefaultControlsTemplate, ControlButton } from "../../components/controls";
+import { cellControlsTemplate } from "../../components/controls";
 import { JavascriptEvaluator } from "./eval";
 import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workflow";
 
@@ -13,7 +13,7 @@ import { StarboardTextEditor } from '../../components/textEditor';
 import { Message } from "console-feed/lib/Hook";
 import { Cell } from "../../types";
 import { isProbablyModule, isProbablyTemplateResult } from "./util";
-import { Runtime, CellElements, CellHandlerAttachParameters } from "../../runtime";
+import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../../runtime";
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
     name: "Javascript",
@@ -46,7 +46,7 @@ export class JavascriptCellHandler extends BaseCellHandler {
             tooltip,
             callback: () => this.runtime.emit({id: this.cell.id, type: "RUN_CELL"}),
         };
-        return getDefaultControlsTemplate({ buttons: [runButton] });
+        return cellControlsTemplate({ buttons: [runButton] });
     }
 
     attach(params: CellHandlerAttachParameters) {
