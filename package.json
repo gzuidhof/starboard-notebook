@@ -1,6 +1,6 @@
 {
   "name": "starboard-notebook",
-  "version": "0.4.0-rc.0",
+  "version": "0.4.0",
   "description": "Starboard Notebook",
   "author": "Guido Zuidhof <me@guido.io>",
   "funding": {
