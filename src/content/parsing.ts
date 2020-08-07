@@ -2,7 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import {split} from "eol";
+import { split } from "eol";
+import { NotebookContent, Cell } from "../runtime/types";
+import { uuid } from "uuidv4";
 
 export interface ParsedCell {
     type: string;
@@ -10,6 +12,33 @@ export interface ParsedCell {
     lines: string[];
 }
 
+export function textToNotebookContent(text: string) {
+  const {cells: parsedCells, frontMatter} = parseNotebookContent(text);
+
+  const cells: Cell[] = parsedCells.map((pc) => {
+
+      // All properties right now are just boolean flags that are undefined by default
+      const properties: {[k: string]: true} = {};
+      pc.properties.forEach((k) => properties[k] = true);
+
+      return {
+          cellType: pc.type,
+          textContent: pc.lines.join("\n"),
+          properties: properties,
+          id: uuid(),
+      };
+  });
+
+  const nbContent: NotebookContent = {
+      frontMatter,
+      cells,
+  };
+  return nbContent;
+}
+
+/**
+ * Parses the given notebook file content string into the frontmatter and ParsedCell structure.
+ */
 export function parseNotebookContent(notebookContentString: string) {
     const allLines = split(notebookContentString);
 

@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 import prism from 'markdown-it-prism';
 
 import "prismjs/themes/prism.css";
@@ -47,7 +51,7 @@ import "prismjs/components/prism-yaml";
 // Depends on Ruby so must be imported later
 import "prismjs/components/prism-crystal";
 
-export function hookMarkdownIt(markdownItInstance: any) {
+export function hookMarkdownItToHighlight(markdownItInstance: any) {
     markdownItInstance.use(prism, {
         plugins: [/*"autolinker",*/ "highlight-keywords"]});
     

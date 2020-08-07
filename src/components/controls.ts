@@ -4,7 +4,7 @@
 
 import { html, TemplateResult } from "lit-html";
 import { ReplayIcon, AlertCircleIcon, VisibilityOffIcon } from "@spectrum-web-components/icons-workflow";
-import { Cell } from "../notebookContent";
+import { Cell } from "../runtime/types";
 
 // Note: These controls are not "Components" in the lit-element sense
 
@@ -25,7 +25,6 @@ export interface PropertyDefinition {
     textDisabled: string;
     title: string;
 }
-
 
 const knownProperties = {
     "runOnLoad": {

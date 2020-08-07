@@ -3,28 +3,27 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html, render, TemplateResult } from "lit-html";
-import { Cell } from "../notebookContent";
 import { CellHandler, CellHandlerAttachParameters, CellElements } from "./base";
 import { getDefaultControlsTemplate, ControlButton } from "../components/controls";
-import { CellEvent } from "../components/cell";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
+import { Cell } from "../runtime/types";
+import { Runtime } from "../runtime";
 
 export const CSS_CELL_TYPE_DEFINITION = {
     name: "CSS",
     cellType: "css",
-    createHandler: (c: Cell) => new CSSCellHandler(c),
+    createHandler: (c: Cell, r: Runtime) => new CSSCellHandler(c, r),
 };
 
 export class CSSCellHandler extends CellHandler {
 
     private elements!: CellElements;
     private editor: any;
-    private emit!: (event: CellEvent) => void;
 
-    constructor(cell: Cell) {
-        super(cell);
+    constructor(cell: Cell, runtime: Runtime) {
+        super(cell, runtime);
     }
 
     private getControls(): TemplateResult {
@@ -33,17 +32,16 @@ export class CSSCellHandler extends CellHandler {
         const runButton: ControlButton = {
             icon,
             tooltip,
-            callback: () => this.emit({ type: "RUN_CELL" }),
+            callback: () => this.runtime.emit({ id: this.cell.id, type: "RUN_CELL" }),
         };
         return getDefaultControlsTemplate({ buttons: [runButton] });
     }
 
     attach(params: CellHandlerAttachParameters) {
         this.elements = params.elements;
-        this.emit = params.emit;
 
         render(this.getControls(), this.elements.topControlsElement);
-        this.editor = new StarboardTextEditor(this.cell, {language: "css"}, this.emit);
+        this.editor = new StarboardTextEditor(this.cell, {language: "css"}, this.runtime);
         this.elements.topElement.appendChild(this.editor);
     }
 

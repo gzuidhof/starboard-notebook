@@ -39,18 +39,4 @@ export function promiseState(p: Promise<any>): Promise<"pending" | "fulfilled" |
     const t = {};
     return Promise.race([p, t])
       .then(v => (v === t)? "pending" : "fulfilled", () => "rejected");
-  }
-
-/**
- * Inserts HTML element into parent's children at given index.
- * @param parent
- * @param child element to be inserted
- * @param index where to insert, should be a positive number, defaults to 0.
-*/
-export function insertHTMLChildAtIndex(parent: HTMLElement, child: HTMLElement, index = 0) {
-    if (index >= parent.children.length) {
-      parent.appendChild(child);
-    } else {
-      parent.insertBefore(child, parent.children[index]);
-    }
-  }
+}

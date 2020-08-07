@@ -3,14 +3,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { customElement, LitElement, html, query } from "lit-element";
-import { Cell } from "../notebookContent";
-import { CellEvent } from "./cell";
 
 import mdlib from "markdown-it";
-import { hookMarkdownIt } from "../highlight";
+import { hookMarkdownItToHighlight } from "./helpers/highlight";
 import { render } from "lit-html";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { DeviceDesktopIcon, DevicePhoneIcon } from "@spectrum-web-components/icons-workflow";
+import { Cell, CellEvent } from "../runtime/types";
+import { Runtime } from "../runtime";
 
 export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";
 export type WordWrapSetting = "off" | "on" | "wordWrapColumn" | "bounded";
@@ -25,7 +25,7 @@ let monacoModule: Promise<{createMonacoEditor: any}> | undefined;
 let currentEditor: "monaco" | "codemirror" | "" = "";
 
 const md = new mdlib();
-hookMarkdownIt(md);
+hookMarkdownItToHighlight(md);
 
 /**
  * StarboardTextEditor abstracts over different text editors that are loaded dynamically.
@@ -39,14 +39,14 @@ export class StarboardTextEditor extends LitElement {
     @query(".starboard-text-editor")
     private editorMountpoint!: HTMLElement;
 
-    private emit: (event: any) => void;
     private cell: Cell;
+    private runtime: Runtime;
     private opts: {language?: SupportedLanguage} = {};
     editorInstance?: any;
 
-    constructor(cell: Cell, opts: {language?: SupportedLanguage, wordWrap?: WordWrapSetting}, emit: (event: CellEvent) => void) {
+    constructor(cell: Cell, opts: {language?: SupportedLanguage; wordWrap?: WordWrapSetting}, runtime: Runtime) {
         super();
-        this.emit = emit;
+        this.runtime = runtime;
         this.cell = cell;
         this.opts = opts;
     }
@@ -99,7 +99,7 @@ export class StarboardTextEditor extends LitElement {
 
         currentEditor = "codemirror";
         if (!codeMirrorModule) {
-            codeMirrorModule = import(/* webpackChunkName: codemirror-editor */  "../editor/codeMirror" as any);
+            codeMirrorModule = import(/* webpackChunkName: codemirror-editor */  "./editor/codeMirror" as any);
             document.querySelectorAll(".cell-select-editor-popover").forEach((e) => e.innerHTML = "<b>Loading CodeMirror editor..</b>");
             notifyOnEditorChosen.forEach((c) => c());
             notifyOnEditorChosen = [];
@@ -107,7 +107,7 @@ export class StarboardTextEditor extends LitElement {
     
         codeMirrorModule.then((m) => {
             this.editorMountpoint.innerHTML = "";
-            this.editorInstance = m.createCodeMirrorEditor(this.editorMountpoint, this.cell, this.opts as any, this.emit);
+            this.editorInstance = m.createCodeMirrorEditor(this.editorMountpoint, this.cell, this.opts as any, this.runtime);
         });
     }
 
@@ -118,7 +118,7 @@ export class StarboardTextEditor extends LitElement {
 
         currentEditor = "monaco";
         if (!monacoModule) {
-            monacoModule = import(/* webpackChunkName: monaco-editor */  "../editor/monaco" as any);
+            monacoModule = import(/* webpackChunkName: monaco-editor */  "./editor/monaco" as any);
             document.querySelectorAll(".cell-select-editor-popover").forEach((e) => e.innerHTML = "<b>Loading Monaco editor..</b>");
             notifyOnEditorChosen.forEach((c) => c());
             notifyOnEditorChosen = [];
@@ -126,7 +126,7 @@ export class StarboardTextEditor extends LitElement {
 
         monacoModule.then((m) => {
             this.editorMountpoint.innerHTML = "";
-            this.editorInstance = m.createMonacoEditor(this.editorMountpoint, this.cell, this.opts as any, this.emit);
+            this.editorInstance = m.createMonacoEditor(this.editorMountpoint, this.cell, this.opts as any, this.runtime);
         });
     }
  
@@ -149,5 +149,4 @@ export class StarboardTextEditor extends LitElement {
     dispose() {
         this.remove();
     }
-
 }

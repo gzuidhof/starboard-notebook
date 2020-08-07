@@ -22,10 +22,8 @@ import { html, htmlSyntax } from "@codemirror/next/lang-html";
 import { history, historyKeymap } from "@codemirror/next/history";
 import { autocomplete, autocompleteKeymap, completeFromList } from "@codemirror/next/autocomplete";
 import { searchKeymap } from "@codemirror/next/search";
-
-
-import { Cell } from "../notebookContent";
-import { CellEvent } from "../components/cell";
+import { Cell } from "../../runtime/types";
+import { Runtime } from "../../runtime";
 
 function createJSCompletion() {
     return completeFromList(
@@ -33,7 +31,7 @@ function createJSCompletion() {
         .concat(Object.getOwnPropertyNames(window)));
 }
 
-export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {language?: string; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, _emit?: (event: CellEvent) => void) {
+export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {language?: string; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, _runtime: Runtime) {
     const listen = EditorView.updateListener.of(update => {
         if (update.docChanged) {
             cell.textContent = update.state.doc.toString();

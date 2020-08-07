@@ -2,15 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Cell } from "../notebookContent";
-import { JavascriptRuntime } from "./javascript/runtime";
-import { CellEvent } from "../components/cell";
-
+import { Cell } from "../runtime/types";
+import { Runtime } from "../runtime";
 
 export interface CellHandlerAttachParameters {
-    runtime: JavascriptRuntime;
     elements: CellElements;
-    emit: (event: CellEvent) => void;
 }
 
 export interface CellElements {
@@ -23,9 +19,11 @@ export interface CellElements {
 
 export abstract class CellHandler {
     protected cell: Cell;
+    protected runtime: Runtime;
 
-    constructor(cell: Cell) {
+    constructor(cell: Cell, runtime: Runtime) {
         this.cell = cell;
+        this.runtime = runtime;
     }
 
     abstract attach(param: CellHandlerAttachParameters): void;

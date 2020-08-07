@@ -8,11 +8,11 @@ import { MARKDOWN_CELL_TYPE_DEFINITION } from "./markdown";
 import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript/javascript";
 import { HTML_CELL_TYPE_DEFINITION } from "./html";
 import { CSS_CELL_TYPE_DEFINITION } from "./css";
-
-import { Cell } from "../notebookContent";
+import { Cell } from "../runtime/types";
+import { Runtime } from "../runtime";
 
 export interface CellTypeDefinition {
-    createHandler(cell: Cell): CellHandler;
+    createHandler(cell: Cell, runtime: Runtime): CellHandler;
 
     /**
      * Name for human consumption, e.g. "Javascript"
@@ -24,7 +24,7 @@ export interface CellTypeDefinition {
 const PLAINTEXT_CELL_TYPE_DEFINITION = {
     name: "Plaintext",
     cellType: "plaintext",
-    createHandler: (c: Cell) => new DefaultCellHandler(c),
+    createHandler: (c: Cell, r: Runtime) => new DefaultCellHandler(c, r),
 };
 
 const builtinCellTypes = [
@@ -34,9 +34,6 @@ const builtinCellTypes = [
     CSS_CELL_TYPE_DEFINITION,
     PLAINTEXT_CELL_TYPE_DEFINITION,
 ];
-
-export const registry = new Map<string, CellTypeDefinition>();
-builtinCellTypes.forEach((e) => registry.set(e.cellType, e));
 
 export function getCellTypeDefinitionForCellType(cellType: string): CellTypeDefinition {
     if (registry.has(cellType)) {
@@ -54,3 +51,8 @@ export function getCellTypeDefinitionForCellType(cellType: string): CellTypeDefi
 export function getAvailableCellTypes() {
     return [...registry.values()];
 }
+
+// Singleton global value
+export const registry = new Map<string, CellTypeDefinition>();
+builtinCellTypes.forEach((e) => registry.set(e.cellType, e));
+

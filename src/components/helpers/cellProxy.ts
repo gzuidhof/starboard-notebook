@@ -2,8 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Cell } from "./notebookContent";
+import { Cell } from "../../runtime/types";
 
+/**
+ * Wraps given cell in a proxy. This proxy will call the changedCallback whenever the cell changes in
+ * such a way that would change the text representation of the cell.
+ * @param cell 
+ * @param changedCallback 
+ */
 export function createCellProxy(cell: Cell, changedCallback: () => void) {
 
     const propertiesProxy = new Proxy(cell.properties, {
@@ -12,7 +18,7 @@ export function createCellProxy(cell: Cell, changedCallback: () => void) {
             changedCallback();
             return true;
         }
-    })
+    });
 
     return new Proxy(cell, {
         get: (target: Cell, prop: string) => {
