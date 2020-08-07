@@ -34,14 +34,13 @@ monaco.languages.typescript.javascriptDefaults.addExtraLib(`
          * render to and update a container.
          */
         declare const html: (strings: TemplateStringsArray, ...values: unknown[]) => any ;
-
         /**
         * Interprets a template literal as an SVG template that can efficiently
         * render to and update a container.
         */
         declare const svg: (strings: TemplateStringsArray, ...values: unknown[]) => any;
-
         declare const lithtml: any;
+        declare const runtime: any;
 `, 'global.d.ts');
 
 function makeEditorResizeToFitContent(editor: monaco.editor.IStandaloneCodeEditor) {

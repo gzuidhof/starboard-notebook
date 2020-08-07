@@ -208,5 +208,4 @@ export class CellElement extends LitElement {
         </section>
     `;
     }
-
 }
