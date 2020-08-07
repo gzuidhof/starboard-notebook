@@ -7,7 +7,7 @@ import { MARKDOWN_CELL_TYPE_DEFINITION } from "./markdown";
 import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript/javascript";
 import { HTML_CELL_TYPE_DEFINITION } from "./html";
 import { CSS_CELL_TYPE_DEFINITION } from "./css";
-import { Cell } from "../runtime/types";
+import { Cell } from "../types";
 import { Runtime, CellTypeDefinition } from "../runtime";
 
 const PLAINTEXT_CELL_TYPE_DEFINITION = {

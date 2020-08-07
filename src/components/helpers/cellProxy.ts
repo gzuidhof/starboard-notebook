@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Cell } from "../../runtime/types";
+import { Cell } from "../../types";
 
 /**
  * Wraps given cell in a proxy. This proxy will call the changedCallback whenever the cell changes in

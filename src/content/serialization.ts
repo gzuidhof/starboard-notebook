@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Cell, NotebookContent } from "../runtime/types";
+import { Cell, NotebookContent } from "../types";
 
 export function notebookContentToText(nb: NotebookContent) {
     return nb.frontMatter + nb.cells.map(cellToText).join("\n");

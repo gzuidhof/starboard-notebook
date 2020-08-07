@@ -11,7 +11,7 @@ import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workfl
 import { ConsoleOutputElement } from "../../components/consoleOutput";
 import { StarboardTextEditor } from '../../components/textEditor';
 import { Message } from "console-feed/lib/Hook";
-import { Cell } from "../../runtime/types";
+import { Cell } from "../../types";
 import { isProbablyModule, isProbablyTemplateResult } from "./util";
 import { Runtime, CellElements, CellHandlerAttachParameters } from "../../runtime";
 

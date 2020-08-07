@@ -22,7 +22,7 @@ import { html, htmlSyntax } from "@codemirror/next/lang-html";
 import { history, historyKeymap } from "@codemirror/next/history";
 import { autocomplete, autocompleteKeymap, completeFromList } from "@codemirror/next/autocomplete";
 import { searchKeymap } from "@codemirror/next/search";
-import { Cell } from "../../runtime/types";
+import { Cell } from "../../types";
 import { Runtime } from "../../runtime";
 
 function createJSCompletion() {

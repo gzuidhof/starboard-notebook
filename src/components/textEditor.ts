@@ -9,7 +9,7 @@ import { hookMarkdownItToHighlight } from "./helpers/highlight";
 import { render } from "lit-html";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { DeviceDesktopIcon, DevicePhoneIcon } from "@spectrum-web-components/icons-workflow";
-import { Cell } from "../runtime/types";
+import { Cell } from "../types";
 import { Runtime } from "../runtime";
 
 export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";

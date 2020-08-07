@@ -8,7 +8,7 @@ import { getDefaultControlsTemplate, ControlButton } from "../components/control
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
-import { Cell } from "../runtime/types";
+import { Cell } from "../types";
 import { Runtime, CellElements, CellHandlerAttachParameters } from "../runtime";
 
 

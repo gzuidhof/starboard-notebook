@@ -6,12 +6,12 @@ import { render, TemplateResult } from "lit-html";
 import mdlib from "markdown-it";
 
 import { hookMarkdownItToHighlight } from "../components/helpers/highlight";
-import { CellHandler, CellHandlerAttachParameters, CellElements } from "./base";
+import { BaseCellHandler } from "./base";
 import { getDefaultControlsTemplate, ControlButton } from "../components/controls";
 import { TextEditIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
-import { CellEvent, Cell } from "../runtime/types";
-import { Runtime } from "../runtime";
+import { CellEvent, Cell } from "../types";
+import { Runtime, CellElements, CellHandlerAttachParameters } from "../runtime";
 
 const md = new mdlib();
 hookMarkdownItToHighlight(md);
@@ -22,7 +22,7 @@ export const MARKDOWN_CELL_TYPE_DEFINITION = {
     createHandler: (c: Cell, r: Runtime) => new MarkdownCellHandler(c, r),
 };
 
-export class MarkdownCellHandler extends CellHandler {
+export class MarkdownCellHandler extends BaseCellHandler {
     private isInEditMode = true;
 
     private elements!: CellElements;

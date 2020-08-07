@@ -4,7 +4,7 @@
 
 import { html, TemplateResult } from "lit-html";
 import { ReplayIcon, AlertCircleIcon, VisibilityOffIcon } from "@spectrum-web-components/icons-workflow";
-import { Cell } from "../runtime/types";
+import { Cell } from "../types";
 
 // Note: These controls are not "Components" in the lit-element sense
 

@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { split } from "eol";
-import { NotebookContent, Cell } from "../runtime/types";
+import { NotebookContent, Cell } from "../types";
 import { uuid } from "uuidv4";
 
 export interface ParsedCell {

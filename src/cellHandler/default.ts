@@ -5,7 +5,7 @@
 import { BaseCellHandler } from "./base";
 import { render, html } from "lit-html";
 import { StarboardTextEditor } from "../components/textEditor";
-import { Cell } from "../runtime/types";
+import { Cell } from "../types";
 import { Runtime, CellHandlerAttachParameters } from "../runtime";
 
 export const DEFAULT_CELL_TYPE_DEFINITION = {

@@ -5,13 +5,13 @@
 import { LitElement, html, property, customElement, query } from 'lit-element';
 import { toggleCellFlagProperty } from '../content/notebookContent';
 
-import { CellHandler } from '../cellHandler/base';
-import { CellTypeDefinition, getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellHandler/registry';
+import { BaseCellHandler } from '../cellHandler/base';
+import { getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellHandler/registry';
 
 import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { getPropertiesIcons, getPropertiesPopoverIcons } from './controls';
-import { Cell } from '../runtime/types';
-import { Runtime } from '../runtime';
+import { Cell } from '../types';
+import { Runtime, CellTypeDefinition } from '../runtime';
 
 @customElement('starboard-cell')
 export class CellElement extends LitElement {
@@ -30,7 +30,7 @@ export class CellElement extends LitElement {
     private propertiesPickerElement!: HTMLElement;
 
     public cellTypeDefinition!: CellTypeDefinition;
-    public cellHandler!: CellHandler;
+    public cellHandler!: BaseCellHandler;
 
     @property({ type: Object })
     public cell: Cell;
@@ -126,7 +126,6 @@ export class CellElement extends LitElement {
     }
 
     render() {
-
         const id = this.cell.id;
 
         return html`

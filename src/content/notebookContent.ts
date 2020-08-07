@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { uuid } from 'uuidv4';
-import { Cell, NotebookContent } from '../runtime/types';
+import { Cell, NotebookContent } from '../types';
 import { cellToText } from './serialization';
 import { textToNotebookContent } from './parsing';
 

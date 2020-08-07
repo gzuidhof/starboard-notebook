@@ -11,13 +11,10 @@ import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';
 import { debounce } from '@github/mini-throttle/decorators';
 import { starboardLogo } from './logo';
 import { insertHTMLChildAtIndex } from './helpers/dom';
-import { CellEvent } from '../runtime/types';
 import { notebookContentToText } from '../content/serialization';
 import { textToNotebookContent } from '../content/parsing';
-import { ConsoleCatcher } from '../console/console';
 import { Runtime } from '../runtime';
-
-declare const STARBOARD_NOTEBOOK_VERSION: string;
+import { createRuntime } from '../runtime/create';
 
 declare global {
   interface Window {
@@ -103,27 +100,7 @@ export class StarboardNotebook extends LitElement {
   connectedCallback() {
     super.connectedCallback();
 
-    this.runtime = {
-      consoleCatcher: new ConsoleCatcher(window.console),
-      content: (window as any).initialNotebookContent ? textToNotebookContent((window as any).initialNotebookContent) : { frontMatter: "", cells: [] },
-      emit: (event: CellEvent) => {
-        if (event.type === "RUN_CELL") {
-          this.runCell(event.id, !!event.focusNextCell, !!event.insertNewCell);
-        } else if (event.type === "INSERT_CELL") {
-          this.insertCell(event.position, event.id);
-        } else if (event.type === "REMOVE_CELL") {
-          this.removeCell(event.id);
-        } else if (event.type === "CHANGE_CELL_TYPE") {
-          this.changeCellType(event.id, event.newCellType);
-        } else if (event.type === "SAVE") {
-          this.save();
-        }
-      },
-      dom: {
-        cells: [],
-        notebook: this,
-      }
-    };
+    this.runtime = createRuntime(this);
     window.runtime = this.runtime;
 
     window.iFrameResizer = {
@@ -209,7 +186,7 @@ export class StarboardNotebook extends LitElement {
           ${AssetsAddedIcon({ width: 20, height: 20 })}
         </button>
       <footer class="starboard-notebook-footer">
-        <span>${starboardLogo(10, 10)}</span> Starboard Notebook v${STARBOARD_NOTEBOOK_VERSION}
+        <span>${starboardLogo(10, 10)}</span> Starboard Notebook v${this.runtime.version}
       </footer>
         `;
   }
