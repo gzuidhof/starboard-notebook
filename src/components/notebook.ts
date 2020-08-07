@@ -67,7 +67,10 @@ export class StarboardNotebookElement extends LitElement {
 
   firstUpdated(changedProperties: any) {
     super.firstUpdated(changedProperties);
-    this.updateComplete.then(() => { this.runtime.controls.runAllCells({onlyRunOnLoad: true});});
+
+    if (window.initialNotebookContent) {
+      this.updateComplete.then(() => { this.runtime.controls.runAllCells({onlyRunOnLoad: true});});
+    }
   }
 
   performUpdate() {

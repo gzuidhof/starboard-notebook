@@ -1,5 +1,9 @@
 # Changelog
 
+## Release 0.4.1
+**Date:** 2020-08-07
+
+* Bugfix for content not getting transmitted properly through the iframe barrier.
 
 ## Release 0.4.0
 **Date:** 2020-08-07

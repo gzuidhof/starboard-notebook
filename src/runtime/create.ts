@@ -48,8 +48,11 @@ export function createRuntime(this: any, notebook: StarboardNotebookElement): Ru
         cellProperties: cellPropertiesRegistry,
       },
 
-
       version: STARBOARD_NOTEBOOK_VERSION,
+
+      // These are set below
+      controls: null as any,
+      exports: null as any,
     };
 
     const controls: RuntimeControls = {
@@ -145,11 +148,10 @@ export function createRuntime(this: any, notebook: StarboardNotebookElement): Ru
         }
     };
 
-    return {
-      ...rt,
-      controls,
-      exports: createExports()
-    };
+    rt.controls = controls;
+    rt.exports = createExports();
+
+    return rt;
 }
 
 function createExports(): RuntimeExports {
