@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html, render, TemplateResult } from "lit-html";
-import { CellHandler, CellHandlerAttachParameters, CellElements } from "../base";
+import { BaseCellHandler } from "../base";
 import { getDefaultControlsTemplate, ControlButton } from "../../components/controls";
 import { JavascriptEvaluator } from "./eval";
 import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workflow";
@@ -11,9 +11,9 @@ import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workfl
 import { ConsoleOutputElement } from "../../components/consoleOutput";
 import { StarboardTextEditor } from '../../components/textEditor';
 import { Message } from "console-feed/lib/Hook";
-import { CellEvent, Cell } from "../../runtime/types";
+import { Cell } from "../../runtime/types";
 import { isProbablyModule, isProbablyTemplateResult } from "./util";
-import { Runtime } from "../../runtime";
+import { Runtime, CellElements, CellHandlerAttachParameters } from "../../runtime";
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
     name: "Javascript",
@@ -22,7 +22,7 @@ export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
 };
 
 
-export class JavascriptCellHandler extends CellHandler {
+export class JavascriptCellHandler extends BaseCellHandler {
     private elements!: CellElements;
     private editor!: StarboardTextEditor;
 

@@ -2,24 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { CellHandler } from "./base";
 import { DefaultCellHandler, DEFAULT_CELL_TYPE_DEFINITION } from "./default";
 import { MARKDOWN_CELL_TYPE_DEFINITION } from "./markdown";
 import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript/javascript";
 import { HTML_CELL_TYPE_DEFINITION } from "./html";
 import { CSS_CELL_TYPE_DEFINITION } from "./css";
 import { Cell } from "../runtime/types";
-import { Runtime } from "../runtime";
-
-export interface CellTypeDefinition {
-    createHandler(cell: Cell, runtime: Runtime): CellHandler;
-
-    /**
-     * Name for human consumption, e.g. "Javascript"
-     */
-    name: string;
-    cellType: string;
-}
+import { Runtime, CellTypeDefinition } from "../runtime";
 
 const PLAINTEXT_CELL_TYPE_DEFINITION = {
     name: "Plaintext",

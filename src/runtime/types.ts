@@ -2,6 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { Runtime } from ".";
+import { BaseCellHandler } from "../cellHandler/base";
+
 /**
  * Events that can be sent from the cell for central handling in the notebook component.
  */
@@ -44,4 +47,39 @@ export interface NotebookContent {
      */
     frontMatter: string;
     cells: Cell[];
+}
+
+export interface CellTypeDefinition {
+    createHandler(cell: Cell, runtime: Runtime): CellHandler;
+
+    /**
+     * Name for human consumption, e.g. "Javascript"
+     */
+    name: string;
+    cellType: string;
+}
+
+/**
+ * A CellHandler contains the actual logic of a cell.
+ */
+export interface CellHandler {
+    cell: Cell;
+    runtime: Runtime;
+
+    attach(param: CellHandlerAttachParameters): void;
+    run(): Promise<any>;
+    dispose(): Promise<void>;
+    focusEditor(): void;
+}
+
+export interface CellHandlerAttachParameters {
+    elements: CellElements;
+}
+
+export interface CellElements {
+    topElement: HTMLElement;
+    bottomElement: HTMLElement;
+
+    topControlsElement: HTMLElement;
+    bottomControlsElement: HTMLElement;
 }

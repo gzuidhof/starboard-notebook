@@ -56,9 +56,9 @@ export class JavascriptEvaluator {
       }
 
       const state = await promiseState(cellResult.returnValue);
-      if (state === "fulfilled") { // Result is not a promise
+      if (state === "fulfilled") { // Result is either a promise that was awaited, or an not a promise.
         res.value = await cellResult.returnValue;
-      } else { // Result is a promise that was awaited, we must wait to continue.
+      } else { // Result is a promise that was not awaited, "finish" the cell.
         res.value = cellResult.returnValue;
       }
       (window)["$_"] = res.value;

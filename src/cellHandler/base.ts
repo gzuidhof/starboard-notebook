@@ -3,23 +3,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Cell } from "../runtime/types";
-import { Runtime } from "../runtime";
+import { Runtime, CellHandlerAttachParameters, CellHandler } from "../runtime";
 
-export interface CellHandlerAttachParameters {
-    elements: CellElements;
-}
-
-export interface CellElements {
-    topElement: HTMLElement;
-    bottomElement: HTMLElement;
-
-    topControlsElement: HTMLElement;
-    bottomControlsElement: HTMLElement;
-}
-
-export abstract class CellHandler {
-    protected cell: Cell;
-    protected runtime: Runtime;
+export abstract class BaseCellHandler implements CellHandler {
+    public cell: Cell;
+    public runtime: Runtime;
 
     constructor(cell: Cell, runtime: Runtime) {
         this.cell = cell;

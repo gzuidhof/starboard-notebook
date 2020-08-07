@@ -15,4 +15,4 @@ export function insertHTMLChildAtIndex(parent: HTMLElement, child: HTMLElement, 
     } else {
       parent.insertBefore(child, parent.children[index]);
     }
-  }
+}

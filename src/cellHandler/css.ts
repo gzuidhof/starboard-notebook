@@ -3,13 +3,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html, render, TemplateResult } from "lit-html";
-import { CellHandler, CellHandlerAttachParameters, CellElements } from "./base";
+import { BaseCellHandler } from "./base";
 import { getDefaultControlsTemplate, ControlButton } from "../components/controls";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell } from "../runtime/types";
-import { Runtime } from "../runtime";
+import { Runtime, CellElements, CellHandlerAttachParameters } from "../runtime";
 
 export const CSS_CELL_TYPE_DEFINITION = {
     name: "CSS",
@@ -17,7 +17,7 @@ export const CSS_CELL_TYPE_DEFINITION = {
     createHandler: (c: Cell, r: Runtime) => new CSSCellHandler(c, r),
 };
 
-export class CSSCellHandler extends CellHandler {
+export class CSSCellHandler extends BaseCellHandler {
 
     private elements!: CellElements;
     private editor: any;
