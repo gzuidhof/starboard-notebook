@@ -109,7 +109,7 @@ export class CellElement extends LitElement {
         // TODO: refactor this. the idea is to detect clicks outside the element to close the popover.
             setTimeout(() => {
                 const listenerFunc = (e: MouseEvent) => {
-                    if (!element.contains(e.target as Node)) {
+                    if (!element.contains(e.target as Node) || (e.target as HTMLElement).classList.contains("cell-popover-close-button")) {
                         element.classList.remove("popover-active");
                         document.removeEventListener("click", listenerFunc);
                     }
@@ -177,7 +177,7 @@ export class CellElement extends LitElement {
                         `)
                         }
 
-                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.typePickerElement.classList.remove("popover-active")}>Cancel</button>
+                        <button class="cell-controls-button cell-popover-close-button">Cancel</button>
                     </div>
                 </div>
 
@@ -189,7 +189,7 @@ export class CellElement extends LitElement {
                     <div class="cell-popover cell-properties-popover">
                         <b style="margin-bottom: 6px">Toggle cell properties</b>
                         ${getPropertiesPopoverIcons(this.cell, (propertyName: string) => this.toggleProperty(propertyName))}
-                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.propertiesPickerElement.classList.remove("popover-active")}>Cancel</button>
+                        <button class="cell-controls-button cell-popover-close-button">Cancel</button>
                     </div>
                 </div>
 
