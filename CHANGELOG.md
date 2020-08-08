@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.4.3
+**Date:** 2020-08-08
+
+* Fix close button behavior in cell popovers (e.g. in cell type select menu).
+
 ## Release 0.4.2
 **Date:** 2020-08-08
 
