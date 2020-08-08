@@ -30,8 +30,7 @@ import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
-export function createRuntime(this: any, notebook: StarboardNotebookElement): Runtime {
-
+export function createRuntime(notebook: StarboardNotebookElement): Runtime {
     const content =  (window as any).initialNotebookContent ? textToNotebookContent((window as any).initialNotebookContent) : { frontMatter: "", cells: [] };
   
     /** Runtime without any of the functions **/
@@ -59,19 +58,19 @@ export function createRuntime(this: any, notebook: StarboardNotebookElement): Ru
         insertCell(position: "end" | "before" | "after", adjacentCellId?: string) {
           addCellToNotebookContent(rt.content, position, adjacentCellId);
           notebook.performUpdate();
-          this.contentChanged();
+          controls.contentChanged();
         },
       
         removeCell(id: string) {
           removeCellFromNotebookById(rt.content, id);
           notebook.performUpdate();
-          this.contentChanged();
+          controls.contentChanged();
         },
       
         changeCellType(id: string, newCellType: string) {
           changeCellType(rt.content, id, newCellType);
           notebook.performUpdate();
-          this.contentChanged();
+          controls.contentChanged();
         },
       
         runCell(id: string, focusNext: boolean, insertNewCell: boolean) {
@@ -89,7 +88,7 @@ export function createRuntime(this: any, notebook: StarboardNotebookElement): Ru
           const isLastCell = idxOfCell === cellElements.length - 1;
       
           if (insertNewCell || isLastCell) {
-            this.insertCell("after", id);
+            controls.insertCell("after", id);
           }
           if (focusNext) {
             window.setTimeout(() => {
@@ -99,7 +98,7 @@ export function createRuntime(this: any, notebook: StarboardNotebookElement): Ru
         },
       
         save() {
-          const couldSave = this.sendMessage({ type: "SAVE", data: notebookContentToText(rt.content) });
+          const couldSave = controls.sendMessage({ type: "SAVE", data: notebookContentToText(rt.content) });
           if (!couldSave) {
             console.error("Can't save as parent frame is not listening for messages");
           }
@@ -135,15 +134,15 @@ export function createRuntime(this: any, notebook: StarboardNotebookElement): Ru
 
         emit (event: CellEvent) {
           if (event.type === "RUN_CELL") {
-            this.runCell(event.id, !!event.focusNextCell, !!event.insertNewCell);
+            controls.runCell(event.id, !!event.focusNextCell, !!event.insertNewCell);
           } else if (event.type === "INSERT_CELL") {
-            this.insertCell(event.position, event.id);
+            controls.insertCell(event.position, event.id);
           } else if (event.type === "REMOVE_CELL") {
-            this.removeCell(event.id);
+            controls.removeCell(event.id);
           } else if (event.type === "CHANGE_CELL_TYPE") {
-            this.changeCellType(event.id, event.newCellType);
+            controls.changeCellType(event.id, event.newCellType);
           } else if (event.type === "SAVE") {
-            this.save();
+            controls.save();
           }
         }
     };
