@@ -31,7 +31,6 @@ import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
 export function createRuntime(notebook: StarboardNotebookElement): Runtime {
-
     const content =  (window as any).initialNotebookContent ? textToNotebookContent((window as any).initialNotebookContent) : { frontMatter: "", cells: [] };
   
     /** Runtime without any of the functions **/
