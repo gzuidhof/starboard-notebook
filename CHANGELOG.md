@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.4.2
+**Date:** 2020-08-08
+
+* Bugfix introduced in 0.4.0 in which cell creation and removal was broken.
+
 ## Release 0.4.1
 **Date:** 2020-08-07
 
@@ -7,7 +12,6 @@
 
 ## Release 0.4.0
 **Date:** 2020-08-07
-
 
 * A large refactor: Starboard Notebook is now built around a single **Runtime** that allows for metaprogramming and plugin support. This is a single source of truth for the state and functionality of a notebook. It is exposed as a global variable `runtime`. 
     * This centralizes the logic for the notebook and makes plugins possible that change the notebook in meaningful ways, for instance adding new cell types.
