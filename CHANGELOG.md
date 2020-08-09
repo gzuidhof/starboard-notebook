@@ -1,6 +1,11 @@
 # Changelog
 
 
+## Release 0.4.6
+**Date:** 2020-08-09
+
+* Remove unnecessary scrollbar in CodeMirror editor by fixing wrong CSS rule.
+
 ## Release 0.4.5
 **Date:** 2020-08-09
 
