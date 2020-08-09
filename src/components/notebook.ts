@@ -21,6 +21,7 @@ declare global {
       onMessage: (msg: any) => void;
     };
     runtime: Runtime;
+    starboardEditUrl?: string;
   }
 }
 
@@ -132,7 +133,9 @@ export class StarboardNotebookElement extends LitElement {
           ${AssetsAddedIcon({ width: 20, height: 20 })}
         </button>
       <footer class="starboard-notebook-footer">
-        <span>${StarboardLogo({width: 10, height: 10})}</span> Starboard Notebook v${this.runtime.version}
+        <span>${StarboardLogo({width: 10, height: 10})} Starboard Notebook v${this.runtime.version}
+        ${window.starboardEditUrl ? html`- <a href=${window.starboardEditUrl}>Edit on Starboard.gg</a>`: ""}
+        </span>
       </footer>
         `;
   }

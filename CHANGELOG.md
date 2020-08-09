@@ -1,5 +1,11 @@
 # Changelog
 
+
+## Release 0.4.5
+**Date:** 2020-08-09
+
+* Allow specifying `starboardEditUrl` on window to link to the source notebook on Starboard, this is useful when embedding.
+
 ## Release 0.4.4
 **Date:** 2020-08-09
 
