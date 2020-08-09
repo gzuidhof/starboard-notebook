@@ -35,6 +35,8 @@ export class StarboardNotebookElement extends LitElement {
     return this;
   }
 
+  private contentHasBeenSetFromParentIframe = false;
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -43,14 +45,23 @@ export class StarboardNotebookElement extends LitElement {
 
     window.iFrameResizer = {
       onReady: () => {
-        window.parentIFrame.sendMessage({ type: "SIGNAL_READY" });
+        // It is possible that the parent iFrame isn't ready for messages yet, so we try to make contact a few times.
+        let numTries = 0;
+        const askForContent = () => {
+          if (this.contentHasBeenSetFromParentIframe || numTries > 15) return;
+          window.parentIFrame.sendMessage({ type: "SIGNAL_READY" });
+          numTries++;
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          setTimeout(() => askForContent(), numTries*100);
+        };
       },
       onMessage: (msg: any) => {
         if (msg.type === "SET_NOTEBOOK_CONTENT") {
+          if (this.contentHasBeenSetFromParentIframe) return; // be idempotent
           this.runtime.content = textToNotebookContent(msg.data);
-          
           this.updateComplete.then(() => this.runtime.controls.runAllCells({onlyRunOnLoad: true}));
           this.performUpdate();
+          this.contentHasBeenSetFromParentIframe = true;
         } else if (msg.type === "RELOAD") {
           window.location.reload();
         }
