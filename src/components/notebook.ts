@@ -51,7 +51,6 @@ export class StarboardNotebookElement extends LitElement {
           if (this.contentHasBeenSetFromParentIframe || numTries > 15) return;
           window.parentIFrame.sendMessage({ type: "SIGNAL_READY" });
           numTries++;
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           setTimeout(() => askForContent(), numTries*100);
         };
         askForContent();
