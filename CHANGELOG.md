@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.4.4
+**Date:** 2020-08-09
+
+* The notebook now tries to contact the parent page multiple times, before sometimes the nested iframe would not get the notebook content message.
+* Made the background of the notebook and cells pure white instead of slightly gray. It doesn't look good when embedding on a pure-white page (such as Notion).
+
 ## Release 0.4.3
 **Date:** 2020-08-08
 
