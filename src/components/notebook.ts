@@ -54,6 +54,7 @@ export class StarboardNotebookElement extends LitElement {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           setTimeout(() => askForContent(), numTries*100);
         };
+        askForContent();
       },
       onMessage: (msg: any) => {
         if (msg.type === "SET_NOTEBOOK_CONTENT") {
