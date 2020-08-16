@@ -10,10 +10,10 @@ import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workfl
 
 import { ConsoleOutputElement } from "../../components/consoleOutput";
 import { StarboardTextEditor } from '../../components/textEditor';
-import { Message } from "console-feed/lib/Hook";
 import { Cell } from "../../types";
 import { isProbablyModule, isProbablyTemplateResult } from "./util";
 import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../../runtime";
+import { Message } from "../../console/console";
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
     name: "Javascript",

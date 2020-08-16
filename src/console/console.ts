@@ -2,7 +2,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import Hook, {MessageCallback, Message} from "console-feed/lib/Hook";
+import Hook from "console-feed/lib/Hook";
+
+
+export type Methods =
+| 'log'
+| 'debug'
+| 'info'
+| 'warn'
+| 'error'
+| 'table'
+| 'clear'
+| 'time'
+| 'timeEnd'
+| 'count'
+| 'assert';
+
+export interface Message {
+    method: Methods;
+    data: any[];
+}
+
+export type MessageCallback = (message: Message) => void;
+
 
 export class ConsoleCatcher {
     private currentHook?: MessageCallback;
