@@ -10,7 +10,7 @@ import { BaseCellHandler } from "./base";
 import { cellControlsTemplate } from "../components/controls";
 import { TextEditIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
-import { CellEvent, Cell } from "../types";
+import { Cell } from "../types";
 import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
 
 const md = new mdlib();

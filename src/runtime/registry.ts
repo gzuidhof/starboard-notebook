@@ -1,4 +1,6 @@
-export type MapRegistryListenerFunction<S, T> = (event: {type: "register"; key: S; value: T}) => void;
+
+export type RegistryEvent<S, T> = {type: "register"; key: S; value: T};
+export type MapRegistryListenerFunction<S, T> = (event: RegistryEvent<S, T>) => void;
 
 /**
  * A registry here is just a wrapper around a Map. It has a register function that simply calls set,
@@ -26,6 +28,10 @@ export class MapRegistry<S, T> {
         return this.map.get(key);
     }
 
+    /**
+     * This does *not* trigger a register event, so cells already present with this cell type will not switch automatically.
+     * Use register instead.
+     */
     public set(key: S, value: T) {
         return this.map.set(key, value);
     }
