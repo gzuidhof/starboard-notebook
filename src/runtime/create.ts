@@ -106,12 +106,17 @@ export function createRuntime(notebook: StarboardNotebookElement): Runtime {
         },
       
         async runAllCells(opts: {onlyRunOnLoad?: boolean} = {}) {
-          for (const ce of rt.dom.cells ) {
-            if (opts.onlyRunOnLoad && !ce.cell.properties.runOnLoad) {
-              continue;
+          let cellElement: CellElement | null = rt.dom.cells[0] || null;
+
+          while(cellElement) {
+            if (opts.onlyRunOnLoad && !cellElement.cell.properties.runOnLoad) {
+              // Don't run this cell..
+            } else {
+              await cellElement.run();
             }
-            await ce.run();
+            cellElement = cellElement.nextSibling as CellElement | null;
           }
+
         },
 
         sendMessage(message: any, targetOrigin?: string): boolean {

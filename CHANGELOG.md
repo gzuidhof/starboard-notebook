@@ -1,6 +1,11 @@
 # Changelog
 
 
+## Release 0.4.9
+**Date:** 2020-08-17
+
+* `runOnLoad` now correctly runs cells on load that have their cell type loaded in a prior cell.
+
 ## Release 0.4.8
 **Date:** 2020-08-17
 
