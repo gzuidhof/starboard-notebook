@@ -1,6 +1,17 @@
 # Changelog
 
 
+## Release 0.4.8
+**Date:** 2020-08-17
+
+* Better support for cell type registration: cells that have an unknown cell type (e.g. `py` for Python) will now automatically become a fully-fledged cell if that cell type gets registered. 
+
+## Release 0.4.7
+**Date:** 2020-08-15
+
+* Minor changes in type definitions which makes importing starboard-notebook as a library more straightforward.
+
+
 ## Release 0.4.6
 **Date:** 2020-08-09
 
