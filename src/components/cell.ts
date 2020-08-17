@@ -210,4 +210,9 @@ export class CellElement extends LitElement {
         </section>
     `;
     }
+
+    public disconnectedCallback() {
+        super.disconnectedCallback();
+        this.cellHandler.dispose();
+    }
 }
