@@ -1,5 +1,6 @@
 import { CellPropertyDefinition } from "../runtime";
 import { ReplayIcon, VisibilityOffIcon } from "@spectrum-web-components/icons-workflow";
+import { MapRegistry } from "../runtime/registry";
 
 const builtinCellProperties: CellPropertyDefinition[] = [
     {
@@ -23,5 +24,5 @@ export function getAvailablePropertyTypes() {
 }
 
 // Singleton global value
-export const registry = new Map<string, CellPropertyDefinition>();
+export const registry = new MapRegistry<string, CellPropertyDefinition>();
 builtinCellProperties.forEach((e) => registry.set(e.cellProperty, e));

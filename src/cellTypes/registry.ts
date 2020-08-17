@@ -9,6 +9,7 @@ import { HTML_CELL_TYPE_DEFINITION } from "./html";
 import { CSS_CELL_TYPE_DEFINITION } from "./css";
 import { Cell } from "../types";
 import { Runtime, CellTypeDefinition } from "../runtime";
+import { MapRegistry } from "../runtime/registry";
 
 const PLAINTEXT_CELL_TYPE_DEFINITION = {
     name: "Plaintext",
@@ -28,7 +29,6 @@ export function getCellTypeDefinitionForCellType(cellType: string): CellTypeDefi
     if (registry.has(cellType)) {
         return registry.get(cellType) as CellTypeDefinition;
     } else {
-        console.log(`No cell handler found for cell type ${cellType}. Available cell handlers: ${Array.from(registry.keys())}`);
         return {
             ...DEFAULT_CELL_TYPE_DEFINITION,
             cellType: cellType,
@@ -42,6 +42,6 @@ export function getAvailableCellTypes() {
 }
 
 // Singleton global value
-export const registry = new Map<string, CellTypeDefinition>();
+export const registry = new MapRegistry<string, CellTypeDefinition>();
 builtinCellTypes.forEach((e) => registry.set(e.cellType, e));
 

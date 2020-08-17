@@ -1,0 +1,5 @@
+%% js runOnLoad
+const {registerPlugin} = await import("http://localhost:8080/starboard-python.js");
+registerPlugin();
+%% py
+print("Hello world!");

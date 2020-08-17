@@ -104,6 +104,7 @@ export class CellElement extends LitElement {
     }
 
     togglePopover(element: HTMLElement) {
+        this.performUpdate(); // This update here is so that if a new cell type or property has been registered since it is visible.
         element.classList.toggle("popover-active");
         if (element.classList.contains("popover-active")) {
         // TODO: refactor this. the idea is to detect clicks outside the element to close the popover.

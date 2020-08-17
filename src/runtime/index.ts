@@ -18,6 +18,7 @@ import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highligh
 import { createCellProxy } from "../components/helpers/cellProxy";
 import { cellToText, notebookContentToText } from "../content/serialization";
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
+import { MapRegistry } from "./registry";
 
 export * from "../types";
 
@@ -111,12 +112,12 @@ export interface Runtime {
         /**
          * Map of registered cell types, indexed by cellType (e.g. "js").
          */
-        cellTypes: Map<string, CellTypeDefinition>;
+        cellTypes: MapRegistry<string, CellTypeDefinition>;
 
         /**
          * Map of registered cell properties, indexed by property name (e.g. "collapsed" or "runOnLoad").
          */
-        cellProperties: Map<string, CellPropertyDefinition>;
+        cellProperties: MapRegistry<string, CellPropertyDefinition>;
     };
 
     /**
