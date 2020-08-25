@@ -1,5 +1,15 @@
 %% js runOnLoad
-const {registerPlugin} = await import("http://localhost:8080/starboard-python.js");
-registerPlugin();
+const {registerPython} = await import("http://localhost:8080/dist/starboard-python.js");
+registerPython();
 %% py runOnLoad
 print("Hello world!");
+x = [i for i in range(5)]
+x
+
+%% py
+import matplotlib.pyplot as plt
+plt.plot(x)
+plt.show()
+
+%% js
+console.log("hi")

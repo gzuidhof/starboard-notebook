@@ -1,6 +1,11 @@
 # Changelog
 
 
+## Release 0.4.10
+**Date:** 2020-08-25
+
+* Fix initial notebook content being a debug value..
+
 ## Release 0.4.9
 **Date:** 2020-08-17
 
