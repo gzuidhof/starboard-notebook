@@ -1,5 +1,23 @@
 # Changelog
 
+## Release 0.4.13
+**Date:** 2020-09-17
+
+* Experimental Python support works with the exception of anything with HTML output (e.g. matplotlib figures).
+
+## Release 0.4.12
+**Date:** 2020-09-17
+
+Non-production intermediate release.
+
+* Minor Python cell debug message improvements when loading external libraries.
+
+## Release 0.4.11
+**Date:** 2020-09-17
+
+Non-production intermediate release.
+
+* Experimental Python cell support.
 
 ## Release 0.4.10
 **Date:** 2020-08-25

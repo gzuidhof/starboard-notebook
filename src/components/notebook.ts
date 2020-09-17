@@ -13,6 +13,9 @@ import { textToNotebookContent } from '../content/parsing';
 import { Runtime } from '../runtime';
 import { createRuntime } from '../runtime/create';
 
+// @ts-ignore
+import {registerPython} from "starboard-python/dist/index.js";
+
 declare global {
   interface Window {
     parentIFrame: IFramePage;
@@ -40,13 +43,12 @@ export class StarboardNotebookElement extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-
     this.runtime = createRuntime(this);
     window.runtime = this.runtime;
 
     window.iFrameResizer = {
       onReady: () => {
-        // It is possible that the parent iFrame isn't ready for messages yet, so we try to make contact a few times.
+        // It is possible that the parent iFrame isn't ready for messages yet, so we try to make contact a few times.+
         let numTries = 0;
         const askForContent = () => {
           if (this.contentHasBeenSetFromParentIframe || numTries > 15) return;
@@ -60,7 +62,7 @@ export class StarboardNotebookElement extends LitElement {
         if (msg.type === "SET_NOTEBOOK_CONTENT") {
           if (this.contentHasBeenSetFromParentIframe) return; // be idempotent
           this.runtime.content = textToNotebookContent(msg.data);
-          this.updateComplete.then(() => this.runtime.controls.runAllCells({onlyRunOnLoad: true}));
+          this.notebookInitialize();
           this.performUpdate();
           this.contentHasBeenSetFromParentIframe = true;
         } else if (msg.type === "RELOAD") {
@@ -77,11 +79,18 @@ export class StarboardNotebookElement extends LitElement {
     }, false);
   }
 
+  async notebookInitialize() {
+    await this.updateComplete;
+    // Register default plugins, when more default plugins are added this should be moved elsewhere
+    registerPython();
+
+    this.runtime.controls.runAllCells({onlyRunOnLoad: true});
+  }
+
   firstUpdated(changedProperties: any) {
     super.firstUpdated(changedProperties);
-
     if (window.initialNotebookContent) {
-      this.updateComplete.then(() => { this.runtime.controls.runAllCells({onlyRunOnLoad: true});});
+      this.notebookInitialize();
     }
   }
 

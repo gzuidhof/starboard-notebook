@@ -18,7 +18,7 @@ const baseConfig = {
         chunkFilename: '[name].bundle.js',
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js'],
+        extensions: ['.ts', '.tsx', '.js', '.d.ts'],
         alias: {
             "react": "preact/compat",
             "react-dom": "preact/compat"

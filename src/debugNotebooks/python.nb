@@ -1,6 +1,3 @@
-%% js runOnLoad
-const {registerPython} = await import("http://localhost:8080/dist/starboard-python.js");
-registerPython();
 %% py runOnLoad
 print("Hello world!");
 x = [i for i in range(5)]

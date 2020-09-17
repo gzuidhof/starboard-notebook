@@ -1,6 +1,6 @@
 {
   "name": "starboard-notebook",
-  "version": "0.4.10",
+  "version": "0.4.13",
   "description": "Starboard Notebook",
   "author": "Guido Zuidhof <me@guido.io>",
   "funding": {
@@ -79,6 +79,7 @@
     "monaco-editor": "^0.20.0",
     "preact": "^10.4.6",
     "prismjs": "^1.20.0",
+    "starboard-python": "0.1.6",
     "uuidv4": "^6.0.6"
   }
 }
