@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 0.4.14
+**Date:** 2020-09-30
+
+* Less experimental Python support, matplotlib and html output (e.g. from Pandas) now works.
+* PyProxies now have special support when shown in the console output.
+* Console output no longer chokes on huge objects (e.g. the `pyodide` object).
+
 ## Release 0.4.13
 **Date:** 2020-09-17
 
