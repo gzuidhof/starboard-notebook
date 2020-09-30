@@ -65,14 +65,13 @@ export class JavascriptCellHandler extends BaseCellHandler {
         render(this.getControls(), this.elements.topControlsElement);
         
         this.outputElement = new ConsoleOutputElement();
-        this.outputElement.logs = [];
 
         const htmlOutput = document.createElement("div");
 
         render(html`${this.outputElement}${htmlOutput}`, this.elements.bottomElement);
 
         const output: {method: string; data: any[]}[] = [];
-        this.outputElement.logs = [];
+        this.outputElement.logs = output;
 
         // For deduplication, limits the updates to only one per animation frame.
         let hasUpdateScheduled = false;
@@ -147,12 +146,13 @@ export class JavascriptCellHandler extends BaseCellHandler {
                 }
             }
         }
+        this.outputElement.logs = [...output];
 
         if (this.lastRunId === currentRunId) {
             this.isCurrentlyRunning = false;
             render(this.getControls(), this.elements.topControlsElement);
         }
-        this.outputElement.logs = output;
+
 
     }
 

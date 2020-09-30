@@ -20,8 +20,8 @@ const baseConfig = {
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.d.ts'],
         alias: {
-            "react": "preact/compat",
-            "react-dom": "preact/compat"
+            "react": path.resolve("./node_modules/preact/compat"),
+            "react-dom": path.resolve("./node_modules/preact/compat")
         }
     },
     optimization: {

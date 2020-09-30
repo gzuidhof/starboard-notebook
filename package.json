@@ -1,6 +1,6 @@
 {
   "name": "starboard-notebook",
-  "version": "0.4.13",
+  "version": "0.4.14",
   "description": "Starboard Notebook",
   "author": "Guido Zuidhof <me@guido.io>",
   "funding": {
@@ -67,7 +67,7 @@
     "@spectrum-web-components/icons-ui": "^0.1.0",
     "@spectrum-web-components/icons-workflow": "^0.2.0",
     "babel-walk": "^3.0.0",
-    "console-feed": "^2.8.11",
+    "console-feed-modern": "^3.0.2",
     "eol": "^0.9.1",
     "idb-keyval": "^3.2.0",
     "iframe-resizer": "^4.2.10",
@@ -77,9 +77,9 @@
     "markdown-it": "^10.0.0",
     "markdown-it-prism": "^2.1.0",
     "monaco-editor": "^0.20.0",
-    "preact": "^10.4.6",
+    "preact": "^10.5.3",
     "prismjs": "^1.20.0",
-    "starboard-python": "0.1.6",
+    "starboard-python": "0.2.2",
     "uuidv4": "^6.0.6"
   }
 }
