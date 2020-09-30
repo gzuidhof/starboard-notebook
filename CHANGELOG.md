@@ -1,12 +1,17 @@
 # Changelog
 
+## Release 0.4.15
+**Date:** 2020-09-30
+
+* Remove the `(experimental)` tag for Python support - it's pretty solid.
+* The Pyodide URL can now be overried using `window.pyodideArtifactsUrl`, useful if you want to use Python support entirely on localhost.
+
 ## Release 0.4.14
 **Date:** 2020-09-30
 
 * Less experimental Python support, matplotlib and html output (e.g. from Pandas) now works.
 * PyProxies now have special support when shown in the console output.
 * Console output no longer chokes on huge objects (e.g. the `pyodide` object).
-* The Pyodide URL can now be overried using `window.pyodideArtifactsUrl`, useful if you want to use Python support entirely on localhost.
 
 ## Release 0.4.13
 **Date:** 2020-09-17
