@@ -135,7 +135,7 @@ export class CellElement extends LitElement {
 
             <!-- Gutter (left line of the cell) -->
             <div class="cell-gutter cell-gutter-corner">
-                <button @click=${() => this.toggleProperty("collapsed")} class="cell-gutter-button" title=${this.cell.properties.collapsed ? "Maximize cell" : "Minimize cell"})></button>
+                <button @click=${() => this.toggleProperty("collapsed")} class="cell-gutter-button" title=${this.cell.properties.collapsed ? "Maximize cell" : "Minimize cell"}></button>
             </div>
             <div class="cell-gutter cell-gutter-top">
                 <button class="cell-gutter-button" title="This gutter button doesn't do anything yet.."></button>
