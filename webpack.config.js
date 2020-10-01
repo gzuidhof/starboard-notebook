@@ -27,6 +27,7 @@ const baseConfig = {
     optimization: {
         usedExports: true,
     },
+    stats: "minimal",
     module: {
         rules: [{
             test: /\.tsx?$/,
