@@ -81,7 +81,6 @@ export class JavascriptCellHandler extends BaseCellHandler {
         } else if (isProbablyTemplateResult(val)) {
             render(html`${val}`, htmlOutput);
         } else {
-            // console.log(val, val instanceof TemplateResult);
             if (val !== undefined) { // Don't show undefined output
                 if (outVal.error) {
                     console.error(val); // NOTE: perhaps problematic for async code, don't want to loop this!

@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.5.0
+**Date:** 2020-10-01
+
+* No changes from 0.4.16, but solid Python support deserves a minor update.
+
 ## Release 0.4.16
 **Date:** 2020-10-01
 
