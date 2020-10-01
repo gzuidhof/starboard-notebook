@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.5.1
+**Date:** 2020-10-01
+
+* Updated to Python plugin `starboard-python` 0.2.6, which prints fewer messages to the console when loading packages.
+
 ## Release 0.5.0
 **Date:** 2020-10-01
 
