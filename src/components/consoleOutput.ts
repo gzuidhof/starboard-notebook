@@ -8,6 +8,7 @@ import { render, createElement as h } from 'preact/compat';
 /* eslint @typescript-eslint/ban-ts-comment: off */
 //@ts-ignore
 import { Console } from "console-feed-modern";
+import { ConsoleCatcher, Message } from "src/console/console";
 
 interface IProps {
     logs: any[];
@@ -21,12 +22,43 @@ const StarboardConsoleOutput = (props: IProps) => {
 
 @customElement('starboard-console-output')
 export class ConsoleOutputElement extends LitElement {
+    private logHook: (m: Message) => any;
 
     @property({attribute: false})
     public logs: any[] = [];
 
+    constructor() {
+        super();
+        this.logHook = (msg) => {
+            this.logs.push(msg); 
+            this.requestUpdate();
+        };
+    }
+
     createRenderRoot() {
         return this;
+    }
+
+    hook(consoleCatcher: ConsoleCatcher) {
+        consoleCatcher.hook(this.logHook);
+    }
+
+    unhook(consoleCatcher: ConsoleCatcher) {
+        consoleCatcher.unhook(this.logHook);
+    }
+
+    async unhookAfterOneTick(consoleCatcher: ConsoleCatcher) {
+        return new Promise(resolve => window.setTimeout(() => 
+            {
+                this.unhook(consoleCatcher);
+                resolve();
+            }, 0
+        ));
+    }
+
+    addEntry(msg: Message) {
+        this.logs.push(msg);
+        this.requestUpdate();
     }
 
     render() {

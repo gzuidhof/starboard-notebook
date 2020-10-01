@@ -67,6 +67,7 @@ export interface RuntimeExports {
             ClockIcon: IconTemplate;
             PlayCircleIcon: IconTemplate;
             TextEditIcon: IconTemplate;
+            GearsIcon: IconTemplate;
         };
     };
     elements: {

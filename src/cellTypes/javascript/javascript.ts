@@ -11,9 +11,8 @@ import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workfl
 import { ConsoleOutputElement } from "../../components/consoleOutput";
 import { StarboardTextEditor } from '../../components/textEditor';
 import { Cell } from "../../types";
-import { isProbablyModule, isProbablyTemplateResult } from "./util";
+import { isProbablyTemplateResult } from "./util";
 import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../../runtime";
-import { Message } from "../../console/console";
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
     name: "Javascript",
@@ -31,7 +30,7 @@ export class JavascriptCellHandler extends BaseCellHandler {
     private isCurrentlyRunning = false;
     private lastRunId = 0;
 
-    private outputElement?: {logs: any};
+    private outputElement?: ConsoleOutputElement;
 
     constructor(cell: Cell, runtime: Runtime) {
         super(cell, runtime);
@@ -65,55 +64,21 @@ export class JavascriptCellHandler extends BaseCellHandler {
         render(this.getControls(), this.elements.topControlsElement);
         
         this.outputElement = new ConsoleOutputElement();
+        this.outputElement.hook(this.runtime.consoleCatcher);
 
         const htmlOutput = document.createElement("div");
-
         render(html`${this.outputElement}${htmlOutput}`, this.elements.bottomElement);
 
-        const output: {method: string; data: any[]}[] = [];
-        this.outputElement.logs = output;
-
-        // For deduplication, limits the updates to only one per animation frame.
-        let hasUpdateScheduled = false;
-
-        const callback = (msg: Message) => {
-            msg.data.forEach((e, i) => {
-                if (isProbablyModule(e)) {
-                    msg.data[i] = Object.assign({}, e);
-                }
-            });
-
-            output.push(msg); 
-            if (!hasUpdateScheduled) {
-                window.setTimeout(() => {
-                    if (this.outputElement) {
-                        this.outputElement.logs = [...output];
-                    }
-                    hasUpdateScheduled = true;
-                });
-            }
-        };
-
-        this.runtime.consoleCatcher.hook(callback);
         const outVal = await this.jsRunner.run(this.cell.textContent);
 
-        await new Promise(resolve => window.setTimeout(() => 
-            {
-                this.runtime.consoleCatcher.unhook(callback);
-                resolve();
-            }, 0
-        ));
+        // Not entirely sure this is necessary anymore, but we had to wait one tick with unhooking
+        // as some console messages are delayed by one tick it seems.
+        await this.outputElement.unhookAfterOneTick(this.runtime.consoleCatcher);
 
         const val = outVal.value;
-        if (isProbablyModule(val)) {
-            output.push({
-                method: "result",
-                data: [Object.assign({}, val)]
-            });
-        } else if (val instanceof HTMLElement) {
+        if (val instanceof HTMLElement) {
             htmlOutput.appendChild(val);  
         } else if (isProbablyTemplateResult(val)) {
-            // console.log("Val is TemplateResult");
             render(html`${val}`, htmlOutput);
         } else {
             // console.log(val, val instanceof TemplateResult);
@@ -127,33 +92,30 @@ export class JavascriptCellHandler extends BaseCellHandler {
                         if (stackToPrint.startsWith(errMsg)) { // Prevent duplicate error msg in Chrome
                             stackToPrint = stackToPrint.substr(errMsg.length);
                         }
-                        output.push({
+                        this.outputElement.addEntry({
                             method: "error",
                             data: [errMsg, stackToPrint]
                         });
                     } else {
-                        output.push({
+                        this.outputElement.addEntry({
                             method: "error",
                             data: [val]
                         });
                     }
 
                 } else {
-                    output.push({
+                    this.outputElement.addEntry({
                         method: "result",
                         data: [val]
                     });
                 }
             }
         }
-        this.outputElement.logs = [...output];
 
         if (this.lastRunId === currentRunId) {
             this.isCurrentlyRunning = false;
             render(this.getControls(), this.elements.topControlsElement);
         }
-
-
     }
 
     focusEditor() {

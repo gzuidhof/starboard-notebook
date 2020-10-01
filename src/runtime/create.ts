@@ -16,7 +16,7 @@ import { debounce } from "@github/mini-throttle";
 import { CellElement } from "../components/cell";
 import { cellControlsTemplate } from "../components/controls";
 import { StarboardLogo } from "../components/logo";
-import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon, TextEditIcon } from "@spectrum-web-components/icons-workflow";
+import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon, TextEditIcon, GearsIcon } from "@spectrum-web-components/icons-workflow";
 import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
 import { createCellProxy } from "../components/helpers/cellProxy";
 import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
@@ -170,6 +170,7 @@ function createExports(): RuntimeExports {
         ClockIcon: ClockIcon,
         PlayCircleIcon: PlayCircleIcon,
         TextEditIcon: TextEditIcon,
+        GearsIcon: GearsIcon,
       }
     },
     core: {

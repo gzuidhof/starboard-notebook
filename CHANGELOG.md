@@ -1,5 +1,15 @@
 # Changelog
 
+## Release 0.4.16
+**Date:** 2020-10-01
+
+* Removed unnecessary empty line that appeared after some types of console output.
+* Support for printing a dynamically imported module (e.g. `console.log(await import("https://example.com/my-library.js"))`).
+* Remove default `line-height` from CSS on the document body, this makes console output smaller and fixes the height mismatch between printed variables and strings.
+* *(internal change)*: Update to `starboard-python` plugin version 0.2.4
+* *(internal change)*: Simplified console hooking and logging interface in Javascript cells and other plugin-based languages (such as Python).
+* *(internal change)*: Add `GearsIcon` to built-in icons (the Python plugin no longer needs to include it now).
+
 ## Release 0.4.15
 **Date:** 2020-09-30
 

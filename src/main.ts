@@ -23,7 +23,7 @@ window.svg = lithtml.svg;
 window.litHtml = lithtml;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// window.initialNotebookContent = require("./debugNotebooks/python.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/importLibrary.nb").default;
 
 document.body.innerHTML += `
 <base target="_parent" />

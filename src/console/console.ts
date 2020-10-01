@@ -16,7 +16,10 @@ export type Methods =
 | 'time'
 | 'timeEnd'
 | 'count'
-| 'assert';
+| 'assert'
+// Technically the next two aren't methods.. But it's what the library wants
+| 'result'
+| 'command';
 
 export interface Message {
     method: Methods;
