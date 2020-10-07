@@ -10,6 +10,7 @@ import { CSS_CELL_TYPE_DEFINITION } from "./css";
 import { Cell } from "../types";
 import { Runtime, CellTypeDefinition } from "../runtime";
 import { MapRegistry } from "../runtime/registry";
+import { ES_MODULE_CELL_TYPE_DEFINITION } from "./esm/esm";
 
 const PLAINTEXT_CELL_TYPE_DEFINITION = {
     name: "Plaintext",
@@ -20,6 +21,7 @@ const PLAINTEXT_CELL_TYPE_DEFINITION = {
 const builtinCellTypes = [
     MARKDOWN_CELL_TYPE_DEFINITION,
     JAVASCRIPT_CELL_TYPE_DEFINITION,
+    ES_MODULE_CELL_TYPE_DEFINITION,
     HTML_CELL_TYPE_DEFINITION,
     CSS_CELL_TYPE_DEFINITION,
     PLAINTEXT_CELL_TYPE_DEFINITION,

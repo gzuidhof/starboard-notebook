@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.5.3
+**Date:** 2020-10-08
+
+* New ES Module cell type (`esm`), that executes code using `import()`, which allows you to use top-level imports without await. Anything you `export` is put on the `window` object.
+* The left border of a focused cell text editor now reflects the cell type as a visual cue.
+
 ## Release 0.5.2
 **Date:** 2020-10-06
 

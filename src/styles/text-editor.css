@@ -14,7 +14,7 @@
 }
 
 .cm-wrap.cm-focused {
-    outline: 1px solid #ccc !important;
+    outline: 1px solid transparent !important;
 }
 
 .cm-activeLine {
@@ -38,6 +38,10 @@
     font-size: 14px;
     box-sizing: border-box;
     color: #000;
+}
+
+.starboard-text-editor:focus-within {
+    border: 1px solid #ccc;
 }
 
 .cm-content *::selection {
@@ -94,8 +98,30 @@
     border: 1px solid #00000062;
 }
 
-
-
 .cell-top:hover .starboard-text-editor-controls, .cell-bottom:hover .starboard-text-editor-controls {
     display: flex
+}
+
+.celltype-js .starboard-text-editor:focus-within {
+    border-left-color: #F0DB4F;
+}
+
+.celltype-html .starboard-text-editor:focus-within {
+    border-left-color: #fb8568;
+}
+
+.celltype-py .starboard-text-editor:focus-within {
+    border-left-color: #77b8ed;
+}
+
+.celltype-css .starboard-text-editor:focus-within {
+    border-left-color: #5e7cf8;
+}
+
+.celltype-md .starboard-text-editor:focus-within {
+    border-left-color: #bbb;
+}
+
+.celltype-esm .starboard-text-editor:focus-within {
+    border-left-color: #ec9afa;
 }

@@ -136,7 +136,7 @@ export class CellElement extends LitElement {
         const emit = this.runtime.controls.emit;
 
         return html`
-        <section class="cell-container ${this.cell.cellType} ${this.cell.properties.collapsed ? "collapsed" : ""}">
+        <section class="cell-container celltype-${this.cell.cellType}${this.cell.properties.collapsed ? " collapsed" : ""}">
 
             <!-- Gutter (left line of the cell) -->
             <div class="cell-gutter cell-gutter-corner">
