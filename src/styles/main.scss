@@ -6,6 +6,7 @@
 @import "./controls.css";
 @import "./popover.css";
 @import "./gutter.css";
+@import "./text-editor.css";
 
 @import "./github-markdown.css";
 
@@ -41,21 +42,6 @@ body {
     text-decoration: underline;
 }
 
-.cm-gutters {
-    background-color: #fdfdfd;
-}
-
-.cm-gutter-lineNumber {
-    min-width: 24px;
-}
-
-.cm-wrap.cm-focused {
-    outline: 1px solid #ccc !important;
-}
-
-.cm-activeLine {
-    background-color: #33333308 !important;
-}
 
 .starboard-editor-picker-overlay {
     position: absolute;
@@ -70,34 +56,4 @@ body {
 
 .starboard-editor-picker-overlay * {
     margin: 0;
-}
-
-.starboard-text-editor {
-    position: relative;
-    border: 1px solid #ddd;
-    background-color: #fbfbfb;
-    width: 100%;
-    height: 100%;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-
-:not(pre) > code[class*="language-"], pre[class*="language-"] {
-    background-color: #f5f5f5 !important;
-}
-
-.starboard-text-editor pre[class*="language-"] {
-    margin: 0 !important;
-    min-height: 40px;
-}
-
-.monaco-editor {
-    outline: 1px solid #eee;
-    outline-offset: -1px;
-    min-height: 40px;
-}
-
-.starboard-text-editor pre[class*="language-"] {
-    padding: 0 1em;
 }

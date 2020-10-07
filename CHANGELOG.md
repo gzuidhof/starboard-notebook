@@ -1,9 +1,23 @@
 # Changelog
 
+## Release 0.5.2
+**Date:** 2020-10-06
+
+* CodeMirror is now the default editor which loads without user input.
+* The chosen editor is now persisted (in LocalStorage).
+* Editor improvements:
+  * Added `Copy Text` button to cells which copies the text's content to clipboard.
+  * Installed Python plugin for CodeMirror (this enables functionality like `ctrl+/` to comment lines and code folding).
+  * Codemirror styling overhaul, it is now closer to that of the Prism highlighter and the Monaco editor.
+  * *(internal change)*: Updated CodeMirror editor to 0.13.0
+* Popovers now smartly position themselves inside the frame (before they would overflow below the page when selecting a cell type).
+* Enable Python support in standalone notebooks.
+* Update to Python plugin `starboard-python` 0.2.7, which renders HTML elements output by Python code.
+
 ## Release 0.5.1
 **Date:** 2020-10-01
 
-* Updated to Python plugin `starboard-python` 0.2.6, which prints fewer messages to the console when loading packages.
+* Update to Python plugin `starboard-python` 0.2.6, which prints fewer messages to the console when loading packages.
 
 ## Release 0.5.0
 **Date:** 2020-10-01

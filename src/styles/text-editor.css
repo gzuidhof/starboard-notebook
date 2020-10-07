@@ -1,0 +1,101 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
+.cm-gutters {
+    background-color: #fbfbfb !important;
+    border-right: 1px solid transparent !important;
+    color: #00d1b2 !important;
+}
+
+.cm-gutter-lineNumber {
+    min-width: 24px;
+}
+
+.cm-wrap.cm-focused {
+    outline: 1px solid #ccc !important;
+}
+
+.cm-activeLine {
+    background-color: transparent !important;
+}
+
+.cm-focused .cm-activeLine {
+    background-color:  #33333308 !important;
+}
+
+.cm-selectionMatch {
+    background-color: #e1ebf5 !important;
+}
+
+.starboard-text-editor {
+    position: relative;
+    border: 1px solid #ddd;
+    background-color: #fbfbfb;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    box-sizing: border-box;
+    color: #000;
+}
+
+.cm-content *::selection {
+    background-color: #00000014
+}
+
+
+:not(pre) > code[class*="language-"], pre[class*="language-"] {
+    background-color: #fbfbfb !important;
+}
+
+.starboard-text-editor pre[class*="language-"] {
+    margin: 0 !important;
+    min-height: 40px;
+}
+
+.monaco-editor {
+    outline: 1px solid #eee;
+    outline-offset: -1px;
+    min-height: 40px;
+}
+
+.starboard-text-editor pre[class*="language-"] {
+    padding: 0 1em;
+}
+
+.starboard-text-editor-controls {
+    position: absolute;
+    right: 0;
+    top: 1px;
+    display: none;
+    z-index: 10;
+}
+
+.starboard-text-editor-controls button {
+    background: #fdfdfd;
+    color: #999;
+    opacity: 0.6;
+
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    padding: 0px 1px;
+    font-size: 0.8em;
+    font-family: monospace;
+    margin: 0 2px;
+}
+
+.starboard-text-editor-controls button:hover {
+    background: #fefefe;
+    opacity: 1.0;
+    color: #555;
+    border: 1px solid #00000062;
+}
+
+
+
+.cell-top:hover .starboard-text-editor-controls, .cell-bottom:hover .starboard-text-editor-controls {
+    display: flex
+}

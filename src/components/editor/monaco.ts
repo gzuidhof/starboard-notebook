@@ -117,7 +117,7 @@ function addEditorKeyboardShortcuts(
 
 }
 
-export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {language?: MonacoEditorSupportedLanguage; wordWrap?: WordWrapSetting}, runtime: Runtime) {
+export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {language?: MonacoEditorSupportedLanguage; wordWrap?: WordWrapSetting}, runtime: Runtime) {
     const editor = monaco.editor.create(element, {
         value: cell.textContent,
         language: opts.language,
@@ -143,7 +143,6 @@ export async function createMonacoEditor(element: HTMLElement, cell: Cell, opts:
     const resizeDebounced = debounce(() => editor.layout(), 100);
     window.addEventListener("resize", resizeDebounced);
     makeEditorResizeToFitContent(editor);
-
 
     addEditorKeyboardShortcuts(editor, runtime.controls.emit, cell.id);
 

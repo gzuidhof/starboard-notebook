@@ -12,15 +12,16 @@ import { bracketMatching } from "@codemirror/next/matchbrackets";
 import { closeBrackets } from "@codemirror/next/closebrackets";
 import { codeFolding, foldKeymap, foldGutter } from "@codemirror/next/fold";
 
-import { defaultHighlighter } from "@codemirror/next/highlight";
+import { highlighter } from "@codemirror/next/highlight";
 import { lineNumbers } from "@codemirror/next/gutter";
 import { commentKeymap } from "@codemirror/next/comment";
 
 import { javascript, javascriptSyntax } from "@codemirror/next/lang-javascript";
+import { python, pythonSyntax } from "@codemirror/next/lang-python";
 import { css, cssSyntax } from "@codemirror/next/lang-css";
 import { html, htmlSyntax } from "@codemirror/next/lang-html";
 import { history, historyKeymap } from "@codemirror/next/history";
-import { autocomplete, autocompleteKeymap, completeFromList } from "@codemirror/next/autocomplete";
+import { autocompletion, completionKeymap, completeFromList } from "@codemirror/next/autocomplete";
 import { searchKeymap } from "@codemirror/next/search";
 import { Cell } from "../../types";
 import { Runtime } from "../../runtime";
@@ -38,6 +39,28 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
         }
     });
 
+    const starboardHighlighter = highlighter({
+        deleted: {textDecoration: "line-through"},
+        inserted: {textDecoration: "underline"},
+        link: {textDecoration: "underline"},
+        strong: {fontWeight: "bold"},
+        emphasis: {fontStyle: "italic"},
+        keyword: {color: "#07A"},
+        "atom, bool": {color: "#219"},
+        number: {color: "#164"},
+        string: {color: "#b11"},
+        "regexp, escape, string#2": {color: "#c22"},
+        "variableName definition": {color: "#406"},
+        typeName: {color: "#085"},
+        className: {color: "#167"},
+        "name#2": {color: "#256"},
+        "propertyName definition": {color: "#00c"},
+        comment: {color: "#080"},
+        meta: {color: "#555"},
+        invalid: {color: "#f00"},
+    });
+
+
     const editorView = new EditorView(
         {
             state: EditorState.create(
@@ -51,11 +74,12 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
                         foldGutter(),
                         highlightSpecialChars(),
 
-                        defaultHighlighter,
+                        starboardHighlighter,
                         highlightActiveLine(),
                         highlightSelectionMatches(),
 
                         ...(opts.language === "javascript" ? [javascript(), javascriptSyntax.languageData.of({autocomplete: createJSCompletion()})]: []),
+                        ...(opts.language === "python" ? [python(), pythonSyntax]: []),
                         ...(opts.language === "css" ? [css(), cssSyntax]: []),
                         ...(opts.language === "html" ? [html(), htmlSyntax]: []),
                         history(),
@@ -63,12 +87,12 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
                         keymap([
                             ...defaultKeymap,
                             ...commentKeymap,
-                            ...autocompleteKeymap,
+                            ...completionKeymap,
                             ...historyKeymap,
                             ...foldKeymap,
                             ...searchKeymap,
                         ]),
-                        autocomplete(),
+                        autocompletion(),
                         listen
                     ]
                 })},

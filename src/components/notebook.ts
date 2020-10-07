@@ -71,6 +71,9 @@ export class StarboardNotebookElement extends LitElement {
       }
     };
 
+    // Register default plugins, when more default plugins are added this should be moved elsewhere
+    registerPython();
+
     document.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
         e.preventDefault();
@@ -81,9 +84,6 @@ export class StarboardNotebookElement extends LitElement {
 
   async notebookInitialize() {
     await this.updateComplete;
-    // Register default plugins, when more default plugins are added this should be moved elsewhere
-    registerPython();
-
     this.runtime.controls.runAllCells({onlyRunOnLoad: true});
   }
 

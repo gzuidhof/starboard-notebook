@@ -10,9 +10,9 @@
 }
 
 .cell-popover {
-    position: absolute;
-    top: 2px;
-    right: calc(100% + 4px);
+    /* position: absolute; */
+    /* top: 2px; */
+    /* right: calc(100% + 4px); */
     background-color: #fff;
     z-index: 10;
     box-shadow: 0 0 2px 1px #0000001a;
@@ -61,6 +61,7 @@
 }
 
 .cell-select-editor-popover {
+    position: absolute;
     right: initial;
     top: 100%;
     display: none;

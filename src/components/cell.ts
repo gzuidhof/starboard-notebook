@@ -3,6 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { LitElement, html, property, customElement, query } from 'lit-element';
+import { createPopper } from '@popperjs/core';
 import { toggleCellFlagProperty } from '../content/notebookContent';
 
 import { BaseCellHandler } from '../cellTypes/base';
@@ -103,9 +104,13 @@ export class CellElement extends LitElement {
         });
     }
 
-    togglePopover(element: HTMLElement) {
+    togglePopover(parent:HTMLElement, element: HTMLElement) {
         this.performUpdate(); // This update here is so that if a new cell type or property has been registered since it is visible.
         element.classList.toggle("popover-active");
+
+        createPopper(parent, element, {placement: "left-start"});
+        // console.log(element.scrollHeight, document.body.scrollHeight);
+
         if (element.classList.contains("popover-active")) {
         // TODO: refactor this. the idea is to detect clicks outside the element to close the popover.
             setTimeout(() => {
@@ -169,7 +174,7 @@ export class CellElement extends LitElement {
                 
                 <!-- Language selection -->
                 <div class="cell-popover-root">
-                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${() => this.togglePopover(this.typePickerElement)}>${this.cellTypeDefinition.name}</button>
+                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)}>${this.cellTypeDefinition.name}</button>
                     <div class="cell-popover cell-type-popover">
                         <b style="margin-bottom: 6px">Change Cell Type</b>
 
@@ -184,7 +189,7 @@ export class CellElement extends LitElement {
 
                 <!-- Properties change button -->
                 <div class="cell-popover-root">
-                    <button @click=${() => this.togglePopover(this.propertiesPickerElement)} class="cell-controls-button" title="Change Cell Properties">
+                    <button @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)} class="cell-controls-button" title="Change Cell Properties">
                         ${BooleanIcon({ width: 18, height: 18 })}
                     </button>
                     <div class="cell-popover cell-properties-popover">
