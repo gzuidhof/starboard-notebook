@@ -108,7 +108,7 @@ export class StarboardTextEditor extends LitElement {
         currentEditor = "codemirror";
         localStorage[EDITOR_PREFERENCE_KEY] = "codemirror";
         if (!codeMirrorModule) {
-            codeMirrorModule = import(/* webpackChunkName: "codemirror-editor" */ "./editor/codeMirror");
+            codeMirrorModule = import(/* webpackChunkName: "codemirror" */ "./editor/codeMirror");
 
             document.querySelectorAll(".cell-select-editor-popover").forEach((e) => e.innerHTML = "<b>Loading CodeMirror editor..</b>");
             notifyOnEditorChosen.forEach((c) => c());
@@ -128,7 +128,7 @@ export class StarboardTextEditor extends LitElement {
         currentEditor = "monaco";
         localStorage[EDITOR_PREFERENCE_KEY] = "monaco";
         if (!monacoModule) {
-            monacoModule = import(/* webpackChunkName: "monaco-editor" */  "./editor/monaco");
+            monacoModule = import(/* webpackChunkName: "monaco" */  "./editor/monaco");
             document.querySelectorAll(".cell-select-editor-popover").forEach((e) => e.innerHTML = "<b>Loading Monaco editor..</b>");
             notifyOnEditorChosen.forEach((c) => c());
             notifyOnEditorChosen = [];
