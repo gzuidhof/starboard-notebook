@@ -8,13 +8,10 @@ const webpack = require('webpack')
 const pkg = require("./package.json");
 
 const baseConfig = {
-    entry: {
-        starboardNotebook: './src/main.ts',
-    },
+    entry: ['./src/publicPath.ts', './src/main.ts'],
     output: {
         path: path.resolve(__dirname, 'dist/'),
         filename: "starboard-notebook.js",
-        publicPath: "./",
         chunkFilename: '[name].chunk.js',
     },
     resolve: {

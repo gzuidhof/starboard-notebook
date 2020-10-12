@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.5.4
+**Date:** 2020-10-12
+
+* Better support for self-hosting: you can now use a CDN build on any webpage and any dynamic imports still work. This makes the minimal standalone notebook example just a HTML file.
+* You can override the root of the starboard notebook build artifacts by setting `window.starboardArtifactsUrl`.
+
 ## Release 0.5.3
 **Date:** 2020-10-08
 
