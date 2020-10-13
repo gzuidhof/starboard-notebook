@@ -15,8 +15,6 @@ Create a HTML file like such:
     </head>
     <body>
 
-        <!-- Set it using a script tag with type="application/vnd.starboard.nb" -->
-
 <script type="application/vnd.starboard.nb">
 %% md
 # Introducing Starboard Notebook
@@ -37,8 +35,22 @@ const greeting = "Hello world!";
 greeting
 </script>
 
-        <!-- OR you can set the notebook text using Javascript -->
+        <script src="https://unpkg.com/starboard-notebook@0.5.4/dist/starboard-notebook.js"></script>
+    </body>
+</html>
+```
 
+Or you can set the notebook content using Javascript:
+```html
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Starboard Notebook</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link href="https://unpkg.com/starboard-notebook@0.5.4/dist/starboard-notebook.css" rel="stylesheet">
+    </head>
+    <body>
         <script>
             // The content of the notebook as a string, remember to escape the string properly.
             window.initialNotebookContent = `
