@@ -83,6 +83,9 @@ window.iFrameComponent[0].iFrameResizer.sendMessage({type: "RELOAD"});
 
 It is currently not possible to send and receive custom messages (easily) - but that will definitely be a feature in the future if someone needs it.
 
+## Example
+
+View the [example HTML file here](https://raw.githack.com/gzuidhof/starboard-notebook/master/docs/integration-example.html).
 
 
 
