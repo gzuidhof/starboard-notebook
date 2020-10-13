@@ -14,7 +14,7 @@ import { Runtime } from '../runtime';
 import { createRuntime } from '../runtime/create';
 
 // @ts-ignore
-import {registerPython} from "starboard-python/dist/index.js";
+import { registerPython } from "starboard-python/dist/index.js";
 
 declare global {
   interface Window {
@@ -40,6 +40,7 @@ export class StarboardNotebookElement extends LitElement {
   }
 
   private contentHasBeenSetFromParentIframe = false;
+  private hasHadInitialRun = false;
 
   connectedCallback() {
     super.connectedCallback();
@@ -62,9 +63,10 @@ export class StarboardNotebookElement extends LitElement {
         if (msg.type === "SET_NOTEBOOK_CONTENT") {
           if (this.contentHasBeenSetFromParentIframe) return; // be idempotent
           this.runtime.content = textToNotebookContent(msg.data);
+          this.contentHasBeenSetFromParentIframe = true;
+          this.hasHadInitialRun = false;
           this.notebookInitialize();
           this.performUpdate();
-          this.contentHasBeenSetFromParentIframe = true;
         } else if (msg.type === "RELOAD") {
           window.location.reload();
         }
@@ -84,12 +86,15 @@ export class StarboardNotebookElement extends LitElement {
 
   async notebookInitialize() {
     await this.updateComplete;
-    this.runtime.controls.runAllCells({onlyRunOnLoad: true});
+    if (!this.hasHadInitialRun) {
+      this.runtime.controls.runAllCells({onlyRunOnLoad: true});
+      this.hasHadInitialRun = true;
+    }
   }
 
   firstUpdated(changedProperties: any) {
     super.firstUpdated(changedProperties);
-    if (window.initialNotebookContent) {
+    if (this.runtime.content.cells.length > 0) {
       this.notebookInitialize();
     }
   }

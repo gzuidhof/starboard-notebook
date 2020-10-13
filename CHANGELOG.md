@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.5.5
+**Date:** 2020-10-13
+
+* You can now define notebook content in a `<script type="application/vnd.starboard.nb">` tag and it will be automatically loaded.
+
 ## Release 0.5.4
 **Date:** 2020-10-12
 

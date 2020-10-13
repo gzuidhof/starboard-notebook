@@ -30,8 +30,22 @@ import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
+
+function getInitialContent() {
+  if (window.initialNotebookContent) {
+    return textToNotebookContent(window.initialNotebookContent);
+  }
+
+  const notebookContentElement = document.querySelector('script[type="application/vnd.starboard.nb"]');
+  if (notebookContentElement) {
+    return textToNotebookContent((notebookContentElement as HTMLElement).innerText);
+  }
+
+  return { frontMatter: "", cells: [] };
+}
+
 export function createRuntime(notebook: StarboardNotebookElement): Runtime {
-    const content =  (window as any).initialNotebookContent ? textToNotebookContent((window as any).initialNotebookContent) : { frontMatter: "", cells: [] };
+    const content = getInitialContent();
   
     /** Runtime without any of the functions **/
     const rt = {

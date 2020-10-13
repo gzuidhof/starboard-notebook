@@ -14,8 +14,33 @@ Create a HTML file like such:
         <link href="https://unpkg.com/starboard-notebook@0.5.4/dist/starboard-notebook.css" rel="stylesheet">
     </head>
     <body>
+
+        <!-- Set it using a script tag with type="application/vnd.starboard.nb" -->
+
+<script type="application/vnd.starboard.nb">
+%% md
+# Introducing Starboard Notebook
+Starboard brings cell-by-cell notebooks to the browser, no code is running on the backend here!
+It's probably the quickest way to visualize some data with interactivity, do some prototyping, or build a rudimentary dashboard.
+
+#### Some features 
+* Mix Markdown, HTML, CSS and Javascript.
+* The file format is a plaintext file, which plays nice with version control systems like git.
+* Runs entirely in your browser, everything is static: no server, no setup and no build step.
+
+> Tip: Press the ▶ Play button on the left to run a cell's code.
+%% js
+// You write vanilla Javascript
+const greeting = "Hello world!";
+
+// The last statement in a cell will be displayed if it is not undefined.
+greeting
+</script>
+
+        <!-- OR you can set the notebook text using Javascript -->
+
         <script>
-            // The content of the notebook as a string
+            // The content of the notebook as a string, remember to escape the string properly.
             window.initialNotebookContent = `
 %% md
 # Introducing Starboard Notebook
@@ -41,6 +66,9 @@ greeting`;
 ```
 
 And you're done! Serve this html file using any web server or from a static host (e.g. Vercel, Netlify, Github Pages, S3, ...) and upon visiting the webpage there should be a fully functional notebook :).
+
+### Caveat when using a `<script type="application/vnd.starboard.nb>` tag 
+Because of the way browsers parse a page, you can't have the text `"</script>"` (or anything similar such as `"</ScrIpT >"`) anywhere in your notebook content as it will otherwise terminate the outer script. Use the Javascript method instead if your notebook may contain such a tag.
 
 ## Other options you can set
 ```javascript
