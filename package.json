@@ -1,6 +1,6 @@
 {
   "name": "starboard-notebook",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "Starboard Notebook",
   "author": "Guido Zuidhof <me@guido.io>",
   "funding": {
@@ -34,6 +34,7 @@
   "devDependencies": {
     "@types/iframe-resizer": "^3.5.8",
     "@types/jest": "^25.2.1",
+    "@types/katex": "^0.11.0",
     "@types/markdown-it": "0.0.9",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.7.0",
@@ -64,6 +65,7 @@
     "@babel/parser": "^7.10.5",
     "@codemirror/next": "^0.13.0",
     "@github/mini-throttle": "^2.0.1",
+    "@iktakahiro/markdown-it-katex": "^4.0.1",
     "@popperjs/core": "^2.5.3",
     "@spectrum-web-components/icons-ui": "^0.1.0",
     "@spectrum-web-components/icons-workflow": "^0.2.0",
@@ -71,6 +73,7 @@
     "console-feed-modern": "^3.0.5",
     "eol": "^0.9.1",
     "iframe-resizer": "^4.2.10",
+    "katex": "^0.12.0",
     "lit-element": "^2.3.1",
     "lit-html": "^1.2.1",
     "markdown-it": "^10.0.0",
@@ -78,7 +81,7 @@
     "monaco-editor": "^0.21.0",
     "preact": "^10.5.3",
     "prismjs": "^1.20.0",
-    "starboard-python": "0.2.9",
+    "starboard-python": "0.2.10",
     "uuidv4": "^6.0.6"
   }
 }

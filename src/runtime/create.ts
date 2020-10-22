@@ -106,7 +106,8 @@ export function createRuntime(notebook: StarboardNotebookElement): Runtime {
           }
           if (focusNext) {
             window.setTimeout(() => {
-              cellElements[idxOfCell + 1].focusEditor();
+              const next = cellElements[idxOfCell + 1];
+              if (next) next.focusEditor();
             });
           }
         },

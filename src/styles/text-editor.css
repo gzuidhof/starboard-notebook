@@ -125,3 +125,8 @@
 .celltype-esm .starboard-text-editor:focus-within {
     border-left-color: #ec9afa;
 }
+
+.celltype-latex .starboard-text-editor:focus-within {
+    border-left-color: #329894;
+}
+

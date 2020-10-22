@@ -11,6 +11,7 @@ import { Cell } from "../types";
 import { Runtime, CellTypeDefinition } from "../runtime";
 import { MapRegistry } from "../runtime/registry";
 import { ES_MODULE_CELL_TYPE_DEFINITION } from "./esm/esm";
+import { LATEX_CELL_TYPE_DEFINITION } from "./latex";
 
 const PLAINTEXT_CELL_TYPE_DEFINITION = {
     name: "Plaintext",
@@ -24,6 +25,7 @@ const builtinCellTypes = [
     ES_MODULE_CELL_TYPE_DEFINITION,
     HTML_CELL_TYPE_DEFINITION,
     CSS_CELL_TYPE_DEFINITION,
+    LATEX_CELL_TYPE_DEFINITION,
     PLAINTEXT_CELL_TYPE_DEFINITION,
 ];
 

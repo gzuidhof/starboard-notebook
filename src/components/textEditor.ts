@@ -13,7 +13,7 @@ import { Cell } from "../types";
 import { Runtime } from "../runtime";
 import { copyToClipboard } from "./helpers/clipboard";
 
-export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";
+export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python" | "latex"; // latex is not actually supported..
 export type WordWrapSetting = "off" | "on" | "wordWrapColumn" | "bounded";
 
 const EDITOR_PREFERENCE_KEY = "starboard_notebook_text_editor_preference";

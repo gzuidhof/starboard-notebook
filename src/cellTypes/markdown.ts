@@ -12,9 +12,11 @@ import { TextEditIcon, PlayCircleIcon } from "@spectrum-web-components/icons-wor
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell } from "../types";
 import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
+import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 
 const md = new mdlib();
 hookMarkdownItToPrismHighlighter(md);
+hookMarkdownItToKaTeX(md);
 
 export const MARKDOWN_CELL_TYPE_DEFINITION = {
     name: "Markdown",

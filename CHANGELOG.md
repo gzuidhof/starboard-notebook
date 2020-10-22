@@ -1,9 +1,12 @@
 # Changelog
 
 ## Release 0.5.6
-**Date:** Unreleased (WIP)
+**Date:** 2020-10-22
 
 * A cell type can now have multiple cell type identifiers (e.g. `"javascript"` and `"js"` map to the same definition), the longer version is now preferred.
+* LaTeX math typesetting support through [*KaTeX*](https://katex.org/) is now available in markdown cells.
+* New `latex` cell type that renders contents using KaTeX.
+* Fix out of bounds error when executing last cell using `Shift+Enter` shortcut.
 
 ## Release 0.5.5
 **Date:** 2020-10-13
