@@ -56,7 +56,10 @@ export interface CellTypeDefinition {
      * Name for human consumption, e.g. "Javascript"
      */
     name: string;
-    cellType: string;
+    /**
+     * Identifiers for this cell type, can be a single value (e.g. "html") or multiple (e.g. ["js", "javascript"])
+     */
+    cellType: string | string[];
 }
 
 /**

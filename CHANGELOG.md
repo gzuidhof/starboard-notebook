@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.5.6
+**Date:** Unreleased (WIP)
+
+* A cell type can now have multiple cell type identifiers (e.g. `"javascript"` and `"js"` map to the same definition), the longer version is now preferred.
+
 ## Release 0.5.5
 **Date:** 2020-10-13
 

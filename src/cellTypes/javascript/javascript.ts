@@ -16,7 +16,7 @@ import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } fro
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
     name: "Javascript",
-    cellType: "js",
+    cellType: ["javascript", "js"],
     createHandler: (c: Cell, r: Runtime) => new JavascriptCellHandler(c, r),
 };
 

@@ -14,7 +14,7 @@ import { ES_MODULE_CELL_TYPE_DEFINITION } from "./esm/esm";
 
 const PLAINTEXT_CELL_TYPE_DEFINITION = {
     name: "Plaintext",
-    cellType: "plaintext",
+    cellType: ["plaintext", "raw"],
     createHandler: (c: Cell, r: Runtime) => new DefaultCellHandler(c, r),
 };
 
@@ -40,10 +40,18 @@ export function getCellTypeDefinitionForCellType(cellType: string): CellTypeDefi
 }
 
 export function getAvailableCellTypes() {
-    return [...registry.values()];
+    return [...new Set(registry.values())];
 }
 
 // Singleton global value
 export const registry = new MapRegistry<string, CellTypeDefinition>();
-builtinCellTypes.forEach((e) => registry.set(e.cellType, e));
+builtinCellTypes.forEach((e) => {
+    if (typeof e.cellType === "string") {
+        registry.set(e.cellType, e);
+    } else {
+        e.cellType.forEach((ct) => {
+            registry.set(ct, e);
+        });
+    }
+});
 

@@ -18,7 +18,7 @@ hookMarkdownItToPrismHighlighter(md);
 
 export const MARKDOWN_CELL_TYPE_DEFINITION = {
     name: "Markdown",
-    cellType: "md",
+    cellType: ["markdown", "md"],
     createHandler: (c: Cell, r: Runtime) => new MarkdownCellHandler(c, r),
 };
 

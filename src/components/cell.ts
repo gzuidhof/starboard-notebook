@@ -98,9 +98,11 @@ export class CellElement extends LitElement {
         this.cellHandler.focusEditor();
     }
 
-    changeCellType(newCellType: string) {
+    changeCellType(newCellType: string | string[]) {
+        // If these are multiple cell types, take the first one
+        const newCellTypeIdentifier = typeof newCellType === "string" ? newCellType : newCellType[0];
         this.runtime.controls.emit({
-            id: this.cell.id, type: "CHANGE_CELL_TYPE", newCellType: newCellType,
+            id: this.cell.id, type: "CHANGE_CELL_TYPE", newCellType: newCellTypeIdentifier,
         });
     }
 
@@ -179,7 +181,9 @@ export class CellElement extends LitElement {
                         <b style="margin-bottom: 6px">Change Cell Type</b>
 
                         ${getAvailableCellTypes().map((ct) => html`
-                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float:right; font-size: 11px; font-family: monospace">${ct.cellType}</span></button>
+                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float:right; font-size: 11px; font-family: monospace">${
+                                typeof ct.cellType === "string" ? ct.cellType : ct.cellType[0]
+                        }</span></button>
                         `)
                         }
 
