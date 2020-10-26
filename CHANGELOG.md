@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.5.7
+**Date:** Unreleased
+
+* KaTeX `.ttf` fonts are no longer bundled as Starboard's supported browsers can understand `woff2` anyway.
+* `ipython3` cell type identifier now also maps to the Python (Pyodide) cell type.
+
 ## Release 0.5.6
 **Date:** 2020-10-22
 

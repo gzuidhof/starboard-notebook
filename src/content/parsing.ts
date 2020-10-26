@@ -6,6 +6,13 @@ import { split } from "eol";
 import { NotebookContent, Cell } from "../types";
 import { uuid } from "uuidv4";
 
+export const PreferredCellDelimiter = "# %%";
+
+// Any whitespace, [optionally "#" or "//" ], any whitespace, "%" at least twice, not followed by an alphanumeric char
+export const CellDelimiterRegex = /^\s*(#|\/\/)?%\s*{2,}^\w/; 
+
+export const CellTypeIdentifierRegex = /\s\[[a-zA-Z-_0-9]*\]/;
+
 export interface ParsedCell {
     type: string;
     properties: string[];
@@ -30,6 +37,7 @@ export function textToNotebookContent(text: string) {
   });
 
   const nbContent: NotebookContent = {
+      metadata: {},
       frontMatter,
       cells,
   };

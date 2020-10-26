@@ -66,6 +66,11 @@ const baseConfig = {
         {
             test: /\.ttf$|\.woff2$/,
             use: ['file-loader?name=[name].[ext]'],
+            exclude: [/.*KaTeX.*.ttf/],
+        },
+        {   // KaTeX ttf fonts are not omitted. Starboard only supports browsers that understand woff2 anyway.
+            test: /(KaTeX)?.*\.ttf$/,
+            use: ['file-loader?emitFile=false'],
         },
         {
             test: /.ico$|.svg$|.eot|woff$/,

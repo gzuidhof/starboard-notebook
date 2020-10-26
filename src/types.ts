@@ -38,6 +38,16 @@ export interface Cell {
     id: string;
 }
 
+export interface NotebookMetadata {
+    starboard?: {
+        notebook?: {
+            format_version: 1;
+            default_cell_type: "javascript" | "python";
+            runtime_version: string;
+        };
+    };
+}
+
 /**
  * The entire state of a notebook that is to be persisted.
  */
@@ -46,6 +56,9 @@ export interface NotebookContent {
      * Text before the first cell
      */
     frontMatter: string;
+
+    metadata: NotebookMetadata;
+
     cells: Cell[];
 }
 
