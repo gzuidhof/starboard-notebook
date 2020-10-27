@@ -7,6 +7,7 @@ import "./components/notebook";
 
 import "iframe-resizer/js/iframeResizer.contentWindow.js";
 import * as lithtml from "lit-html";
+import katex from "katex";
 
 declare global {
   interface Window {
@@ -14,6 +15,7 @@ declare global {
     html?: typeof lithtml.html;
     svg?: typeof lithtml.svg;
     litHtml?: typeof lithtml;
+    katex?: typeof katex;
   }
 }
 
@@ -21,6 +23,7 @@ declare global {
 window.html = lithtml.html;
 window.svg = lithtml.svg;
 window.litHtml = lithtml;
+window.katex = katex;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // window.initialNotebookContent = require("./debugNotebooks/introNotebook.nb").default;

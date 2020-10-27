@@ -12,6 +12,7 @@ import { ConsoleOutputElement } from "../components/consoleOutput";
 
 import * as lithtmlLibrary from "lit-html";
 import * as litElementLibrary from "lit-element";
+import katex from "katex";
 import mdlib from "markdown-it";
 import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
 import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
@@ -19,6 +20,7 @@ import { createCellProxy } from "../components/helpers/cellProxy";
 import { cellToText, notebookContentToText } from "../content/serialization";
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import { MapRegistry } from "./registry";
+import { hookMarkdownItToKaTeX } from "src/components/helpers/katex";
 
 export * from "../types";
 
@@ -83,6 +85,7 @@ export interface RuntimeExports {
         ConsoleCatcher: typeof ConsoleCatcher;
         createCellProxy: typeof createCellProxy;
         hookMarkdownItToPrismHighlighter: typeof hookMarkdownItToPrismHighlighter;
+        hookMarkdownItToKaTeX: typeof hookMarkdownItToKaTeX;
         cellToText: typeof cellToText;
         notebookContentToText: typeof notebookContentToText;
         precompileJavascriptCode: typeof precompileJavascriptCode;
@@ -95,6 +98,7 @@ export interface RuntimeExports {
         LitHtml: typeof lithtmlLibrary;
         LitElement: typeof litElementLibrary;
         MarkdownIt: typeof mdlib;
+        KaTeX: typeof katex;
     };
 }
 
@@ -108,7 +112,7 @@ export interface Runtime {
      * The state of the notebook that exactly describes the text in the notebook.
      */
     content: NotebookContent;
-
+ 
     definitions: {
         /**
          * Map of registered cell types, indexed by cellType (e.g. "js").

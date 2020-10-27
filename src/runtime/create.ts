@@ -27,6 +27,8 @@ import * as LitElement from "lit-element";
 import * as LitHtml from "lit-html";
 import MarkdownIt from "markdown-it";
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
+import katex from "katex";
+import { hookMarkdownItToKaTeX } from "src/components/helpers/katex";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
@@ -193,7 +195,7 @@ function createExports(): RuntimeExports {
       JavascriptEvaluator: JavascriptEvaluator,
       createCellProxy: createCellProxy,
       hookMarkdownItToPrismHighlighter: hookMarkdownItToPrismHighlighter,
-      
+      hookMarkdownItToKatex: hookMarkdownItToKaTeX,
       cellToText: cellToText,
       notebookContentToText: notebookContentToText,
       precompileJavascriptCode: precompileJavascriptCode,
@@ -206,6 +208,7 @@ function createExports(): RuntimeExports {
       LitElement: LitElement,
       LitHtml: LitHtml,
       MarkdownIt: MarkdownIt,
+      KaTeX: katex,
     }
   };
   

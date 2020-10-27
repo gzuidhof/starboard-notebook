@@ -5,6 +5,8 @@
 
 * KaTeX `.ttf` fonts are no longer bundled as Starboard's supported browsers can understand `woff2` anyway.
 * `ipython3` cell type identifier now also maps to the Python (Pyodide) cell type.
+* The KaTeX is now exposed under `runtime.exports.libraries.KaTeX` for plugins to use, as well as its markdown-it integration under `runtime.exports.core.hookMarkdownItToKaTeX`.
+* katex is now available in global scope (`window.katex`).
 
 ## Release 0.5.6
 **Date:** 2020-10-22
