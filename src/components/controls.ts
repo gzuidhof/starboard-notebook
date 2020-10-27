@@ -25,8 +25,8 @@ export function cellControlsTemplate(controls: ControlsDefinition) {
 
 export function getPropertiesIcons(cell: Cell, togglePropertyFunction: (name: string) => void) {
     const iconTemplates = [];
-    for(const prop of Object.getOwnPropertyNames(cell.properties)) {
-        const propertyDef = registry.get(prop) || {icon: AlertCircleIcon, textEnabled: `Unknown property "${cell.properties}"`, textDisabled: ``, name: `Unknown`};
+    for(const prop of Object.getOwnPropertyNames(cell.metadata.properties)) {
+        const propertyDef = registry.get(prop) || {icon: AlertCircleIcon, textEnabled: `Unknown property "${prop}"`, textDisabled: ``, name: `Unknown`};
         const templateResult = html`
             <button @click=${() => togglePropertyFunction(prop)} class="cell-controls-button" title=${propertyDef.textEnabled}>
                             ${propertyDef.icon({width: 16, height:16})}
@@ -42,7 +42,7 @@ export function getPropertiesPopoverIcons(cell: Cell, togglePropertyFunction: (n
         <div style="display: flex">
         ${
            getAvailablePropertyTypes().map( (def) => {
-                const isActive = cell.properties[def.cellProperty] !== undefined;
+                const isActive = cell.metadata.properties[def.cellProperty] !== undefined;
                 const helpText = isActive ? def.textEnabled : def.textDisabled;
                 const style = isActive ? "color: #8d27f4":"";
                 return html`

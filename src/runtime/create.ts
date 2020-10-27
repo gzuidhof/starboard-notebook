@@ -28,7 +28,8 @@ import * as LitHtml from "lit-html";
 import MarkdownIt from "markdown-it";
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import katex from "katex";
-import { hookMarkdownItToKaTeX } from "src/components/helpers/katex";
+import * as YAML from "yaml";
+import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
@@ -43,7 +44,7 @@ function getInitialContent() {
     return textToNotebookContent((notebookContentElement as HTMLElement).innerText);
   }
 
-  return { frontMatter: "", cells: [] };
+  return { cells: [], metadata: {} };
 }
 
 export function createRuntime(notebook: StarboardNotebookElement): Runtime {
@@ -126,7 +127,7 @@ export function createRuntime(notebook: StarboardNotebookElement): Runtime {
           let cellElement: CellElement | null = rt.dom.cells[0] || null;
 
           while(cellElement) {
-            if (opts.onlyRunOnLoad && !cellElement.cell.properties.runOnLoad) {
+            if (opts.onlyRunOnLoad && !cellElement.cell.metadata.properties.run_on_load) {
               // Don't run this cell..
             } else {
               await cellElement.run();
@@ -195,7 +196,7 @@ function createExports(): RuntimeExports {
       JavascriptEvaluator: JavascriptEvaluator,
       createCellProxy: createCellProxy,
       hookMarkdownItToPrismHighlighter: hookMarkdownItToPrismHighlighter,
-      hookMarkdownItToKatex: hookMarkdownItToKaTeX,
+      hookMarkdownItToKaTeX: hookMarkdownItToKaTeX,
       cellToText: cellToText,
       notebookContentToText: notebookContentToText,
       precompileJavascriptCode: precompileJavascriptCode,
@@ -209,6 +210,7 @@ function createExports(): RuntimeExports {
       LitHtml: LitHtml,
       MarkdownIt: MarkdownIt,
       KaTeX: katex,
+      YAML: YAML,
     }
   };
   

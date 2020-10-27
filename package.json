@@ -82,6 +82,7 @@
     "preact": "^10.5.3",
     "prismjs": "^1.20.0",
     "starboard-python": "0.2.11",
-    "uuidv4": "^6.0.6"
+    "uuidv4": "^6.0.6",
+    "yaml": "^2.0.0-1"
   }
 }

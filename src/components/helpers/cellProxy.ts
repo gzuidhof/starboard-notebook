@@ -4,6 +4,26 @@
 
 import { Cell } from "../../types";
 
+function createOnChangeProxy(onChange: () => void, target: any): any {
+    return new Proxy(target, {
+        get(target, property) {
+            const item = target[property];
+            if (item && typeof item === 'object') return createOnChangeProxy(onChange, item);
+            return item;
+        },
+        deleteProperty(target, property) {
+            const retVal = delete target[property];
+            onChange();
+            return retVal;
+        },
+        set(target, property, newValue) {
+            target[property] = newValue;
+            onChange();
+            return true;
+        },
+    });
+}
+
 /**
  * Wraps given cell in a proxy. This proxy will call the changedCallback whenever the cell changes in
  * such a way that would change the text representation of the cell.
@@ -12,18 +32,12 @@ import { Cell } from "../../types";
  */
 export function createCellProxy(cell: Cell, changedCallback: () => void) {
 
-    const propertiesProxy = new Proxy(cell.properties, {
-        set: (target: {[v: string]: any}, prop: string, value: any) => {
-            (target as any)[prop] = value;
-            changedCallback();
-            return true;
-        }
-    });
+    const metadataProxy = createOnChangeProxy(changedCallback, cell.metadata);
 
     return new Proxy(cell, {
         get: (target: Cell, prop: string) => {
-            if (prop === "properties") {
-                return propertiesProxy;
+            if (prop === "metadata") {
+                return metadataProxy;
             }
             return (target as any)[prop];
         },

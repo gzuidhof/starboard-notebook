@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { CellEvent, NotebookContent, CellTypeDefinition, CellPropertyDefinition, ControlsDefinition, IconTemplate, Cell } from "../types";
+import { CellEvent, NotebookContent, CellTypeDefinition, CellPropertyDefinition, ControlsDefinition, IconTemplate } from "../types";
 import { ConsoleCatcher } from "../console/console";
 import { CellElement } from "../components/cell";
 import { StarboardNotebookElement } from "../components/notebook";
@@ -13,6 +13,7 @@ import { ConsoleOutputElement } from "../components/consoleOutput";
 import * as lithtmlLibrary from "lit-html";
 import * as litElementLibrary from "lit-element";
 import katex from "katex";
+import * as YAML from "yaml";
 import mdlib from "markdown-it";
 import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
 import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
@@ -20,7 +21,7 @@ import { createCellProxy } from "../components/helpers/cellProxy";
 import { cellToText, notebookContentToText } from "../content/serialization";
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import { MapRegistry } from "./registry";
-import { hookMarkdownItToKaTeX } from "src/components/helpers/katex";
+import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 
 export * from "../types";
 
@@ -99,6 +100,7 @@ export interface RuntimeExports {
         LitElement: typeof litElementLibrary;
         MarkdownIt: typeof mdlib;
         KaTeX: typeof katex;
+        YAML: typeof YAML;
     };
 }
 

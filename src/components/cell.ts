@@ -138,11 +138,11 @@ export class CellElement extends LitElement {
         const emit = this.runtime.controls.emit;
 
         return html`
-        <section class="cell-container celltype-${this.cell.cellType}${this.cell.properties.collapsed ? " collapsed" : ""}">
+        <section class="cell-container celltype-${this.cell.cellType}${this.cell.metadata.properties.collapsed ? " collapsed" : ""}">
 
             <!-- Gutter (left line of the cell) -->
             <div class="cell-gutter cell-gutter-corner">
-                <button @click=${() => this.toggleProperty("collapsed")} class="cell-gutter-button" title=${this.cell.properties.collapsed ? "Maximize cell" : "Minimize cell"}></button>
+                <button @click=${() => this.toggleProperty("collapsed")} class="cell-gutter-button" title=${this.cell.metadata.properties.collapsed ? "Maximize cell" : "Minimize cell"}></button>
             </div>
             <div class="cell-gutter cell-gutter-top">
                 <button class="cell-gutter-button" title="This gutter button doesn't do anything yet.."></button>
@@ -193,7 +193,7 @@ export class CellElement extends LitElement {
 
                 <!-- Properties change button -->
                 <div class="cell-popover-root">
-                    <button @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)} class="cell-controls-button" title="Change Cell Properties">
+                    <button @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.propertiesPickerElement)} class="cell-controls-button" title="Change Cell Properties">
                         ${BooleanIcon({ width: 18, height: 18 })}
                     </button>
                     <div class="cell-popover cell-properties-popover">
