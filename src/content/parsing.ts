@@ -2,10 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { split } from "eol";
+
 import { NotebookContent, Cell } from "../types";
 import { uuid } from "uuidv4";
 import * as YAML from "yaml";
+
+const eol = /\r\n|\r|\n/g;
 
 // [optionally "#" or "//"], any whitespace, "%" at least twice, any amount of -
 // OR legacy mode (deprecated): %% followed by optional single whitespace, and any lowercase letter
@@ -84,7 +86,7 @@ function parseLegacyCellDelimiter(line: string): ParsedCell  {
  * Parses the given notebook file content string into the frontmatter and ParsedCell structure.
  */
 export function parseNotebookContent(notebookContentString: string) {
-    const allLines = split(notebookContentString);
+    const allLines = notebookContentString.split(eol);
 
     // The index at which the cells start
     let cellLinesStartIndex = undefined;
