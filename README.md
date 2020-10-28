@@ -25,3 +25,9 @@ See [**CHANGELOG.md**](./CHANGELOG.md).
 
 ## License
 This is free software; you can redistribute it and/or modify it under the terms of the [Mozilla Public License Version 2.0](./LICENSE).
+
+## Sponsorship
+If you are able to do so and want to see Starboard Notebook developed further, please consider donating through [**Github Sponsors**](https://github.com/sponsors/gzuidhof)
+
+*Business supporters*
+* **IllumiDesk** (https://illumidesk.com/)
