@@ -11,7 +11,7 @@ Create a HTML file like such:
         <meta charset="utf-8">
         <title>Starboard Notebook</title>
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <link href="https://unpkg.com/starboard-notebook@0.5.4/dist/starboard-notebook.css" rel="stylesheet">
+        <link href="https://unpkg.com/starboard-notebook@0.6.0/dist/starboard-notebook.css" rel="stylesheet">
     </head>
     <body>
 
@@ -72,7 +72,7 @@ const greeting = "Hello world!";
 // The last statement in a cell will be displayed if it is not undefined.
 greeting`;
         </script>
-        <script src="https://unpkg.com/starboard-notebook@0.5.4/dist/starboard-notebook.js"></script>
+        <script src="https://unpkg.com/starboard-notebook@0.6.0/dist/starboard-notebook.js"></script>
     </body>
 </html>
 ```
@@ -98,7 +98,7 @@ window.pyodideArtifactsUrl = `https://pyodide-cdn2.iodide.io/v0.15.0/full/`;
 
 // Optional: Override the automatically calculated base URL where the starboard-notebook files are hosted.
 // You probably don't have to set this manually - ever.
-window.starboardArtifactsUrl = `https://unpkg.com/starboard-notebook@0.5.4/dist/`;
+window.starboardArtifactsUrl = `https://unpkg.com/starboard-notebook@0.6.0/dist/`;
 ```
 
 ## Alternative: Host the files yourself
