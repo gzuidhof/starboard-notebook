@@ -6,15 +6,30 @@ import "./styles/main.scss";
 import "./components/notebook";
 
 import "iframe-resizer/js/iframeResizer.contentWindow.js";
-
-// Globals available to the user in the notebook
 import * as lithtml from "lit-html";
-(window as any).html = lithtml.html;
-(window as any).svg = lithtml.svg;
-(window as any).lithtml = lithtml;
+import katex from "katex";
+import * as YAML from "yaml";
+
+declare global {
+  interface Window {
+    initialNotebookContent?: string;
+    html?: typeof lithtml.html;
+    svg?: typeof lithtml.svg;
+    litHtml?: typeof lithtml;
+    katex?: typeof katex;
+    YAML?: typeof YAML;
+  }
+}
+
+// Globals available to the user in the notebook (excluding runtime, which is initialized in the notebook itself)
+window.html = lithtml.html;
+window.svg = lithtml.svg;
+window.litHtml = lithtml;
+window.katex = katex;
+window.YAML = YAML;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// (window as any).initialNotebookContent = require("./debugNotebooks/promises.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/promises.nb").default;
 
 document.body.innerHTML += `
 <base target="_parent" />

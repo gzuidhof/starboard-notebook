@@ -2,47 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { html, TemplateResult } from "lit-html";
-import { ReplayIcon, AlertCircleIcon, VisibilityOffIcon } from "@spectrum-web-components/icons-workflow";
-import { Cell } from "../notebookContent";
+import { html } from "lit-html";
+import { AlertCircleIcon } from "@spectrum-web-components/icons-workflow";
+import { Cell, ControlsDefinition } from "../types";
+import { registry, getAvailablePropertyTypes } from "../cellProperties/registry";
 
 // Note: These controls are not "Components" in the lit-element sense
 
-export interface ControlButton {
-    icon: (iconOpts: {width: number; height: number} | undefined) => (string | TemplateResult);
-    tooltip: string;
-    hide?: boolean;
-    callback: () => any | Promise<any>;
-}
-
-export interface ControlsDefinition {
-    buttons: ControlButton[];
-}
-
-export interface PropertyDefinition {
-    icon: (o: {width: number; height: number}) => TemplateResult | string;
-    textEnabled: string;
-    textDisabled: string;
-    title: string;
-}
-
-
-const knownProperties = {
-    "runOnLoad": {
-        icon: ReplayIcon,
-        title: "Run on load",
-        textEnabled: "This cell is run automatically when the notebook is loaded",
-        textDisabled: "Run Cell on when the notebook gets loaded"
-    },
-    "collapsed": {
-        icon: VisibilityOffIcon,
-        title: "Collapse Cell",
-        textEnabled: "This cell is collapsed (hidden when not focused)",
-        textDisabled: "Collapse cell (hide cell when not focused)",
-    },
-} as {[name: string]: PropertyDefinition};
-
-export function getDefaultControlsTemplate(controls: ControlsDefinition) {
+export function cellControlsTemplate(controls: ControlsDefinition) {
     const buttons = controls.buttons;
 
     return html`
@@ -58,11 +25,8 @@ export function getDefaultControlsTemplate(controls: ControlsDefinition) {
 
 export function getPropertiesIcons(cell: Cell, togglePropertyFunction: (name: string) => void) {
     const iconTemplates = [];
-    for(const prop of Object.getOwnPropertyNames(cell.properties)) {
-        let propertyDef = knownProperties[prop as any];
-        if (!propertyDef) {
-            propertyDef = {icon: AlertCircleIcon, textEnabled: `Unknown property "${cell.properties}"`, textDisabled: ``, title: `Unknown`};
-        }
+    for(const prop of Object.getOwnPropertyNames(cell.metadata.properties)) {
+        const propertyDef = registry.get(prop) || {icon: AlertCircleIcon, textEnabled: `Unknown property "${prop}"`, textDisabled: ``, name: `Unknown`};
         const templateResult = html`
             <button @click=${() => togglePropertyFunction(prop)} class="cell-controls-button" title=${propertyDef.textEnabled}>
                             ${propertyDef.icon({width: 16, height:16})}
@@ -77,13 +41,13 @@ export function getPropertiesPopoverIcons(cell: Cell, togglePropertyFunction: (n
     return html`
         <div style="display: flex">
         ${
-            Object.entries(knownProperties).map( ([prop, propertyDef]) => {
-                const isActive = cell.properties[prop] !== undefined;
-                const helpText = isActive ? propertyDef.textEnabled : propertyDef.textDisabled;
+           getAvailablePropertyTypes().map( (def) => {
+                const isActive = cell.metadata.properties[def.cellProperty] !== undefined;
+                const helpText = isActive ? def.textEnabled : def.textDisabled;
                 const style = isActive ? "color: #8d27f4":"";
                 return html`
-                    <button style=${style} @click=${() => togglePropertyFunction(prop)} class="cell-controls-button" title=${helpText}>
-                                    ${propertyDef.icon({width: 16, height:16})}
+                    <button style=${style} @click=${() => togglePropertyFunction(def.cellProperty)} class="cell-controls-button" title=${helpText}>
+                                    ${def.icon({width: 16, height:16})}
                     </button>
                 `;
             })

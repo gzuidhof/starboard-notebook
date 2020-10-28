@@ -3,13 +3,7 @@ const x = await new Promise((resolve) => setTimeout(() => resolve(234), 1000));
 x
 %% js runOnLoad collapsed
 const x = await new Promise((resolve) => setTimeout(() => resolve(234), 1000));
-const y = new Promise((resolve) => setTimeout(() => resolve(123), 2000));
-y
+const y = new Promise((resolve) => setTimeout(() => resolve(123), 5000));
+y // The cell should finish after 1 second, not 5 as y is not awaited.
 %% js
 const x = await new Promise((resolve, reject) => setTimeout(() => reject(new Error("err!")), 1000));
-
-%%
-Invalid cell type!
-
-%% unknown
-Unknown cell! oh no!

@@ -8,6 +8,7 @@
       "es2017",
       "dom"
     ],
+    "baseUrl": ".",
     "declaration": true,
     "sourceMap": true,
     "strict": true,

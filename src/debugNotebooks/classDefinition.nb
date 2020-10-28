@@ -1,0 +1,24 @@
+---
+starboard: 
+  version: 0.6.7
+  format_version: 1
+---
+# %% [markdown]
+# An example notebook to verify that `Class` definitions are in global scope.
+
+# %%--- [javascript]
+# properties:
+#   run_on_load: true
+# ---%%
+class MyClass {
+    constructor(a) {
+        this.x = a;
+    }
+}
+# %%--- [javascript]
+# properties: 
+#   run_on_load: true
+# ---%%
+console.log(MyClass);
+const instance = new MyClass(3);
+instance.x

@@ -8,27 +8,26 @@ const webpack = require('webpack')
 const pkg = require("./package.json");
 
 const baseConfig = {
-    entry: {
-        starboardNotebook: './src/main.ts',
-    },
+    entry: ['./src/publicPath.ts', './src/main.ts'],
     output: {
         path: path.resolve(__dirname, 'dist/'),
         filename: "starboard-notebook.js",
-        publicPath: "./",
-        chunkFilename: '[name].bundle.js',
+        chunkFilename: '[name].chunk.js',
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js'],
+        extensions: ['.ts', '.tsx', '.js', '.d.ts'],
         alias: {
-            "react": "preact/compat",
-            "react-dom": "preact/compat"
+            "react": path.resolve("./node_modules/preact/compat"),
+            "react-dom": path.resolve("./node_modules/preact/compat")
         }
     },
     optimization: {
         usedExports: true,
     },
+    stats: "minimal",
     module: {
-        rules: [{
+        rules: [
+        {
             test: /\.tsx?$/,
             use: [
                 {
@@ -44,7 +43,14 @@ const baseConfig = {
                   },
                 'ts-loader'
             ],
-            exclude: /node_modules/,
+            exclude: [/node_modules/, /textEditor\.ts$/, /esm\.ts$/],
+        },
+        {
+            test: /(textEditor)|(esm)\.ts$/, // Dynamic imports break when using minify-lit-html-loader for some mysterious reason.. a workaround
+            use: [
+                'ts-loader'
+            ],
+            exclude: [/node_modules/],
         },
         {
             test: /\.(s?css|sass)$/,
@@ -60,6 +66,11 @@ const baseConfig = {
         {
             test: /\.ttf$|\.woff2$/,
             use: ['file-loader?name=[name].[ext]'],
+            exclude: [/.*KaTeX.*.ttf/],
+        },
+        {   // KaTeX ttf fonts are not omitted. Starboard only supports browsers that understand woff2 anyway.
+            test: /(KaTeX)?.*\.ttf$/,
+            use: ['file-loader?emitFile=false'],
         },
         {
             test: /.ico$|.svg$|.eot|woff$/,
@@ -82,7 +93,6 @@ const baseConfig = {
         }),
         new webpack.DefinePlugin({
             STARBOARD_NOTEBOOK_VERSION: JSON.stringify(pkg.version),
-    
         }),
         new MonacoWebpackPlugin({
             languages: [

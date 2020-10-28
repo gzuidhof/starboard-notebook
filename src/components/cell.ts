@@ -3,22 +3,16 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { LitElement, html, property, customElement, query } from 'lit-element';
-import { Cell, toggleCellFlagProperty } from '../notebookContent';
+import { createPopper } from '@popperjs/core';
+import { toggleCellFlagProperty } from '../content/notebookContent';
 
-import { CellHandler } from '../cellHandler/base';
-import { CellTypeDefinition, getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellHandler/registry';
-import { JavascriptRuntime } from '../cellHandler/javascript/runtime';
+import { BaseCellHandler } from '../cellTypes/base';
+import { getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellTypes/registry';
 
 import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { getPropertiesIcons, getPropertiesPopoverIcons } from './controls';
-
-export type CellEvent =
-    { id?: string; type: "RUN_CELL"; focusNextCell?: boolean; insertNewCell?: boolean }
-    | { id?: string; type: "INSERT_CELL"; position: "before" | "after" }
-    | { id?: string; type: "REMOVE_CELL" }
-    | { id?: string; type: "CHANGE_CELL_TYPE"; newCellType: string }
-    | { id?: string; type: "SAVE" };
-
+import { Cell } from '../types';
+import { Runtime, CellTypeDefinition } from '../runtime';
 
 @customElement('starboard-cell')
 export class CellElement extends LitElement {
@@ -36,28 +30,24 @@ export class CellElement extends LitElement {
     @query('.cell-properties-popover')
     private propertiesPickerElement!: HTMLElement;
 
-    private cellTypeDefinition!: CellTypeDefinition;
-    private cellHandler!: CellHandler;
+    public cellTypeDefinition!: CellTypeDefinition;
+    public cellHandler!: BaseCellHandler;
 
     @property({ type: Object })
     public cell: Cell;
 
-    @property({ attribute: false})
-    private runtime: JavascriptRuntime;
-
-    @property()
-    private eventListener: (event: CellEvent) => void;
-
     private isCurrentlyRunning = false;
+
+    @property({attribute: false})
+    public runtime: Runtime;
 
     constructor(
         cell: Cell,
-        runtime: JavascriptRuntime,
-        eventListener: (event: CellEvent) => void) {
+        runtime: Runtime
+    ) {
         super();
         this.cell = cell;
         this.runtime = runtime;
-        this.eventListener = eventListener;
         this.setAttribute("tabindex", "0");
     }
 
@@ -68,7 +58,7 @@ export class CellElement extends LitElement {
     connectedCallback() {
         super.connectedCallback();
         this.cellTypeDefinition = getCellTypeDefinitionForCellType(this.cell.cellType);
-        this.cellHandler = this.cellTypeDefinition.createHandler(this.cell);
+        this.cellHandler = this.cellTypeDefinition.createHandler(this.cell, this.runtime);
     }
 
     firstUpdated(changedProperties: any) {
@@ -76,29 +66,23 @@ export class CellElement extends LitElement {
         this.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
                 if (event.ctrlKey) {
-                    this.emit({ type: "RUN_CELL", focusNextCell: false, insertNewCell: false });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: false, insertNewCell: false });
                 } else if (event.shiftKey) {
-                    this.emit({ type: "RUN_CELL", focusNextCell: true, insertNewCell: false });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: true, insertNewCell: false });
                 } else if (event.altKey) {
-                    this.emit({ type: "RUN_CELL", focusNextCell: true, insertNewCell: true });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: true, insertNewCell: true });
                 }
             }
         });
 
         this.cellHandler.attach({
-            runtime: this.runtime,
             elements: {
                 topElement: this.topElement,
                 topControlsElement: this.topControlsElement,
                 bottomElement: this.bottomElement,
                 bottomControlsElement: this.bottomControlsElement
             },
-            emit: (e: CellEvent) => this.emit(e),
         });
-    }
-
-    private emit(event: CellEvent) {
-        this.eventListener(event);
     }
 
     public async run() {
@@ -114,19 +98,26 @@ export class CellElement extends LitElement {
         this.cellHandler.focusEditor();
     }
 
-    changeCellType(newCellType: string) {
-        this.emit({
-            type: "CHANGE_CELL_TYPE", newCellType: newCellType,
+    changeCellType(newCellType: string | string[]) {
+        // If these are multiple cell types, take the first one
+        const newCellTypeIdentifier = typeof newCellType === "string" ? newCellType : newCellType[0];
+        this.runtime.controls.emit({
+            id: this.cell.id, type: "CHANGE_CELL_TYPE", newCellType: newCellTypeIdentifier,
         });
     }
 
-    togglePopover(element: HTMLElement) {
+    togglePopover(parent:HTMLElement, element: HTMLElement) {
+        this.performUpdate(); // This update here is so that if a new cell type or property has been registered since it is visible.
         element.classList.toggle("popover-active");
+
+        createPopper(parent, element, {placement: "left-start"});
+        // console.log(element.scrollHeight, document.body.scrollHeight);
+
         if (element.classList.contains("popover-active")) {
         // TODO: refactor this. the idea is to detect clicks outside the element to close the popover.
             setTimeout(() => {
                 const listenerFunc = (e: MouseEvent) => {
-                    if (!element.contains(e.target as Node)) {
+                    if (!element.contains(e.target as Node) || (e.target as HTMLElement).classList.contains("cell-popover-close-button")) {
                         element.classList.remove("popover-active");
                         document.removeEventListener("click", listenerFunc);
                     }
@@ -143,12 +134,15 @@ export class CellElement extends LitElement {
     }
 
     render() {
+        const id = this.cell.id;
+        const emit = this.runtime.controls.emit;
+
         return html`
-        <section class="cell-container ${this.cell.properties.collapsed ? "collapsed" : ""}">
+        <section class="cell-container celltype-${this.cell.cellType}${this.cell.metadata.properties.collapsed ? " collapsed" : ""}">
 
             <!-- Gutter (left line of the cell) -->
             <div class="cell-gutter cell-gutter-corner">
-                <button @click=${() => this.toggleProperty("collapsed")} class="cell-gutter-button" title=${this.cell.properties.collapsed ? "Maximize cell" : "Minimize cell"})></button>
+                <button @click=${() => this.toggleProperty("collapsed")} class="cell-gutter-button" title=${this.cell.metadata.properties.collapsed ? "Maximize cell" : "Minimize cell"}></button>
             </div>
             <div class="cell-gutter cell-gutter-top">
                 <button class="cell-gutter-button" title="This gutter button doesn't do anything yet.."></button>
@@ -161,11 +155,11 @@ export class CellElement extends LitElement {
             <div class="cell-controls cell-controls-corner">
                 ${this.isCurrentlyRunning
                 ? html`
-                    <button @mousedown=${() => this.emit({ type: "RUN_CELL" })}  class="cell-controls-button display-when-collapsed" title="Cell is running">
+                    <button @mousedown=${() => emit({ id, type: "RUN_CELL" })}  class="cell-controls-button display-when-collapsed" title="Cell is running">
                         ${ClockIcon({ width: 20, height: 20 })}
                 </button>`
                 : html`
-                    <button @mousedown=${() => this.emit({ type: "RUN_CELL" })} class="cell-controls-button display-when-collapsed" title="Run cell">
+                    <button @mousedown=${() => emit({ id, type: "RUN_CELL" })} class="cell-controls-button display-when-collapsed" title="Run cell">
                         ${PlayCircleIcon({ width: 20, height: 20 })}
                 </button>`
                 }
@@ -182,35 +176,37 @@ export class CellElement extends LitElement {
                 
                 <!-- Language selection -->
                 <div class="cell-popover-root">
-                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${() => this.togglePopover(this.typePickerElement)}>${this.cellTypeDefinition.name}</button>
+                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)}>${this.cellTypeDefinition.name}</button>
                     <div class="cell-popover cell-type-popover">
                         <b style="margin-bottom: 6px">Change Cell Type</b>
 
                         ${getAvailableCellTypes().map((ct) => html`
-                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float:right; font-size: 11px; font-family: monospace">${ct.cellType}</span></button>
+                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float:right; font-size: 11px; font-family: monospace">${
+                                typeof ct.cellType === "string" ? ct.cellType : ct.cellType[0]
+                        }</span></button>
                         `)
                         }
 
-                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.typePickerElement.classList.remove("popover-active")}>Cancel</button>
+                        <button class="cell-controls-button cell-popover-close-button">Cancel</button>
                     </div>
                 </div>
 
                 <!-- Properties change button -->
                 <div class="cell-popover-root">
-                    <button @click=${() => this.togglePopover(this.propertiesPickerElement)} class="cell-controls-button" title="Change Cell Properties">
+                    <button @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.propertiesPickerElement)} class="cell-controls-button" title="Change Cell Properties">
                         ${BooleanIcon({ width: 18, height: 18 })}
                     </button>
                     <div class="cell-popover cell-properties-popover">
                         <b style="margin-bottom: 6px">Toggle cell properties</b>
                         ${getPropertiesPopoverIcons(this.cell, (propertyName: string) => this.toggleProperty(propertyName))}
-                        <button class="cell-controls-button cell-popover-close-button" @click=${() => this.propertiesPickerElement.classList.remove("popover-active")}>Cancel</button>
+                        <button class="cell-controls-button cell-popover-close-button">Cancel</button>
                     </div>
                 </div>
 
-                <button @click="${() => this.emit({ type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
+                <button @click="${() => emit({ id, type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
                     ${DeleteIcon({ width: 18, height: 18 })}
                 </button>
-                <button @click="${() => this.emit({ type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Above">
+                <button @click="${() => emit({ id, type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Above">
                     ${AssetsAddedIcon({ width: 20, height: 20 })}
                 </button>
 
@@ -224,4 +220,8 @@ export class CellElement extends LitElement {
     `;
     }
 
+    public disconnectedCallback() {
+        super.disconnectedCallback();
+        this.cellHandler.dispose();
+    }
 }

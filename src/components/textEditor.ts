@@ -3,29 +3,33 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { customElement, LitElement, html, query } from "lit-element";
-import { Cell } from "../notebookContent";
-import { CellEvent } from "./cell";
 
 import mdlib from "markdown-it";
-import { hookMarkdownIt } from "../highlight";
+import { hookMarkdownItToPrismHighlighter } from "./helpers/highlight";
 import { render } from "lit-html";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { DeviceDesktopIcon, DevicePhoneIcon } from "@spectrum-web-components/icons-workflow";
+import { Cell } from "../types";
+import { Runtime } from "../runtime";
+import { copyToClipboard } from "./helpers/clipboard";
 
-export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";
+export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python" | "latex"; // latex is not actually supported..
 export type WordWrapSetting = "off" | "on";
 
+const EDITOR_PREFERENCE_KEY = "starboard_notebook_text_editor_preference";
+
+// Global state shared between all editors
 // Note: somewhat problematic for garbage collection if no editor is ever chosen..
 let notifyOnEditorChosen: (() => any)[] = [];
 
 let codeMirrorModule: Promise<{createCodeMirrorEditor: any}> | undefined;
 let monacoModule: Promise<{createMonacoEditor: any}> | undefined;
 
-// Global state shared between all editors
-let currentEditor: "monaco" | "codemirror" | "" = "";
+// Use ternary condition to be robust to other invalid values
+let currentEditor: "monaco" | "codemirror" | "" = localStorage[EDITOR_PREFERENCE_KEY] === "monaco" ? "monaco" : "codemirror";
 
 const md = new mdlib();
-hookMarkdownIt(md);
+hookMarkdownItToPrismHighlighter(md);
 
 /**
  * StarboardTextEditor abstracts over different text editors that are loaded dynamically.
@@ -39,20 +43,20 @@ export class StarboardTextEditor extends LitElement {
     @query(".starboard-text-editor")
     private editorMountpoint!: HTMLElement;
 
-    private emit: (event: any) => void;
     private cell: Cell;
+    private runtime: Runtime;
     private opts: {language?: SupportedLanguage} = {};
     editorInstance?: any;
 
-    constructor(cell: Cell, opts: {language?: SupportedLanguage, wordWrap?: WordWrapSetting}, emit: (event: CellEvent) => void) {
+    constructor(cell: Cell, runtime: Runtime, opts: {language?: SupportedLanguage; wordWrap?: WordWrapSetting} = {}) {
         super();
-        this.emit = emit;
+        this.runtime = runtime;
         this.cell = cell;
         this.opts = opts;
     }
 
     connectedCallback() {
-        super.connectedCallback();        
+        super.connectedCallback();
     }
 
     handleDblClick() {
@@ -66,6 +70,10 @@ export class StarboardTextEditor extends LitElement {
 
         if (currentEditor === "codemirror" || currentEditor === "monaco") {
             this.initEditor();
+            // While it loads, render markdown
+            const mdText =  md.render("```" + `${this.opts.language}\n${this.cell.textContent}\n` + "```");
+            render(html`<div class="cell-popover cell-select-editor-popover">Loading CodeMirror editor..</div>${unsafeHTML(mdText)}`, this.editorMountpoint);
+
         } else {
             this.editorMountpoint.addEventListener("dblclick", () => this.handleDblClick(), {once: true, passive: true});
             const mdText =  md.render("```" + `${this.opts.language}\n${this.cell.textContent}\n` + "```");
@@ -98,8 +106,10 @@ export class StarboardTextEditor extends LitElement {
         }
 
         currentEditor = "codemirror";
+        localStorage[EDITOR_PREFERENCE_KEY] = "codemirror";
         if (!codeMirrorModule) {
-            codeMirrorModule = import(/* webpackChunkName: codemirror-editor */  "../editor/codeMirror" as any);
+            codeMirrorModule = import(/* webpackChunkName: "codemirror" */ "./editor/codeMirror");
+
             document.querySelectorAll(".cell-select-editor-popover").forEach((e) => e.innerHTML = "<b>Loading CodeMirror editor..</b>");
             notifyOnEditorChosen.forEach((c) => c());
             notifyOnEditorChosen = [];
@@ -107,27 +117,38 @@ export class StarboardTextEditor extends LitElement {
     
         codeMirrorModule.then((m) => {
             this.editorMountpoint.innerHTML = "";
-            this.editorInstance = m.createCodeMirrorEditor(this.editorMountpoint, this.cell, this.opts as any, this.emit);
+            this.editorInstance = m.createCodeMirrorEditor(this.editorMountpoint, this.cell, this.opts as any, this.runtime);
+            this.performUpdate();
         });
     }
 
     switchToMonacoEditor() {
-        if (currentEditor === "codemirror" && this.editorInstance) {
-            this.editorInstance.dom.remove();
-        }
+        const shouldCleanUpCodeMirror = currentEditor === "codemirror" && this.editorInstance;
 
         currentEditor = "monaco";
+        localStorage[EDITOR_PREFERENCE_KEY] = "monaco";
         if (!monacoModule) {
-            monacoModule = import(/* webpackChunkName: monaco-editor */  "../editor/monaco" as any);
+            monacoModule = import(/* webpackChunkName: "monaco" */  "./editor/monaco");
             document.querySelectorAll(".cell-select-editor-popover").forEach((e) => e.innerHTML = "<b>Loading Monaco editor..</b>");
             notifyOnEditorChosen.forEach((c) => c());
             notifyOnEditorChosen = [];
         }
 
         monacoModule.then((m) => {
+            if (shouldCleanUpCodeMirror) this.editorInstance.dom.remove();
             this.editorMountpoint.innerHTML = "";
-            this.editorInstance = m.createMonacoEditor(this.editorMountpoint, this.cell, this.opts as any, this.emit);
+            this.editorInstance = m.createMonacoEditor(this.editorMountpoint, this.cell, this.opts as any, this.runtime);
+            this.performUpdate();
         });
+    }
+
+    copyCellText() {
+        copyToClipboard(this.cell.textContent);
+        const copyButton = this.querySelector("#copy-button");
+        if (copyButton) {
+            (copyButton as any).innerText = "Copied!";
+            setTimeout(() => (copyButton as any).innerText = "Copy Text", 2000);
+        }
     }
  
     createRenderRoot() {
@@ -135,7 +156,17 @@ export class StarboardTextEditor extends LitElement {
     }
 
     render() {
-        return html`
+        return html`     
+        <div style="position: relative; width: 100%; height: 0">
+            <div class="starboard-text-editor-controls">
+                ${
+                    currentEditor === "monaco" ?
+                    html`<button @click=${() => this.switchToCodeMirrorEditor()} title="Switch to CodeMirror based editor, simpler and smartphone friendly">Switch to Simple Editor</button>`
+                    :html`<button @click=${() => this.switchToMonacoEditor()} title="Switch to Monaco based editor, a few MB in size, smartphone unfriendly">Switch to Advanced Editor</button>`
+                }
+                <button id="copy-button" @click=${() => this.copyCellText()} title="Copy the text in this cell to clipboard">Copy Text</button>
+            </div>
+        </div>       
         <div class="starboard-text-editor"></div>
         `;
     }
@@ -149,5 +180,4 @@ export class StarboardTextEditor extends LitElement {
     dispose() {
         this.remove();
     }
-
 }

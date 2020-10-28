@@ -1,0 +1,5 @@
+%% js
+const x = await import(
+    'https://cdn.jsdelivr.net/npm/canvas-confetti@0.2.0/dist/confetti.module.mjs'
+);
+x;
