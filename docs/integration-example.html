@@ -12,10 +12,10 @@
 <script type="module">
 import {default as iFrameResizer} from "https://cdn.skypack.dev/iframe-resizer/js/iframeResizer";
 
-const initialNotebookContent = `%% md
+const initialNotebookContent = `# %% [markdown]
 # iFrame example
 Try editing a cell!
-%% js
+# %% [javascript]
 const x = "Hello world!"
 x`
 
@@ -68,7 +68,7 @@ window.iFrameComponent = iFrameResizer({ // Check the iframeResizer docs&code fo
     <iframe
         title="Starboard Notebook Sandbox iFrame"
         id="notebook-iframe"
-        src="https://unpkg.com/starboard-notebook@0.5.4/dist/index.html"
+        src="https://unpkg.com/starboard-notebook@0.6.0/dist/index.html"
         sandbox="allow-scripts allow-modals allow-same-origin allow-pointer-lock allow-top-navigation-by-user-activation allow-forms allow-downloads"
         frameborder="0"
         style="width: 100%"

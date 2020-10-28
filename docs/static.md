@@ -16,7 +16,7 @@ Create a HTML file like such:
     <body>
 
 <script type="application/vnd.starboard.nb">
-%% md
+# %% [markdown]
 # Introducing Starboard Notebook
 Starboard brings cell-by-cell notebooks to the browser, no code is running on the backend here!
 It's probably the quickest way to visualize some data with interactivity, do some prototyping, or build a rudimentary dashboard.
@@ -27,7 +27,7 @@ It's probably the quickest way to visualize some data with interactivity, do som
 * Runs entirely in your browser, everything is static: no server, no setup and no build step.
 
 > Tip: Press the ▶ Play button on the left to run a cell's code.
-%% js
+# %% [javascript]
 // You write vanilla Javascript
 const greeting = "Hello world!";
 
@@ -35,7 +35,7 @@ const greeting = "Hello world!";
 greeting
 </script>
 
-        <script src="https://unpkg.com/starboard-notebook@0.5.4/dist/starboard-notebook.js"></script>
+        <script src="https://unpkg.com/starboard-notebook@0.6.0/dist/starboard-notebook.js"></script>
     </body>
 </html>
 ```
@@ -48,13 +48,13 @@ Or you can set the notebook content using Javascript:
         <meta charset="utf-8">
         <title>Starboard Notebook</title>
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <link href="https://unpkg.com/starboard-notebook@0.5.4/dist/starboard-notebook.css" rel="stylesheet">
+        <link href="https://unpkg.com/starboard-notebook@0.6.0/dist/starboard-notebook.css" rel="stylesheet">
     </head>
     <body>
         <script>
             // The content of the notebook as a string, remember to escape the string properly.
             window.initialNotebookContent = `
-%% md
+# %% [markdown]
 # Introducing Starboard Notebook
 Starboard brings cell-by-cell notebooks to the browser, no code is running on the backend here!
 It's probably the quickest way to visualize some data with interactivity, do some prototyping, or build a rudimentary dashboard.
@@ -65,7 +65,7 @@ It's probably the quickest way to visualize some data with interactivity, do som
 * Runs entirely in your browser, everything is static: no server, no setup and no build step.
 
 > Tip: Press the ▶ Play button on the left to run a cell's code.
-%% js
+# %% [javascript]
 // You write vanilla Javascript
 const greeting = "Hello world!";
 

@@ -35,9 +35,9 @@ And you can then communicate with the iFrame:
 
 ```javascript
 const initialNotebookContent = `
-%%md
+# %% [markdown]
 # iFrame example
-%%js
+# %% [javascript]
 const x = "Hello world!"
 x`
 
