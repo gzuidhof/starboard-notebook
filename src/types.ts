@@ -20,16 +20,18 @@ export type CellEvent =
  */
 export interface Cell {
     /**
-     * A short identifier such as "js" or "md" for Javascript and Markdown respectively.
+     * An identifier such as "javascript" or "markdown" for Javascript and Markdown respectively.
      */
     cellType: string;
 
     textContent: string;
 
-    properties: {
-        runOnLoad?: true;
-        collapsed?: true;
-        [key: string]: any;
+    metadata: {
+        properties: {
+            run_on_load?: true;
+            collapsed?: true;
+            [key: string]: any;
+        };
     };
 
     /**
@@ -38,14 +40,23 @@ export interface Cell {
     id: string;
 }
 
+export interface NotebookMetadata {
+    starboard?: {
+        notebook?: {
+            format_version: 1;
+            default_cell_type: "javascript" | "python";
+            runtime_version: string;
+        };
+    };
+    [key: string]: any;
+}
+
 /**
  * The entire state of a notebook that is to be persisted.
  */
 export interface NotebookContent {
-    /**
-     * Text before the first cell
-     */
-    frontMatter: string;
+    metadata: NotebookMetadata;
+
     cells: Cell[];
 }
 
@@ -102,7 +113,7 @@ export interface ControlsDefinition {
 
 export interface CellPropertyDefinition {
     /**
-     * Identifier for the cell property, e.g. "collapsed"
+     * Identifier for the cell property, e.g. "collapsed" or "run_on_load"
      */
     cellProperty: string;
 

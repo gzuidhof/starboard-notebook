@@ -58,11 +58,7 @@ function makeEditorResizeToFitContent(editor: monaco.editor.IStandaloneCodeEdito
             return;
         }
 
-        const lineHeight = editor.getOption(monaco.editor.EditorOption.lineHeight);
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const lineCount = editor.getModel() && editor.getModel()!.getLineCount() || 1;
-        const height = editor.getTopForLineNumber(lineCount + 1) + lineHeight;
-
+        const height = editor.getContentHeight();
         if (prevHeight !== height) {
             prevHeight = height;
             editorElement.style.height = `${height}px`;
@@ -142,6 +138,17 @@ export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {lang
 
     const resizeDebounced = debounce(() => editor.layout(), 100);
     window.addEventListener("resize", resizeDebounced);
+
+    // Hack: monaco can't properly layout if it isn't visible.. so we make sure the cell top or bottom is not hidden..
+    let p = element.parentElement;
+    while(p) {
+        if (p.classList.contains("cell-top") || p.classList.contains("cell-bottom")) {
+            p.classList.add("force-display");
+            break;
+        }
+        p = p.parentElement;
+    }
+
     makeEditorResizeToFitContent(editor);
 
     addEditorKeyboardShortcuts(editor, runtime.controls.emit, cell.id);
@@ -154,5 +161,10 @@ export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {lang
     } else {
         console.error("Monaco editor model was not truthy, change detection will not work");
     }
+
+    if (p) {
+        p.classList.remove("force-display");
+    }
+
     return editor;
 }

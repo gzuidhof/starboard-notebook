@@ -4,7 +4,7 @@ import { MapRegistry } from "../runtime/registry";
 
 const builtinCellProperties: CellPropertyDefinition[] = [
     {
-        cellProperty: "runOnLoad",
+        cellProperty: "run_on_load",
         icon: ReplayIcon,
         name: "Run on load",
         textEnabled: "This cell is run automatically when the notebook is loaded",

@@ -36,7 +36,7 @@ export function addCellToNotebookContent(nb: NotebookContent, position: "end" | 
     const cell: Cell = {
             cellType,
             textContent: "",
-            properties: {},
+            metadata: {properties: {}},
             id: (id || uuid()),
     };
     nb.cells.splice(idx, 0, cell);
@@ -57,9 +57,9 @@ export function changeCellType(nb: NotebookContent, id: string, newCellType: str
 }
 
 export function toggleCellFlagProperty(cell: Cell, propertyName: string) {
-    if (cell.properties[propertyName]) {
-        delete cell.properties[propertyName];
+    if (cell.metadata.properties[propertyName]) {
+        delete cell.metadata.properties[propertyName];
     } else {
-        cell.properties[propertyName] = true;
+        cell.metadata.properties[propertyName] = true;
     }
 }

@@ -1,5 +1,55 @@
 # Changelog
 
+## Release 0.6.0
+**Date:** Unreleased
+
+In this update starboard-notebook switches to a new format which is more similar to Jupytext's formats.
+
+* New format for notebooks, cells are now delimited by `# %% [markdown]` or `// %% [markdown]`, global notebook metdata is defined in a YAML header, and cell metadata and properties are also defined in YAML. An example: 
+  ```bash
+  ---
+  starboard: 
+    version: 0.6.0
+    format_version: 1
+  ---
+  # %% [markdown]
+  # A markdown title! Not part of the cell description
+  Lorem ipsum....
+
+  # Another title
+  Bla
+
+  # %%--- [javascript]
+  # properties:
+  #   run_on_load: true
+  # ---%%
+  class MyClass {
+      constructor(a) {
+          this.x = a;
+      }
+  }
+  # %% [javascript]
+  const instance = new MyClass(3);
+  instance.x
+  ```
+* The old format still works (but will be phased out) - if you open a notebook in the old format it will be saved into the new format.
+* All metadata keys and cell properties are preferred to be in in `snake_case`.
+   * `runOnLoad` was renamed to `run_on_load`. `runOnLoad` still works for backwards compatability but will be removed in a future version.
+* **Breaking change:** A cell's properties are now nested under `cell.metadata.properties` instead of `cell.properties`.
+* **Breaking change:** A legacy cell without a cell type identifier is no longer recognized as a cell (e.g. a line with just `%%`). This was never possible on the Starboard.gg site anyway.
+
+Other changes:
+* Fix the cell properties button, before it would open the cell type menu instead.
+* Fix deleting a property not marking the notebook content as changed (which prompts the user to save).
+* Fix Monaco editor layouting:
+  * Fix the editor being empty if initially collapsed.
+  * Fix the editor sometimes not resizing to full height after being collapsed.
+  * Fix the editor not taking the scrollbars into account when resizing.
+* KaTeX `.ttf` fonts are no longer bundled as Starboard's supported browsers can understand `woff2` anyway.
+* `ipython3` cell type identifier now also maps to the Python (Pyodide) cell type.
+* KaTeX is now available in global scope (`window.katex`) and under `runtime.exports.libraries.KaTeX` for plugins to use, as well as its markdown-it integration under `runtime.exports.core.hookMarkdownItToKaTeX`.
+* YAML (`yaml@next`) is now available on global scope (`window.YAML`) and under `runtime.exports.libraries.YAML`.
+
 ## Release 0.5.6
 **Date:** 2020-10-22
 

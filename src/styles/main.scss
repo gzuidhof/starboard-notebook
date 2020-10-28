@@ -57,3 +57,7 @@ body {
 .starboard-editor-picker-overlay * {
     margin: 0;
 }
+
+.force-display {
+    display: initial !important;
+}
