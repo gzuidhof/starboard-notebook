@@ -1,7 +1,12 @@
 # Changelog
 
-## Release 0.6.0
+## Release 0.6.1
 **Date:** Unreleased
+
+* Support word wrap in CodeMirror editor (enabled by default in Markdown cells).
+
+## Release 0.6.0
+**Date:** 2020-10-28
 
 In this update starboard-notebook switches to a new format which is more similar to Jupytext's formats.
 
