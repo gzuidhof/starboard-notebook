@@ -13,7 +13,7 @@ import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { DeviceDesktopIcon, DevicePhoneIcon } from "@spectrum-web-components/icons-workflow";
 
 export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";
-export type WordWrapSetting = "off" | "on" | "wordWrapColumn" | "bounded";
+export type WordWrapSetting = "off" | "on";
 
 // Note: somewhat problematic for garbage collection if no editor is ever chosen..
 let notifyOnEditorChosen: (() => any)[] = [];

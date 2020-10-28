@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { EditorView, keymap, highlightSpecialChars } from "@codemirror/next/view";
+import { EditorView, keymap, highlightSpecialChars, } from "@codemirror/next/view";
 import { EditorState } from "@codemirror/next/state";
 
 import { defaultKeymap } from "@codemirror/next/commands";
@@ -26,6 +26,7 @@ import { searchKeymap } from "@codemirror/next/search";
 
 import { Cell } from "../notebookContent";
 import { CellEvent } from "../components/cell";
+import { WordWrapSetting } from "../components/textEditor";
 
 function createJSCompletion() {
     return completeFromList(
@@ -33,7 +34,7 @@ function createJSCompletion() {
         .concat(Object.getOwnPropertyNames(window)));
 }
 
-export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {language?: string; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, _emit?: (event: CellEvent) => void) {
+export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {language?: string; wordWrap?: WordWrapSetting}, _emit?: (event: CellEvent) => void) {
     const listen = EditorView.updateListener.of(update => {
         if (update.docChanged) {
             cell.textContent = update.state.doc.toString();
@@ -60,6 +61,7 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
                         ...(opts.language === "javascript" ? [javascript(), javascriptSyntax.languageData.of({autocomplete: createJSCompletion()})]: []),
                         ...(opts.language === "css" ? [css(), cssSyntax]: []),
                         ...(opts.language === "html" ? [html(), htmlSyntax]: []),
+                        ...(opts.wordWrap === "on" ? [EditorView.lineWrapping] : []),
                         history(),
                         
                         keymap([
@@ -73,7 +75,9 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
                         autocomplete(),
                         listen
                     ]
-                })},
+                })
+            },
+                
         );
     
     element.appendChild(editorView.dom);
