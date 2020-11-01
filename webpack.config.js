@@ -88,12 +88,12 @@ const baseConfig = {
             use: ['file-loader?emitFile=false'],
         },
         {
-            test: /.ico$|.svg$|.eot|woff$/,
+            test: /\.ico$|\.svg$|\.eot|\.woff$/,
             use: ['file-loader?emitFile=false'],
             
         },
         {
-            test: /\.nb$/,
+            test: /\.(nb|sbnb)$/,
             use: 'raw-loader',
         },
     ]
