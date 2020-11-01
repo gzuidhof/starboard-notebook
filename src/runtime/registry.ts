@@ -1,4 +1,8 @@
 
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 export type RegistryEvent<S, T> = {type: "register"; key: S; value: T};
 export type MapRegistryListenerFunction<S, T> = (event: RegistryEvent<S, T>) => void;
 
@@ -32,8 +36,12 @@ export class MapRegistry<S, T> {
      * This does *not* trigger a register event, so cells already present with this cell type will not switch automatically.
      * Use register instead.
      */
-    public set(key: S, value: T) {
-        return this.map.set(key, value);
+    public set(key: S | Array<S>, value: T) {
+        if (Array.isArray(key)) {
+            key.forEach(k => this.map.set(k, value));
+        }
+
+        return this.map.set(key as S, value);
     }
 
     public has(key: S) {

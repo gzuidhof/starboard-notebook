@@ -4,35 +4,20 @@
 
 /* This file is internal and should never be imported externally if using starboard-notebook as a library */
 
-import { Runtime, CellEvent, RuntimeControls, RuntimeExports } from ".";
+import { Runtime, CellEvent, RuntimeControls } from ".";
 import { StarboardNotebookElement } from "../components/notebook";
 import { textToNotebookContent } from "../content/parsing";
 import { ConsoleCatcher } from "../console/console";
 import { registry as cellTypeRegistry } from "../cellTypes/registry";
 import { registry as cellPropertiesRegistry } from "../cellProperties/registry";
 import { addCellToNotebookContent, removeCellFromNotebookById, changeCellType } from "../content/notebookContent";
-import { notebookContentToText, cellToText } from "../content/serialization";
+import { notebookContentToText } from "../content/serialization";
 import { debounce } from "@github/mini-throttle";
 import { CellElement } from "../components/cell";
-import { cellControlsTemplate } from "../components/controls";
-import { StarboardLogo } from "../components/logo";
-import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon, TextEditIcon, GearsIcon } from "@spectrum-web-components/icons-workflow";
-import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
-import { createCellProxy } from "../components/helpers/cellProxy";
-import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
-import { StarboardTextEditor } from "../components/textEditor";
-import { ConsoleOutputElement } from "../components/consoleOutput";
-
-import * as LitElement from "lit-element";
-import * as LitHtml from "lit-html";
-import MarkdownIt from "markdown-it";
-import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
-import katex from "katex";
-import * as YAML from "yaml";
-import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
+import { registerDefaultPlugins, setupGlobalKeybindings, updateCellsWhenCellDefinitionChanges } from "./core";
+import { createExports } from "./exports";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
-
 
 function getInitialContent() {
   if (window.initialNotebookContent) {
@@ -47,7 +32,7 @@ function getInitialContent() {
   return { cells: [], metadata: {} };
 }
 
-export function createRuntime(notebook: StarboardNotebookElement): Runtime {
+export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     const content = getInitialContent();
   
     /** Runtime without any of the functions **/
@@ -173,45 +158,16 @@ export function createRuntime(notebook: StarboardNotebookElement): Runtime {
     rt.controls = controls;
     rt.exports = createExports();
 
-    return rt;
-}
+    setupGlobalKeybindings(rt);
 
-function createExports(): RuntimeExports {
-  return {
-    templates: {
-      cellControls: cellControlsTemplate,
-      icons: {
-        StarboardLogo: StarboardLogo,
-        AssetsAddedIcon: AssetsAddedIcon,
-        DeleteIcon: DeleteIcon,
-        BooleanIcon: BooleanIcon,
-        ClockIcon: ClockIcon,
-        PlayCircleIcon: PlayCircleIcon,
-        TextEditIcon: TextEditIcon,
-        GearsIcon: GearsIcon,
-      }
-    },
-    core: {
-      ConsoleCatcher: ConsoleCatcher,
-      JavascriptEvaluator: JavascriptEvaluator,
-      createCellProxy: createCellProxy,
-      hookMarkdownItToPrismHighlighter: hookMarkdownItToPrismHighlighter,
-      hookMarkdownItToKaTeX: hookMarkdownItToKaTeX,
-      cellToText: cellToText,
-      notebookContentToText: notebookContentToText,
-      precompileJavascriptCode: precompileJavascriptCode,
-    },
-    elements: {
-      StarboardTextEditor: StarboardTextEditor,
-      ConsoleOutputElement: ConsoleOutputElement,
-    },
-    libraries: {
-      LitElement: LitElement,
-      LitHtml: LitHtml,
-      MarkdownIt: MarkdownIt,
-      KaTeX: katex,
-      YAML: YAML,
-    }
-  };
-  
+    /** Initialize certain functionality */
+    updateCellsWhenCellDefinitionChanges(rt);
+
+    window.runtime = rt;
+
+    registerDefaultPlugins(rt);
+    
+    
+
+    return rt;
 }

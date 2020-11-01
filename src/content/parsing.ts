@@ -2,10 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-
 import { NotebookContent, Cell } from "../types";
-import { uuid } from "uuidv4";
 import * as YAML from "yaml";
+import { generateUniqueCellId } from "../components/helpers/random";
 
 const eol = /\r\n|\r|\n/g;
 
@@ -45,7 +44,7 @@ export function textToNotebookContent(text: string) {
           cellType: pc.type,
           textContent: pc.lines.join("\n"),
           metadata: cellMetadata,
-          id: uuid(),
+          id: generateUniqueCellId(),
       };
   });
 

@@ -68,7 +68,8 @@ export interface CellTypeDefinition {
      */
     name: string;
     /**
-     * Identifiers for this cell type, can be a single value (e.g. "html") or multiple (e.g. ["js", "javascript"])
+     * Identifiers for this cell type, can be a single value (e.g. "html") or multiple (e.g. ["javascript", "js"])
+     * If multiple identifiers are defined, the first one is the preferred one.
      */
     cellType: string | string[];
 }

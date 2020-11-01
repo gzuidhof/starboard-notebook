@@ -10,6 +10,10 @@
 
 @import "./github-markdown.css";
 
+:root {
+    --starboard-font-mono: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
+}
+
 html, body {
     min-height: auto;
     height: auto;

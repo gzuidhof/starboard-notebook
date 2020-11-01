@@ -53,7 +53,7 @@ starboard-cell:focus .cell-controls-button
 .cell-controls-button {
     background: transparent;
     color: #c3c3c3;
-    font-size: 1em;
+    font-size: 12px;
     cursor: pointer;
     user-select: none;
     padding: 2px 4px;
@@ -70,8 +70,8 @@ starboard-cell:focus .cell-controls-button
 .cell-controls-button-language {
     padding: 2px 6px;
     text-transform: uppercase;
-    font-size: 11px;
     margin-bottom: 4px;
+    font-family: var(--starboard-font-mono);
 }
 
 .with-hover-border:hover {

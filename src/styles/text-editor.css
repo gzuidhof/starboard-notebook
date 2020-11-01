@@ -87,7 +87,7 @@
     border-radius: 3px;
     padding: 0px 1px;
     font-size: 0.8em;
-    font-family: monospace;
+    font-family: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
     margin: 0 2px;
 }
 
@@ -102,7 +102,7 @@
     display: flex
 }
 
-.celltype-js .starboard-text-editor:focus-within {
+.celltype-javascript .starboard-text-editor:focus-within {
     border-left-color: #F0DB4F;
 }
 
@@ -110,7 +110,7 @@
     border-left-color: #fb8568;
 }
 
-.celltype-py .starboard-text-editor:focus-within {
+.celltype-python .starboard-text-editor:focus-within {
     border-left-color: #77b8ed;
 }
 

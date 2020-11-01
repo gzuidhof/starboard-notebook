@@ -40,7 +40,7 @@ export class JavascriptEvaluator {
         code = `(${code})`;
       }
 
-      const codeToRun = this.precompile(code);
+      const codeToRun = await this.precompile(code);
 
       if (!window) {
         res.error = true;
@@ -72,7 +72,7 @@ export class JavascriptEvaluator {
     }
   }
 
-  public precompile(code: string): string {
+  public precompile(code: string): Promise<string> {
     return precompileJavascriptCode(code);
   }
 }

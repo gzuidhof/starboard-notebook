@@ -48,12 +48,6 @@ export function getAvailableCellTypes() {
 // Singleton global value
 export const registry = new MapRegistry<string, CellTypeDefinition>();
 builtinCellTypes.forEach((e) => {
-    if (typeof e.cellType === "string") {
-        registry.set(e.cellType, e);
-    } else {
-        e.cellType.forEach((ct) => {
-            registry.set(ct, e);
-        });
-    }
+    registry.set(e.cellType, e);
 });
 

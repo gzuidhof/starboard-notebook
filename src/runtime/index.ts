@@ -117,7 +117,7 @@ export interface Runtime {
  
     definitions: {
         /**
-         * Map of registered cell types, indexed by cellType (e.g. "js").
+         * Map of registered cell types, indexed by cellType (e.g. "javascript").
          */
         cellTypes: MapRegistry<string, CellTypeDefinition>;
 

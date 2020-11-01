@@ -1,9 +1,22 @@
 # Changelog
 
 ## Release 0.6.1
-**Date:** Unreleased
+**Date:** 2020-11-01
 
+* Update `starboard-python` to 0.3.4, in which Pyodide files are now prefetched when a Python cell is first created.
+* The babel parser (only used when executing Javascript cells) is now loaded asynchronously, shaving more than 450KB from the critical JS path.
+* CSS is now minified (saving ~11KB), and more strict JS minify options are used (saving ~20KB).
+* A cell type definitions can now be overwritten and existing cells with that type will reset automatically.
+* *(internal change)*: Javascript precompile function is now async to allow for dynamic loading of Babel.
+* *(internal change)*: Refactorings in the internal core, removing core functionality from view code in Notebook HTML element.
+
+Editor updates:
 * Support word wrap in CodeMirror editor (enabled by default in Markdown cells).
+* Rich Coffeescript syntax in Monaco editor.
+* Update to CodeMirror 0.14.0
+* Fix cell type hint CSS for `javascript` and `python` cell types (left border of the editor).
+* Fix `codicons.ttf` not loading.
+* Minor changes to default font in CodeMirror to bring it closer to Monaco's look.
 
 ## Release 0.6.0
 **Date:** 2020-10-28

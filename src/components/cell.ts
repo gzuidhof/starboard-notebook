@@ -111,7 +111,6 @@ export class CellElement extends LitElement {
         element.classList.toggle("popover-active");
 
         createPopper(parent, element, {placement: "left-start"});
-        // console.log(element.scrollHeight, document.body.scrollHeight);
 
         if (element.classList.contains("popover-active")) {
         // TODO: refactor this. the idea is to detect clicks outside the element to close the popover.
@@ -181,7 +180,7 @@ export class CellElement extends LitElement {
                         <b style="margin-bottom: 6px">Change Cell Type</b>
 
                         ${getAvailableCellTypes().map((ct) => html`
-                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float:right; font-size: 11px; font-family: monospace">${
+                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float: right; font-size: 11px; font-family: var(--starboard-font-mono)">${
                                 typeof ct.cellType === "string" ? ct.cellType : ct.cellType[0]
                         }</span></button>
                         `)

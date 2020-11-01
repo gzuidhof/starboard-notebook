@@ -9,12 +9,8 @@ import { createCellProxy } from './helpers/cellProxy';
 import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';
 import { StarboardLogo } from './logo';
 import { insertHTMLChildAtIndex } from './helpers/dom';
-import { textToNotebookContent } from '../content/parsing';
 import { Runtime } from '../runtime';
-import { createRuntime } from '../runtime/create';
-
-// @ts-ignore
-import { registerPython } from "starboard-python/dist/index.js";
+import { setupRuntime } from '../runtime/create';
 
 declare global {
   interface Window {
@@ -39,49 +35,11 @@ export class StarboardNotebookElement extends LitElement {
     return this;
   }
 
-  private contentHasBeenSetFromParentIframe = false;
-  private hasHadInitialRun = false;
+  public hasHadInitialRun = false;
 
   connectedCallback() {
     super.connectedCallback();
-    this.runtime = createRuntime(this);
-    window.runtime = this.runtime;
-
-    window.iFrameResizer = {
-      onReady: () => {
-        // It is possible that the parent iFrame isn't ready for messages yet, so we try to make contact a few times.+
-        let numTries = 0;
-        const askForContent = () => {
-          if (this.contentHasBeenSetFromParentIframe || numTries > 15) return;
-          window.parentIFrame.sendMessage({ type: "SIGNAL_READY" });
-          numTries++;
-          setTimeout(() => askForContent(), numTries*100);
-        };
-        askForContent();
-      },
-      onMessage: (msg: any) => {
-        if (msg.type === "SET_NOTEBOOK_CONTENT") {
-          if (this.contentHasBeenSetFromParentIframe) return; // be idempotent
-          this.runtime.content = textToNotebookContent(msg.data);
-          this.contentHasBeenSetFromParentIframe = true;
-          this.hasHadInitialRun = false;
-          this.notebookInitialize();
-          this.performUpdate();
-        } else if (msg.type === "RELOAD") {
-          window.location.reload();
-        }
-      }
-    };
-
-    // Register default plugins, when more default plugins are added this should be moved elsewhere
-    registerPython();
-
-    document.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-        e.preventDefault();
-        this.runtime.controls.save();
-      }
-    }, false);
+    this.runtime = setupRuntime(this);
   }
 
   async notebookInitialize() {

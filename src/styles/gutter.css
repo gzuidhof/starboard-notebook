@@ -53,7 +53,6 @@ starboard-cell:focus-within * .cell-gutter-button {
     width: 4px;
 }
 
-
 starboard-cell:focus * .cell-gutter-button {
     background-color: #ffec8d !important;
     width: 4px;

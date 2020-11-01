@@ -50,11 +50,6 @@ starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed * .displ
     display: flex;
 }
 
-
-
-
-
-
 .cell-top {
     grid-area: top;
     min-height: 40px;

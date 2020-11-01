@@ -29,7 +29,7 @@ window.katex = katex;
 window.YAML = YAML;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// window.initialNotebookContent = require("./debugNotebooks/promises.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/dynamicNewCellType.nb").default;
 
 document.body.innerHTML += `
 <base target="_parent" />

@@ -1,0 +1,128 @@
+# %% [md]
+# coffeescript-custom-cell-type
+
+In this notebook we register a custom cell type which compiles [Coffeescript](https://coffeescript.org/#overview) code and displays the transpiled code.
+# %% [esm]
+
+import {compile} from "https://cdn.jsdelivr.net/npm/coffeescript@2.5.1/lib/coffeescript-browser-compiler-modern/coffeescript.js"
+
+const StarboardTextEditor = runtime.exports.elements.StarboardTextEditor;
+const ConsoleOutputElement = runtime.exports.elements.ConsoleOutputElement;
+const cellControlsTemplate = runtime.exports.templates.cellControls;
+const icons = runtime.exports.templates.icons;
+
+const COFFEESCRIPT_CELL_TYPE_DEFINITION = {
+    name: "CoffeeScript",
+    cellType: ["coffeescript"],
+    createHandler: (cell, runtime) => new CoffeeScriptCellHandler(cell, runtime),
+}
+
+class CoffeeScriptCellHandler {
+
+    constructor(cell, runtime) {
+        this.cell = cell;
+        this.runtime = runtime;
+    }
+
+    getControls() {
+        const runButton = {
+            icon: icons.PlayCircleIcon,
+            tooltip: "Compile CoffeeScript",
+            callback: () => this.runtime.controls.emit({id: this.cell.id, type: "RUN_CELL"}),
+        };
+        return cellControlsTemplate({ buttons: [runButton] });
+    }
+
+    attach(params) {
+        this.elements = params.elements;
+
+        const topElement = this.elements.topElement;
+        litHtml.render(this.getControls(), this.elements.topControlsElement);
+
+        this.editor = new StarboardTextEditor(this.cell, this.runtime, {language: "coffeescript"});
+        topElement.appendChild(this.editor);
+    }
+
+    async run() {
+        const codeToRun = this.cell.textContent;
+        this.outputElement = new ConsoleOutputElement();
+        
+        litHtml.render(html`${this.outputElement}`, this.elements.bottomElement);
+
+        try {
+            const val = compile(codeToRun, {bare: true});
+            window.$_ = val;
+
+            if (val !== undefined) {
+                this.outputElement.addEntry({
+                    method: "result",
+                    data: [val]
+                });
+            }
+            return val
+        } catch(e) {
+            this.outputElement.addEntry({
+                method: "error",
+                data: [e]
+            });
+        }
+
+        return undefined;
+    }
+
+    focusEditor() {
+        this.editor.focus();
+    }
+
+    async dispose() {
+        this.editor.remove();
+    }
+}
+
+runtime.definitions.cellTypes.register("coffeescript", COFFEESCRIPT_CELL_TYPE_DEFINITION);
+# %% [coffeescript]
+# These are all of the examples from the Coffeescript homepage
+# Assignment:
+number   = 42
+opposite = true
+
+# Conditions:
+number = -42 if opposite
+
+# Functions:
+square = (x) -> x * x
+
+# Arrays:
+list = [1, 2, 3, 4, 5]
+
+# Objects:
+math =
+  root:   Math.sqrt
+  square: square
+  cube:   (x) -> x * square x
+
+# Splats:
+race = (winner, runners...) ->
+  print winner, runners
+
+# Existence:
+alert "I knew it!" if elvis?
+
+# Array comprehensions:
+cubes = (math.cube num for num in list)
+
+# %% [coffeescript]
+# Of course you would normally want to actually execute the code.. I suppose we can eval it in the next cell in this example.
+
+
+
+square = (x) -> x * x
+
+cube   = (x) -> square(x) * x
+
+
+
+(cube num for num in [1,2,3,4,5,6])
+# %% [javascript]
+eval($_)
+# %% [javascript]

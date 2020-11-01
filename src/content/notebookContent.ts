@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { uuid } from 'uuidv4';
 import { Cell, NotebookContent } from '../types';
 import { cellToText } from './serialization';
 import { textToNotebookContent } from './parsing';
+import { generateUniqueCellId } from '../components/helpers/random';
 
 function requireIndexOfCellId(cells: Cell[], id?: string) {
     if (id === undefined) {
@@ -37,7 +37,7 @@ export function addCellToNotebookContent(nb: NotebookContent, position: "end" | 
             cellType,
             textContent: "",
             metadata: {properties: {}},
-            id: (id || uuid()),
+            id: (id || generateUniqueCellId()),
     };
     nb.cells.splice(idx, 0, cell);
 }

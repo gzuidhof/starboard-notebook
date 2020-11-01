@@ -1,7 +1,9 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const webpack = require('webpack')
 
@@ -23,6 +25,19 @@ const baseConfig = {
     },
     optimization: {
         usedExports: true,
+        minimizer: [
+            new CssMinimizerPlugin(),
+            new TerserPlugin({
+                parallel: true,
+                terserOptions: {
+                    compress: {
+                        passes: 3,
+                    },
+                    ecma: 2018,
+                  // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+                }
+            }),
+        ]
     },
     stats: "minimal",
     module: {
@@ -43,10 +58,10 @@ const baseConfig = {
                   },
                 'ts-loader'
             ],
-            exclude: [/node_modules/, /textEditor\.ts$/, /esm\.ts$/],
+            exclude: [/node_modules/, /textEditor\.ts$/, /esm\.ts$/, /precompile\.ts$/],
         },
         {
-            test: /(textEditor)|(esm)\.ts$/, // Dynamic imports break when using minify-lit-html-loader for some mysterious reason.. a workaround
+            test: /(textEditor)|(esm)|(precompile)\.ts$/, // Dynamic imports break when using minify-lit-html-loader for some mysterious reason.. a workaround
             use: [
                 'ts-loader'
             ],
@@ -69,7 +84,7 @@ const baseConfig = {
             exclude: [/.*KaTeX.*.ttf/],
         },
         {   // KaTeX ttf fonts are not omitted. Starboard only supports browsers that understand woff2 anyway.
-            test: /(KaTeX)?.*\.ttf$/,
+            test: /(KaTeX).*\.ttf$/,
             use: ['file-loader?emitFile=false'],
         },
         {
@@ -96,7 +111,7 @@ const baseConfig = {
         }),
         new MonacoWebpackPlugin({
             languages: [
-                "markdown", "html", "css", "javascript", "typescript", "python",
+                "markdown", "html", "css", "javascript", "typescript", "python", "coffee",
             ],
             features: [
                 "!toggleHighContrast", "!gotoSymbol"
