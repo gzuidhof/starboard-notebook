@@ -14,7 +14,7 @@ import { addCellToNotebookContent, removeCellFromNotebookById, changeCellType } 
 import { notebookContentToText } from "../content/serialization";
 import { debounce } from "@github/mini-throttle";
 import { CellElement } from "../components/cell";
-import { registerDefaultPlugins, setupGlobalKeybindings, updateCellsWhenCellDefinitionChanges } from "./core";
+import { registerDefaultPlugins, setupCommunicationWithParentFrame, setupGlobalKeybindings, updateCellsWhenCellDefinitionChanges } from "./core";
 import { createExports } from "./exports";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
@@ -164,6 +164,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     updateCellsWhenCellDefinitionChanges(rt);
 
     window.runtime = rt;
+    setupCommunicationWithParentFrame(rt);
 
     registerDefaultPlugins(rt);
     

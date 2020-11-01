@@ -1,7 +1,13 @@
 # Changelog
 
-## Release 0.6.1
+## Release 0.6.2
+
+* Fix regression when setting content from parent frame if notebook is embedded in iframe.
+
+## Release 0.6.1 
 **Date:** 2020-11-01
+
+This version never went live on Starboard.gg, it has a regression which was fixed in 0.6.2.
 
 * Update `starboard-python` to 0.3.4, in which Pyodide files are now prefetched when a Python cell is first created.
 * The babel parser (only used when executing Javascript cells) is now loaded asynchronously, shaving more than 450KB from the critical JS path.
