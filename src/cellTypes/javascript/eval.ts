@@ -3,7 +3,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 /* Adapted from jsconsole, MIT licensed */
-import { ConsoleCatcher } from '../../console/console';
 import { precompileJavascriptCode } from './precompile';
 import { promiseState } from './util';
  
@@ -21,12 +20,6 @@ interface RunResult {
 }
 
 export class JavascriptEvaluator {
-  public consoleCatcher: ConsoleCatcher;
-
-  constructor(consoleCatcher: ConsoleCatcher) {
-    this.consoleCatcher = consoleCatcher;
-  }
-
   public async run(code: string): Promise<RunResult> {
     const res: RunResult = {
       error: false,

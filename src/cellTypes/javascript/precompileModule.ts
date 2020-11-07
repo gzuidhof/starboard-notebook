@@ -91,7 +91,6 @@ export async function precompileJavascriptCode(content: string): Promise<string>
     if (last.type === 'ExpressionStatement') {
       changes.push({
         text: 'return {returnValue: (',
-        // text: 'return new Promise((r)=>r({returnValue:(',
         start: last.start,
         end: last.start,
       });

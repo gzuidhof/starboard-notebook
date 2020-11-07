@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
- import { customElement, LitElement, property, html } from "lit-element";
+import { customElement, LitElement, property, html } from "lit-element";
 import { render, createElement as h } from 'preact/compat';
 
 /* eslint @typescript-eslint/ban-ts-comment: off */

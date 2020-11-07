@@ -29,7 +29,6 @@ export function updateCellsWhenCellDefinitionChanges(runtime: Runtime) {
     runtime.definitions.cellTypes.subscribe(newCellTypeListenerFunction);
 }
 
-
 export function setupCommunicationWithParentFrame(runtime: Runtime) {
     let contentHasBeenSetFromParentIframe = false; 
 

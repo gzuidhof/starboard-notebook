@@ -9,7 +9,7 @@ import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
 import { createCellProxy } from "../components/helpers/cellProxy";
 import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
 import { StarboardTextEditor } from "../components/textEditor";
-import { ConsoleOutputElement } from "../components/consoleOutput";
+import { ConsoleOutputElement } from "../components/output/consoleOutput";
 
 import * as LitElement from "lit-element";
 import * as LitHtml from "lit-html";
@@ -21,6 +21,7 @@ import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 import { RuntimeExports } from ".";
 import { ConsoleCatcher } from "../console/console";
 import { cellToText, notebookContentToText } from "../content/serialization";
+import { renderIfHtmlOutput } from "../components/output/htmlOutput";
 
 export function createExports(): RuntimeExports {
     return {
@@ -40,6 +41,7 @@ export function createExports(): RuntimeExports {
       core: {
         ConsoleCatcher: ConsoleCatcher,
         JavascriptEvaluator: JavascriptEvaluator,
+        renderIfHtmlOutput: renderIfHtmlOutput,
         createCellProxy: createCellProxy,
         hookMarkdownItToPrismHighlighter: hookMarkdownItToPrismHighlighter,
         hookMarkdownItToKaTeX: hookMarkdownItToKaTeX,

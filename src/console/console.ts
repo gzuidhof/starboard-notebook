@@ -3,26 +3,13 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Hook } from "console-feed-modern";
+import methods, { Methods } from "console-feed-modern/lib/definitions/Methods";
 
 
-export type Methods =
-| 'log'
-| 'debug'
-| 'info'
-| 'warn'
-| 'error'
-| 'table'
-| 'clear'
-| 'time'
-| 'timeEnd'
-| 'count'
-| 'assert'
-// Technically the next two aren't methods.. But it's what the library wants
-| 'result'
-| 'command';
+export type MessageMethod = Methods | 'result' | 'command';
 
 export interface Message {
-    method: Methods;
+    method: MessageMethod;
     data: any[];
 }
 
@@ -32,7 +19,16 @@ export type MessageCallback = (message: Message) => void;
 export class ConsoleCatcher {
     private currentHook?: MessageCallback;
 
+    /**
+     * The console's original log/debug/etc methods, so we can still
+     * log unhooked.
+     */
+    private originalMethods: {[M in Methods]: (...v: any) => any};
+
     constructor(console: Console) {
+        this.originalMethods = {} as any;
+        (methods as Methods[]).forEach(m => this.originalMethods[m] = console[m]);
+
         Hook(
             console,
             (msg: Message) => {
@@ -52,5 +48,12 @@ export class ConsoleCatcher {
         if (this.currentHook === callback) {
             this.currentHook = undefined;
         }
+    }
+
+    /**
+     * Can be used to circumvent the console catcher.
+     */
+    public getRawConsoleMethods() {
+        return this.originalMethods;
     }
 }

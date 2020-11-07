@@ -8,7 +8,7 @@ import { CellElement } from "../components/cell";
 import { StarboardNotebookElement } from "../components/notebook";
 import { TemplateResult } from "lit-html";
 import { StarboardTextEditor } from "../components/textEditor";
-import { ConsoleOutputElement } from "../components/consoleOutput";
+import { ConsoleOutputElement } from "../components/output/consoleOutput";
 
 import * as lithtmlLibrary from "lit-html";
 import * as litElementLibrary from "lit-element";
@@ -22,6 +22,7 @@ import { cellToText, notebookContentToText } from "../content/serialization";
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import { MapRegistry } from "./registry";
 import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
+import { renderIfHtmlOutput } from "src/components/output/htmlOutput";
 
 export * from "../types";
 
@@ -73,6 +74,7 @@ export interface RuntimeExports {
             GearsIcon: IconTemplate;
         };
     };
+
     elements: {
         StarboardTextEditor: typeof StarboardTextEditor;
         ConsoleOutputElement: typeof ConsoleOutputElement;
@@ -84,6 +86,7 @@ export interface RuntimeExports {
     core: {
         JavascriptEvaluator: typeof JavascriptEvaluator;
         ConsoleCatcher: typeof ConsoleCatcher;
+        renderIfHtmlOutput: typeof renderIfHtmlOutput;
         createCellProxy: typeof createCellProxy;
         hookMarkdownItToPrismHighlighter: typeof hookMarkdownItToPrismHighlighter;
         hookMarkdownItToKaTeX: typeof hookMarkdownItToKaTeX;

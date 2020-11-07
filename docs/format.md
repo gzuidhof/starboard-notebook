@@ -18,7 +18,7 @@ starboard:
 ```
 
 ## Notebook cells
-Notebook cells start with a cell delineator, which starts with a line comment (`#` or `//`) followed by at least two `%` characters. A regex for this is `(^(#|\/\/)\s*%{2,}-*)`.
+Notebook cells start with a cell delineator, which starts with a line comment (`#` or `//`) followed by at least two `%` characters. A regex for this is `^(#|\/\/)\s*%{2,}-*`.
 
 On the same line there is also the cell type identifier in square brackets (e.g. `[javascript]`). A cell type identifier should always be present.
 

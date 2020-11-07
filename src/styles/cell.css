@@ -61,3 +61,7 @@ starboard-cell:not(:focus):not(:focus-within) .cell-container.collapsed * .displ
     overflow-y: auto;
 }
 
+.cell-output-html {
+    overflow-x: auto;
+    padding: 0.4em;
+}

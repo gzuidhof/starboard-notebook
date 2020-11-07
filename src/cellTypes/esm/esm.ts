@@ -7,11 +7,11 @@ import { BaseCellHandler } from "../base";
 import { cellControlsTemplate } from "../../components/controls";
 import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workflow";
 
-import { ConsoleOutputElement } from "../../components/consoleOutput";
+import { ConsoleOutputElement } from "../../components/output/consoleOutput";
 import { StarboardTextEditor } from '../../components/textEditor';
 import { Cell } from "../../types";
-import { isProbablyTemplateResult } from "../javascript/util";
 import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../../runtime";
+import { renderIfHtmlOutput } from "../../components/output/htmlOutput";
 
 export const ES_MODULE_CELL_TYPE_DEFINITION = {
     name: "ES Module",
@@ -104,11 +104,8 @@ export class ESModuleCellHandler extends BaseCellHandler {
             }
         }
 
-        if (val instanceof HTMLElement) {
-            htmlOutput.appendChild(val);  
-        } else if (isProbablyTemplateResult(val)) {
-            render(html`${val}`, htmlOutput);
-        } else {
+        const htmlOutputRendered = renderIfHtmlOutput(val, htmlOutput);
+        if (!htmlOutputRendered) {
             if (val !== undefined) { // Don't show undefined output
                 this.outputElement.addEntry({
                     method: "result",

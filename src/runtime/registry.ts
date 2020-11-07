@@ -37,11 +37,10 @@ export class MapRegistry<S, T> {
      * Use register instead.
      */
     public set(key: S | Array<S>, value: T) {
-        if (Array.isArray(key)) {
-            key.forEach(k => this.map.set(k, value));
+        if (!Array.isArray(key)) {
+            key = [key];
         }
-
-        return this.map.set(key as S, value);
+        key.forEach(k => this.map.set(k, value));
     }
 
     public has(key: S) {
@@ -56,9 +55,20 @@ export class MapRegistry<S, T> {
         return this.map.values();
     }
 
-    public register(key: S, value: T) {
-        const retValue = this.set(key,value);
-        this.notifyHandlers("register", key, value);
-        return retValue;
+    public register(key: S | Array<S>, value: T) {
+        if (!Array.isArray(key)) {
+            key = [key];
+        }
+        key.forEach(k => {
+            this.map.set(k, value);
+            this.notifyHandlers("register", k, value);
+        });
+    }
+
+    /**
+     * Get the underlying Map
+     */
+    public getMap() {
+        return this.map;
     }
 }

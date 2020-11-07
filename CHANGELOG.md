@@ -1,6 +1,17 @@
 # Changelog
 
+## Release 0.6.3
+**Date:** 2020-11-07
+
+* Added `cell-output-html` class that slightly pads the output, it is used when Javascript or ESM cells output HTML elements.
+
+Internal changes (only relevant for plugin developers):
+* The `register` function of a `MapRegistry` (used to register new cell types) now accepts an array of keys to assign to the same definition.
+* `renderIfHtmlOutput` added to DRY rendering of HTML output (used for either vanilla HTML elements or lit-html's `TemplateResult`).
+* The `ConsoleCatcher` class now has a `getRawConsoleMethods()` which can be used to retrieve a pointer to the original console methods so you can log messages without them appearing in any cell's output.
+
 ## Release 0.6.2
+**Date:** 2020-11-01
 
 * Fix regression when setting content from parent frame if notebook is embedded in iframe.
 

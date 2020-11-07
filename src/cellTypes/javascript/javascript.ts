@@ -8,11 +8,11 @@ import { cellControlsTemplate } from "../../components/controls";
 import { JavascriptEvaluator } from "./eval";
 import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workflow";
 
-import { ConsoleOutputElement } from "../../components/consoleOutput";
+import { ConsoleOutputElement } from "../../components/output/consoleOutput";
 import { StarboardTextEditor } from '../../components/textEditor';
 import { Cell } from "../../types";
-import { isProbablyTemplateResult } from "./util";
 import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../../runtime";
+import { renderIfHtmlOutput } from "../../components/output/htmlOutput";
 
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
     name: "Javascript",
@@ -34,7 +34,7 @@ export class JavascriptCellHandler extends BaseCellHandler {
 
     constructor(cell: Cell, runtime: Runtime) {
         super(cell, runtime);
-        this.jsRunner = new JavascriptEvaluator(runtime.consoleCatcher);
+        this.jsRunner = new JavascriptEvaluator();
     }
 
     private getControls(): TemplateResult {
@@ -67,6 +67,7 @@ export class JavascriptCellHandler extends BaseCellHandler {
         this.outputElement.hook(this.runtime.consoleCatcher);
 
         const htmlOutput = document.createElement("div");
+        htmlOutput.classList.add("cell-output-html");
         render(html`${this.outputElement}${htmlOutput}`, this.elements.bottomElement);
 
         const outVal = await this.jsRunner.run(this.cell.textContent);
@@ -76,41 +77,36 @@ export class JavascriptCellHandler extends BaseCellHandler {
         await this.outputElement.unhookAfterOneTick(this.runtime.consoleCatcher);
 
         const val = outVal.value;
-        if (val instanceof HTMLElement) {
-            htmlOutput.appendChild(val);  
-        } else if (isProbablyTemplateResult(val)) {
-            render(html`${val}`, htmlOutput);
-        } else {
-            if (val !== undefined) { // Don't show undefined output
-                if (outVal.error) {
-                    console.error(val); // NOTE: perhaps problematic for async code, don't want to loop this!
+        const htmlOutputRendered = renderIfHtmlOutput(val, htmlOutput);
 
-                    if (val.stack !== undefined) {
-                        let stackToPrint: string = val.stack;
-                        const errMsg: string = val.toString();
-                        if (stackToPrint.startsWith(errMsg)) { // Prevent duplicate error msg in Chrome
-                            stackToPrint = stackToPrint.substr(errMsg.length);
-                        }
-                        this.outputElement.addEntry({
-                            method: "error",
-                            data: [errMsg, stackToPrint]
-                        });
-                    } else {
-                        this.outputElement.addEntry({
-                            method: "error",
-                            data: [val]
-                        });
+        if (!htmlOutputRendered && val !== undefined) { // Don't show undefined output
+            if (outVal.error) {
+                console.error(val); // NOTE: perhaps problematic for async code, don't want to loop this!
+
+                if (val.stack !== undefined) {
+                    let stackToPrint: string = val.stack;
+                    const errMsg: string = val.toString();
+                    if (stackToPrint.startsWith(errMsg)) { // Prevent duplicate error msg in Chrome
+                        stackToPrint = stackToPrint.substr(errMsg.length);
                     }
-
+                    this.outputElement.addEntry({
+                        method: "error",
+                        data: [errMsg, stackToPrint]
+                    });
                 } else {
                     this.outputElement.addEntry({
-                        method: "result",
+                        method: "error",
                         data: [val]
                     });
                 }
+            } else {
+                this.outputElement.addEntry({
+                    method: "result",
+                    data: [val]
+                });
             }
         }
-
+        
         if (this.lastRunId === currentRunId) {
             this.isCurrentlyRunning = false;
             render(this.getControls(), this.elements.topControlsElement);
