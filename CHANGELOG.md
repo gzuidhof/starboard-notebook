@@ -1,7 +1,7 @@
 # Changelog
 
 ## Release 0.6.4
-**Date:** Unreleased
+**Date:** 2020-11-13
 
 A big decrease in bundle size that is loaded initially, from **930KB** (278KB gzipped) to **520KB** (146KB gzipped approximately).
 
