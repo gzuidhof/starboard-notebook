@@ -3,7 +3,13 @@
 ## Release 0.6.4
 **Date:** Unreleased
 
-* The console output rendering code is now loaded asynchronously, saving 140KB from the critical path.
+A big decrease in bundle size that is loaded initially, from **930KB** (278KB gzipped) to **520KB** (146KB gzipped approximately).
+
+* The console output rendering code is now loaded asynchronously, saving **~140KB** from the critical path.
+* KaTeX is now loaded asynchronously, markdown content is now rendered without LaTeX rendering, and then re-rendered once it is loaded. The export of KaTeX is now found under `runtime.exports.async.KaTeX`. This saves **~244KB** from the intiial load.
+  * This is a **breaking change** for notebooks that and rely on `window.katex`, those notebooks should now run `await window.lazyKatex` first to ensure it is already loaded.
+  * `hookMarkdownItToKaTeX` is now an `async` function.
+* Node polyfills that automatically get bundled are now excluded, saving around **30KB**.
 
 ## Release 0.6.3
 **Date:** 2020-11-07

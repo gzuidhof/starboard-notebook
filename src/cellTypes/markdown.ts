@@ -13,10 +13,17 @@ import { StarboardTextEditor } from "../components/textEditor";
 import { Cell } from "../types";
 import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
 import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
+import { promiseState } from "./javascript/util";
 
 const md = new mdlib();
 hookMarkdownItToPrismHighlighter(md);
-hookMarkdownItToKaTeX(md);
+
+const katexHookPromise = hookMarkdownItToKaTeX(md);
+
+async function isKatexAlreadyLoaded() {
+   return (await promiseState(katexHookPromise))=== "fulfilled";
+}
+
 
 export const MARKDOWN_CELL_TYPE_DEFINITION = {
     name: "Markdown",
@@ -84,9 +91,17 @@ export class MarkdownCellHandler extends BaseCellHandler {
             delete this.editor;
         }
 
-        const htmlContent = md.render(this.cell.textContent);
-        const wrapped = `<div class="markdown-body">${htmlContent}</div>`;
-        topElement.innerHTML = wrapped;
+        const outDiv = document.createElement("div");
+        outDiv.classList.add("markdown-body");
+        outDiv.innerHTML = md.render(this.cell.textContent);
+
+        // Re-render when katex becomes available
+        if (!await isKatexAlreadyLoaded()) {
+            // Possible improvement: we could detect if any latex is present before we load katex
+            katexHookPromise.then(() => outDiv.innerHTML = md.render(this.cell.textContent));
+        }
+
+        topElement.appendChild(outDiv);
         topElement.children[0].addEventListener("dblclick", (_event: any) => this.enterEditMode());
         this.isInEditMode = false;
         render(this.getControls(), this.elements.topControlsElement);

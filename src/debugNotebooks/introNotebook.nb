@@ -4,7 +4,7 @@ Starboard brings cell-by-cell notebooks to the browser, no code is running on th
 It's probably the quickest way to visualize some data with interactivity, do some prototyping, or build a rudimentary dashboard.
 
 #### Some features 
-* Mix Markdown, HTML, CSS and Javascript.
+* Mix Markdown, HTML, CSS $\LaTeX$, Python, and Javascript.
 * The file format is a plaintext file, which plays nice with version control systems like git.
 * Runs entirely in your browser, everything is static: no server, no setup and no build step.
 

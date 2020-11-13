@@ -15,9 +15,8 @@ import * as LitElement from "lit-element";
 import * as LitHtml from "lit-html";
 import MarkdownIt from "markdown-it";
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
-import katex from "katex";
 import * as YAML from "yaml";
-import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
+import { hookMarkdownItToKaTeX, katexLoader } from "../components/helpers/katex";
 import { RuntimeExports } from ".";
 import { ConsoleCatcher } from "../console/console";
 import { cellToText, notebookContentToText } from "../content/serialization";
@@ -57,8 +56,11 @@ export function createExports(): RuntimeExports {
         LitElement: LitElement,
         LitHtml: LitHtml,
         MarkdownIt: MarkdownIt,
-        KaTeX: katex,
         YAML: YAML,
+
+        async: {
+          KaTeX: katexLoader,
+        },
       }
     };
 }

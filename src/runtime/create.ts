@@ -163,12 +163,10 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     /** Initialize certain functionality */
     updateCellsWhenCellDefinitionChanges(rt);
 
-    window.runtime = rt;
+    (window as any).runtime = rt;
+  
     setupCommunicationWithParentFrame(rt);
-
     registerDefaultPlugins(rt);
     
-    
-
     return rt;
 }

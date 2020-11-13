@@ -22,7 +22,7 @@ import { cellToText, notebookContentToText } from "../content/serialization";
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import { MapRegistry } from "./registry";
 import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
-import { renderIfHtmlOutput } from "src/components/output/htmlOutput";
+import { renderIfHtmlOutput } from "../components/output/htmlOutput";
 
 export * from "../types";
 
@@ -102,8 +102,14 @@ export interface RuntimeExports {
         LitHtml: typeof lithtmlLibrary;
         LitElement: typeof litElementLibrary;
         MarkdownIt: typeof mdlib;
-        KaTeX: typeof katex;
         YAML: typeof YAML;
+
+        /**
+         * Libraries that are loaded asynchronously on demand.
+         */
+        async: {
+            KaTeX: () => Promise<typeof katex>;
+        };
     };
 }
 

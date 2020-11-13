@@ -9,9 +9,7 @@
  import { StarboardTextEditor } from "../components/textEditor";
  import { Cell } from "../types";
  import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
-
- import katex from "katex";
-
+import { katexLoader } from "../components/helpers/katex";
  
  export const LATEX_CELL_TYPE_DEFINITION = {
      name: "LateX (KaTeX)",
@@ -79,7 +77,7 @@
              delete this.editor;
          }
  
-         katex.render(this.cell.textContent, topElement, {"throwOnError" : false, "errorColor" : " #cc0000", displayMode: true});
+         (await katexLoader()).render(this.cell.textContent, topElement, {"throwOnError" : false, "errorColor" : " #cc0000", displayMode: true});
          topElement.children[0].addEventListener("dblclick", (_event: any) => this.enterEditMode());
          this.isInEditMode = false;
          render(this.getControls(), this.elements.topControlsElement);

@@ -19,7 +19,6 @@ declare global {
       onReady: () => void;
       onMessage: (msg: any) => void;
     };
-    runtime: Runtime;
     starboardEditUrl?: string;
   }
 }

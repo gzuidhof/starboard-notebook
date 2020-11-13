@@ -7,17 +7,21 @@ import "./components/notebook";
 
 import "iframe-resizer/js/iframeResizer.contentWindow.js";
 import * as lithtml from "lit-html";
-import katex from "katex";
+
 import * as YAML from "yaml";
+import { katexEventualPromise, katexLoader } from "./components/helpers/katex";
+import katex from "katex";
 
 declare global {
   interface Window {
     initialNotebookContent?: string;
-    html?: typeof lithtml.html;
-    svg?: typeof lithtml.svg;
-    litHtml?: typeof lithtml;
+
+    html: typeof lithtml.html;
+    svg: typeof lithtml.svg;
+    litHtml: typeof lithtml;
     katex?: typeof katex;
-    YAML?: typeof YAML;
+    katexLoader: typeof katexLoader;
+    YAML: typeof YAML;
   }
 }
 
@@ -25,11 +29,14 @@ declare global {
 window.html = lithtml.html;
 window.svg = lithtml.svg;
 window.litHtml = lithtml;
-window.katex = katex;
+
+window.katexLoader = katexLoader;
+katexEventualPromise.then(m => window.katex = m.katex);
+
 window.YAML = YAML;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// window.initialNotebookContent = require("./debugNotebooks/dynamicNewCellType.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/introNotebook.nb").default;
 
 document.body.innerHTML += `
 <base target="_parent" />
