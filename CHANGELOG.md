@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.6.4
+**Date:** Unreleased
+
+* The console output rendering code is now loaded asynchronously, saving 140KB from the critical path.
+
 ## Release 0.6.3
 **Date:** 2020-11-07
 

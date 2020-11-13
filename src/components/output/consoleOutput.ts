@@ -3,22 +3,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { customElement, LitElement, property, html } from "lit-element";
-import { render, createElement as h } from 'preact/compat';
 
-/* eslint @typescript-eslint/ban-ts-comment: off */
-//@ts-ignore
-import { Console } from "console-feed-modern";
 import { ConsoleCatcher, Message } from "src/console/console";
 
-interface IProps {
-    logs: any[];
-    logFilter?: () => boolean;
-}
-
-// React functional component render function
-const StarboardConsoleOutput = (props: IProps) => {
-    return h(Console as any, {logs: props.logs, variant: "dark", logFilter: props.logFilter});
-};
 
 @customElement('starboard-console-output')
 export class ConsoleOutputElement extends LitElement {
@@ -62,15 +49,14 @@ export class ConsoleOutputElement extends LitElement {
     }
 
     render() {
-        /** Note(gzuidhof): We must pass the always-true logFilter here or console-feed chokes on pyodide._module because it's too large to stringify.. */
-        const el = StarboardConsoleOutput({logs: this.logs, logFilter: () => true});
+        // We load the console output functionality asynchronously
+        const comPromise = import(/* webpackChunkName: "console-output", webpackPrefetch: true */ "./consoleOutputModule");
+
         const rootEl = document.createElement('div');
         rootEl.setAttribute("style", "background-color: rgb(36, 36, 36)");
-        render(el, rootEl);
-        if (el) {
-            return html`${rootEl}`;
-        } else {
-            return html`Something went wrong rendering the console output.`;
-        }
+        comPromise.then(c => {
+            c.renderStandardConsoleOutputIntoElement(rootEl, this.logs)
+        })
+        return html`${rootEl}`;
     }
 }
