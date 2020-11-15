@@ -1,7 +1,19 @@
 # Changelog
 
+## Release 0.6.6
+**Date:** 2020-11-15
+
+* Hotfix: Re-introduce the Node polyfills - some libraries require them at runtime, including Babel.
+
+## Release 0.6.5
+**Date:** 2020-11-15
+
+Intermediate test release.
+
 ## Release 0.6.4
 **Date:** 2020-11-13
+
+**Broken release, fixed in 0.6.6**
 
 A big decrease in bundle size that is loaded initially, from **930KB** (278KB gzipped) to **520KB** (146KB gzipped approximately).
 

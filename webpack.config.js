@@ -39,35 +39,6 @@ const baseConfig = {
             }),
         ]
     },
-    node: false,
-    externals: { // These are only relevant polyfills for Node - save ~50KB by removing them.
-        "node-libs-browser": "0",
-
-        // These are the deps of node-libs-browser
-        "assert": "0",
-        "browserify-zlib": "0",
-        "buffer": "0",
-        "console-browserify": "0",
-        "constants-browserify": "0",
-        "crypto-browserify": "0",
-        "domain-browser": "0",
-        "events": "0",
-        "https-browserify": "0",
-        "os-browserify": "0",
-        "path-browserify": "1",
-        "process": "0",
-        "punycode": "0",
-        "querystring-es3": "0",
-        "readable-stream": "^0",
-        "stream-browserify": "0",
-        "stream-http": "0",
-        "string_decoder": "0",
-        "timers-browserify": "0",
-        "tty-browserify": "0",
-        "url": "0",
-        "util": "0",
-        "vm-browserify": "0"
-    },
     // stats: "minimal",
     module: {
         rules: [
@@ -162,15 +133,8 @@ module.exports = (env, argv) => {
     if (argv.mode === "development") {
         config.devtool = 'inline-source-map'
         config.output.publicPath = "/"
-
-        // We need these packages for livereload to work, so we can't exclude them in the dev build
-        delete config.externals["url"];
-        delete config.externals["punycode"];
-        delete config.externals["events"];
     }
     
-
-
     return config;
 };
 
