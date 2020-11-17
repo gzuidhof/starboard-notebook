@@ -37,7 +37,7 @@
     --background-color-tertiary: #f7f7f7;
     --foreground-color: #3d3d3d;
     --foreground-color-secondary: #4c4c4c;
-    --foreground-color-tertiary: #666;
+    --foreground-color-tertiary: #777;
 
     --code-background-color: #f5f7f8;
 
@@ -120,8 +120,8 @@ i {
     margin-top: 8px;
 }
 
-.starboard-notebook-footer * {
-    color: var(--text-color-tertiary);
+.starboard-notebook-footer span {
+    color: #bbb;
     font-size: 11px;
     text-decoration: none;
 }

@@ -184,7 +184,7 @@ export class CellElement extends LitElement {
                 
                 <!-- Language selection -->
                 <div class="cell-popover-root">
-                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language" @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)}>${this.cellTypeDefinition.name}</button>
+                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language auto-hide" @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)}>${this.cellTypeDefinition.name}</button>
                     <div class="cell-popover cell-type-popover">
                         <b style="margin-bottom: 6px">Change Cell Type</b>
 
@@ -201,7 +201,7 @@ export class CellElement extends LitElement {
 
                 <!-- Properties change button -->
                 <div class="cell-popover-root">
-                    <button @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.propertiesPickerElement)} class="cell-controls-button" title="Change Cell Properties">
+                    <button @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.propertiesPickerElement)} class="cell-controls-button auto-hide" title="Change Cell Properties">
                         ${BooleanIcon({ width: 18, height: 18 })}
                     </button>
                     <div class="cell-popover cell-properties-popover">
@@ -211,10 +211,10 @@ export class CellElement extends LitElement {
                     </div>
                 </div>
 
-                <button @click="${() => emit({ id, type: "REMOVE_CELL" })}" class="cell-controls-button" title="Remove Cell">
+                <button @click="${() => emit({ id, type: "REMOVE_CELL" })}" class="cell-controls-button auto-hide" title="Remove Cell">
                     ${DeleteIcon({ width: 18, height: 18 })}
                 </button>
-                <button @click="${() => emit({ id, type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Above">
+                <button @click="${() => emit({ id, type: "INSERT_CELL", position: "before" })}" class="cell-controls-button auto-hide" title="Add Cell Above">
                     ${AssetsAddedIcon({ width: 18, height: 18 })}
                 </button>
 

@@ -43,15 +43,24 @@
 
 
 .cell-controls .cell-controls-button.auto-hide {
-    opacity: 0;
+    opacity: 0.2;
 }
+
+.cell-controls .cell-controls-button.cell-controls-button-language.auto-hide {
+    opacity: 0.67;
+}
+
 
 .cell-container:hover .cell-controls-button.auto-hide,
 starboard-cell:focus-within .cell-controls-button,
 starboard-cell:focus .cell-controls-button
 {
-    opacity: 1;
+    opacity: 1 !important;
 }
+
+/* .cell-container:hover .cell-controls-button {
+    color: var(--controls-hidden-color);
+} */
 
 .cell-controls-button {
     background: transparent;
