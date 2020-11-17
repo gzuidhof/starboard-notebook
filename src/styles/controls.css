@@ -4,7 +4,6 @@
 
  /* Controls are all the small buttons to the side or the top of a cell */
 
- 
 .cell-controls {
     text-align: center;
     height: 100%;
@@ -12,17 +11,17 @@
 }
 
 .cell-controls-corner {
-    grid-area: controls-corner;
+    grid-area: controls-left-above;
 }
 
 .cell-controls-above {
-    grid-area: controls-above;
+    grid-area: above;
     display: flex;
     justify-content: flex-end;
-    align-items: center;
+    align-items: flex-end;
 }
 
-.cell-controls-left, .cell-controls-corner {
+.cell-controls-left {
     text-align: center;
     height: 100%;
     justify-content: flex-end;
@@ -31,11 +30,15 @@
     align-items: center;
 }
 
+.cell-controls-left-above {
+    grid-area: margin-left-above;
+}
+
 .cell-controls-left-top {
-    grid-area: controls-left-top;
+    grid-area: margin-left-top;
 }
 .cell-controls-left-bottom {
-    grid-area: controls-left-bottom;
+    grid-area: margin-left-bottom;
 }
 
 
@@ -52,12 +55,11 @@ starboard-cell:focus .cell-controls-button
 
 .cell-controls-button {
     background: transparent;
-    color: #c3c3c3;
+    color: var(--controls-color);
     font-size: 12px;
     cursor: pointer;
     user-select: none;
     padding: 2px 4px;
-    margin-bottom: 2px;
 
     border-radius: 4px;
     border: 1px solid #ffffff00;
@@ -65,13 +67,12 @@ starboard-cell:focus .cell-controls-button
 
     transition: opacity 120ms ease-in-out;
     opacity: 1;
+    display: flex;
 }
 
 .cell-controls-button-language {
     padding: 2px 6px;
     text-transform: uppercase;
-    margin-bottom: 4px;
-    font-family: var(--starboard-font-mono);
 }
 
 .with-hover-border:hover {
@@ -88,11 +89,11 @@ starboard-cell:focus .cell-controls-button
 
 .collapsed-cell-line {
     display: none;
-    background-color: #f4f4f4;
+    background-color: var(--cell-collapsed-line-color);
     height: 2px;
     flex-grow: 1;
     cursor: pointer;
-    transform: translateY(-1px);
+    transform: translateY(-10px);
 }
 
 .collapsed-cell-line:hover {

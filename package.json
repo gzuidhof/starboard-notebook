@@ -1,6 +1,6 @@
 {
   "name": "starboard-notebook",
-  "version": "0.6.6",
+  "version": "0.7.0",
   "description": "Starboard Notebook",
   "author": "Guido Zuidhof <me@guido.io>",
   "funding": {
@@ -36,6 +36,7 @@
     "@types/jest": "^25.2.1",
     "@types/katex": "^0.11.0",
     "@types/markdown-it": "0.0.9",
+    "@types/markdown-it-emoji": "^1.4.0",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.7.0",
     "css-loader": "^3.4.2",
@@ -78,6 +79,7 @@
     "lit-element": "^2.3.1",
     "lit-html": "^1.2.1",
     "markdown-it": "^10.0.0",
+    "markdown-it-emoji": "^2.0.0",
     "markdown-it-prism": "^2.1.0",
     "monaco-editor": "^0.21.0",
     "preact": "^10.5.3",

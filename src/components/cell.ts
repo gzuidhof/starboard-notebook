@@ -139,19 +139,28 @@ export class CellElement extends LitElement {
         return html`
         <section class="cell-container celltype-${this.cell.cellType}${this.cell.metadata.properties.collapsed ? " collapsed" : ""}">
 
-            <!-- Gutter (left line of the cell) -->
-            <div class="cell-gutter cell-gutter-corner">
+            <!-- Gutter (left side outside the document) -->
+            <div class="cell-gutter cell-gutter-left-above">
                 <button @click=${() => this.toggleProperty("collapsed")} class="cell-gutter-button" title=${this.cell.metadata.properties.collapsed ? "Maximize cell" : "Minimize cell"}></button>
             </div>
-            <div class="cell-gutter cell-gutter-top">
+            <div class="cell-gutter cell-gutter-left-top">
                 <button class="cell-gutter-button" title="This gutter button doesn't do anything yet.."></button>
             </div>
-            <div class="cell-gutter cell-gutter-bottom">
+            <div class="cell-gutter cell-gutter-left-bottom">
                 <button class="cell-gutter-button" title="This gutter button doesn't do anything yet.."></button>
             </div>
 
+            <!-- Gutter (right side outside the document) -->
+            <div class="cell-gutter cell-gutter-right-above">
+            </div>
+            <div class="cell-gutter cell-gutter-right-top">
+            </div>
+            <div class="cell-gutter cell-gutter-right-bottom">
+            </div>
+
+
             <!-- Top left corner, used to display a run button if cell is collapsed -->
-            <div class="cell-controls cell-controls-corner">
+            <div class="cell-controls cell-controls-left-above">
                 ${this.isCurrentlyRunning
                 ? html`
                     <button @mousedown=${() => emit({ id, type: "RUN_CELL" })}  class="cell-controls-button display-when-collapsed" title="Cell is running">
@@ -180,7 +189,7 @@ export class CellElement extends LitElement {
                         <b style="margin-bottom: 6px">Change Cell Type</b>
 
                         ${getAvailableCellTypes().map((ct) => html`
-                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float: right; font-size: 11px; font-family: var(--starboard-font-mono)">${
+                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float: right; font-size: 11px; font-family: var(--font-mono)">${
                                 typeof ct.cellType === "string" ? ct.cellType : ct.cellType[0]
                         }</span></button>
                         `)
@@ -206,7 +215,7 @@ export class CellElement extends LitElement {
                     ${DeleteIcon({ width: 18, height: 18 })}
                 </button>
                 <button @click="${() => emit({ id, type: "INSERT_CELL", position: "before" })}" class="cell-controls-button" title="Add Cell Above">
-                    ${AssetsAddedIcon({ width: 20, height: 20 })}
+                    ${AssetsAddedIcon({ width: 18, height: 18 })}
                 </button>
 
             </div>

@@ -36,14 +36,14 @@
 }
 
 .cell-popover-selection-button {
-    background-color: #fdfdfd;
+    background-color: var(--background-color);
     border: 0;
     text-align: initial;
     padding: 4px 0;
     cursor: pointer;
 }
 .cell-popover-selection-button:hover {
-    background-color: #f2f2f2;
+    background-color: var(--background-color-tertiary);
 }
 
 .cell-popover-icon-button {

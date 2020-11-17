@@ -6,11 +6,15 @@
 .cm-gutters {
     background-color: #fbfbfb !important;
     border-right: 1px solid transparent !important;
-    color: #00d1b2 !important;
+    color: var(--editor-line-number-color) !important;
 }
 
 .cm-gutter-lineNumber {
     min-width: 24px;
+}
+
+.cm-wrap * {
+    font-family: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace !important;
 }
 
 .cm-wrap.cm-focused {
@@ -45,12 +49,11 @@
 }
 
 .cm-content *::selection {
-    background-color: #00000014
+    background-color: #00000042
 }
 
-
 :not(pre) > code[class*="language-"], pre[class*="language-"] {
-    background-color: #fbfbfb !important;
+    background-color: var(--code-background-color) !important;
 }
 
 .starboard-text-editor pre[class*="language-"] {

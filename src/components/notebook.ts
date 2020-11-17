@@ -100,13 +100,18 @@ export class StarboardNotebookElement extends LitElement {
     return html`
       <main class="cells-container"></main>
       
-      <button @click="${() => this.runtime.controls.insertCell("end")}" class="cell-controls-button" title="Add Cell Here" style="float: right; opacity: 1; padding: 0px 8px 0px 16px; margin-right: 2px">
-          ${AssetsAddedIcon({ width: 20, height: 20 })}
-        </button>
+      
       <footer class="starboard-notebook-footer">
-        <span>${StarboardLogo({width: 10, height: 10})} Starboard Notebook v${this.runtime.version}
-        ${window.starboardEditUrl ? html`- <a href=${window.starboardEditUrl}>Edit on Starboard.gg</a>`: ""}
-        </span>
+        <div></div>
+        <div></div>
+        <div>
+          <span>${StarboardLogo({width: 10, height: 10})} Starboard Notebook v${this.runtime.version}
+          ${window.starboardEditUrl ? html`- <a href=${window.starboardEditUrl}>Edit on Starboard.gg</a>`: ""}
+          </span>
+          <button @click="${() => this.runtime.controls.insertCell("end")}" class="cell-controls-button" title="Add Cell Here" style="float: right; opacity: 1; padding: 0px 3px 0px 18px;">
+          ${AssetsAddedIcon({ width: 18, height: 18 })}
+        </button>
+        </div>
       </footer>
         `;
   }

@@ -29,11 +29,12 @@ declare global {
 window.html = lithtml.html;
 window.svg = lithtml.svg;
 window.litHtml = lithtml;
+window.YAML = YAML;
 
 window.katexLoader = katexLoader;
 katexEventualPromise.then(m => window.katex = m.katex);
 
-window.YAML = YAML;
+
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 // window.initialNotebookContent = require("./debugNotebooks/introNotebook.nb").default;

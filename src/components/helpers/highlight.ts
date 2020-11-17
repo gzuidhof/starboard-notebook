@@ -47,7 +47,6 @@ import "prismjs/components/prism-typescript";
 import "prismjs/components/prism-wasm";
 import "prismjs/components/prism-yaml";
 
-
 // Depends on Ruby so must be imported later
 import "prismjs/components/prism-crystal";
 import MarkdownIt from 'markdown-it';

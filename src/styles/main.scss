@@ -1,59 +1,146 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
- 
-@import "./cell.css";
+
+@font-face {
+    font-family: "Inter var";
+    font-weight: 200 900;
+    font-display: swap;
+    src: local("Inter var"), url(../../static/fonts/inter.var.woff2?v=3.15) format("woff2")
+}
+
+
+@import "./cell.scss";
 @import "./controls.css";
 @import "./popover.css";
 @import "./gutter.css";
 @import "./text-editor.css";
 
-@import "./github-markdown.css";
+@import "./reset-markdown.scss";
+@import "./starboard-markdown.scss";
 
 :root {
-    --starboard-font-mono: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
+    --font-sans: "Inter var", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    --font-mono: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
+    --font-size: 16px;
+    --h1-size: 2.3rem;
+    --h2-size: 2.0rem;
+    --h3-size: 1.4rem;
+    --h4-size: 1.1rem;
+    --line-height: calc(var(--font-size) * 1.5);
+    --baseline: calc(var(--line-height) / 2);
+
+    --brand-color: #5558ff;
+
+    --background-color: #fff;    
+    --background-color-secondary: #fdfdfd;  
+    --background-color-tertiary: #f7f7f7;
+    --foreground-color: #3d3d3d;
+    --foreground-color-secondary: #4c4c4c;
+    --foreground-color-tertiary: #666;
+
+    --code-background-color: #f5f7f8;
+
+    --editor-line-number-color: #ccc;
+
+    --block-spacing-top: 0;
+    --block-spacing-bottom: var(--font-size);
+
+    --text-color: var(--forceground-color);
+    --text-color-secondary: var(--foreground-color-secondary);
+    --text-color-tertiary: var(--foreground-color-tertiary);
+    --link-color: var(--brand-color);
+
+    --border-color: #e2e2e2;
+    --border-color-secondary: #ececec;
+
+    --hr-thickness: 2px;
+    --hr-color: var(--border-color);
+
+    --blockquote-background-color: #f8f8f8;
+    --blockquote-text-color: var(--foreground-color-secondary);
+    --blockquote-border-left-color: #ececec; 
+
+    --selection-background: #3a3a3a;
+    --selection-color: #fff;
+
+    // Cell styling
+    --controls-color: var(--foreground-color-tertiary);
+    --cell-collapsed-line-color: var(--border-color);
+
+    --gutter-background-color: var(--background-color);
+    --gutter-selected-background-color: var(--background-color-tertiary);
 }
 
-html, body {
+::selection {
+    background: var(--selection-background);
+    color: var(--selection-color);
+}
+
+html {
+    font-family: var(--sansFont), -system-ui, system-ui, sans-serif;
+    font-size: var(--fontSize);
+    line-height: var(--line-height);
+    background: var(--background-color);
+    color: var(--foreground-color);
+    letter-spacing: -0.01em;
+    text-size-adjust: 100%;
+    font-variant-ligatures: contextual common-ligatures;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'cv10' 1;
+
+}
+
+html,
+body {
     min-height: auto;
     height: auto;
-    background-color: #fff;
     margin: 0;
     padding: 0;
 }
 
 body {
-    font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-    color: #4a4a4a;
-    font-size: 1em;
-    font-weight: 400;
-    margin: 6px;
+    font-family: var(--font-sans);
+}
+
+b {
+    font-weight: bold;
+}
+
+i {
+    font-style: italic;
 }
 
 .cells-container {
-    background-color: #fdfdfd;
+    background-color: var(--background-color);
+}
+
+.starboard-notebook-footer {
+    display: grid;
+    grid-template-columns: auto 26px minmax(auto, calc(min(980px, 100% - 36px))) 6px auto;
+    margin-top: 8px;
 }
 
 .starboard-notebook-footer * {
-    color: #cecece;
+    color: var(--text-color-tertiary);
     font-size: 11px;
-    margin-left: 2px;
-    margin-top: 8px;
     text-decoration: none;
+}
+
+.starboard-notebook-footer button {
+    color: var(--text-color-secondary);
 }
 
 .starboard-notebook-footer a:hover {
     text-decoration: underline;
 }
 
-
 .starboard-editor-picker-overlay {
     position: absolute;
     width: 80%;
     padding: 1rem;
-    color: #222;
-    background-color: #fff;
-    border: 1px solid #eee;
+    color: var(--foreground-color);
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color-secondary);
     border-radius: 4px;
     display: none;
 }

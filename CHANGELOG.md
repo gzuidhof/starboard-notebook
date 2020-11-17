@@ -1,5 +1,15 @@
 # Changelog
 
+## Release 0.7.0
+**Date:** 2020-11-16
+
+This update features a large style rework - notebook's actual content is now capped in the width. There are gutters on either side of that content. The typography is improved and it has a more distinct style from Github markdown.
+
+* The global styles are now more easily changed through CSS custom variables properties.
+* Fixed the font of codemirror sometimes not being the correct one.
+* Changed line numbers to a gray color so they distract less.
+* Added emoji support in Markdown :wave:, the hook is exposed for plugins at `runtime.exports.core.hookMarkdownItToEmojiPlugin`.
+
 ## Release 0.6.6
 **Date:** 2020-11-15
 

@@ -21,6 +21,7 @@ import { RuntimeExports } from ".";
 import { ConsoleCatcher } from "../console/console";
 import { cellToText, notebookContentToText } from "../content/serialization";
 import { renderIfHtmlOutput } from "../components/output/htmlOutput";
+import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
 
 export function createExports(): RuntimeExports {
     return {
@@ -44,6 +45,7 @@ export function createExports(): RuntimeExports {
         createCellProxy: createCellProxy,
         hookMarkdownItToPrismHighlighter: hookMarkdownItToPrismHighlighter,
         hookMarkdownItToKaTeX: hookMarkdownItToKaTeX,
+        hookMarkDownItToEmojiPlugin: hookMarkdownItToEmojiPlugin,
         cellToText: cellToText,
         notebookContentToText: notebookContentToText,
         precompileJavascriptCode: precompileJavascriptCode,

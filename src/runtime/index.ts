@@ -23,6 +23,7 @@ import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import { MapRegistry } from "./registry";
 import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 import { renderIfHtmlOutput } from "../components/output/htmlOutput";
+import { hookMarkdownItToEmojiPlugin } from "src/components/helpers/emoji";
 
 export * from "../types";
 
@@ -90,6 +91,7 @@ export interface RuntimeExports {
         createCellProxy: typeof createCellProxy;
         hookMarkdownItToPrismHighlighter: typeof hookMarkdownItToPrismHighlighter;
         hookMarkdownItToKaTeX: typeof hookMarkdownItToKaTeX;
+        hookMarkDownItToEmojiPlugin: typeof hookMarkdownItToEmojiPlugin;
         cellToText: typeof cellToText;
         notebookContentToText: typeof notebookContentToText;
         precompileJavascriptCode: typeof precompileJavascriptCode;

@@ -34,69 +34,63 @@ const baseConfig = {
                         passes: 3,
                     },
                     ecma: 2018,
-                  // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+                    // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
                 }
             }),
         ]
     },
-    // stats: "minimal",
+    stats: "minimal",
     module: {
-        rules: [
-        {
-            test: /\.tsx?$/,
-            use: [
-                {
-                    loader: 'minify-lit-html-loader',
-                    options: {
-                      htmlMinifier: {
-                        ignoreCustomFragments: [
-                          /<\s/,
-                          /<=/,
-                        ]
-                      },
-                    }
-                  },
-                'ts-loader'
-            ],
-            exclude: [/node_modules/, /textEditor\.ts$/, /esm\.ts$/, /precompile(Module)?\.ts$/, /consoleOutput(Module)?\.ts$/, /katex(Module)?\.ts$/],
-        },
-        {
-            test: /(textEditor)|(esm)|(precompile(Module)?)|(consoleOutput(Module)?)|(katex(Module)?)\.ts$/, // Dynamic imports break when using minify-lit-html-loader for some mysterious reason.. a workaround
-            use: [
-                'ts-loader'
-            ],
-            exclude: [/node_modules/],
-        },
-        {
-            test: /\.(s?css|sass)$/,
-            use: [
-                MiniCssExtractPlugin.loader,
-                {
-                    loader: 'css-loader',
-                    options: {}
-                },
-                'sass-loader'
-            ]
-        },
-        {
-            test: /\.ttf$|\.woff2$/,
-            use: ['file-loader?name=[name].[ext]'],
-            exclude: [/.*KaTeX.*.ttf/],
-        },
-        {   // KaTeX ttf fonts are not omitted. Starboard only supports browsers that understand woff2 anyway.
-            test: /(KaTeX).*\.ttf$/,
-            use: ['file-loader?emitFile=false'],
-        },
-        {
-            test: /\.ico$|\.svg$|\.eot|\.woff$/,
-            use: ['file-loader?emitFile=false'],
-            
-        },
-        {
-            test: /\.(nb|sbnb)$/,
-            use: 'raw-loader',
-        },
-    ]
+        rules: [{
+                test: /\.tsx?$/,
+                use: [{
+                        loader: 'minify-lit-html-loader',
+                        options: {
+                            htmlMinifier: {
+                                ignoreCustomFragments: [
+                                    /<\s/,
+                                    /<=/,
+                                ]
+                            },
+                        }
+                    },
+                    'ts-loader'
+                ],
+                exclude: [/node_modules/, /textEditor\.ts$/, /esm\.ts$/, /precompile(Module)?\.ts$/, /consoleOutput(Module)?\.ts$/, /katex(Module)?\.ts$/],
+            },
+            {
+                test: /(textEditor)|(esm)|(precompile(Module)?)|(consoleOutput(Module)?)|(katex(Module)?)\.ts$/, // Dynamic imports break when using minify-lit-html-loader for some mysterious reason.. a workaround
+                use: [
+                    'ts-loader'
+                ],
+                exclude: [/node_modules/],
+            },
+            {
+                test: /\.(s?css|sass)$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {}
+                    },
+                    'sass-loader'
+                ]
+            },
+            {
+                test: /\.ttf$|\.woff2$/,
+                use: ['file-loader?name=[name].[ext]'],
+                exclude: [/.*KaTeX.*.ttf/],
+            },
+            { // KaTeX ttf fonts are not omitted. Starboard only supports browsers that understand woff2 anyway.
+                test: /(KaTeX).*\.ttf$/,
+                use: ['file-loader?emitFile=false'],
+            },
+            {
+                test: /\.ico$|\.svg$|\.eot|\.woff$/,
+                use: ['file-loader?emitFile=false'],
+
+            },
+        ]
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -133,9 +127,13 @@ module.exports = (env, argv) => {
     if (argv.mode === "development") {
         config.devtool = 'inline-source-map'
         config.output.publicPath = "/"
+
+        // We add it here so that in a production build it fails to import notebooks
+        config.module.rules.push({
+            test: /\.(nb|sbnb)$/,
+            use: 'raw-loader',
+        })
     }
-    
+
     return config;
 };
-
-

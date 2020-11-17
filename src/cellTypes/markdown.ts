@@ -5,18 +5,22 @@
 import { render, TemplateResult } from "lit-html";
 import mdlib from "markdown-it";
 
-import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
 import { BaseCellHandler } from "./base";
 import { cellControlsTemplate } from "../components/controls";
 import { TextEditIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell } from "../types";
 import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
-import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 import { promiseState } from "./javascript/util";
+
+import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
+import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
+import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
+
 
 const md = new mdlib();
 hookMarkdownItToPrismHighlighter(md);
+hookMarkdownItToEmojiPlugin(md);
 
 const katexHookPromise = hookMarkdownItToKaTeX(md);
 
