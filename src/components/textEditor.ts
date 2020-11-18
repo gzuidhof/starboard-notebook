@@ -25,9 +25,14 @@ let notifyOnEditorChosen: (() => any)[] = [];
 let codeMirrorModule: Promise<{createCodeMirrorEditor: any}> | undefined;
 let monacoModule: Promise<{createMonacoEditor: any}> | undefined;
 
-// Use ternary condition to be robust to other invalid values
-let currentEditor: "monaco" | "codemirror" | "" = localStorage[EDITOR_PREFERENCE_KEY] === "monaco" ? "monaco" : "codemirror";
-
+let currentEditor: "monaco" | "codemirror" | "" = "codemirror";
+try {
+    // Use ternary condition to be robust to other invalid values
+    currentEditor = localStorage[EDITOR_PREFERENCE_KEY] === "monaco" ? "monaco" : "codemirror";
+} catch(e) {
+    console.error("Could not read editor preference")
+    console.error(e);
+}
 const md = new mdlib();
 hookMarkdownItToPrismHighlighter(md);
 
