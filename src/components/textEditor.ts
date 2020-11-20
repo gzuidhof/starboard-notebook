@@ -2,6 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+/**
+ * NOTE: TODO:
+ * This file needs a complete refactor..
+ */
+
 import { customElement, LitElement, html, query } from "lit-element";
 
 import mdlib from "markdown-it";
@@ -22,6 +27,12 @@ const EDITOR_PREFERENCE_KEY = "starboard_notebook_text_editor_preference";
 // Note: somewhat problematic for garbage collection if no editor is ever chosen..
 let notifyOnEditorChosen: (() => any)[] = [];
 
+/**
+ * This promise is used to prevent two editor instances being loaded in the same frame.
+ * This helps keep things responsive when loading huge notebooks.
+ */
+let globalLoadEditorLockPromise = Promise.resolve();
+
 let codeMirrorModule: Promise<{createCodeMirrorEditor: any}> | undefined;
 let monacoModule: Promise<{createMonacoEditor: any}> | undefined;
 
@@ -30,9 +41,10 @@ try {
     // Use ternary condition to be robust to other invalid values
     currentEditor = localStorage[EDITOR_PREFERENCE_KEY] === "monaco" ? "monaco" : "codemirror";
 } catch(e) {
-    console.error("Could not read editor preference")
+    console.error("Could not read editor preference");
     console.error(e);
 }
+
 const md = new mdlib();
 hookMarkdownItToPrismHighlighter(md);
 
@@ -97,7 +109,8 @@ export class StarboardTextEditor extends LitElement {
         }
     }
 
-    initEditor() {
+    async initEditor() {
+
         if (currentEditor === "codemirror") {
             this.switchToCodeMirrorEditor();
         } else if (currentEditor === "monaco") {
@@ -121,9 +134,14 @@ export class StarboardTextEditor extends LitElement {
         }
     
         codeMirrorModule.then((m) => {
-            this.editorMountpoint.innerHTML = "";
-            this.editorInstance = m.createCodeMirrorEditor(this.editorMountpoint, this.cell, this.opts as any, this.runtime);
-            this.performUpdate();
+            globalLoadEditorLockPromise = globalLoadEditorLockPromise.then(() =>{
+                    return new Promise(resolve => {
+                        this.editorMountpoint.innerHTML = "";
+                        this.editorInstance = m.createCodeMirrorEditor(this.editorMountpoint, this.cell, this.opts as any, this.runtime);
+                        this.performUpdate();
+                        setTimeout(() => resolve(), 0);
+                });
+            });
         });
     }
 
@@ -140,10 +158,15 @@ export class StarboardTextEditor extends LitElement {
         }
 
         monacoModule.then((m) => {
-            if (shouldCleanUpCodeMirror) this.editorInstance.dom.remove();
-            this.editorMountpoint.innerHTML = "";
-            this.editorInstance = m.createMonacoEditor(this.editorMountpoint, this.cell, this.opts as any, this.runtime);
-            this.performUpdate();
+            globalLoadEditorLockPromise = globalLoadEditorLockPromise.then(() =>{
+                return new Promise(resolve => {
+                    if (shouldCleanUpCodeMirror) this.editorInstance.dom.remove();
+                    this.editorMountpoint.innerHTML = "";
+                    this.editorInstance = m.createMonacoEditor(this.editorMountpoint, this.cell, this.opts as any, this.runtime);
+                    this.performUpdate();
+                    setTimeout(() => resolve(), 0);
+                });
+            });
         });
     }
 

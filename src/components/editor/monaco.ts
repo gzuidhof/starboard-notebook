@@ -140,6 +140,8 @@ export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {lang
     window.addEventListener("resize", resizeDebounced);
 
     // Hack: monaco can't properly layout if it isn't visible.. so we make sure the cell top or bottom is not hidden..
+    // TODO: change this to only happen when it first becomes visible, this hack is problematic when loading many many editors
+    // as it takes a reflow
     let p = element.parentElement;
     while(p) {
         if (p.classList.contains("cell-top") || p.classList.contains("cell-bottom")) {
@@ -150,7 +152,6 @@ export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {lang
     }
 
     makeEditorResizeToFitContent(editor);
-
     addEditorKeyboardShortcuts(editor, runtime.controls.emit, cell.id);
 
     const model = editor.getModel();

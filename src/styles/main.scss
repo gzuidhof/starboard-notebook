@@ -30,7 +30,7 @@
     --line-height: calc(var(--font-size) * 1.5);
     --baseline: calc(var(--line-height) / 2);
 
-    --brand-color: #5558ff;
+    --brand-color: #6666fd;;
 
     --background-color: #fff;    
     --background-color-secondary: #fdfdfd;  
@@ -61,7 +61,7 @@
     --blockquote-text-color: var(--foreground-color-secondary);
     --blockquote-border-left-color: #ececec; 
 
-    --selection-background: #3a3a3a;
+    --selection-background: #555;
     --selection-color: #fff;
 
     // Cell styling
@@ -120,7 +120,7 @@ i {
     margin-top: 8px;
 }
 
-.starboard-notebook-footer span {
+.starboard-notebook-footer span, .starboard-notebook-footer a {
     color: #bbb;
     font-size: 11px;
     text-decoration: none;

@@ -58,13 +58,13 @@ the focus state of the cell */
 }
 
 .cell-container:hover * .cell-gutter-button {
-    background-color: #f4f4f4;
+    background-color: #f9f9f9;
 }
 
 starboard-cell:focus-within * .cell-gutter-button,
 starboard-cell:focus-within:hover * .cell-gutter-button
 {
-    background-color: #eee;
+    background-color: #f4f4f4;
 }
 
 starboard-cell:focus * .cell-gutter-button,

@@ -1,5 +1,20 @@
 # Changelog
 
+## Release 0.7.2
+**Date:** 2020-11-20
+
+* Increase responsivity when opening huge notebooks (hundreds of cells) by only loading one editor at a time.
+* HTML is now enabled in markdown cells.
+* Minor style upgrades:
+   * Changed the markdown link color and removed the underline
+   * The contrast of the cell indicator gutter line (on the left) upon hovering was decreased.
+   * The `Edit on Starboard` link's color is a nearly invisible grey again.
+   * The cell controls on the left are now also less visible unless the cell is focused.
+   * The selection background is now a ligher color (`#3a3a3a` to `#555`).
+* You can now import Starboard without immediately creating the `<starboard-notebook>` component by importing `starboard-notebook/dist/init`.
+* The `<base>` element now correctly gets inserted into the head instead of the body.
+* You can now change the `href` of the page's base tag by sending a `"SET_BASE_URL"` message from the parent iframe.
+
 ## Release 0.7.1
 **Date:** 2020-11-17
 

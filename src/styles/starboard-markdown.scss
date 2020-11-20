@@ -358,7 +358,7 @@ $content-table-foot-cell-color: $text-strong !default;
 
   a {
     color: var(--link-color);
-    text-decoration: underline #ddd;
+    text-decoration: none;
   }
 
   a:visited {

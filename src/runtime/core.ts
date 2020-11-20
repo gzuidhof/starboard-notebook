@@ -54,6 +54,13 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
             nb.hasHadInitialRun = false;
             nb.notebookInitialize();
             nb.performUpdate();
+          } else if (msg.type === "SET_BASE_URL") {
+            const baseEl = document.querySelector("base");
+            if (baseEl) {
+              baseEl.href = msg.data;
+            } else {
+              console.error("Could not set base URL as no base element is present");
+            }
           } else if (msg.type === "RELOAD") {
             window.location.reload();
           }

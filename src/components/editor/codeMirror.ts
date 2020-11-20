@@ -32,6 +32,52 @@ function createJSCompletion() {
         .concat(Object.getOwnPropertyNames(window)));
 }
 
+// Shared between all editor instances
+const starboardHighlighter = highlighter({
+    deleted: {textDecoration: "line-through"},
+    inserted: {textDecoration: "underline"},
+    link: {textDecoration: "underline"},
+    strong: {fontWeight: "bold"},
+    emphasis: {fontStyle: "italic"},
+    keyword: {color: "#07A"},
+    "atom, bool": {color: "#219"},
+    number: {color: "#164"},
+    string: {color: "#b11"},
+    "regexp, escape, string#2": {color: "#c22"},
+    "variableName definition": {color: "#406"},
+    typeName: {color: "#085"},
+    className: {color: "#167"},
+    "name#2": {color: "#256"},
+    "propertyName definition": {color: "#00c"},
+    comment: {color: "#080"},
+    meta: {color: "#555"},
+    invalid: {color: "#f00"},
+});
+// Shared between all instances
+const commonExtensions = [
+    bracketMatching(),
+    closeBrackets(),
+    codeFolding(),
+    lineNumbers(),
+    foldGutter(),
+    highlightSpecialChars(),
+
+    starboardHighlighter,
+    highlightActiveLine(),
+    highlightSelectionMatches(),
+    history(),
+                        
+    keymap([
+        ...defaultKeymap,
+        ...commentKeymap,
+        ...completionKeymap,
+        ...historyKeymap,
+        ...foldKeymap,
+        ...searchKeymap,
+    ]),
+    autocompletion(),
+];
+
 export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {language?: string; wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded"}, _runtime: Runtime) {
     const listen = EditorView.updateListener.of(update => {
         if (update.docChanged) {
@@ -39,61 +85,19 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
         }
     });
 
-    const starboardHighlighter = highlighter({
-        deleted: {textDecoration: "line-through"},
-        inserted: {textDecoration: "underline"},
-        link: {textDecoration: "underline"},
-        strong: {fontWeight: "bold"},
-        emphasis: {fontStyle: "italic"},
-        keyword: {color: "#07A"},
-        "atom, bool": {color: "#219"},
-        number: {color: "#164"},
-        string: {color: "#b11"},
-        "regexp, escape, string#2": {color: "#c22"},
-        "variableName definition": {color: "#406"},
-        typeName: {color: "#085"},
-        className: {color: "#167"},
-        "name#2": {color: "#256"},
-        "propertyName definition": {color: "#00c"},
-        comment: {color: "#080"},
-        meta: {color: "#555"},
-        invalid: {color: "#f00"},
-    });
-
-
     const editorView = new EditorView(
         {
             state: EditorState.create(
                 {
                     doc: cell.textContent.length === 0 ? undefined : cell.textContent,
                     extensions:[
-                        bracketMatching(),
-                        closeBrackets(),
-                        codeFolding(),
-                        lineNumbers(),
-                        foldGutter(),
-                        highlightSpecialChars(),
-
-                        starboardHighlighter,
-                        highlightActiveLine(),
-                        highlightSelectionMatches(),
-
+                        ...commonExtensions,
                         ...(opts.language === "javascript" ? [javascript(), javascriptSyntax.languageData.of({autocomplete: createJSCompletion()})]: []),
                         ...(opts.language === "python" ? [python(), pythonSyntax]: []),
                         ...(opts.language === "css" ? [css(), cssSyntax]: []),
                         ...(opts.language === "html" ? [html(), htmlSyntax]: []),
                         ...(opts.wordWrap === "on" ? [EditorView.lineWrapping] : []),
-                        history(),
-                        
-                        keymap([
-                            ...defaultKeymap,
-                            ...commentKeymap,
-                            ...completionKeymap,
-                            ...historyKeymap,
-                            ...foldKeymap,
-                            ...searchKeymap,
-                        ]),
-                        autocompletion(),
+
                         listen
                     ]
                 })},

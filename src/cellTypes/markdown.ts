@@ -18,7 +18,7 @@ import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
 import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 
 
-const md = new mdlib();
+const md = new mdlib({html: true});
 hookMarkdownItToPrismHighlighter(md);
 hookMarkdownItToEmojiPlugin(md);
 
