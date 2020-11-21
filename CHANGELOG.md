@@ -1,4 +1,8 @@
 # Changelog
+## Release 0.7.3
+** Date:** 2020-11-21
+
+* Fix some CSS rules (`<strong>` did not work in Markdown output).
 
 ## Release 0.7.2
 **Date:** 2020-11-20

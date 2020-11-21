@@ -1,11 +1,6 @@
 /* reset */
 
 .markdown-body {
-    & * {
-        font: inherit;
-        line-height: inherit;
-    }
-
     a,
     abbr,
     acronym,
@@ -113,11 +108,4 @@
         border-collapse: collapse;
         border-spacing: 0;
     }
-
-    a,
-    a:active,
-    a:visited {
-        color: inherit;
-    }
-
 }
