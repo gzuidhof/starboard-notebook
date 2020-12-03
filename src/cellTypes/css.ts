@@ -35,11 +35,14 @@ export class CSSCellHandler extends BaseCellHandler {
         this.editor = new StarboardTextEditor(this.cell, this.runtime, {language: "css"});
         this.elements.topElement.appendChild(this.editor);
         this.runtime.controls.subscribeToCellChanges(this.cell.id, this.changeListener);
+        this.run();
     }
 
     async run() {
         const content = this.cell.textContent;
-        render(html`${unsafeHTML("<style>" + content + "</style>")}`, this.elements.bottomElement);
+        if (content) {
+            render(html`${unsafeHTML("<style>" + content + "</style>")}`, this.elements.bottomElement);
+        }
     }
 
     focusEditor() {

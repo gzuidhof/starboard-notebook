@@ -21,6 +21,7 @@ module.exports = {
             "statements": 55
         }
     },
+    setupFiles: ["<rootDir>/test/setup.ts"],
     "testPathIgnorePatterns": [
         "/dist/"
     ],

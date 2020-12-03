@@ -1,4 +1,9 @@
 # Changelog
+## Release 0.7.5
+**Date:** 2020-12-03
+
+* A small hotfix improvement to 0.7.4: the CSS in `css` cells is now also applied on load.
+
 ## Release 0.7.4
 **Date:** 2020-12-03
 
