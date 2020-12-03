@@ -20,29 +20,21 @@ export const CSS_CELL_TYPE_DEFINITION = {
 export class CSSCellHandler extends BaseCellHandler {
 
     private elements!: CellElements;
-    private editor: any;
+    private editor!: StarboardTextEditor;
+
+    private changeListener: () => any;
 
     constructor(cell: Cell, runtime: Runtime) {
         super(cell, runtime);
-    }
-
-    private getControls(): TemplateResult {
-        const icon = PlayCircleIcon;
-        const tooltip = "Run Cell";
-        const runButton: ControlButton = {
-            icon,
-            tooltip,
-            callback: () => this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL" }),
-        };
-        return cellControlsTemplate({ buttons: [runButton] });
+        this.changeListener = () => this.run();
     }
 
     attach(params: CellHandlerAttachParameters) {
         this.elements = params.elements;
 
-        render(this.getControls(), this.elements.topControlsElement);
         this.editor = new StarboardTextEditor(this.cell, this.runtime, {language: "css"});
         this.elements.topElement.appendChild(this.editor);
+        this.runtime.controls.subscribeToCellChanges(this.cell.id, this.changeListener);
     }
 
     async run() {
@@ -60,5 +52,6 @@ export class CSSCellHandler extends BaseCellHandler {
         if (this.editor) {
             this.editor.dispose();
         }
+        this.runtime.controls.unsubscribeToCellChanges(this.cell.id, this.changeListener);
     }
 }

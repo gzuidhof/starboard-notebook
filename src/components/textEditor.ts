@@ -17,6 +17,7 @@ import { DeviceDesktopIcon, DevicePhoneIcon } from "@spectrum-web-components/ico
 import { Cell } from "../types";
 import { Runtime } from "../runtime";
 import { copyToClipboard } from "./helpers/clipboard";
+import { isATouchScreenDevice } from "./helpers/detect";
 
 export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python" | "latex"; // latex is not actually supported..
 export type WordWrapSetting = "off" | "on";
@@ -36,7 +37,7 @@ let globalLoadEditorLockPromise = Promise.resolve();
 let codeMirrorModule: Promise<{createCodeMirrorEditor: any}> | undefined;
 let monacoModule: Promise<{createMonacoEditor: any}> | undefined;
 
-let currentEditor: "monaco" | "codemirror" | "" = "codemirror";
+let currentEditor: "monaco" | "codemirror" | "" = isATouchScreenDevice() ? "codemirror" : "monaco";
 try {
     // Use ternary condition to be robust to other invalid values
     currentEditor = localStorage[EDITOR_PREFERENCE_KEY] === "monaco" ? "monaco" : "codemirror";
@@ -70,6 +71,10 @@ export class StarboardTextEditor extends LitElement {
         this.runtime = runtime;
         this.cell = cell;
         this.opts = opts;
+    }
+
+    createRenderRoot() {
+        return this;
     }
 
     connectedCallback() {
@@ -177,10 +182,6 @@ export class StarboardTextEditor extends LitElement {
             (copyButton as any).innerText = "Copied!";
             setTimeout(() => (copyButton as any).innerText = "Copy Text", 2000);
         }
-    }
- 
-    createRenderRoot() {
-        return this;
     }
 
     render() {

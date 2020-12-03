@@ -16,6 +16,7 @@ import { debounce } from "@github/mini-throttle";
 import { CellElement } from "../components/cell";
 import { registerDefaultPlugins, setupCommunicationWithParentFrame, setupGlobalKeybindings, updateCellsWhenCellDefinitionChanges } from "./core";
 import { createExports } from "./exports";
+import { stringify } from "yaml";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
@@ -54,6 +55,11 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       // These are set below
       controls: null as any,
       exports: null as any,
+      internal: {
+        listeners: {
+          cellContentChanges: new Map<string, Function[]>()
+        }
+      }
     };
 
     const controls: RuntimeControls = {
@@ -152,7 +158,25 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
           } else if (event.type === "SAVE") {
             controls.save();
           }
-        }
+        },
+
+        subscribeToCellChanges(id: string, callback: () => any) {
+          const listeners = rt.internal.listeners.cellContentChanges.get(id);
+          if (listeners !== undefined) {
+            listeners.push(callback);
+          } else {
+            rt.internal.listeners.cellContentChanges.set(id, [callback]);
+          }
+        },
+
+        unsubscribeToCellChanges(id: string, callback: () => any) {
+          const listeners = rt.internal.listeners.cellContentChanges.get(id);
+          if (!listeners) return;
+
+          const idx = listeners.indexOf(callback);
+          if (idx === -1) return;
+          listeners.splice(idx, 1);
+        },
     };
 
     rt.controls = controls;

@@ -53,7 +53,15 @@ export interface RuntimeControls {
     /**
      * Publish to the notebook event bus, used to propagate messages upwards such as "focus on the next cell".
      */
-    emit: (e: CellEvent) => void;
+    emit(e: CellEvent): void;
+
+    /**
+     * The given callback will be called when the text representation of a cell changes.
+     * @param id 
+     * @param callback 
+     */
+    subscribeToCellChanges(id: string, callback: () => void):  void;
+    unsubscribeToCellChanges(id: string, callback: () => void):  void;
 }
 
 
@@ -162,4 +170,14 @@ export interface Runtime {
     controls: RuntimeControls;
 
     exports: RuntimeExports;
+
+    /**
+     * Internal state, don't depend on this externally
+     */
+    internal: {
+        listeners: {
+            cellContentChanges: Map<string, Function[]>;
+        }
+    }
+    
 }

@@ -1,6 +1,15 @@
 # Changelog
+## Release 0.7.4
+**Date:** 2020-12-03
+
+* You can now subscribe to changes to individual cells using `runtime.controls.subscribeToCellChanges(id, callback)`.
+* The `css` cell type now applies the CSS automatically without a run button.
+* The console output now only renders once per frame instead of on every entry added. Running `console.log` in a loop with hundreds iterations no longer freezes the browser for a while.
+* Fixed line spacing of console output (how it should have been).
+* The editor now defaults to Monaco on non-touchscreen devices.
+
 ## Release 0.7.3
-** Date:** 2020-11-21
+**Date:** 2020-11-21
 
 * Fix some CSS rules (`<strong>` did not work in Markdown output).
 

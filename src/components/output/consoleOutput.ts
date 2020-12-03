@@ -10,6 +10,7 @@ import { ConsoleCatcher, Message } from "src/console/console";
 @customElement('starboard-console-output')
 export class ConsoleOutputElement extends LitElement {
     private logHook: (m: Message) => any;
+    private updatePending = false;
 
     @property({attribute: false})
     public logs: any[] = [];
@@ -17,8 +18,7 @@ export class ConsoleOutputElement extends LitElement {
     constructor() {
         super();
         this.logHook = (msg) => {
-            this.logs.push(msg); 
-            this.requestUpdate();
+            this.addEntry(msg);
         };
     }
 
@@ -45,7 +45,10 @@ export class ConsoleOutputElement extends LitElement {
 
     addEntry(msg: Message) {
         this.logs.push(msg);
-        this.requestUpdate();
+        if (!this.updatePending) {
+            this.updatePending = true;
+            requestAnimationFrame(() => this.performUpdate()); 
+        }
     }
 
     render() {
@@ -55,7 +58,8 @@ export class ConsoleOutputElement extends LitElement {
         const rootEl = document.createElement('div');
         rootEl.setAttribute("style", "background-color: rgb(36, 36, 36)");
         comPromise.then(c => {
-            c.renderStandardConsoleOutputIntoElement(rootEl, this.logs)
+            c.renderStandardConsoleOutputIntoElement(rootEl, this.logs);
+            this.updatePending = false;
         })
         return html`${rootEl}`;
     }
