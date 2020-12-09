@@ -1,4 +1,9 @@
 # Changelog
+## Release 0.7.6
+**Date:** 2020-12-09
+
+* Hopefully fixed Monaco's sizing issues when collapsing and revealing cells.
+
 ## Release 0.7.5
 **Date:** 2020-12-03
 
