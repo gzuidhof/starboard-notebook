@@ -18,6 +18,7 @@ import { Cell } from "../types";
 import { Runtime } from "../runtime";
 import { copyToClipboard } from "./helpers/clipboard";
 import { isATouchScreenDevice } from "./helpers/detect";
+import { trySetLocalStorage } from "./helpers/localStorage";
 
 export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python" | "latex"; // latex is not actually supported..
 export type WordWrapSetting = "off" | "on";
@@ -42,8 +43,7 @@ try {
     // Use ternary condition to be robust to other invalid values
     currentEditor = localStorage[EDITOR_PREFERENCE_KEY] === "monaco" ? "monaco" : "codemirror";
 } catch(e) {
-    console.error("Could not read editor preference");
-    console.error(e);
+    console.warn("Could not read editor preference (localStorage is probably not available)");
 }
 
 const md = new mdlib();
@@ -129,7 +129,7 @@ export class StarboardTextEditor extends LitElement {
         }
 
         currentEditor = "codemirror";
-        localStorage[EDITOR_PREFERENCE_KEY] = "codemirror";
+        trySetLocalStorage(EDITOR_PREFERENCE_KEY, "codemirror");
         if (!codeMirrorModule) {
             codeMirrorModule = import(/* webpackChunkName: "codemirror" */ "./editor/codeMirror");
 
@@ -154,7 +154,7 @@ export class StarboardTextEditor extends LitElement {
         const shouldCleanUpCodeMirror = currentEditor === "codemirror" && this.editorInstance;
 
         currentEditor = "monaco";
-        localStorage[EDITOR_PREFERENCE_KEY] = "monaco";
+        trySetLocalStorage(EDITOR_PREFERENCE_KEY, "monaco");
         if (!monacoModule) {
             monacoModule = import(/* webpackChunkName: "monaco" */  "./editor/monaco");
             document.querySelectorAll(".cell-select-editor-popover").forEach((e) => e.innerHTML = "<b>Loading Monaco editor..</b>");
