@@ -1,4 +1,10 @@
 # Changelog
+
+## Release 0.7.7
+**Date:** 2020-12-24
+
+* Editor preference is now set in a try-catch, which fixes an issue when localStorage is not available which was sometimes seen in Chromium-based browsers.
+
 ## Release 0.7.6
 **Date:** 2020-12-09
 
