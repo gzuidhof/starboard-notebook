@@ -1,4 +1,20 @@
 # Changelog
+## Release 0.7.4
+**Date:** 2021-01-06
+
+* Update to `starboard-python` 0.4.1, which now wraps Pyodide 0.16.1, see the Pyodide changelog [here](https://pyodide.readthedocs.io/en/latest/changelog.html#version-0-16-1). Some notable changes:
+  * You can now surpress Python output by adding `;` to the end of the cell, just like you would in Jupyter.
+  * Sympy was updated to 1.6.2.
+  * Python version is now 3.8.X (it was 3.7 before).
+* Sympy output now gets rendered if returned from a cell. For example a Python cell with this content
+  ```
+  import sympy
+  expr = sympy.sympify("x**2 + 3*x - 1/2")
+  expr
+  ```
+  displays the expression below the cell rendered through KaTeX.
+
+
 ## Release 0.7.3
 ** Date:** 2020-11-21
 

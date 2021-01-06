@@ -14,10 +14,10 @@ import { katexLoader } from "../components/helpers/katex";
  export const LATEX_CELL_TYPE_DEFINITION = {
      name: "LateX (KaTeX)",
      cellType: ["latex"],
-     createHandler: (c: Cell, r: Runtime) => new MarkdownCellHandler(c, r),
+     createHandler: (c: Cell, r: Runtime) => new LatexCellHandler(c, r),
  };
  
- export class MarkdownCellHandler extends BaseCellHandler {
+ export class LatexCellHandler extends BaseCellHandler {
      private isInEditMode = true;
  
      private elements!: CellElements;
