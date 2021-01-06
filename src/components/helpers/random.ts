@@ -10,7 +10,7 @@ function dec2hex (dec: number) {
 
 export function generateUniqueId(length: number) {
     const arr = new Uint8Array((length || 40) / 2);
-    window.crypto.getRandomValues(arr);
+    crypto.getRandomValues(arr);
     return Array.from(arr, dec2hex).join('');
 }
 

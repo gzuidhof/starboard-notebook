@@ -1,5 +1,6 @@
 # Changelog
-## Release 0.7.4
+
+## Release 0.7.8
 **Date:** 2021-01-06
 
 * Update to `starboard-python` 0.4.1, which now wraps Pyodide 0.16.1, see the Pyodide changelog [here](https://pyodide.readthedocs.io/en/latest/changelog.html#version-0-16-1). Some notable changes:
@@ -14,9 +15,32 @@
   ```
   displays the expression below the cell rendered through KaTeX.
 
+## Release 0.7.7
+**Date:** 2020-12-24
+
+* Editor preference is now set in a try-catch, which fixes an issue when localStorage is not available which was sometimes seen in Chromium-based browsers.
+
+## Release 0.7.6
+**Date:** 2020-12-09
+
+* Hopefully fixed Monaco's sizing issues when collapsing and revealing cells.
+
+## Release 0.7.5
+**Date:** 2020-12-03
+
+* A small hotfix improvement to 0.7.4: the CSS in `css` cells is now also applied on load.
+
+## Release 0.7.4
+**Date:** 2020-12-03
+
+* You can now subscribe to changes to individual cells using `runtime.controls.subscribeToCellChanges(id, callback)`.
+* The `css` cell type now applies the CSS automatically without a run button.
+* The console output now only renders once per frame instead of on every entry added. Running `console.log` in a loop with hundreds iterations no longer freezes the browser for a while.
+* Fixed line spacing of console output (how it should have been).
+* The editor now defaults to Monaco on non-touchscreen devices.
 
 ## Release 0.7.3
-** Date:** 2020-11-21
+**Date:** 2020-11-21
 
 * Fix some CSS rules (`<strong>` did not work in Markdown output).
 

@@ -45,28 +45,32 @@ monaco.languages.typescript.javascriptDefaults.addExtraLib(`
 
 function makeEditorResizeToFitContent(editor: monaco.editor.IStandaloneCodeEditor) {
     editor.onDidChangeModelDecorations(() => {
-        updateEditorHeight(); // typing
-        requestAnimationFrame(updateEditorHeight); // folding
+        requestAnimationFrame(updateEditorHeight);
     });
 
     let prevHeight = 0;
-
+    let prevWidth = 0;
+    let aboveEl = document.querySelector(".cell-controls-above")! as HTMLElement;
     const updateEditorHeight = () => {
         const editorElement = editor.getDomNode();
-
         if (!editorElement) {
             return;
         }
-
         const height = editor.getContentHeight();
-        if (prevHeight !== height) {
+
+        // Total hack.. these elements are never hidden and will have the desired width.
+        // -2 to account for the 1px border..
+        const width = aboveEl.offsetWidth - 2;
+        if (prevHeight !== height || prevWidth !== width) {
             prevHeight = height;
+            prevWidth = width;
+            editorElement.style.width = `${width}px`;
             editorElement.style.height = `${height}px`;
-            editor.layout();
+            editor.layout({width, height});
         }
     };
 
-    updateEditorHeight();
+    requestAnimationFrame(() => updateEditorHeight());
 }
 
 
@@ -139,18 +143,6 @@ export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {lang
     const resizeDebounced = debounce(() => editor.layout(), 100);
     window.addEventListener("resize", resizeDebounced);
 
-    // Hack: monaco can't properly layout if it isn't visible.. so we make sure the cell top or bottom is not hidden..
-    // TODO: change this to only happen when it first becomes visible, this hack is problematic when loading many many editors
-    // as it takes a reflow
-    let p = element.parentElement;
-    while(p) {
-        if (p.classList.contains("cell-top") || p.classList.contains("cell-bottom")) {
-            p.classList.add("force-display");
-            break;
-        }
-        p = p.parentElement;
-    }
-
     makeEditorResizeToFitContent(editor);
     addEditorKeyboardShortcuts(editor, runtime.controls.emit, cell.id);
 
@@ -161,10 +153,6 @@ export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {lang
         });
     } else {
         console.error("Monaco editor model was not truthy, change detection will not work");
-    }
-
-    if (p) {
-        p.classList.remove("force-display");
     }
 
     return editor;

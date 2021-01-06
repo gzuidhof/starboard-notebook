@@ -82,6 +82,11 @@ export class StarboardNotebookElement extends LitElement {
       }
 
       const cellProxy = createCellProxy(cell, () => {
+        const changeListeners = this.runtime.internal.listeners.cellContentChanges.get(cell.id);
+        if (changeListeners) {
+          changeListeners.forEach(v => v());
+        }
+
         this.runtime.controls.contentChanged();
       });
 

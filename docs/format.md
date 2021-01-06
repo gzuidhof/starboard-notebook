@@ -22,7 +22,7 @@ Notebook cells start with a cell delineator, which starts with a line comment (`
 
 On the same line there is also the cell type identifier in square brackets (e.g. `[javascript]`). A cell type identifier should always be present.
 
-A cell delimiter either contains metadata or doesn't, in case it does the `%` characters are followed by at least 3 hypens (`-`). In the case there is metadata, the next lines are interpreted as YAML until a line containing `# ---%%` or `\\ ---%%` or is read. The YAML lines start with a line comment which should be ignored when deserializing the YAML.
+A cell delimiter either contains metadata or doesn't, in case it does the `%` characters are followed by at least 3 hypens (`-`). In the case there is metadata, the next lines are interpreted as YAML until a line containing `# ---%%` or `// ---%%` or is read. The YAML lines start with a line comment which should be ignored when deserializing the YAML.
 
 After this cell delineator the cell's content is present in plaintext.
 
