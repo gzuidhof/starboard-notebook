@@ -31,6 +31,7 @@ export interface Cell {
         properties: {
             run_on_load?: true;
             collapsed?: true;
+            locked?: true;
             [key: string]: any;
         };
     };

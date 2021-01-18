@@ -85,6 +85,8 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
         }
     });
 
+    const readOnlyExtension = cell.metadata.properties.locked ? EditorView.editable.of(false) : EditorView.editable.of(true);
+
     const editorView = new EditorView(
         {
             state: EditorState.create(
@@ -98,6 +100,7 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
                         ...(opts.language === "html" ? [html(), htmlSyntax]: []),
                         ...(opts.wordWrap === "on" ? [EditorView.lineWrapping] : []),
 
+                        readOnlyExtension,
                         listen
                     ]
                 })},

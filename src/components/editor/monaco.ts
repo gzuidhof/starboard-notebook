@@ -121,6 +121,7 @@ export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {lang
     const editor = monaco.editor.create(element, {
         value: cell.textContent,
         language: opts.language,
+        readOnly: cell.metadata.properties.locked,
         minimap: {
             enabled: false
         },

@@ -1,5 +1,5 @@
 import { CellPropertyDefinition } from "../runtime";
-import { ReplayIcon, VisibilityOffIcon } from "@spectrum-web-components/icons-workflow";
+import { ReplayIcon, VisibilityOffIcon, LockClosedIcon } from "@spectrum-web-components/icons-workflow";
 import { MapRegistry } from "../runtime/registry";
 
 const builtinCellProperties: CellPropertyDefinition[] = [
@@ -17,6 +17,13 @@ const builtinCellProperties: CellPropertyDefinition[] = [
         textEnabled: "This cell is collapsed (hidden when not focused)",
         textDisabled: "Collapse cell (hide cell when not focused)",
     },
+    {
+        cellProperty: "locked",
+        icon: LockClosedIcon,
+        name: "Locked for Editing",
+        textEnabled: "This cell is locked for editing",
+        textDisabled: "Lock cell for editing"
+    }
 ];
 
 export function getAvailablePropertyTypes() {
