@@ -141,6 +141,18 @@ export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {lang
         wordWrap: opts.wordWrap
     });
 
+    const setEditable = function(editor: monaco.editor.IStandaloneCodeEditor, isLocked: boolean): void {
+        editor.updateOptions({readOnly: isLocked});
+    };
+
+    runtime.controls.subscribeToCellChanges(cell.id, () => {
+        // Note this function will be called on ALL text changes, so any letter typed,
+        // it's probably better for performance to only ask Monaco to change it's editable state if it actually changed.
+        //**Is this safely unsubscribed if the editor is changed? */
+        if (editor.getOption(monaco.editor.EditorOption.readOnly) == cell.metadata.properties.locked) return;
+        setEditable(editor, !!cell.metadata.properties.locked);
+    });
+
     const resizeDebounced = debounce(() => editor.layout(), 100);
     window.addEventListener("resize", resizeDebounced);
 

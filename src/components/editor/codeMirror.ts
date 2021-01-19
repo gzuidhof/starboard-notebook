@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { EditorView, keymap, highlightSpecialChars } from "@codemirror/next/view";
-import { EditorState } from "@codemirror/next/state";
+import { EditorState, tagExtension } from "@codemirror/next/state";
 
 import { defaultKeymap } from "@codemirror/next/commands";
 import { highlightActiveLine, highlightSelectionMatches } from "@codemirror/next/highlight-selection";
@@ -85,8 +85,8 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
         }
     });
 
-    const readOnlyExtension = cell.metadata.properties.locked ? EditorView.editable.of(false) : EditorView.editable.of(true);
-
+    const readOnlyExtension = tagExtension('readOnly', EditorView.editable.of(!cell.metadata.properties.locked));
+    
     const editorView = new EditorView(
         {
             state: EditorState.create(
@@ -105,7 +105,30 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
                     ]
                 })},
         );
+            
+    const setEditable = function(editor: EditorView, _isLocked: boolean): void {
+        editor.dispatch({
+            reconfigure: {
+                ['readOnly']: EditorView.editable.of(!_isLocked),
+            },
+        })
+    };
     
+    let isLocked: boolean | undefined = undefined;
+
+    _runtime.controls.subscribeToCellChanges(cell.id, () => {
+        // Note this function will be called on ALL text changes, so any letter typed,
+        // it's probably better for performance to only ask cm to change it's editable state if it actually changed.
+        
+        // There is some sort of bug with this, where if you set locked state, change from monaco 'advanced' to cm 'simple'
+        // then you have to cycle toggle the lock. I suspect it is an issue with the isLocked bool scope;
+        // Resolved similar issue for monaco editor by reading the 'readOnly' option. 
+        if (isLocked === cell.metadata.properties.locked) return;
+        isLocked = !!cell.metadata.properties.locked;
+        setEditable(editorView, isLocked);
+    });
+    
+
     element.appendChild(editorView.dom);
     return editorView;
 }
