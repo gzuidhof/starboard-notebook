@@ -106,7 +106,7 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
                 })},
         );
             
-    const setEditable = function(editor: EditorView, _isLocked: boolean): void {
+    const setEditable = function(editor: EditorView, _isLocked: boolean | undefined): void {
         editor.dispatch({
             reconfigure: {
                 ['readOnly']: EditorView.editable.of(!_isLocked),
@@ -114,17 +114,13 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
         })
     };
     
-    let isLocked: boolean | undefined = undefined;
+    let isLocked: boolean | undefined = cell.metadata.properties.locked;
 
     _runtime.controls.subscribeToCellChanges(cell.id, () => {
         // Note this function will be called on ALL text changes, so any letter typed,
         // it's probably better for performance to only ask cm to change it's editable state if it actually changed.
-        
-        // There is some sort of bug with this, where if you set locked state, change from monaco 'advanced' to cm 'simple'
-        // then you have to cycle toggle the lock. I suspect it is an issue with the isLocked bool scope;
-        // Resolved similar issue for monaco editor by reading the 'readOnly' option. 
         if (isLocked === cell.metadata.properties.locked) return;
-        isLocked = !!cell.metadata.properties.locked;
+        isLocked = cell.metadata.properties.locked;
         setEditable(editorView, isLocked);
     });
     
