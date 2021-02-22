@@ -15,3 +15,8 @@ df
 
 %% js
 console.log("hi")
+
+# %% [python]
+import sympy
+expr = sympy.sympify("x**2 + 3*x - 1/2")
+expr
