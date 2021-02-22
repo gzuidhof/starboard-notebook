@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { EditorView, keymap, highlightSpecialChars } from "@codemirror/next/view";
-import { EditorState } from "@codemirror/next/state";
+import { EditorState, tagExtension } from "@codemirror/next/state";
 
 import { defaultKeymap } from "@codemirror/next/commands";
 import { highlightActiveLine, highlightSelectionMatches } from "@codemirror/next/highlight-selection";
@@ -85,6 +85,8 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
         }
     });
 
+    const readOnlyExtension = tagExtension('readOnly', EditorView.editable.of(!cell.metadata.properties.locked));
+    
     const editorView = new EditorView(
         {
             state: EditorState.create(
@@ -98,11 +100,31 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
                         ...(opts.language === "html" ? [html(), htmlSyntax]: []),
                         ...(opts.wordWrap === "on" ? [EditorView.lineWrapping] : []),
 
+                        readOnlyExtension,
                         listen
                     ]
                 })},
         );
+            
+    const setEditable = function(editor: EditorView, _isLocked: boolean | undefined): void {
+        editor.dispatch({
+            reconfigure: {
+                ['readOnly']: EditorView.editable.of(!_isLocked),
+            },
+        })
+    };
     
+    let isLocked: boolean | undefined = cell.metadata.properties.locked;
+
+    _runtime.controls.subscribeToCellChanges(cell.id, () => {
+        // Note this function will be called on ALL text changes, so any letter typed,
+        // it's probably better for performance to only ask cm to change it's editable state if it actually changed.
+        if (isLocked === cell.metadata.properties.locked) return;
+        isLocked = cell.metadata.properties.locked;
+        setEditable(editorView, isLocked);
+    });
+    
+
     element.appendChild(editorView.dom);
     return editorView;
 }

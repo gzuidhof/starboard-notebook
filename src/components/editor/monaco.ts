@@ -121,6 +121,7 @@ export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {lang
     const editor = monaco.editor.create(element, {
         value: cell.textContent,
         language: opts.language,
+        readOnly: cell.metadata.properties.locked,
         minimap: {
             enabled: false
         },
@@ -138,6 +139,19 @@ export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {lang
         lineNumbersMinChars: 3,
         scrollBeyondLastLine: false,
         wordWrap: opts.wordWrap
+    });
+
+    const setEditable = function(editor: monaco.editor.IStandaloneCodeEditor, _isLocked: boolean | undefined): void {
+        editor.updateOptions({readOnly: !!_isLocked});
+    };
+
+    let isLocked: boolean | undefined = cell.metadata.properties.locked;
+
+    runtime.controls.subscribeToCellChanges(cell.id, () => {
+        // Note this function will be called on ALL text changes, so any letter typed,
+        // it's probably better for performance to only ask Monaco to change it's editable state if it actually changed.
+        if (isLocked === cell.metadata.properties.locked) return;
+        setEditable(editor, cell.metadata.properties.locked);
     });
 
     const resizeDebounced = debounce(() => editor.layout(), 100);
