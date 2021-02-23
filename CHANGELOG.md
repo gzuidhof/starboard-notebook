@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.7.9
+**Date:** 2021-02-22
+
+* Added `lock` cell property which allows you to make cells edit-only. Thank you @unhott!
+
 ## Release 0.7.8
 **Date:** 2021-01-06
 
