@@ -9,7 +9,7 @@ If you want to embed a notebook onto your website you usually would use an iFram
 <iframe
   title="Starboard Notebook Sandbox iFrame"
   id="notebook-iframe"
-  src="https://unpkg.com/starboard-notebook@0.7.10/dist/index.html"
+  src="https://cdn.jsdelivr.net/npm/starboard-notebook@0.7.10/dist/index.html"
   sandbox="allow-scripts allow-modals allow-same-origin allow-pointer-lock allow-top-navigation-by-user-activation allow-forms allow-downloads"
   frameborder="0"></iframe>
 ```
@@ -49,7 +49,7 @@ window.iFrameComponent = iFrameResizer({ // Check the iframeResizer docs&code fo
     checkOrigin: [
         "http://localhost:8080", // Local development
         "http://localhost:8081", // Local development
-        "https://cdn.jsdelivr.com"
+        "https://cdn.jsdelivr.net"
     ],
     onMessage: (messageData) => {
         // This message is sent when the notebook is ready
