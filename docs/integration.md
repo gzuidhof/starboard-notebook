@@ -1,5 +1,6 @@
 # Integrating Starboard Notebook into your website
 
+## NOTE: This is now outdated, it is advised to use the `starboard-wrap` NPM package instead which hides some complexities here by providing a custom Starboard notebook custom HTML element.
 
 ## Notebook in an iFrame
 If you want to embed a notebook onto your website you usually would use an iFrame, for example:
@@ -8,7 +9,7 @@ If you want to embed a notebook onto your website you usually would use an iFram
 <iframe
   title="Starboard Notebook Sandbox iFrame"
   id="notebook-iframe"
-  src="https://unpkg.com/starboard-notebook@0.5.4/dist/index.html"
+  src="https://unpkg.com/starboard-notebook@0.7.10/dist/index.html"
   sandbox="allow-scripts allow-modals allow-same-origin allow-pointer-lock allow-top-navigation-by-user-activation allow-forms allow-downloads"
   frameborder="0"></iframe>
 ```
@@ -44,29 +45,31 @@ x`
 let currentNotebookContent = initialNotebookContent;
 
 window.iFrameComponent = iFrameResizer({ // Check the iframeResizer docs&code for the options here
-    autoResize: true, 
+    autoResize: true,
     checkOrigin: [
-    "http://localhost:9001", // Useful for local development
-    "https://unpkg.com", // Replace with where you are hosting the notebook iframe
+        "http://localhost:8080", // Local development
+        "http://localhost:8081", // Local development
+        "https://cdn.jsdelivr.com"
     ],
     onMessage: (messageData) => {
         // This message is sent when the notebook is ready
         // Respond to this message with the initial content of the notebook.
         //
         // The iFrame will send this message multiple times until you set the content.
-        if (messageData.message.type === "SIGNAL_READY") {
+        // Note that you don't have to reply synchronously: you can wait for the content to be loaded from say a remote server
+        if (messageData.message.type === "NOTEBOOK_READY_SIGNAL") {
             window.iFrameComponent[0].iFrameResizer.sendMessage({
-                type: "SET_NOTEBOOK_CONTENT", data: initialNotebookContentString
-            })
+                type: "NOTEBOOK_SET_INIT_DATA", payload: {content: {format: "string", value: initialNotebookContent}}
+        });
 
         // Whenever the notebook content gets changed (e.g. a character is typed)
         // the entire content is sent to the parent website.
         } else if (messageData.message.type === "NOTEBOOK_CONTENT_UPDATE") {
-            currentNotebookContent = messageData.message.data;
+            updateContent(messageData.message.payload.content.value);
 
         // This signal is sent when a save shortcut (e.g. cmd+s on mac) is pressed.
-        } else if (messageData.message.type === "SAVE") {
-            currentNotebookContent = messageData.message.data;
+        } else if (messageData.message.type === "NOTEBOOK_SAVE_REQUEST") {
+            updateContent(messageData.message.payload.content.value);
             save(); // Implement your own save function..
         }
     },

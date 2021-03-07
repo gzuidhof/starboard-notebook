@@ -1,5 +1,13 @@
 # Changelog
 
+## Release 0.7.10
+**Date:** 2021-03-07
+
+* Changes to the inbound and outbound messages between a notebook iFrame and the surrounding webpage. They are now defined in a type-safe manner in the `/messages` folder.
+* Minor type improvements (non-breaking) for cell change listener callback functions.
+* The `LockClosedIcon` is now exported allowing for re-use in plugins / user code.
+* Added `name` field to the runtime object, which for this project will always equal `"starboard-notebook"`.
+
 ## Release 0.7.9
 **Date:** 2021-02-22
 

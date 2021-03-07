@@ -24,6 +24,7 @@ import { MapRegistry } from "./registry";
 import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 import { renderIfHtmlOutput } from "../components/output/htmlOutput";
 import { hookMarkdownItToEmojiPlugin } from "src/components/helpers/emoji";
+import { OutboundNotebookMessage } from "src/messages/types";
 
 export * from "../types";
 
@@ -48,7 +49,7 @@ export interface RuntimeControls {
      * Optionally you can pass the only target origin you want the message to be sent to, see the iframeresizer docs.
      * Returns whether a listening parent iframe is present (and thus if the message coudl be sent).
      */
-    sendMessage(message: any, targetOrigin?: string): boolean;
+    sendMessage(message: OutboundNotebookMessage, targetOrigin?: string): boolean;
 
     /**
      * Publish to the notebook event bus, used to propagate messages upwards such as "focus on the next cell".
@@ -81,6 +82,7 @@ export interface RuntimeExports {
             PlayCircleIcon: IconTemplate;
             TextEditIcon: IconTemplate;
             GearsIcon: IconTemplate;
+            LockClosedIcon: IconTemplate;
         };
     };
 
@@ -163,6 +165,11 @@ export interface Runtime {
      * Version of Starboard Notebook
      */
     version: string;
+    
+    /**
+     * Name of the runtime.
+     */
+    name: "starboard-notebook";
 
     /**
      * Contains all actions that can be performed on the runtime
@@ -176,8 +183,8 @@ export interface Runtime {
      */
     internal: {
         listeners: {
-            cellContentChanges: Map<string, Function[]>;
-        }
-    }
+            cellContentChanges: Map<string, (()=>void)[]>;
+        };
+    };
     
 }

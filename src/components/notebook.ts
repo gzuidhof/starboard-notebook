@@ -105,10 +105,7 @@ export class StarboardNotebookElement extends LitElement {
     return html`
       <main class="cells-container"></main>
       
-      
       <footer class="starboard-notebook-footer">
-        <div></div>
-        <div></div>
         <div>
           <span>${StarboardLogo({width: 10, height: 10})} Starboard Notebook v${this.runtime.version}
           ${window.starboardEditUrl ? html`- <a href=${window.starboardEditUrl}>Edit on Starboard.gg</a>`: ""}

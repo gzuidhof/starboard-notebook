@@ -6,8 +6,11 @@ import { textToNotebookContent } from "../content/parsing";
 import { CellTypeDefinition, Runtime } from ".";
 import { RegistryEvent } from "./registry";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { registerPython } from "starboard-python/dist/index.js";
+import { InboundNotebookMessage } from "src/messages/types";
+
 
 /**
  * When new cell types are registered, or overwritten, the corresponding cells should update.
@@ -40,28 +43,37 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
           let numTries = 0;
           const askForContent = () => {
             if (contentHasBeenSetFromParentIframe || numTries > 15) return;
-            window.parentIFrame.sendMessage({ type: "SIGNAL_READY" });
+            runtime.controls.sendMessage({
+              type: "NOTEBOOK_READY_SIGNAL",
+              payload: {
+                communicationFormatVersion: 1,
+                runtime: {
+                  name: runtime.name,
+                  version: runtime.version,
+                }
+
+            }});
             numTries++;
             setTimeout(() => askForContent(), numTries*100);
           };
           askForContent();
         },
-        onMessage: (msg: any) => {
-          if (msg.type === "SET_NOTEBOOK_CONTENT") {
+        onMessage: (msg: InboundNotebookMessage) => {
+          if (msg.type === "NOTEBOOK_SET_INIT_DATA") {
             if (contentHasBeenSetFromParentIframe) return; // be idempotent
-            runtime.content = textToNotebookContent(msg.data);
+            runtime.content = textToNotebookContent(msg.payload.content.value);
             contentHasBeenSetFromParentIframe = true;
             nb.hasHadInitialRun = false;
             nb.notebookInitialize();
             nb.performUpdate();
-          } else if (msg.type === "SET_BASE_URL") {
+          } else if (msg.type === "NOTEBOOK_SET_BASE_URL") {
             const baseEl = document.querySelector("base");
             if (baseEl) {
-              baseEl.href = msg.data;
+              baseEl.href = msg.payload.baseUrl;
             } else {
               console.error("Could not set base URL as no base element is present");
             }
-          } else if (msg.type === "RELOAD") {
+          } else if (msg.type === "NOTEBOOK_REFRESH_PAGE") {
             window.location.reload();
           }
         }

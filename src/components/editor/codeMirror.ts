@@ -111,7 +111,7 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
             reconfigure: {
                 ['readOnly']: EditorView.editable.of(!_isLocked),
             },
-        })
+        });
     };
     
     let isLocked: boolean | undefined = cell.metadata.properties.locked;

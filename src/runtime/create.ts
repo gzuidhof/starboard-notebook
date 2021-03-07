@@ -16,7 +16,7 @@ import { debounce } from "@github/mini-throttle";
 import { CellElement } from "../components/cell";
 import { registerDefaultPlugins, setupCommunicationWithParentFrame, setupGlobalKeybindings, updateCellsWhenCellDefinitionChanges } from "./core";
 import { createExports } from "./exports";
-import { stringify } from "yaml";
+import { OutboundNotebookMessage } from "src/messages/types";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
@@ -50,6 +50,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         cellProperties: cellPropertiesRegistry,
       },
 
+      name: "starboard-notebook" as const,
       version: STARBOARD_NOTEBOOK_VERSION,
 
       // These are set below
@@ -57,7 +58,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       exports: null as any,
       internal: {
         listeners: {
-          cellContentChanges: new Map<string, Function[]>()
+          cellContentChanges: new Map<string, (()=>void)[]>()
         }
       }
     };
@@ -107,7 +108,9 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         },
       
         save() {
-          const couldSave = controls.sendMessage({ type: "SAVE", data: notebookContentToText(rt.content) });
+          const couldSave = controls.sendMessage({ type: "NOTEBOOK_SAVE_REQUEST", payload: {
+            content: {format: "string", value: notebookContentToText(rt.content)}
+          }});
           if (!couldSave) {
             console.error("Can't save as parent frame is not listening for messages");
           }
@@ -128,7 +131,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
         },
 
-        sendMessage(message: any, targetOrigin?: string): boolean {
+        sendMessage(message: OutboundNotebookMessage, targetOrigin?: string): boolean {
           if (window.parentIFrame) {
             window.parentIFrame.sendMessage(message, targetOrigin);
             return true;
@@ -141,7 +144,9 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
        */
         contentChanged: debounce(
           function() {
-            controls.sendMessage(({ type: "NOTEBOOK_CONTENT_UPDATE", data: notebookContentToText(rt.content)}));
+            controls.sendMessage(({ type: "NOTEBOOK_CONTENT_UPDATE", payload: {
+              content: {format: "string", value: notebookContentToText(rt.content)}
+            }}));
           },
           100
         ),
