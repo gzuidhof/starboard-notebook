@@ -109,7 +109,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       
         save() {
           const couldSave = controls.sendMessage({ type: "NOTEBOOK_SAVE_REQUEST", payload: {
-            content: {format: "string", value: notebookContentToText(rt.content)}
+            content: notebookContentToText(rt.content)
           }});
           if (!couldSave) {
             console.error("Can't save as parent frame is not listening for messages");
@@ -145,7 +145,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         contentChanged: debounce(
           function() {
             controls.sendMessage(({ type: "NOTEBOOK_CONTENT_UPDATE", payload: {
-              content: {format: "string", value: notebookContentToText(rt.content)}
+              content: notebookContentToText(rt.content)
             }}));
           },
           100

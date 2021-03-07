@@ -23,6 +23,12 @@ export type ReadySignalMessage = NotebookMessage<"NOTEBOOK_READY_SIGNAL", {
      */
     communicationFormatVersion: 1;
 
+    /**
+     * The content at the time of the ready signal, this will likely be an empty string, but can be 
+     * actual content in case the notebook content gets set from within the iframe.
+     */
+    content: NotebookMessageContentData;
+
     runtime: {
         name: "starboard-notebook";
         /**

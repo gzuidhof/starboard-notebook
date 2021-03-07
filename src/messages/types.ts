@@ -8,11 +8,7 @@ export * from "./outbound";
 /**
  * Description of the content of the notebook
  */
-export interface NotebookMessageContentData {
-    format: "string";
-    // The serialized text representation of the notebook
-    value: string;
-}
+export type NotebookMessageContentData = string;
 
 /**
  * The base type of a message sent to or from an iframe containing a Starboard Notebook.

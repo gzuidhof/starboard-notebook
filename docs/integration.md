@@ -59,7 +59,7 @@ window.iFrameComponent = iFrameResizer({ // Check the iframeResizer docs&code fo
         // Note that you don't have to reply synchronously: you can wait for the content to be loaded from say a remote server
         if (messageData.message.type === "NOTEBOOK_READY_SIGNAL") {
             window.iFrameComponent[0].iFrameResizer.sendMessage({
-                type: "NOTEBOOK_SET_INIT_DATA", payload: {content: {format: "string", value: initialNotebookContent}}
+                type: "NOTEBOOK_SET_INIT_DATA", payload: initialNotebookContent}
         });
 
         // Whenever the notebook content gets changed (e.g. a character is typed)

@@ -9,7 +9,8 @@ import { RegistryEvent } from "./registry";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { registerPython } from "starboard-python/dist/index.js";
-import { InboundNotebookMessage } from "src/messages/types";
+import { InboundNotebookMessage } from "../messages/types";
+import { notebookContentToText } from "../content/serialization";
 
 
 /**
@@ -47,6 +48,7 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
               type: "NOTEBOOK_READY_SIGNAL",
               payload: {
                 communicationFormatVersion: 1,
+                content: notebookContentToText(runtime.content),
                 runtime: {
                   name: runtime.name,
                   version: runtime.version,
@@ -61,7 +63,7 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
         onMessage: (msg: InboundNotebookMessage) => {
           if (msg.type === "NOTEBOOK_SET_INIT_DATA") {
             if (contentHasBeenSetFromParentIframe) return; // be idempotent
-            runtime.content = textToNotebookContent(msg.payload.content.value);
+            runtime.content = textToNotebookContent(msg.payload.content);
             contentHasBeenSetFromParentIframe = true;
             nb.hasHadInitialRun = false;
             nb.notebookInitialize();
