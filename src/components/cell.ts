@@ -47,6 +47,7 @@ export class CellElement extends LitElement {
     ) {
         super();
         this.cell = cell;
+        this.id = this.cell.id;
         this.runtime = runtime;
         this.setAttribute("tabindex", "0");
     }

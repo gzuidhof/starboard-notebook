@@ -172,6 +172,11 @@ export interface Runtime {
     name: "starboard-notebook";
 
     /**
+     * "Settings" for the runtime itself.
+     */
+    config: RuntimeConfig;
+
+    /**
      * Contains all actions that can be performed on the runtime
      */
     controls: RuntimeControls;
@@ -187,4 +192,15 @@ export interface Runtime {
         };
     };
     
+}
+
+/**
+ * "Settings" for the runtime, these can be set from the surrounding webpage.
+ */
+export interface RuntimeConfig {
+    /**
+     * Cell IDs written to the metadata of the cell for new cells if this is true, which causes them to be persisted.
+     */
+    persistCellIds: boolean;
+    defaultTextEditor: "monaco" | "codemirror" | "smart" | "";
 }

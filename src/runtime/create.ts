@@ -4,7 +4,7 @@
 
 /* This file is internal and should never be imported externally if using starboard-notebook as a library */
 
-import { Runtime, CellEvent, RuntimeControls } from ".";
+import { Runtime, CellEvent, RuntimeControls, RuntimeConfig } from ".";
 import { StarboardNotebookElement } from "../components/notebook";
 import { textToNotebookContent } from "../content/parsing";
 import { ConsoleCatcher } from "../console/console";
@@ -16,7 +16,7 @@ import { debounce } from "@github/mini-throttle";
 import { CellElement } from "../components/cell";
 import { registerDefaultPlugins, setupCommunicationWithParentFrame, setupGlobalKeybindings, updateCellsWhenCellDefinitionChanges } from "./core";
 import { createExports } from "./exports";
-import { OutboundNotebookMessage } from "src/messages/types";
+import { OutboundNotebookMessage } from "../messages/types";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
@@ -33,6 +33,21 @@ function getInitialContent() {
   return { cells: [], metadata: {} };
 }
 
+function getConfig() {
+  let config: RuntimeConfig = {
+    persistCellIds: false,
+    defaultTextEditor: "smart",
+  };
+
+  if (window.runtimeConfig) {
+    config = {
+      ...config,
+      ...window.runtimeConfig
+    };
+  }
+  return config;
+}
+
 export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     const content = getInitialContent();
   
@@ -40,6 +55,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     const rt = {
       consoleCatcher: new ConsoleCatcher(window.console),
       content,
+      config: getConfig(),
       dom: {
         cells: [] as CellElement[],
         notebook,
@@ -65,7 +81,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
     const controls: RuntimeControls = {
         insertCell(position: "end" | "before" | "after", adjacentCellId?: string) {
-          addCellToNotebookContent(rt.content, position, adjacentCellId);
+          addCellToNotebookContent(rt, rt.content, position, adjacentCellId);
           notebook.performUpdate();
           controls.contentChanged();
         },

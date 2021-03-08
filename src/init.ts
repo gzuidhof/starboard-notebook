@@ -11,11 +11,12 @@ import * as lithtml from "lit-html";
 import * as YAML from "yaml";
 import { katexEventualPromise, katexLoader } from "./components/helpers/katex";
 import katex from "katex";
+import { RuntimeConfig } from "./runtime";
 
 declare global {
   interface Window {
     initialNotebookContent?: string;
-    starboardBaseUrl?: string;
+    runtimeConfig?: Partial<RuntimeConfig>;
   
     html: typeof lithtml.html;
     svg: typeof lithtml.svg;

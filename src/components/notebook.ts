@@ -2,14 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { LitElement, html, customElement, query } from 'lit-element';
+import { LitElement, html, customElement, query, property } from 'lit-element';
 import { CellElement } from './cell';
 import { IFramePage } from 'iframe-resizer';
 import { createCellProxy } from './helpers/cellProxy';
 import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';
 import { StarboardLogo } from './logo';
 import { insertHTMLChildAtIndex } from './helpers/dom';
-import { Runtime } from '../runtime';
+import { Runtime, RuntimeConfig } from '../runtime';
 import { setupRuntime } from '../runtime/create';
 
 declare global {
@@ -27,6 +27,9 @@ declare global {
 export class StarboardNotebookElement extends LitElement {
   private runtime!: Runtime;
 
+  @property({type: Object})
+  public config?: RuntimeConfig;
+
   @query(".cells-container")
   private cellsParentElement!: HTMLElement;
 
@@ -39,6 +42,20 @@ export class StarboardNotebookElement extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.runtime = setupRuntime(this);
+
+    // Not to be relied upon, for debugging purposes during development.
+    // This global may be deleted at any time.
+    (window as any).viewNotebookSource = () => {
+      const content = this.runtime.exports.core.notebookContentToText(this.runtime.content);
+      const encoded = encodeURIComponent(content); 
+      const a = document.createElement(`a`);
+      a.target = `_blank`;
+      a.href = `data:plaintext;charset=utf-8,${encoded}`;
+      a.style.display = `none`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    };
   }
 
   async notebookInitialize() {

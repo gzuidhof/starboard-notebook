@@ -1,4 +1,14 @@
 # Changelog
+
+## Release 0.7.14
+**Date:** 2021-03-08
+
+* The cell ID is now also the ID of the cell DOM element automatically.
+* Randomly generated cell IDs are now prefixed with `cell-`.
+* A config object can now be put on the `window` with the name `runtimeConfig`.
+  * This config can be used to customize the runtime, for instance to enable persistent cell IDs (useful for compatibility with Jupyter).
+  * In the future this is also where you would disable certain cell types.
+
 ## Release 0.7.13
 **Date:** 2021-03-08
 

@@ -28,6 +28,10 @@ export interface Cell {
     textContent: string;
 
     metadata: {
+        /**
+         * The cell identifier, if it is present in the metadata it should be persisted between runs.
+         */
+        id?: string;
         properties: {
             run_on_load?: true;
             collapsed?: true;
@@ -38,15 +42,22 @@ export interface Cell {
 
     /**
      * Every cell has a unique ID, this is not persisted between runs.
+     * It has to be unique within this notebook.
      */
     id: string;
 }
 
 export interface NotebookMetadata {
+    title?: string;
+    /**
+     * The subtitle description for the notebook, should be under 200 characters ideally.
+     */
+    description?: string;
+    tags?: string[];
+
     starboard?: {
-        notebook?: {
+        notebook: {
             format_version: 1;
-            default_cell_type: "javascript" | "python";
             runtime_version: string;
         };
     };

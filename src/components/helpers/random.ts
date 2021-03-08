@@ -15,5 +15,5 @@ export function generateUniqueId(length: number) {
 }
 
 export function generateUniqueCellId() {
-    return generateUniqueId(16);
+    return "cell-" + generateUniqueId(12);
 }

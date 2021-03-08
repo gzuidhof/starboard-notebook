@@ -44,7 +44,7 @@ export function textToNotebookContent(text: string) {
           cellType: pc.type,
           textContent: pc.lines.join("\n"),
           metadata: cellMetadata,
-          id: generateUniqueCellId(),
+          id: pc.metadata.id || generateUniqueCellId(),
       };
   });
 

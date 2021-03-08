@@ -121,7 +121,7 @@
     border-left-color: #5e7cf8;
 }
 
-.celltype-md .starboard-text-editor:focus-within {
+.celltype-markdown .starboard-text-editor:focus-within {
     border-left-color: #bbb;
 }
 

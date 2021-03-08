@@ -6,6 +6,7 @@ import { Cell, NotebookContent } from '../types';
 import { cellToText } from './serialization';
 import { textToNotebookContent } from './parsing';
 import { generateUniqueCellId } from '../components/helpers/random';
+import { Runtime } from 'src/runtime';
 
 function requireIndexOfCellId(cells: Cell[], id?: string) {
     if (id === undefined) {
@@ -18,26 +19,27 @@ function requireIndexOfCellId(cells: Cell[], id?: string) {
     return idx;
 }
 
-export function addCellToNotebookContent(nb: NotebookContent, position: "end" | "before" | "after", adjacentCellId?: string, id?: string) {
+export function addCellToNotebookContent(runtime: Runtime, nb: NotebookContent, position: "end" | "before" | "after", adjacentCellId?: string, id?: string) {
     let idx: number;
     let cellType: string;
 
     if (position === "end") {
         idx = nb.cells.length;
-        cellType = nb.cells.length === 0 ? "js": nb.cells[nb.cells.length-1].cellType;
+        cellType = nb.cells.length === 0 ? "javascript": nb.cells[nb.cells.length-1].cellType;
     } else {
         idx = requireIndexOfCellId(nb.cells, adjacentCellId);
-        cellType = idx === 0 && adjacentCellId === undefined ? "js" : nb.cells[idx].cellType;
+        cellType = idx === 0 && adjacentCellId === undefined ? "javascript" : nb.cells[idx].cellType;
     }
 
     if (position === "after") {
         idx += 1;
     }
+    id = id || generateUniqueCellId();
     const cell: Cell = {
             cellType,
             textContent: "",
-            metadata: {properties: {}},
-            id: (id || generateUniqueCellId()),
+            metadata: {properties: {}, ...(runtime.config.persistCellIds ? {id} : {})},
+            id,
     };
     nb.cells.splice(idx, 0, cell);
 }
