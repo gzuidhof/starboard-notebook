@@ -6,9 +6,10 @@ import { NotebookMessage, NotebookMessageContentData } from "./types";
 
 export interface NotebookInitPayload {
     content: NotebookMessageContentData;
+    baseUrl?: string;
 }
 
-export type InboundNotebookMessage = SetContentMessage | SetBaseUrlMessage | RefreshMessage;
+export type InboundNotebookMessage = SetContentMessage | ReloadMessage;
 
 /**
  * Sent from parent webpage to notebook to set the initial content and configuration of the notebook.
@@ -16,11 +17,6 @@ export type InboundNotebookMessage = SetContentMessage | SetBaseUrlMessage | Ref
 export type SetContentMessage = NotebookMessage<"NOTEBOOK_SET_INIT_DATA", NotebookInitPayload>;
 
 /**
- * Sent from parent webpage to notebook to set the base URL of the notebook
- */
-export type SetBaseUrlMessage = NotebookMessage<"NOTEBOOK_SET_BASE_URL", {baseUrl: string}>;
-
-/**
  * Sent from parent webpage to notebook to trigger a page refresh of the iframe, this is somewhat equivalent to a "kernel reset" in Jupyter.
  */
-export type RefreshMessage = NotebookMessage<"NOTEBOOK_REFRESH_PAGE", undefined>;
+export type ReloadMessage = NotebookMessage<"NOTEBOOK_RELOAD_PAGE", undefined>;

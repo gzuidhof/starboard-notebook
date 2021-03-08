@@ -81,7 +81,7 @@ window.iFrameComponent = iFrameResizer({ // Check the iframeResizer docs&code fo
 Finally, you can send one more message to the iframe - to make it reload the page:
 
 ```javascript
-window.iFrameComponent[0].iFrameResizer.sendMessage({type: "RELOAD"});
+window.iFrameComponent[0].iFrameResizer.sendMessage({type: "NOTEBOOK_RELOAD_PAGE"});
 ```
 
 It is currently not possible to send and receive custom messages (easily) - but that will definitely be a feature in the future if someone needs it.

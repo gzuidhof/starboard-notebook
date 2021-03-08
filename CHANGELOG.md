@@ -1,4 +1,10 @@
 # Changelog
+## Release 0.7.13
+**Date:** 2021-03-08
+
+* Rename message `"NOTEBOOK_REFRESH_PAGE"` to `"NOTEBOOK_RELOAD_PAGE"` as it's a reload instruction, not refresh.
+* The base URL of the notebook can now be set through the init data message, instead of through a separate message.
+
 ## Release 0.7.12
 **Date:** 2021-03-08
 
