@@ -1,4 +1,8 @@
 # Changelog
+## Release 0.7.12
+**Date:** 2021-03-08
+
+* Fix small styling regression causing the footer to be drawn too far to the left.
 
 ## Release 0.7.11
 **Date:** 2021-03-07
