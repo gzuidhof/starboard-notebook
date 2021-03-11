@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.7.15
+**Date:** 2021-03-11
+
+* Change the cell's metadata type definition to allow for arbitrary other keys.
+
 ## Release 0.7.14
 **Date:** 2021-03-08
 

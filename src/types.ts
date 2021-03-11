@@ -38,6 +38,8 @@ export interface Cell {
             locked?: true;
             [key: string]: any;
         };
+
+        [key: string]: any;
     };
 
     /**
