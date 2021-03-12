@@ -60,12 +60,10 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         cells: [] as CellElement[],
         notebook,
       },
-
       definitions: {
         cellTypes: cellTypeRegistry,
         cellProperties: cellPropertiesRegistry,
       },
-
       name: "starboard-notebook" as const,
       version: STARBOARD_NOTEBOOK_VERSION,
 
@@ -94,8 +92,22 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       
         changeCellType(id: string, newCellType: string) {
           changeCellType(rt.content, id, newCellType);
+          rt.dom.cells.forEach(c => {
+            if (c.cell.id === id) {
+              c.remove();
+            }
+          })
           notebook.performUpdate();
           controls.contentChanged();
+        },
+
+        resetCell(id: string) {
+          rt.dom.cells.forEach(c => {
+            if (c.id === id) {
+              c.remove();
+            }
+          })
+          notebook.performUpdate();
         },
       
         runCell(id: string, focusNext: boolean, insertNewCell: boolean) {
@@ -176,6 +188,8 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
             controls.removeCell(event.id);
           } else if (event.type === "CHANGE_CELL_TYPE") {
             controls.changeCellType(event.id, event.newCellType);
+          } else if (event.type === "RESET_CELL") {
+            controls.resetCell(event.id);
           } else if (event.type === "SAVE") {
             controls.save();
           }

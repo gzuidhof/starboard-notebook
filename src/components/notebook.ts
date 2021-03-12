@@ -75,7 +75,6 @@ export class StarboardNotebookElement extends LitElement {
 
   performUpdate() {
     super.performUpdate();
-
     // We manually manage the cell elements, lit-html doesn't do a good job here
     // (or put differently: a too good job, it reuses components which is problematic)
 
@@ -89,7 +88,7 @@ export class StarboardNotebookElement extends LitElement {
         child.remove();
       }
     }
-    this.runtime.dom.cells = this.runtime.dom.cells.filter((c) => desiredCellIds.has(c.cell.id));
+    this.runtime.dom.cells = this.runtime.dom.cells.filter((c) => desiredCellIds.has(c.cell.id) && !!this.querySelector("#" + c.cell.id));
 
     for (let i = 0; i < content.cells.length; i++) {
       const cell = content.cells[i];

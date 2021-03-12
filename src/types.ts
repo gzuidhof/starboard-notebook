@@ -14,6 +14,7 @@ export type CellEvent =
     | { id: string; type: "INSERT_CELL"; position: "before" | "after" }
     | { id: string; type: "REMOVE_CELL" }
     | { id: string; type: "CHANGE_CELL_TYPE"; newCellType: string }
+    | { id: string; type: "RESET_CELL"}
     | { type: "SAVE" };
 
 /**

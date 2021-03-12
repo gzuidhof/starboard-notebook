@@ -32,6 +32,7 @@ export interface RuntimeControls {
     insertCell(position: "end" | "before" | "after", adjacentCellId?: string): void;
     removeCell(id: string): void;
     changeCellType(id: string, newCellType: string): void;
+    resetCell(id: string): void;
     runCell(id: string, focusNext?: boolean, insertNewCell?: boolean): void;
     runAllCells(opts: {onlyRunOnLoad?: boolean}): Promise<void>;
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.7.16
+**Date:** 2021-03-12
+* Added `RESET_CELL` functionality
+* Cells which persist their IDs now correctly reset when they have a new cell type definition loaded for them.
+
 ## Release 0.7.15
 **Date:** 2021-03-11
 
