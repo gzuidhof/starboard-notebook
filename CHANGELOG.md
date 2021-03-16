@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.7.17
+**Date:** 2021-03-16
+* Starboard now users Bootstrap 5 as the base of its CSS.
+* Added the `popper` library to the exports of the runtime.
+* The right gutter placeholder HTML elements don't get created anymore which saves 3 empty HTML elements per cell.
+
 ## Release 0.7.16
 **Date:** 2021-03-12
 * Added `RESET_CELL` functionality

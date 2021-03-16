@@ -9,10 +9,11 @@
     src: local("Inter var"), url(../../static/fonts/inter.var.woff2?v=3.15) format("woff2")
 }
 
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
 
 @import "./cell.scss";
 @import "./controls.css";
-@import "./popover.css";
 @import "./gutter.css";
 @import "./text-editor.css";
 
@@ -156,3 +157,11 @@ i {
 starboard-console-output {
     line-height: 1.2;
 }
+
+/*
+Custom Bootstrap styles
+*/
+
+.dropdown-menu li{
+    font-size: 14px
+ }

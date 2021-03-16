@@ -3,7 +3,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { LitElement, html, property, customElement, query } from 'lit-element';
-import { createPopper } from '@popperjs/core';
 import { toggleCellFlagProperty } from '../content/notebookContent';
 
 import { BaseCellHandler } from '../cellTypes/base';
@@ -13,6 +12,9 @@ import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon } f
 import { getPropertiesIcons, getPropertiesPopoverIcons } from './controls';
 import { Cell } from '../types';
 import { Runtime, CellTypeDefinition } from '../runtime';
+
+import Dropdown from "bootstrap/js/dist/dropdown";
+
 
 @customElement('starboard-cell')
 export class CellElement extends LitElement {
@@ -24,11 +26,6 @@ export class CellElement extends LitElement {
     private bottomElement!: HTMLElement;
     @query('.cell-controls-left-bottom')
     private bottomControlsElement!: HTMLElement;
-
-    @query('.cell-type-popover')
-    private typePickerElement!: HTMLElement;
-    @query('.cell-properties-popover')
-    private propertiesPickerElement!: HTMLElement;
 
     public cellTypeDefinition!: CellTypeDefinition;
     public cellHandler!: BaseCellHandler;
@@ -76,6 +73,8 @@ export class CellElement extends LitElement {
             }
         });
 
+        [].slice.call(document.querySelectorAll('.dropdown-toggle')).map(e => new Dropdown(e));
+
         this.cellHandler.attach({
             elements: {
                 topElement: this.topElement,
@@ -107,27 +106,6 @@ export class CellElement extends LitElement {
         });
     }
 
-    togglePopover(parent:HTMLElement, element: HTMLElement) {
-        this.performUpdate(); // This update here is so that if a new cell type or property has been registered since it is visible.
-        element.classList.toggle("popover-active");
-
-        createPopper(parent, element, {placement: "left-start"});
-
-        if (element.classList.contains("popover-active")) {
-        // TODO: refactor this. the idea is to detect clicks outside the element to close the popover.
-            setTimeout(() => {
-                const listenerFunc = (e: MouseEvent) => {
-                    if (!element.contains(e.target as Node) || (e.target as HTMLElement).classList.contains("cell-popover-close-button")) {
-                        element.classList.remove("popover-active");
-                        document.removeEventListener("click", listenerFunc);
-                    }
-                };
-                document.addEventListener("click", listenerFunc);
-            });
-        }
-    }
-    
-
     private toggleProperty(name: string) {
         toggleCellFlagProperty(this.cell, name);
         this.performUpdate();
@@ -149,14 +127,6 @@ export class CellElement extends LitElement {
             </div>
             <div class="cell-gutter cell-gutter-left-bottom">
                 <button class="cell-gutter-button" title="This gutter button doesn't do anything yet.."></button>
-            </div>
-
-            <!-- Gutter (right side outside the document) -->
-            <div class="cell-gutter cell-gutter-right-above">
-            </div>
-            <div class="cell-gutter cell-gutter-right-top">
-            </div>
-            <div class="cell-gutter cell-gutter-right-bottom">
             </div>
 
 
@@ -183,32 +153,31 @@ export class CellElement extends LitElement {
 
                 <div class="collapsed-cell-line" title="Click to reveal collapsed cell temporarily"></div>
                 
-                <!-- Language selection -->
-                <div class="cell-popover-root">
-                    <button title="Change Cell Type" class="cell-controls-button cell-controls-button-language auto-hide" @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)}>${this.cellTypeDefinition.name}</button>
-                    <div class="cell-popover cell-type-popover">
-                        <b style="margin-bottom: 6px">Change Cell Type</b>
-
-                        ${getAvailableCellTypes().map((ct) => html`
-                            <button class="cell-popover-selection-button" @click=${() => this.changeCellType(ct.cellType)} >${ct.name} <span style="opacity: 0.6; float: right; font-size: 11px; font-family: var(--font-mono)">${
-                                typeof ct.cellType === "string" ? ct.cellType : ct.cellType[0]
-                        }</span></button>
-                        `)
-                        }
-
-                        <button class="cell-controls-button cell-popover-close-button">Cancel</button>
+                <div class="dropdown">
+                    <button data-bs-toggle="dropdown" title="Change Cell Type" class="cell-controls-button cell-controls-button-language auto-hide" @click=${/*(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)*/()=>0}>${this.cellTypeDefinition.name}</button>
+                    <div class="dropdown-menu" style="min-width: 244px">
+                        <li><h6 class="dropdown-header">Change Cell Type</h6></li>
+                        ${getAvailableCellTypes().map((ct) => {
+                            const ctString = typeof ct.cellType === "string" ? ct.cellType : ct.cellType[0];
+                            return html`
+                            <li>
+                                <button title=${ctString} class="dropdown-item${ctString === this.cell.cellType ? " active" : ""}" @click=${() => this.changeCellType(ct.cellType)}>
+                                    ${ct.name}<span style="opacity: 0.6; float: right; font-size: 11px; font-family: var(--font-mono)">${ctString}</span>
+                                </button>
+                            </li>
+                        `;})}
                     </div>
                 </div>
 
                 <!-- Properties change button -->
-                <div class="cell-popover-root">
-                    <button @click=${(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.propertiesPickerElement)} class="cell-controls-button auto-hide" title="Change Cell Properties">
+                <div class="dropdown">
+                    <button data-bs-toggle="dropdown" class="cell-controls-button auto-hide" title="Change Cell Properties">
                         ${BooleanIcon({ width: 18, height: 18 })}
                     </button>
-                    <div class="cell-popover cell-properties-popover">
-                        <b style="margin-bottom: 6px">Toggle cell properties</b>
+
+                    <div class="dropdown-menu" style="min-width: 244px">
+                        <li><h6 class="dropdown-header">Toggle Cell properties</h6></li>
                         ${getPropertiesPopoverIcons(this.cell, (propertyName: string) => this.toggleProperty(propertyName))}
-                        <button class="cell-controls-button cell-popover-close-button">Cancel</button>
                     </div>
                 </div>
 

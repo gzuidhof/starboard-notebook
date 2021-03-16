@@ -67,10 +67,10 @@ starboard-cell:focus-within:hover * .cell-gutter-button
     background-color: #f4f4f4;
 }
 
-starboard-cell:focus * .cell-gutter-button,
+/* starboard-cell:focus * .cell-gutter-button,
 starboard-cell:focus-within * .cell-gutter-button {
-    /* width: 4px !important; */
-}
+    width: 4px !important; 
+} */
 
 starboard-cell:focus * .cell-gutter-button {
     background-color: var(--brand-color) !important;

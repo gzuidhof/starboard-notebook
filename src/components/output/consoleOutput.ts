@@ -38,7 +38,7 @@ export class ConsoleOutputElement extends LitElement {
         return new Promise(resolve => window.setTimeout(() => 
             {
                 this.unhook(consoleCatcher);
-                resolve();
+                resolve(undefined);
             }, 0
         ));
     }
@@ -60,7 +60,7 @@ export class ConsoleOutputElement extends LitElement {
         comPromise.then(c => {
             c.renderStandardConsoleOutputIntoElement(rootEl, this.logs);
             this.updatePending = false;
-        })
+        });
         return html`${rootEl}`;
     }
 }

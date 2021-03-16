@@ -13,12 +13,13 @@ import mdlib from "markdown-it";
 import { hookMarkdownItToPrismHighlighter } from "./helpers/highlight";
 import { render } from "lit-html";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
-import { DeviceDesktopIcon, DevicePhoneIcon } from "@spectrum-web-components/icons-workflow";
+import { DeviceDesktopIcon, DevicePhoneIcon, SettingsIcon } from "@spectrum-web-components/icons-workflow";
 import { Cell } from "../types";
 import { Runtime } from "../runtime";
 import { copyToClipboard } from "./helpers/clipboard";
 import { trySetLocalStorage } from "./helpers/localStorage";
 import { isATouchScreenDevice } from "./helpers/detect";
+import Dropdown from "bootstrap/js/dist/dropdown";
 
 export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python" | "latex"; // latex is not actually supported..
 export type WordWrapSetting = "off" | "on";
@@ -90,6 +91,7 @@ export class StarboardTextEditor extends LitElement {
 
     firstUpdated(changedProperties: any) {
         super.firstUpdated(changedProperties);
+        [].slice.call(document.querySelectorAll('.dropdown-toggle')).map(e => new Dropdown(e));
 
         if (currentEditor === "codemirror" || currentEditor === "monaco" || this.runtime.config.defaultTextEditor === "smart") {
             this.initEditor();
@@ -196,12 +198,25 @@ export class StarboardTextEditor extends LitElement {
         return html`     
         <div style="position: relative; width: 100%; height: 0">
             <div class="starboard-text-editor-controls">
-                ${
+                <div class="dropdown">
+                    <button data-bs-toggle="dropdown" class="btn btn-small transparent p-1 px-1 me-1" style="color: #00000066" title="Editor Actions">${SettingsIcon({width: 16, height: 16})}</button>
+                    <div class="dropdown-menu">
+                        <li>
+                        ${
+                            currentEditor === "monaco" ?
+                            html`<button class="dropdown-item" @click=${() => this.switchToCodeMirrorEditor()} title="Switch to CodeMirror based editor, simpler and smartphone friendly">Switch to Simple Editor</button>`
+                            :html`<button class="dropdown-item" @click=${() => this.switchToMonacoEditor()} title="Switch to Monaco based editor, a few MB in size, smartphone unfriendly">Switch to Advanced Editor</button>`
+                        }
+                        </li>
+                        <li><button class="dropdown-item" @click=${() => this.copyCellText()} title="Copy the text in this cell to clipboard">Copy Text</button></li>
+                    </div>    
+                </div>
+                <!-- ${
                     currentEditor === "monaco" ?
                     html`<button @click=${() => this.switchToCodeMirrorEditor()} title="Switch to CodeMirror based editor, simpler and smartphone friendly">Switch to Simple Editor</button>`
                     :html`<button @click=${() => this.switchToMonacoEditor()} title="Switch to Monaco based editor, a few MB in size, smartphone unfriendly">Switch to Advanced Editor</button>`
                 }
-                <button id="copy-button" @click=${() => this.copyCellText()} title="Copy the text in this cell to clipboard">Copy Text</button>
+                <button id="copy-button" @click=${() => this.copyCellText()} title="Copy the text in this cell to clipboard">Copy Text</button> -->
             </div>
         </div>       
         <div class="starboard-text-editor"></div>

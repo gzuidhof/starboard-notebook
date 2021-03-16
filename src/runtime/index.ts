@@ -15,6 +15,8 @@ import * as litElementLibrary from "lit-element";
 import katex from "katex";
 import * as YAML from "yaml";
 import mdlib from "markdown-it";
+import * as Popper from "@popperjs/core";
+
 import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
 import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
 import { createCellProxy } from "../components/helpers/cellProxy";
@@ -116,6 +118,7 @@ export interface RuntimeExports {
         LitElement: typeof litElementLibrary;
         MarkdownIt: typeof mdlib;
         YAML: typeof YAML;
+        Popper: typeof Popper;
 
         /**
          * Libraries that are loaded asynchronously on demand.

@@ -14,6 +14,8 @@ import { ConsoleOutputElement } from "../components/output/consoleOutput";
 import * as LitElement from "lit-element";
 import * as LitHtml from "lit-html";
 import MarkdownIt from "markdown-it";
+import * as popper from "@popperjs/core";
+
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import * as YAML from "yaml";
 import { hookMarkdownItToKaTeX, katexLoader } from "../components/helpers/katex";
@@ -60,6 +62,7 @@ export function createExports(): RuntimeExports {
         LitHtml: LitHtml,
         MarkdownIt: MarkdownIt,
         YAML: YAML,
+        Popper: popper,
 
         async: {
           KaTeX: katexLoader,

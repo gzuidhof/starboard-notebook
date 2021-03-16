@@ -73,36 +73,15 @@
 
 .starboard-text-editor-controls {
     position: absolute;
+    visibility: hidden;
+    font-size: 12px;
     right: 0;
-    top: 1px;
-    display: none;
+    top: 0;
     z-index: 10;
 }
 
-.starboard-text-editor-controls button {
-    background: #fdfdfd;
-    color: #999;
-    opacity: 0.6;
-
-    cursor: pointer;
-    user-select: none;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    padding: 0px 1px;
-    font-size: 0.8em;
-    font-family: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
-    margin: 0 2px;
-}
-
-.starboard-text-editor-controls button:hover {
-    background: #fefefe;
-    opacity: 1.0;
-    color: #555;
-    border: 1px solid #00000062;
-}
-
-.cell-top:hover .starboard-text-editor-controls, .cell-bottom:hover .starboard-text-editor-controls {
-    display: flex
+starboard-text-editor:hover .starboard-text-editor-controls {
+    visibility: visible;
 }
 
 .celltype-javascript .starboard-text-editor:focus-within {

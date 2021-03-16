@@ -39,7 +39,7 @@ export function getPropertiesIcons(cell: Cell, togglePropertyFunction: (name: st
 
 export function getPropertiesPopoverIcons(cell: Cell, togglePropertyFunction: (name: string) => void) {
     return html`
-        <div style="display: flex">
+        <div class="m-2 d-flex">
         ${
            getAvailablePropertyTypes().map( (def) => {
                 const isActive = cell.metadata.properties[def.cellProperty] !== undefined;
