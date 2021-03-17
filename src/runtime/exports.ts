@@ -15,6 +15,8 @@ import * as LitElement from "lit-element";
 import * as LitHtml from "lit-html";
 import MarkdownIt from "markdown-it";
 import * as popper from "@popperjs/core";
+// @ts-ignore
+import * as StarboardPython from "starboard-python";
 
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import * as YAML from "yaml";
@@ -66,6 +68,7 @@ export function createExports(): RuntimeExports {
 
         async: {
           KaTeX: katexLoader,
+          StarboardPython: () => Promise.resolve(StarboardPython),
         },
       }
     };

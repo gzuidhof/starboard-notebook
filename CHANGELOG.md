@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.7.19
+**Date:** 2021-03-17
+* Update `starboard-python` to 0.5.0.
+* Starboard Python is now exported allowing plugins to more easily invoke Python code outside of a Python cell.
+
 ## Release 0.7.18
 **Date:** 2021-03-17
 * Starboard Notebook's distribution now includes runtime exports as a convenient ESM package for easier plugin development. These can be found at `starboard-notebook/dist/src/runtime/esm` and submodules.

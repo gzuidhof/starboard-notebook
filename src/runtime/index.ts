@@ -125,6 +125,7 @@ export interface RuntimeExports {
          */
         async: {
             KaTeX: () => Promise<typeof katex>;
+            StarboardPython: () => Promise<any>;
         };
     };
 }
