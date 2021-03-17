@@ -4,7 +4,7 @@
 
 import { customElement, LitElement, property, html } from "lit-element";
 
-import { ConsoleCatcher, Message } from "src/console/console";
+import { ConsoleCatcher, Message } from "../../console/console";
 
 
 @customElement('starboard-console-output')

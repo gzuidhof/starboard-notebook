@@ -17,7 +17,7 @@ import { CellElement } from "../components/cell";
 import { registerDefaultPlugins, setupCommunicationWithParentFrame, setupGlobalKeybindings, updateCellsWhenCellDefinitionChanges } from "./core";
 import { createExports } from "./exports";
 import { OutboundNotebookMessage } from "../messages/types";
-
+ 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
 function getInitialContent() {
@@ -96,7 +96,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
             if (c.cell.id === id) {
               c.remove();
             }
-          })
+          });
           notebook.performUpdate();
           controls.contentChanged();
         },
@@ -106,7 +106,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
             if (c.id === id) {
               c.remove();
             }
-          })
+          });
           notebook.performUpdate();
         },
       

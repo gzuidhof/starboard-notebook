@@ -1,5 +1,9 @@
 # Changelog
 
+## Release 0.7.18
+**Date:** 2021-03-17
+* Starboard Notebook's distribution now includes runtime exports as a convenient ESM package for easier plugin development. These can be found at `starboard-notebook/dist/src/runtime/esm` and submodules.
+
 ## Release 0.7.17
 **Date:** 2021-03-16
 * Starboard now users Bootstrap 5 as the base of its CSS.

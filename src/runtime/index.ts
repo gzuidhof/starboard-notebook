@@ -25,8 +25,8 @@ import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import { MapRegistry } from "./registry";
 import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 import { renderIfHtmlOutput } from "../components/output/htmlOutput";
-import { hookMarkdownItToEmojiPlugin } from "src/components/helpers/emoji";
-import { OutboundNotebookMessage } from "src/messages/types";
+import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
+import { OutboundNotebookMessage } from "../messages/types";
 
 export * from "../types";
 

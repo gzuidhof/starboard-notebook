@@ -6,7 +6,7 @@ import { Cell, NotebookContent } from '../types';
 import { cellToText } from './serialization';
 import { textToNotebookContent } from './parsing';
 import { generateUniqueCellId } from '../components/helpers/random';
-import { Runtime } from 'src/runtime';
+import { Runtime } from '../runtime';
 
 function requireIndexOfCellId(cells: Cell[], id?: string) {
     if (id === undefined) {
