@@ -16,6 +16,7 @@ import { promiseState } from "./javascript/util";
 import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
 import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
 import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
+// import { StarboardContentEditor } from "../components/editor/prosemirror";
 
 
 const md = new mdlib({html: true});
@@ -27,7 +28,6 @@ const katexHookPromise = hookMarkdownItToKaTeX(md);
 async function isKatexAlreadyLoaded() {
    return (await promiseState(katexHookPromise))=== "fulfilled";
 }
-
 
 export const MARKDOWN_CELL_TYPE_DEFINITION = {
     name: "Markdown",
@@ -78,6 +78,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
         const topElement = this.elements.topElement;
         topElement.innerHTML = "";
         this.editor = new StarboardTextEditor(this.cell, this.runtime, {language: "markdown", wordWrap: "on"});
+        // this.editor = new StarboardContentEditor(this.cell);
         topElement.appendChild(this.editor);
     }
 

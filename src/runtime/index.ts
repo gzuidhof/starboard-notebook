@@ -27,6 +27,7 @@ import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 import { renderIfHtmlOutput } from "../components/output/htmlOutput";
 import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
 import { OutboundNotebookMessage } from "../messages/types";
+import { StarboardContentEditor } from "src/components/editor/prosemirror";
 
 export * from "../types";
 
@@ -92,6 +93,7 @@ export interface RuntimeExports {
     elements: {
         StarboardTextEditor: typeof StarboardTextEditor;
         ConsoleOutputElement: typeof ConsoleOutputElement;
+        StarboardContentEditor: typeof StarboardContentEditor;
     };
 
     /**

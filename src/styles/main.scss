@@ -16,6 +16,7 @@
 @import "./controls.css";
 @import "./gutter.css";
 @import "./text-editor.css";
+@import "./prosemirror.scss";
 
 @import "./reset-markdown.scss";
 @import "./starboard-markdown.scss";
@@ -31,7 +32,7 @@
     --line-height: calc(var(--font-size) * 1.5);
     --baseline: calc(var(--line-height) / 2);
 
-    --brand-color: #6666fd;;
+    --brand-color: #6666fd;
 
     --background-color: #fff;    
     --background-color-secondary: #fdfdfd;  
@@ -62,20 +63,12 @@
     --blockquote-text-color: var(--foreground-color-secondary);
     --blockquote-border-left-color: #ececec; 
 
-    --selection-background: #555;
-    --selection-color: #fff;
-
     // Cell styling
     --controls-color: var(--foreground-color-tertiary);
     --cell-collapsed-line-color: var(--border-color);
 
     --gutter-background-color: var(--background-color);
     --gutter-selected-background-color: var(--background-color-tertiary);
-}
-
-::selection {
-    background: var(--selection-background);
-    color: var(--selection-color);
 }
 
 html {

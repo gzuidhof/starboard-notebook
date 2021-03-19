@@ -11,4 +11,4 @@ const l = runtime.exports.elements;
 
 export const StarboardTextEditor = l.StarboardTextEditor;
 export const ConsoleOutputElement = l.ConsoleOutputElement;
- 
+export const StarboardContentEditor = l.StarboardContentEditor;

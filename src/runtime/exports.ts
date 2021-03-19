@@ -26,6 +26,7 @@ import { ConsoleCatcher } from "../console/console";
 import { cellToText, notebookContentToText } from "../content/serialization";
 import { renderIfHtmlOutput } from "../components/output/htmlOutput";
 import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
+import { StarboardContentEditor } from "../components/editor/prosemirror";
 
 export function createExports(): RuntimeExports {
     return {
@@ -58,6 +59,7 @@ export function createExports(): RuntimeExports {
       elements: {
         StarboardTextEditor: StarboardTextEditor,
         ConsoleOutputElement: ConsoleOutputElement,
+        StarboardContentEditor: StarboardContentEditor,
       },
       libraries: {
         LitElement: LitElement,

@@ -56,10 +56,10 @@ const baseConfig = {
                     },
                     'ts-loader'
                 ],
-                exclude: [/node_modules/, /textEditor\.ts$/, /esm\.ts$/, /precompile(Module)?\.ts$/, /consoleOutput(Module)?\.ts$/, /katex(Module)?\.ts$/],
+                exclude: [/node_modules/, /textEditor\.ts$/, /esm\.ts$/, /precompile(Module)?\.ts$/, /consoleOutput(Module)?\.ts$/, /katex(Module)?\.ts$/, /prosemirror(Module)?\.ts$/],
             },
             {
-                test: /(textEditor)|(esm)|(precompile(Module)?)|(consoleOutput(Module)?)|(katex(Module)?)\.ts$/, // Dynamic imports break when using minify-lit-html-loader for some mysterious reason.. a workaround
+                test: /(textEditor)|(esm)|(precompile(Module)?)|(consoleOutput(Module)?)|(katex(Module)?)|(prosemirror(Module)?)\.ts$/, // Dynamic imports break when using minify-lit-html-loader for some mysterious reason.. a workaround
                 use: [
                     'ts-loader'
                 ],
@@ -133,6 +133,10 @@ module.exports = (env, argv) => {
             test: /\.(nb|sbnb)$/,
             use: 'raw-loader',
         })
+    }
+
+    if (argv.stats) {
+        config.stats = argv.stats
     }
 
     return config;

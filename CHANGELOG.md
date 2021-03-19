@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 0.7.20
+**Date:**: 2021-03-19
+* Introduce ProseMirror as the default editor for Markdown content. Note that it isn't enabled yet for Markdown editors by default, it still needs some love (in particular it needs KaTeX support)
+* `StarboardContentEditor` element is exposed in the exports for plugins to use.
+* Removed custom text selection styling with CSS.
+* Made `build:stats` command require less manual effort (you no longer need to know which line to edit in `webpack.config.js` to make it work).
+
 ## Release 0.7.19
 **Date:** 2021-03-17
 * Update `starboard-python` to 0.5.0.

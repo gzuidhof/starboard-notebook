@@ -141,7 +141,7 @@ export class StarboardTextEditor extends LitElement {
         currentEditor = "codemirror";
         trySetLocalStorage(EDITOR_PREFERENCE_KEY, "codemirror");
         if (!codeMirrorModule) {
-            codeMirrorModule = import(/* webpackChunkName: "codemirror" */ "./editor/codeMirror");
+            codeMirrorModule = import(/* webpackChunkName: "codemirror" */ "./editor/codemirror");
 
             document.querySelectorAll(".cell-select-editor-popover").forEach((e) => e.innerHTML = "<b>Loading CodeMirror editor..</b>");
             notifyOnEditorChosen.forEach((c) => c());
