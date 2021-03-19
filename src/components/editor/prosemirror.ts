@@ -64,9 +64,10 @@ export class StarboardContentEditor extends LitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        prosemirrorPromise.then(pm => this.view.updateState(this.createEditorState(pm)));
-
-        this.querySelector(".ProseMirror")!.classList.add("markdown-body");
+        prosemirrorPromise.then(pm => {
+            this.view.updateState(this.createEditorState(pm))
+            this.querySelector(".ProseMirror")!.classList.add("markdown-body");
+        });
     }
 
     getContentAsMarkdownString() {

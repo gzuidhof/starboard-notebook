@@ -1,5 +1,9 @@
 # Changelog
 
+## Release 0.7.21
+**Date:**: 2021-03-19
+* A small fix for the ProseMirror-based editor: if the prosemirror package hadn't been loaded yet asynchronously a CSS class for the markdown output would not be applied.
+
 ## Release 0.7.20
 **Date:**: 2021-03-19
 * Introduce ProseMirror as the default editor for Markdown content. Note that it isn't enabled yet for Markdown editors by default, it still needs some love (in particular it needs KaTeX support)
