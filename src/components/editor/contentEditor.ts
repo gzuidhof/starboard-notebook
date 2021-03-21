@@ -7,7 +7,7 @@ import { customElement, LitElement, property } from "lit-element";
 import { debounce } from "@github/mini-throttle";
 import { EditorView } from "prosemirror-view";
 
-const prosemirrorPromise = import(/* webpackChunkName: "prosemirror", webpackPrefetch: true */ "./prosemirrorModule");
+const prosemirrorPromise = import(/* webpackChunkName: "prosemirror", webpackPrefetch: true */ "./prosemirror/module");
 
 type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T;
 type ProsemirrorModule = Awaited<typeof prosemirrorPromise>;
@@ -22,6 +22,9 @@ export interface ContentContainer {
     textContent: string;
 }
 
+/**
+ * The main WYSIWYM (what you see is what you mean) content editor for Markdown content in Starboard.
+ */
 @customElement('starboard-content-editor')
 export class StarboardContentEditor extends LitElement {
     view!: EditorView<any>;
