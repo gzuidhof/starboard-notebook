@@ -27,6 +27,8 @@ $content-table-foot-cell-color: $text-strong !default;
   font-size: var(--font-size);
   word-wrap: break-word;
 
+  padding: 0.5em 1em;
+
   // Block
   address,
   article,
@@ -130,7 +132,7 @@ $content-table-foot-cell-color: $text-strong !default;
   pre,
   table {
     &:not(:last-child) {
-      margin-bottom: 1em;
+      margin-bottom: 0.8em;
     }
   }
 

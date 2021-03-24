@@ -4,10 +4,4 @@
 
 import { Runtime } from "..";
 
-declare global {
-    interface Window {
-      runtime: Runtime;
-    }
-  }
-
-export const runtime = window.runtime;
+export const runtime: Runtime = (window as any).runtime;

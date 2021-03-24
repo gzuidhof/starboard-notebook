@@ -1,0 +1,83 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* == Math Nodes ======================================== */
+
+.math-node {
+	min-width: 1em;
+	min-height: 1em;
+	font-family: var(--font-mono);
+	cursor: auto;
+}
+
+.math-node.empty-math .math-render::before {
+	content: "(empty)";
+	color: red;
+}
+
+.math-node .math-render.parse-error::before {
+	content: "(math error)";
+	color: red;
+	cursor: help;
+}
+
+.math-node.ProseMirror-selectednode { outline: none; }
+
+.math-node .math-src {
+	display: none;
+	color: rgb(132, 33, 162);
+	tab-size: 4;
+}
+
+.math-node.ProseMirror-selectednode .math-src { display: inline; }
+.math-node.ProseMirror-selectednode .math-render { display: none; }
+
+/* -- Inline Math --------------------------------------- */
+
+math-inline { display: inline; white-space: nowrap; }
+
+math-inline .math-render { 
+	display: inline-block;
+	cursor:pointer;
+}
+
+math-inline .math-src .ProseMirror { display: inline; }
+
+math-inline .math-src::after, math-inline .math-src::before {
+	content: "$";
+	color: #b0b0b0;
+}
+
+/* -- Block Math ---------------------------------------- */
+
+math-block { display: block; }
+
+math-block .math-render { display: block; }
+
+math-block.ProseMirror-selectednode { background-color: #eee; }
+
+math-block .math-src .ProseMirror {
+	width: 100%;
+	display: block;
+}
+
+math-block .math-src::after, math-block .math-src::before {
+	content: "$$";
+	text-align: left;
+	color: #b0b0b0;
+}
+
+math-block .katex-display { margin: 0; }
+
+/* -- Selection Plugin ---------------------------------- */
+
+p::selection, p > *::selection { background-color: #c0c0c0; }
+.katex-html *::selection { background-color: none !important; }
+
+.math-node.math-select .math-render {
+	background-color: #c0c0c0ff;
+}
+math-inline.math-select .math-render {
+	padding-top: 2px;
+}

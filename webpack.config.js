@@ -56,10 +56,10 @@ const baseConfig = {
                     },
                     'ts-loader'
                 ],
-                exclude: [/node_modules/, /textEditor\.ts$/, /esm\.ts$/, /precompile(Module)?\.ts$/, /consoleOutput(Module)?\.ts$/, /katex(Module)?\.ts$/, /prosemirror(Module)?\.ts$/],
+                exclude: [/node_modules/, /textEditor\.ts$/, /esm\.ts$/, /precompile(Module)?\.ts$/, /consoleOutput(Module)?\.ts$/, /katex(Module)?\.ts$/, /contentEditor\.ts$/],
             },
             {
-                test: /(textEditor)|(esm)|(precompile(Module)?)|(consoleOutput(Module)?)|(katex(Module)?)|(prosemirror(Module)?)\.ts$/, // Dynamic imports break when using minify-lit-html-loader for some mysterious reason.. a workaround
+                test: /(textEditor)|(esm)|(precompile(Module)?)|(consoleOutput(Module)?)|(katex(Module)?)|(contentEditor)\.ts$/, // Dynamic imports break when using minify-lit-html-loader for some mysterious reason.. a workaround
                 use: [
                     'ts-loader'
                 ],

@@ -1,4 +1,4 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/*! This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -37,4 +37,4 @@ window.katexLoader = katexLoader;
 katexEventualPromise.then(m => window.katex = m.katex);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// window.initialNotebookContent = require("./debugNotebooks/introNotebook.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/latex.nb").default;
