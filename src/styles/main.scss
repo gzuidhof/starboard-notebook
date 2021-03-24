@@ -11,12 +11,12 @@
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
-
 @import "./cell.scss";
 @import "./controls.css";
 @import "./gutter.css";
 @import "./text-editor.css";
 @import "./prosemirror.scss";
+@import "./math.scss";
 
 @import "./reset-markdown.scss";
 @import "./starboard-markdown.scss";
@@ -72,8 +72,8 @@
 }
 
 html {
-    font-family: var(--sansFont), -system-ui, system-ui, sans-serif;
-    font-size: var(--fontSize);
+    font-family: var(--font-sans), -system-ui, system-ui, sans-serif;
+    font-size: var(--font-size);
     line-height: var(--line-height);
     background: var(--background-color);
     color: var(--foreground-color);
@@ -81,7 +81,6 @@ html {
     text-size-adjust: 100%;
     font-variant-ligatures: contextual common-ligatures;
     font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'cv10' 1;
-
 }
 
 html,

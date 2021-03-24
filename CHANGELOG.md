@@ -1,5 +1,23 @@
 # Changelog
 
+## Release 0.8.0
+**Date:** 2021-03-24
+
+* Markdown cells now have their own WYSIWYG editor (as well as a plaintext editor for advanced users).
+  * Shift-enter and ctrl-enter no longer run the next cell when the WYSIWYG content editor is focused.
+  * The WYSIWYFG editor has LaTeX inline editing support (based on prosemirror-math package). It's a bit experimental at this stage, remember you can use the fallback plaintext editor.
+  * Double-clicking a markdown cell triggers this editor.
+* A newly inserted cell now defaults to Markdown instead of Javascript when no cells are present.
+* Clicking anywhere outside of a markdown cell stops its edit mode.
+* Minor style changes
+  * Slightly reduced the margin below paragraphs and list items (`1em` to `0.8em`). 
+  * Added padding around all markdown content, including inside the WYSIWYG editor.
+* Codemirror editor
+  * Updated to codemirror version `0.16.0`.
+  * Codemirror editor now has Markdown syntax highlighting support.
+  * Removed naive CodeMirror JS autocompletion that would previously only autocomplete stuff present on the Window object.
+
+
 ## Release 0.7.21
 **Date:**: 2021-03-19
 * A small fix for the ProseMirror-based editor: if the prosemirror package hadn't been loaded yet asynchronously a CSS class for the markdown output would not be applied.
