@@ -1,6 +1,8 @@
 # Changelog
 
 ## Release 0.8.1
+**Date:** 2021-03-26
+
 * Update `starboard-python` version 0.5.1 which allows user code to catch Python errors.
 
 ## Release 0.8.0
