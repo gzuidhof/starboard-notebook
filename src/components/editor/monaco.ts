@@ -50,7 +50,7 @@ function makeEditorResizeToFitContent(editor: monaco.editor.IStandaloneCodeEdito
 
     let prevHeight = 0;
     let prevWidth = 0;
-    let aboveEl = document.querySelector(".cell-controls-above")! as HTMLElement;
+    const aboveEl = document.querySelector(".cell-controls-above")! as HTMLElement;
     const updateEditorHeight = () => {
         const editorElement = editor.getDomNode();
         if (!editorElement) {
@@ -145,7 +145,7 @@ export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {lang
         editor.updateOptions({readOnly: !!_isLocked});
     };
 
-    let isLocked: boolean | undefined = cell.metadata.properties.locked;
+    const isLocked: boolean | undefined = cell.metadata.properties.locked;
 
     runtime.controls.subscribeToCellChanges(cell.id, () => {
         // Note this function will be called on ALL text changes, so any letter typed,
