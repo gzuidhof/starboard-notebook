@@ -211,12 +211,6 @@ export class StarboardTextEditor extends LitElement {
                         <li><button class="dropdown-item" @click=${() => this.copyCellText()} title="Copy the text in this cell to clipboard">Copy Text</button></li>
                     </div>    
                 </div>
-                <!-- ${
-                    currentEditor === "monaco" ?
-                    html`<button @click=${() => this.switchToCodeMirrorEditor()} title="Switch to CodeMirror based editor, simpler and smartphone friendly">Switch to Simple Editor</button>`
-                    :html`<button @click=${() => this.switchToMonacoEditor()} title="Switch to Monaco based editor, a few MB in size, smartphone unfriendly">Switch to Advanced Editor</button>`
-                }
-                <button id="copy-button" @click=${() => this.copyCellText()} title="Copy the text in this cell to clipboard">Copy Text</button> -->
             </div>
         </div>       
         <div class="starboard-text-editor"></div>

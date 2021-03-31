@@ -12,6 +12,7 @@ import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon } f
 import { getPropertiesIcons, getPropertiesPopoverIcons } from './controls';
 import { Cell } from '../types';
 import { Runtime, CellTypeDefinition } from '../runtime';
+import "./insertionLine";
 
 import Dropdown from "bootstrap/js/dist/dropdown";
 
@@ -57,6 +58,7 @@ export class CellElement extends LitElement {
         super.connectedCallback();
         this.cellTypeDefinition = getCellTypeDefinitionForCellType(this.cell.cellType);
         this.cellHandler = this.cellTypeDefinition.createHandler(this.cell, this.runtime);
+        this.classList.add("cell-grid", "cell-container", `celltype-${this.cell.cellType}`);
     }
 
     firstUpdated(changedProperties: any) {
@@ -115,9 +117,8 @@ export class CellElement extends LitElement {
         const id = this.cell.id;
         const emit = this.runtime.controls.emit;
 
+        this.classList.toggle("collapsed", !!this.cell.metadata.properties.collapsed)
         return html`
-        <section class="cell-container celltype-${this.cell.cellType}${this.cell.metadata.properties.collapsed ? " collapsed" : ""}">
-
             <!-- Gutter (left side outside the document) -->
             <div class="cell-gutter cell-gutter-left-above">
                 <button @click=${() => this.toggleProperty("collapsed")} class="cell-gutter-button" title=${this.cell.metadata.properties.collapsed ? "Maximize cell" : "Minimize cell"}></button>
@@ -194,7 +195,8 @@ export class CellElement extends LitElement {
             <div class="cell-top"></div>
             <div class="cell-controls cell-controls-left cell-controls-left-bottom"></div>
             <div class="cell-bottom"></div>
-        </section>
+
+        <starboard-insertion-line></starboard-insertion-line>
     `;
     }
 

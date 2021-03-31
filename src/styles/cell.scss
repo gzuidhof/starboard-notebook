@@ -2,58 +2,46 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-.cell-container {
+.cell-grid {
     display: grid;
-    grid-template-columns: auto 26px minmax(auto, calc(min(980px, 100% - 36px))) 6px auto;
-    grid-template-rows: 26px auto auto;
+    grid-template-columns: [full-width-start] auto [margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(auto, calc(min(980px, 100% - var(--cell-margin-left) - var(--cell-margin-right)))) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
+    grid-template-rows:  26px auto auto;
     grid-template-areas: 
     "gutter-left-above margin-left-above above margin-right-above gutter-right-above"
     "gutter-left-top margin-left-top top margin-right-top gutter-right-top"
     "gutter-left-bottom margin-left-bottom bottom margin-right-bottom gutter-right-bottom";
-    &:not(:last-child) {
-        margin-top: 10px;
-    }
+}
+
+.line-grid {
+    display: grid;
+    grid-template-columns: [full-width-start margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(auto, calc(min(980px, 100% - var(--cell-margin-left) - var(--cell-margin-right)))) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end full-width-end];
+    grid-template-rows: 0px;
 }
 
 starboard-cell:focus {
     outline: none;
 }
 
-// Outline when selected
-// starboard-cell:focus-within .cell-container::after{
-//     content: "";
-//     grid-row-start: margin-left-above;
-//     grid-column-start: margin-left-above;
-//     grid-row-end: margin-right-bottom;
-//     grid-column-end: margin-right-bottom;
-
-//     width: 100%;
-//     height: 100%;
-//     border: 1px solid var(--border-color-secondary);
-// }
-
 .display-when-collapsed {
     display: none !important;
 }
 
-starboard-cell:not(:focus):not(:focus-within) {
-    .cell-container.collapsed {
-        .cell-top,
-        .cell-bottom,
-        .cell-controls-left-top,
-        .cell-controls-left-bottom,
-        .cell-gutter-top,
-        .cell-gutter-bottom {
-            display: none;
-        }
+starboard-cell:not(:focus):not(:focus-within).collapsed {
+    .cell-top,
+    .cell-bottom,
+    .cell-controls-left-top,
+    .cell-controls-left-bottom,
+    .cell-gutter-top,
+    .cell-gutter-bottom {
+        display: none;
+    }
 
-        * {
-            .collapsed-cell-line,
-            .display-when-collapsed {
-                display: flex !important;
-            }
+    * {
+        .collapsed-cell-line,
+        .display-when-collapsed {
+            display: flex !important;
         }
-    } 
+    }
 }
 
 .cell-top {
@@ -63,7 +51,7 @@ starboard-cell:not(:focus):not(:focus-within) {
 
 .cell-bottom {
     grid-area: bottom;
-    max-height: 80vh;
+    max-height: 100vh;
     overflow-y: auto;
 }
 

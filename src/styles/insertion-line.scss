@@ -1,0 +1,79 @@
+starboard-insertion-line {
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 0;
+    grid-column: margin-left-start / margin-right-end;
+    grid-row: bottom;
+    position: relative;
+
+
+    .hover-area {
+        display: flex;
+        align-items: center;
+
+        position: absolute;
+        height: 20px;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+
+    .button-container {
+        position: relative;
+        width: var(--cell-margin-left);
+        height: 100%;
+    }
+    
+    .insert-button {
+        transition: all 150ms ease-in-out;
+        position: absolute;
+        right: -11px;
+        width: 28px; // <6 pix padding, 22 pix button (50% of that is 11px)
+        height: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+
+        padding: 0;
+        padding-left: 6px;
+        background-color: transparent;
+        color: transparent;
+        
+        border: 0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .insert-button:hover {
+        filter: brightness(0.6);
+    }
+
+    &:hover .content-line {
+        background-color: var(--insertion-line-color);
+    }
+
+    &:hover .insert-button {
+        color: var(--insertion-line-color);
+    }
+
+
+    .content-line {
+        transition: all 150ms ease-in-out;
+        position: absolute;
+        top: 50%;
+        background-color: transparent;
+        transform: translateY(-50%);
+        left: calc(var(--cell-margin-left) + 12px);
+        right: calc(var(--cell-margin-right) + 12px);
+
+        grid-column: content-start / content-end;
+        height: 2px;
+    }
+}
+
+starboard-cell:focus-within * .insert-button, starboard-cell:hover * .insert-button {
+    color: var(--insertion-line-color);
+}

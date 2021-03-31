@@ -12,6 +12,7 @@
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 @import "./cell.scss";
+@import "./insertion-line.scss";
 @import "./controls.css";
 @import "./gutter.css";
 @import "./text-editor.css";
@@ -31,6 +32,9 @@
     --h4-size: 1.1rem;
     --line-height: calc(var(--font-size) * 1.5);
     --baseline: calc(var(--line-height) / 2);
+
+    --cell-margin-left: 32px;
+    --cell-margin-right: 8px;
 
     --brand-color: #6666fd;
 
@@ -62,6 +66,8 @@
     --blockquote-background-color: #f8f8f8;
     --blockquote-text-color: var(--foreground-color-secondary);
     --blockquote-border-left-color: #ececec; 
+
+    --insertion-line-color: #d8d8d8;
 
     // Cell styling
     --controls-color: var(--foreground-color-tertiary);

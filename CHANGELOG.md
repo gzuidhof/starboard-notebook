@@ -1,5 +1,13 @@
 # Changelog
 
+## Release 0.8.2
+**Date:** Unreleased
+
+* Every cell's HTML is now simplified, the intermediate `<section class="cell-container">` was removed, the class is now on the cell element itself.
+* The margin is now variable and larger. For small screens we can resize it through CSS and it will be responsive.
+* A cell insertion line is now visible when hovering or selecting a cell.
+* Updated highlighting package (audit fix).
+
 ## Release 0.8.1
 **Date:** 2021-03-26
 

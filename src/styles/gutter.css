@@ -57,7 +57,7 @@ the focus state of the cell */
     outline: 1px solid #99999940;
 }
 
-.cell-container:hover * .cell-gutter-button {
+starboard-cell:hover * .cell-gutter-button {
     background-color: #f9f9f9;
 }
 
@@ -72,13 +72,13 @@ starboard-cell:focus-within * .cell-gutter-button {
     width: 4px !important; 
 } */
 
-starboard-cell:focus * .cell-gutter-button {
+starboard-cell:focus .cell-gutter-button {
     background-color: var(--brand-color) !important;
     opacity: 0.5;
 }
 
 /* Entire left gutter */
-starboard-cell:focus * div[class*="cell-gutter-left"],
-starboard-cell:focus-within * div[class*="cell-gutter-left"] {
+starboard-cell:focus div[class*="cell-gutter-left"],
+starboard-cell:focus-within div[class*="cell-gutter-left"] {
     background-color: var(--gutter-selected-background-color);
 }
