@@ -67,7 +67,7 @@ starboard-insertion-line {
         background-color: transparent;
         transform: translateY(-50%);
         left: calc(var(--cell-margin-left) + 12px);
-        right: calc(var(--cell-margin-right) + 12px);
+        right: calc(var(--cell-margin-right));
 
         grid-column: content-start / content-end;
         height: 2px;
@@ -76,4 +76,8 @@ starboard-insertion-line {
 
 starboard-cell:focus-within * .insert-button, starboard-cell:hover * .insert-button {
     color: var(--insertion-line-color);
+}
+
+starboard-cell-type-picker {
+    z-index: 100;
 }

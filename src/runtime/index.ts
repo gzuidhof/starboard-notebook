@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import type { CellEvent, NotebookContent, CellTypeDefinition, CellPropertyDefinition, ControlsDefinition, IconTemplate } from "../types";
+import type { CellEvent, NotebookContent, CellTypeDefinition, CellPropertyDefinition, ControlsDefinition, IconTemplate, Cell } from "../types";
 import type { ConsoleCatcher } from "../console/console";
 import type { CellElement } from "../components/cell";
 import type { StarboardNotebookElement } from "../components/notebook";
@@ -32,7 +32,7 @@ import type { StarboardContentEditor } from "../components/editor/contentEditor"
 export * from "../types";
 
 export interface RuntimeControls {
-    insertCell(position: "end" | "before" | "after", adjacentCellId?: string): void;
+    insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string): void;
     removeCell(id: string): void;
     changeCellType(id: string, newCellType: string): void;
     resetCell(id: string): void;

@@ -21,10 +21,11 @@ $content-table-foot-cell-color: $text-strong !default;
 .markdown-body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  line-height: var(--line-height);
+  line-height: var(--content-line-height);
   color: var(--foreground-color);
   font-family: var(--font-sans);
-  font-size: var(--font-size);
+  font-size: var(--content-font-size);
+  letter-spacing: -0.01em;
   word-wrap: break-word;
 
   padding: 0.5em 0em;
@@ -90,11 +91,11 @@ $content-table-foot-cell-color: $text-strong !default;
 
   hr:first-child {
     margin-top: calc(var(--hr-thickness) / -2);
-    margin-bottom: calc(var(--line-height) - calc(var(--hr-thickness) / 2));
+    margin-bottom: calc(var(--content-line-height) - calc(var(--hr-thickness) / 2));
   }
 
   hr:last-child {
-    margin-top: calc(var(--line-height) - calc(var(--hr-thickness) / 2));
+    margin-top: calc(var(--content-line-height) - calc(var(--hr-thickness) / 2));
     margin-bottom: calc(var(--hr-thickness) / -2);
   }
 
@@ -103,8 +104,8 @@ $content-table-foot-cell-color: $text-strong !default;
     border: none;
     background: var(--hr-color);
     height: var(--hr-thickness);
-    margin-top: calc(var(--line-height) - calc(var(--hr-thickness) / 2));
-    margin-bottom: calc(var(--line-height) - calc(var(--hr-thickness) / 2));
+    margin-top: calc(var(--content-line-height) - calc(var(--hr-thickness) / 2));
+    margin-bottom: calc(var(--content-line-height) - calc(var(--hr-thickness) / 2));
   }
 
   *+hr:last-child {
@@ -114,8 +115,8 @@ $content-table-foot-cell-color: $text-strong !default;
 
   hr:not(:first-child) {
     /* note: collapses with preceeding block bottom margin */
-    margin-top: var(--line-height);
-    margin-bottom: calc(var(--line-height) - var(--hr-thickness));
+    margin-top: var(--content-line-height);
+    margin-bottom: calc(var(--content-line-height) - var(--hr-thickness));
   }
 
   // Inline
@@ -148,7 +149,7 @@ $content-table-foot-cell-color: $text-strong !default;
     margin-bottom: var(--font-size);
 
     &:not(:first-child) {
-      margin-top: var(--line-height);
+      margin-top: var(--content-line-height);
     }
   }
 

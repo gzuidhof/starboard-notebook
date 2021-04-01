@@ -19,26 +19,28 @@ function requireIndexOfCellId(cells: Cell[], id?: string) {
     return idx;
 }
 
-export function addCellToNotebookContent(runtime: Runtime, nb: NotebookContent, position: "end" | "before" | "after", adjacentCellId?: string, id?: string) {
+export function addCellToNotebookContent(runtime: Runtime, data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string, ) {
+    const nb = runtime.content;
     let idx: number;
-    let cellType: string;
+    let cellType: string | undefined = data.cellType;
 
     if (position === "end") {
         idx = nb.cells.length;
-        cellType = nb.cells.length === 0 ? "markdown": nb.cells[nb.cells.length-1].cellType;
+        cellType = cellType || (nb.cells.length === 0 ? "markdown": nb.cells[nb.cells.length-1].cellType);
     } else {
         idx = requireIndexOfCellId(nb.cells, adjacentCellId);
-        cellType = idx === 0 && adjacentCellId === undefined ? "markdown" : nb.cells[idx].cellType;
+        cellType = cellType || (idx === 0 && adjacentCellId === undefined ? "markdown" : nb.cells[idx].cellType);
     }
 
     if (position === "after") {
         idx += 1;
     }
-    id = id || generateUniqueCellId();
+
+    const id = data.id || generateUniqueCellId();
     const cell: Cell = {
             cellType,
             textContent: "",
-            metadata: {properties: {}, ...(runtime.config.persistCellIds ? {id} : {})},
+            metadata: {properties: {}, ...(data.metadata ? data.metadata : {}), ...(runtime.config.persistCellIds ? {id} : {})},
             id,
     };
     nb.cells.splice(idx, 0, cell);

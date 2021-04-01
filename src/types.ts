@@ -11,7 +11,7 @@ import { TemplateResult } from "lit-html";
  */
 export type CellEvent =
     { id: string; type: "RUN_CELL"; focusNextCell?: boolean; insertNewCell?: boolean }
-    | { id: string; type: "INSERT_CELL"; position: "before" | "after" }
+    | { id: string; type: "INSERT_CELL"; position: "before" | "after"; data?: Partial<Cell> }
     | { id: string; type: "REMOVE_CELL" }
     | { id: string; type: "CHANGE_CELL_TYPE"; newCellType: string }
     | { id: string; type: "RESET_CELL"}

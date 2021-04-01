@@ -9,10 +9,15 @@
     src: local("Inter var"), url(../../static/fonts/inter.var.woff2?v=3.15) format("woff2")
 }
 
+$brand-color: #5e5ef8;
+$primary: $brand-color;
+$border-radius: var(--border-radius);
+
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 @import "./cell.scss";
 @import "./insertion-line.scss";
+@import "./cell-type-picker.scss";
 @import "./controls.css";
 @import "./gutter.css";
 @import "./text-editor.css";
@@ -25,18 +30,23 @@
 :root {
     --font-sans: "Inter var", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     --font-mono: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
-    --font-size: 16px;
+    --font-size: 14px;
+    
+
     --h1-size: 2.3rem;
     --h2-size: 2.0rem;
     --h3-size: 1.4rem;
     --h4-size: 1.1rem;
     --line-height: calc(var(--font-size) * 1.5);
-    --baseline: calc(var(--line-height) / 2);
+    
+    --content-font-size: 16px;
+    --content-line-height: calc(var(--content-font-size) * 1.5);
+    --content-baseline: calc(var(--content-line-height) / 2);
 
-    --cell-margin-left: 32px;
-    --cell-margin-right: 8px;
+    --cell-margin-left: 34px;
+    --cell-margin-right: 6px;
 
-    --brand-color: #6666fd;
+    --brand-color: #5e5ef8;
 
     --background-color: #fff;    
     --background-color-secondary: #fdfdfd;  
@@ -59,6 +69,7 @@
 
     --border-color: #e2e2e2;
     --border-color-secondary: #ececec;
+    --border-radius: 6px;
 
     --hr-thickness: 2px;
     --hr-color: var(--border-color);
@@ -67,7 +78,7 @@
     --blockquote-text-color: var(--foreground-color-secondary);
     --blockquote-border-left-color: #ececec; 
 
-    --insertion-line-color: #d8d8d8;
+    --insertion-line-color: #dfdfdf;
 
     // Cell styling
     --controls-color: var(--foreground-color-tertiary);
@@ -83,7 +94,6 @@ html {
     line-height: var(--line-height);
     background: var(--background-color);
     color: var(--foreground-color);
-    letter-spacing: -0.01em;
     text-size-adjust: 100%;
     font-variant-ligatures: contextual common-ligatures;
     font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'cv10' 1;
@@ -152,6 +162,10 @@ i {
     display: initial !important;
 }
 
+.hidden {
+    display: hidden;
+}
+
 starboard-console-output {
     line-height: 1.2;
 }
@@ -159,7 +173,3 @@ starboard-console-output {
 /*
 Custom Bootstrap styles
 */
-
-.dropdown-menu li{
-    font-size: 14px
- }

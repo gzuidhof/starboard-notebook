@@ -1,12 +1,17 @@
 # Changelog
 
 ## Release 0.8.2
-**Date:** Unreleased
+**Date:** 2021-04-01
 
-* Every cell's HTML is now simplified, the intermediate `<section class="cell-container">` was removed, the class is now on the cell element itself.
-* The margin is now variable and larger. For small screens we can resize it through CSS and it will be responsive.
-* A cell insertion line is now visible when hovering or selecting a cell.
+* Running the last cell no longer inserts a new cell (like Jupyter would).
+* Every cell's HTML is now simplified, the intermediate `<section class="cell-container">` was removed, this container class is now on the custom cell element itself.
+* The margin is now variable and larger. For small screens we can resize it responsively through CSS in the future.
+* A cell insertion line is now visible when hovering or selecting a cell, with a small `+` button on the left to insert a new cell.
+* A new menu is now visible when inserting a new cell, in the future this will contain information about the cell type.
+* Double-clicking the cell-insertion + inserts the same cell type right away.
 * Updated highlighting package (audit fix).
+* Removed global letter spacing rule (used to be `-0.01em`), it now only applies to (Markdown) content.
+* Font size reduced to `14px`, only in content (i.e. Markdown) it still defaults to `16px`.
 
 ## Release 0.8.1
 **Date:** 2021-03-26

@@ -4,7 +4,7 @@
 
 /* This file is internal and should never be imported externally if using starboard-notebook as a library */
 
-import { Runtime, CellEvent, RuntimeControls, RuntimeConfig } from ".";
+import { Runtime, CellEvent, RuntimeControls, RuntimeConfig, Cell } from ".";
 import { StarboardNotebookElement } from "../components/notebook";
 import { textToNotebookContent } from "../content/parsing";
 import { ConsoleCatcher } from "../console/console";
@@ -78,8 +78,8 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     };
 
     const controls: RuntimeControls = {
-        insertCell(position: "end" | "before" | "after", adjacentCellId?: string) {
-          addCellToNotebookContent(rt, rt.content, position, adjacentCellId);
+        insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string) {
+          addCellToNotebookContent(rt, data, position, adjacentCellId);
           notebook.performUpdate();
           controls.contentChanged();
         },
@@ -122,10 +122,9 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
               break; // IDs should be unique, so after we find it we can stop searching.
             }
           }
-          const isLastCell = idxOfCell === cellElements.length - 1;
       
-          if (insertNewCell || isLastCell) {
-            controls.insertCell("after", id);
+          if (insertNewCell) {
+            controls.insertCell({}, "after", id);
           }
           if (focusNext) {
             window.setTimeout(() => {
@@ -183,7 +182,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
           if (event.type === "RUN_CELL") {
             controls.runCell(event.id, !!event.focusNextCell, !!event.insertNewCell);
           } else if (event.type === "INSERT_CELL") {
-            controls.insertCell(event.position, event.id);
+            controls.insertCell(event.data || {}, event.position, event.id);
           } else if (event.type === "REMOVE_CELL") {
             controls.removeCell(event.id);
           } else if (event.type === "CHANGE_CELL_TYPE") {
