@@ -10,7 +10,8 @@ import { CellTypePicker } from "./cellTypePicker";
 import { CellElement } from "./cell";
 import { Cell } from "src/types";
 
-const globalCellTypePicker = new CellTypePicker();
+// Lazily initialized.. but cached for re-use.
+let globalCellTypePicker: CellTypePicker;
 
 @customElement('starboard-insertion-line')
 export class InsertionLine extends LitElement {
@@ -26,6 +27,11 @@ export class InsertionLine extends LitElement {
   }
 
   connectedCallback() {
+    if (!globalCellTypePicker) {
+      // TODO: Flow runtime into this some nicer way.
+      globalCellTypePicker = new CellTypePicker((window as any).runtime);
+    }
+
     this.classList.add("line-grid");
     this.performUpdate();
 
@@ -41,6 +47,7 @@ export class InsertionLine extends LitElement {
       this.buttonElement.addEventListener("click", (_: MouseEvent) => {
         if (popoverIsActive) return;
         this.appendChild(globalCellTypePicker);
+        globalCellTypePicker.classList.add("starboard-fade-in");
         lastActive = Date.now();
 
         const listener = (evt: MouseEvent) => {
@@ -57,6 +64,7 @@ export class InsertionLine extends LitElement {
           popoverIsActive = false;
           pop.destroy();
           globalCellTypePicker.remove();
+          globalCellTypePicker.classList.add("starboard-fade-in");
           document.removeEventListener("click", listener);
         };
 

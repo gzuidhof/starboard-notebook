@@ -18,6 +18,10 @@
     grid-template-rows: 0px;
 }
 
+starboard-cell {
+    animation: starboard-fade-in ease-in 0.15s;
+}
+
 starboard-cell:focus {
     outline: none;
 }

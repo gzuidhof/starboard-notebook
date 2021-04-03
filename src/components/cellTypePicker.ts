@@ -1,17 +1,43 @@
 import { LitElement, customElement, property } from "lit-element";
 import { html } from "lit-html";
-import { Runtime } from "src/runtime";
+import { CellCreationInterface, CellTypeDefinition, Runtime } from "src/runtime";
 import { Cell } from "src/types";
-import { getAvailableCellTypes } from "../cellTypes/registry";
+import { getAvailableCellTypes, getCellTypeDefinitionForCellType } from "../cellTypes/registry";
+
+
+function createDefaultCellCreationInterface(cellDefinition: CellTypeDefinition): (runtime: Runtime, opts: {create: () => void}) => CellCreationInterface {
+  return (r, opts) => ({
+    render() {
+      return html`
+      <div class="markdown-body w-100">
+        <h2>${cellDefinition.name}</h2>
+        <p><small><code>${JSON.stringify(cellDefinition.cellType)}</code></small></p>
+
+      </div>
+      <button @click=${opts.create} class="btn btn-primary btn-sm cta-button">Insert ${cellDefinition.name} cell</button>
+      `;
+    }
+  });
+}
+
 
 @customElement('starboard-cell-type-picker')
 export class CellTypePicker extends LitElement {
 
   @property({type: Object})
-  public onInsert?: (data: Partial<Cell>) => any;
+  public onInsert: (data: Partial<Cell>) => any = () => {console.error("Could not insert cell as onInsert is not set on the cell type picker.");};
 
   // The cell type whose content shown on the right
-  public currentHighlight = "markdown";
+  private currentHighlight!: string;
+  private currentCellCreationInterface!: CellCreationInterface;
+
+  private runtime: Runtime;
+
+  constructor(runtime: Runtime) {
+    super();
+    this.runtime = runtime;
+    this.setHighlightedCellType("markdown");
+  }
 
   createRenderRoot() {
     return this;
@@ -22,28 +48,37 @@ export class CellTypePicker extends LitElement {
   }
 
   setHighlightedCellType(highlightCellType: string) {
+
+    if (this.currentCellCreationInterface && this.currentCellCreationInterface) {
+      this.currentCellCreationInterface.dispose && this.currentCellCreationInterface.dispose();
+    }
+
     this.currentHighlight = highlightCellType;
+
+    const def = getCellTypeDefinitionForCellType(this.currentHighlight);
+    const createCellCreationInterfaceFunction = def.createCellCreationInterface || createDefaultCellCreationInterface(def);
+    this.currentCellCreationInterface = createCellCreationInterfaceFunction(this.runtime, {create: () => this.insertCell()});
+
     this.performUpdate();
   }
 
-  // TODO perhaps on doubleclick we can insert it right away?
-  onClickCellType(ct: string) {
+  private onClickCellType(ct: string) {
     if (this.currentHighlight !== ct) {
       this.setHighlightedCellType(ct);
     } else {
-      this.onInsert && this.onInsert({cellType: ct});
+      this.onInsert({cellType: ct});
+    }
+  }
+
+  private insertCell() {
+    if (this.currentCellCreationInterface.getCellInit) {
+      this.onInsert(this.currentCellCreationInterface.getCellInit());
+    } else {
+      this.onInsert({cellType: this.currentHighlight});
     }
   }
 
   render() {
-    const runtime = (window as any).runtime as Runtime;
-    let focusedCellType = runtime.definitions.cellTypes.get(this.currentHighlight);
-
-    if (!focusedCellType) {
-      console.error("Unknown cell type is focused");
-      focusedCellType = runtime.definitions.cellTypes.get("markdown")!;
-    }
-
     return html`
     <!-- <div data-popper-arrow></div> -->
     <div class="inner">
@@ -60,11 +95,8 @@ export class CellTypePicker extends LitElement {
                 </button>
         `;})}
         </nav>
-        <div class="content markdown-body">
-          <h2>${focusedCellType.name}</h2>
-          <p><code>${this.currentHighlight}</code></p>
-
-          <button @click=${() => this.onInsert && this.onInsert({cellType: this.currentHighlight})} class="btn btn-primary btn-sm cta-button">Insert ${focusedCellType.name} cell</button>
+        <div class="content">
+          ${this.currentCellCreationInterface.render()}
         </div>
     </div>
     `;

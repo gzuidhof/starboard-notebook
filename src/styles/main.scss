@@ -15,6 +15,7 @@ $border-radius: var(--border-radius);
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
+@import "./animations.scss";
 @import "./cell.scss";
 @import "./insertion-line.scss";
 @import "./cell-type-picker.scss";

@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.8.3
+**Date:** Unreleased
+
+* CSS fade in animations added to cells and the cell type picker.
+* Cell type definitions now include a method that allows for a customized cell creation interface.
+
 ## Release 0.8.2
 **Date:** 2021-04-01
 

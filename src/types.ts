@@ -17,6 +17,7 @@ export type CellEvent =
     | { id: string; type: "RESET_CELL"}
     | { type: "SAVE" };
 
+
 /**
  * The backing data for a cell, can be JSON serialized or converted to a notebook string.
  */
@@ -83,11 +84,17 @@ export interface CellTypeDefinition {
      * Name for human consumption, e.g. "Javascript"
      */
     name: string;
+
     /**
      * Identifiers for this cell type, can be a single value (e.g. "html") or multiple (e.g. ["javascript", "js"])
      * If multiple identifiers are defined, the first one is the preferred one.
      */
     cellType: string | string[];
+
+    /**
+     * Specify this to customize the cell creation interface. By default the name is shown at the top with a big button underneath.
+     */
+    createCellCreationInterface?: (runtime: Runtime, opts: {create: () => void}) => CellCreationInterface;
 }
 
 /**
@@ -103,6 +110,12 @@ export interface CellHandler {
     focusEditor(): void;
 }
 
+export interface CellCreationInterface {
+    render(): string | TemplateResult | HTMLElement;
+    getCellInit?(): Partial<Cell>;
+    dispose?(): void;
+}
+
 export interface CellHandlerAttachParameters {
     elements: CellElements;
 }
@@ -115,7 +128,7 @@ export interface CellElements {
     bottomControlsElement: HTMLElement;
 }
 
-export type IconTemplate = (iconOpts?: { width?: number; height?: number; hidden?: boolean; title?:string }) => (TemplateResult | string);
+export type IconTemplate = (iconOpts?: { width?: number; height?: number; hidden?: boolean; title?: string }) => (TemplateResult | string);
 
 export interface ControlButton {
     icon: IconTemplate;

@@ -1,0 +1,8 @@
+@keyframes starboard-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.starboard-fade-in {
+    animation: starboard-fade-in ease-in 0.15s;
+}
