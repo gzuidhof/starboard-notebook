@@ -120,7 +120,7 @@ export function createMarkdownSerializer() {
         math_inline(state: MarkdownSerializerState, node: Node) {
             state.write("$" + node.textContent + "$");
         },
-        math_block(state: MarkdownSerializerState, node: Node) {
+        math_display(state: MarkdownSerializerState, node: Node) {
             state.write("$$\n");
             state.text(node.textContent, false);
             state.ensureNewLine();

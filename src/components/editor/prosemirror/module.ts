@@ -21,7 +21,6 @@ export { EditorView, EditorState, Plugin, defaultMarkdownSerializer };
 const schema = createSchema();
 const parser = createMarkdownParser(schema);
 
-
 export function createEditorState(opts: {content: ContentContainer }) {  
     return EditorState.create({
         doc: parser.parse(opts.content.textContent),
@@ -34,8 +33,8 @@ export function createEditorState(opts: {content: ContentContainer }) {
                             opts.content.textContent = defaultMarkdownSerializer.serialize(view.state.doc);
                         }, 50)
                     };
-                }
-            })
-        ]
+                },
+            }),
+        ],
     });
 }

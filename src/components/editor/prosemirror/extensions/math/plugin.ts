@@ -3,6 +3,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 
+/*---------------------------------------------------------
+ *  Author: Benjamin R. Bray
+ *  License: MIT (see LICENSE in project root for details)
+ *--------------------------------------------------------*/
+
 // prosemirror imports
 import { Node as ProseNode } from "prosemirror-model";
 import { Plugin as ProsePlugin, PluginKey, PluginSpec } from "prosemirror-state";
@@ -11,12 +16,22 @@ import { EditorView } from "prosemirror-view";
 
 ////////////////////////////////////////////////////////////
 
-interface IMathPluginState {
+export interface IMathPluginState {
     macros: { [cmd: string]: string };
+    /** A list of currently active `NodeView`s, in insertion order. */
     activeNodeViews: MathView[];
+    /** 
+     * Used to determine whether to place the cursor in the front- or back-most
+     * position when expanding a math node, without overriding the default arrow
+     * key behavior.
+     */
+    prevCursorPos: number;
 }
 
-/** 
+// uniquely identifies the prosemirror-math plugin
+const MATH_PLUGIN_KEY = new PluginKey<IMathPluginState>("prosemirror-math");
+
+/**
  * Returns a function suitable for passing as a field in `EditorProps.nodeViews`.
  * @param displayMode TRUE for block math, FALSE for inline math.
  * @see https://prosemirror.net/docs/ref/#view.EditorProps.nodeViews
@@ -27,7 +42,7 @@ export function createMathView(displayMode: boolean) {
         * Docs says that for any function proprs, the current plugin instance
         * will be bound to `this`.  However, the typings don't reflect this.
         */
-        const pluginState = mathPluginKey.getState(view.state);
+        const pluginState = MATH_PLUGIN_KEY.getState(view.state);
         if (!pluginState) { throw new Error("no math plugin!"); }
         const nodeViews = pluginState.activeNodeViews;
 
@@ -35,6 +50,7 @@ export function createMathView(displayMode: boolean) {
         const nodeView = new MathView(
             node, view, getPos as (() => number),
             { katexOptions: { displayMode, macros: pluginState.macros } },
+            MATH_PLUGIN_KEY as any, //TODO why is this cast necessary?
             () => { nodeViews.splice(nodeViews.indexOf(nodeView)); },
         );
 
@@ -43,30 +59,26 @@ export function createMathView(displayMode: boolean) {
     };
 }
 
-const mathPluginKey = new PluginKey<IMathPluginState>("prosemirror-math");
 
 const mathPluginSpec: PluginSpec<IMathPluginState> = {
-    key: mathPluginKey,
+    key: MATH_PLUGIN_KEY,
     state: {
-        init(_config, _instance) {
+        init(config, instance) {
             return {
                 macros: {},
-                activeNodeViews: []
+                activeNodeViews: [],
+                prevCursorPos: 0,
             };
         },
         apply(tr, value, oldState, newState) {
-            /** @todo (8/21/20)
-             * since new state has not been fully applied yet, we don't yet have
-             * information about any new MathViews that were created by this transaction.
-             * As a result, the cursor position may be wrong for any newly created math blocks.
-             */
-            const pluginState = mathPluginKey.getState(oldState);
-            if (pluginState) {
-                for (const mathView of pluginState.activeNodeViews) {
-                    mathView.updateCursorPos(newState);
-                }
-            }
-            return value;
+            // produce updated state field for this plugin
+            return {
+                // these values are left unchanged
+                activeNodeViews: value.activeNodeViews,
+                macros: value.macros,
+                // update with the second-most recent cursor pos
+                prevCursorPos: oldState.selection.from
+            };
         },
         /** @todo (8/21/20) implement serialization for math plugin */
         // toJSON(value) { },
@@ -75,7 +87,7 @@ const mathPluginSpec: PluginSpec<IMathPluginState> = {
     props: {
         nodeViews: {
             "math_inline": createMathView(false),
-            "math_block": createMathView(true)
+            "math_display": createMathView(true)
         }
     }
 };

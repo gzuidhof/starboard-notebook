@@ -17,7 +17,9 @@ export function insertHTMLChildAtIndex(parent: HTMLElement, child: HTMLElement, 
     }
 }
 
-export function hasParentWithId(el: HTMLElement, id: string) {
+export function hasParentWithId(el: HTMLElement | Element | null, id: string) {
+  if (el === null) return false;
+
   let isChild = false;
 
   if (el.id === id) { //is this the element itself?

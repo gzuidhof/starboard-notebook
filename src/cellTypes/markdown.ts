@@ -7,7 +7,7 @@ import mdlib from "markdown-it";
 
 import { BaseCellHandler } from "./base";
 import { cellControlsTemplate } from "../components/controls";
-import { TextEditIcon, PlayCircleIcon, CodeIcon } from "@spectrum-web-components/icons-workflow";
+import { TextEditIcon, CodeIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell } from "../types";
 import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
@@ -52,13 +52,6 @@ export class MarkdownCellHandler extends BaseCellHandler {
     private getControls(): TemplateResult {
         let editOrRunButton: ControlButton;
 
-        // Alternative to exit edit mode.. Do we need this?
-        // const doneButton = {
-        //     icon: PlayCircleIcon,
-        //     tooltip: "Stop Editing",
-        //     callback: () => this.runtime.controls.emit({id: this.cell.id, type: "RUN_CELL"}),
-        // };
-
         if (this.editMode === "code") {
             editOrRunButton = {
                 icon: TextEditIcon,
@@ -99,7 +92,11 @@ export class MarkdownCellHandler extends BaseCellHandler {
         // The cell itself loses focus to somewhere outside of the cell, in that case we just render Markdown itself again.
         topElement.parentElement!.addEventListener("focusout", (event: FocusEvent) => {
             if (this.editMode !== "display" && (!event.relatedTarget || !hasParentWithId(event.relatedTarget as HTMLElement, this.cell.id))) {
-                this.run();
+                setTimeout( () => { // Workaround for some plugins (prosemirror-math) focusing later in the same tick.
+                    if (!hasParentWithId(document.activeElement, this.cell.id)) {
+                        this.run();
+                    }
+                }, 0);
             }
         });
 
@@ -132,11 +129,6 @@ export class MarkdownCellHandler extends BaseCellHandler {
     async run() {
         this.editMode = "display";
         const topElement = this.elements.topElement;
-
-        if (this.editor !== undefined) {
-            this.editor.dispose();
-            delete this.editor;
-        }
 
         topElement.innerHTML = "";
 

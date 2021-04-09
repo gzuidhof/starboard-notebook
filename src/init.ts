@@ -37,4 +37,4 @@ window.katexLoader = katexLoader;
 katexEventualPromise.then(m => window.katex = m.katex);
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// window.initialNotebookContent = require("./debugNotebooks/classDefinition.nb").default;
+window.initialNotebookContent = require("./debugNotebooks/latex.nb").default;

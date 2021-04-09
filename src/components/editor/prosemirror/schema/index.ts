@@ -4,8 +4,8 @@
 
 
 import { markdownSchema } from "./markdown";
+import { mathSchema } from "./math";
 import { MarkSpec, NodeSpec, Schema, SchemaSpec } from "prosemirror-model";
-import { mathSchema } from "../extensions/math/schema";
 
 
 function merge<A1 extends string, B1 extends string, A2 extends string, B2 extends string>(s1: SchemaSpec<A1, B1>, s2: SchemaSpec<A2, B2>): SchemaSpec<A1 & A2, B1 & B2> {

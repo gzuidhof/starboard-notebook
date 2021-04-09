@@ -5,6 +5,7 @@
 
 * CSS fade in animations added to cells and the cell type picker.
 * Cell type definitions now include a method that allows for a customized cell creation interface.
+* Some fixes for Math behavior in Markdown cells (we now import `prosemirror-math` where possible).
 
 ## Release 0.8.2
 **Date:** 2021-04-01

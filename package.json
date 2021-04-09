@@ -1,6 +1,6 @@
 {
   "name": "starboard-notebook",
-  "version": "0.8.2",
+  "version": "0.8.3",
   "description": "Starboard Notebook",
   "author": "Guido Zuidhof <me@guido.io>",
   "funding": {
@@ -79,6 +79,7 @@
   },
   "dependencies": {
     "@babel/parser": "^7.10.5",
+    "@benrbray/prosemirror-math": "^0.1.4",
     "@codemirror/next": "^0.16.0",
     "@github/mini-throttle": "^2.0.1",
     "@iktakahiro/markdown-it-katex": "^4.0.1",

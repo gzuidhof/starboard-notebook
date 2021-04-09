@@ -91,6 +91,9 @@ export class StarboardContentEditor extends LitElement {
     }
 
     dispose() {
-        if (this.view) this.view.destroy();
+        if (this.view) {
+            this.view.destroy();
+            this.view = undefined;
+        }
     }
 }

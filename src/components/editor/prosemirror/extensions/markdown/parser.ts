@@ -278,7 +278,7 @@ export function createMarkdownParser(schema: Schema) {
     },
     hardbreak: { node: "hard_break" },
     math_inline: { block: "math_inline", noCloseToken: true  },
-    math_block: { block: "math_block", noCloseToken: true },
+    math_display: { block: "math_display", noCloseToken: true },
     em: { mark: "em" },
     strong: { mark: "strong" },
     link: {

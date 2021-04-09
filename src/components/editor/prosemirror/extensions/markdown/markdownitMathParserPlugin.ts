@@ -4,7 +4,6 @@
 
 /* eslint-disable prefer-const */
 
-
 /* Based on MIT licensed https://github.com/iktakahiro/markdown-it-katex 
    Note this is currently duplicated in the bundle as we also use that package directly.
    A small improvement in bundle size and maintainability could be forking this package and splitting the plugin into
@@ -109,7 +108,7 @@ function math_inline(state: ParserState, silent: boolean) {
     return true;
 }
 
-function math_block(state: ParserState, start: number, end: number, silent: boolean){
+function math_display(state: ParserState, start: number, end: number, silent: boolean){
     let firstLine, lastLine, next, lastPos, found = false, token,
         pos = state.bMarks[start] + state.tShift[start],
         max = state.eMarks[start];
@@ -151,7 +150,7 @@ function math_block(state: ParserState, start: number, end: number, silent: bool
 
     state.line = next + 1;
 
-    token = state.push('math_block', 'math', 0);
+    token = state.push('math_display', 'math', 0);
     token.block = true;
     token.content = (firstLine && firstLine.trim() ? firstLine + '\n' : '')
     + state.getLines(start + 1, next, state.tShift[start], true)
@@ -205,7 +204,7 @@ export function mathParserPlugin(md: any) {
     // };
 
     md.inline.ruler.after('escape', 'math_inline', math_inline);
-    md.block.ruler.after('blockquote', 'math_block', math_block, {
+    md.block.ruler.after('blockquote', 'math_display', math_display, {
         alt: [ 'paragraph', 'reference', 'blockquote', 'list' ]
     });
 }

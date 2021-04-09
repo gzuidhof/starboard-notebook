@@ -47,7 +47,6 @@ export class InsertionLine extends LitElement {
       this.buttonElement.addEventListener("click", (_: MouseEvent) => {
         if (popoverIsActive) return;
         this.appendChild(globalCellTypePicker);
-        globalCellTypePicker.classList.add("starboard-fade-in");
         lastActive = Date.now();
 
         const listener = (evt: MouseEvent) => {
@@ -64,7 +63,6 @@ export class InsertionLine extends LitElement {
           popoverIsActive = false;
           pop.destroy();
           globalCellTypePicker.remove();
-          globalCellTypePicker.classList.add("starboard-fade-in");
           document.removeEventListener("click", listener);
         };
 
