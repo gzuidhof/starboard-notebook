@@ -1,11 +1,25 @@
 # Changelog
 
 ## Release 0.8.3
-**Date:** Unreleased
+**Date:** 2021-04-12
 
-* CSS fade in animations added to cells and the cell type picker.
 * Cell type definitions now include a method that allows for a customized cell creation interface.
-* Some fixes for Math behavior in Markdown cells (we now import `prosemirror-math` where possible).
+* Some fixes for math behavior in Markdown cells (we now import `prosemirror-math` where possible).
+* Fix: Pressing shift-enter in the codemirror editor no longer adds a newline.
+* Removed the old cell insertion button and added the +-line button above cells too now.
+* The default editor for Markdown cells is the plaintext one again. In a future version it should  probably remember the preferred editor.
+* Quality of life: When inserting a new cell, press enter to insert the selected cell type immediately.
+* Lots of style improvements:
+  * The borders of the text editors and console output are less pronounced and corners are rounded.
+  * The "cell type color hint" left border was removed.
+  * All cell bottoms now default to having a little bit of padding underneath.
+  * Fix the notebook footer not aligning with the cells.
+  * The top bar of cells is now smaller
+  * The cell gutter button (in the left margin) is now thinner by default.
+  * The cell type selector menu selected state looks a lot better now.
+  * The notebook will now grow a bit if it is too small when the cell type selector is opened.
+  * Responsivity tweak: On small devices the gutters will be reduced in width.
+  * CSS fade in animations added to cells.
 
 ## Release 0.8.2
 **Date:** 2021-04-01

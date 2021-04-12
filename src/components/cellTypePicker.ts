@@ -44,7 +44,20 @@ export class CellTypePicker extends LitElement {
   }
 
   connectedCallback() {
+    super.connectedCallback();
     this.performUpdate();
+
+    setTimeout(() => {
+      // Hack to ensure the iframe is not super tiny at this point
+      // We could consider modifying body instead
+      const dims = this.getBoundingClientRect();
+      (document.querySelector("starboard-notebook")! as HTMLElement).style.minHeight = dims.height + "px";
+    });
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    (document.querySelector("starboard-notebook")! as HTMLElement).style.minHeight = "unset";
   }
 
   setHighlightedCellType(highlightCellType: string) {
@@ -60,6 +73,7 @@ export class CellTypePicker extends LitElement {
     this.currentCellCreationInterface = createCellCreationInterfaceFunction(this.runtime, {create: () => this.insertCell()});
 
     this.performUpdate();
+    this.querySelector(".dropdown-item.active") && (this.querySelector(".dropdown-item.active") as HTMLElement).focus();
   }
 
   private onClickCellType(ct: string) {

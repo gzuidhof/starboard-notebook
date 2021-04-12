@@ -1,0 +1,19 @@
+# %%--- [esm]
+# properties:
+#   run_on_load: true
+# ---%%
+import "http://localhost:8080/dist/starboard-jupyter.js";
+
+registerJupyterPlugin({
+    serverSettings: {
+        baseUrl: "http://localhost:8888",
+        token: "myfixedtokensecret",
+    }
+})
+# %% [jupyter]
+import matplotlib.pyplot as plt
+
+print("Hello!")
+
+plt.plot([x**3 for x in range(100)])
+plt.show()

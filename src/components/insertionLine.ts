@@ -74,9 +74,10 @@ export class InsertionLine extends LitElement {
           globalCellTypePicker.setHighlightedCellType(parent.cell.cellType);
         }
         globalCellTypePicker.onInsert = (cellData: Partial<Cell>) => {
-            // Right now we assume the insertion line has a cell as parent and it should insert below
+            // Right now we assume the insertion line has a cell as parent
             if (parent && parent instanceof CellElement) {
-              parent.runtime.controls.emit({type: "INSERT_CELL", position: "after", id: parent.cell.id, data: cellData});
+              const position = this.classList.contains("insertion-line-top") ? "before" : "after";
+              parent.runtime.controls.emit({type: "INSERT_CELL", position: position, id: parent.cell.id, data: cellData});
               unpop();
             }
         };

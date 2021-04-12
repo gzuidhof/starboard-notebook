@@ -1,6 +1,5 @@
 starboard-cell-type-picker {
     border-radius: var(--border-radius);
-
     .inner {
         background-color: var(--background-color);
         min-width: 320px;
@@ -18,6 +17,11 @@ starboard-cell-type-picker {
 
         .dropdown-item {
             border: 1px solid transparent;
+        }
+
+        .dropdown-item:focus-visible {
+            /* Don't worry - selection state still visible by being a different background color. */
+            outline: none;
         }
 
         .dropdown-item.active {

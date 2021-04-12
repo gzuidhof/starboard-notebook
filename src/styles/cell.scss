@@ -4,8 +4,8 @@
 
 .cell-grid {
     display: grid;
-    grid-template-columns: [full-width-start] auto [margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(auto, calc(min(980px, 100% - var(--cell-margin-left) - var(--cell-margin-right)))) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
-    grid-template-rows:  26px auto auto;
+    grid-template-columns: [full-width-start] auto [margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(auto, calc(min(var(--cell-base-width), 100% - var(--cell-margin-left) - var(--cell-margin-right)))) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
+    grid-template-rows:  22px auto auto;
     grid-template-areas: 
     "gutter-left-above margin-left-above above margin-right-above gutter-right-above"
     "gutter-left-top margin-left-top top margin-right-top gutter-right-top"
@@ -14,7 +14,7 @@
 
 .line-grid {
     display: grid;
-    grid-template-columns: [full-width-start margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(auto, calc(min(980px, 100% - var(--cell-margin-left) - var(--cell-margin-right)))) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end full-width-end];
+    grid-template-columns: [full-width-start] auto [margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(auto, calc(min(var(--cell-base-width), 100% - var(--cell-margin-left) - var(--cell-margin-right)))) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
     grid-template-rows: 0px;
 }
 
@@ -50,16 +50,17 @@ starboard-cell:not(:focus):not(:focus-within).collapsed {
 
 .cell-top {
     grid-area: top;
-    min-height: 40px;
+    min-height: 24px;
 }
 
 .cell-bottom {
     grid-area: bottom;
     max-height: 100vh;
     overflow-y: auto;
+    padding-bottom: 0.25em;
 }
 
 .cell-output-html {
     overflow-x: auto;
-    padding: 0.4em;
+    // padding: 0.4em;
 }

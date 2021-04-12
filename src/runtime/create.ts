@@ -36,7 +36,7 @@ function getInitialContent() {
 function getConfig() {
   let config: RuntimeConfig = {
     persistCellIds: false,
-    defaultTextEditor: "smart",
+    defaultTextEditor: "codemirror",
   };
 
   if (window.runtimeConfig) {
@@ -79,9 +79,11 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
     const controls: RuntimeControls = {
         insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string) {
-          addCellToNotebookContent(rt, data, position, adjacentCellId);
+          const id = addCellToNotebookContent(rt, data, position, adjacentCellId);
           notebook.performUpdate();
           controls.contentChanged();
+
+          notebook.focusCell(id);
         },
       
         removeCell(id: string) {

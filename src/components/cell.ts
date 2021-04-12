@@ -117,8 +117,10 @@ export class CellElement extends LitElement {
         const id = this.cell.id;
         const emit = this.runtime.controls.emit;
 
-        this.classList.toggle("collapsed", !!this.cell.metadata.properties.collapsed)
+        this.classList.toggle("collapsed", !!this.cell.metadata.properties.collapsed);
         return html`
+            <starboard-insertion-line class="insertion-line-top"></starboard-insertion-line>
+
             <!-- Gutter (left side outside the document) -->
             <div class="cell-gutter cell-gutter-left-above">
                 <button @click=${() => this.toggleProperty("collapsed")} class="cell-gutter-button" title=${this.cell.metadata.properties.collapsed ? "Maximize cell" : "Minimize cell"}></button>
@@ -173,7 +175,7 @@ export class CellElement extends LitElement {
                 <!-- Properties change button -->
                 <div class="dropdown">
                     <button data-bs-toggle="dropdown" class="cell-controls-button auto-hide" title="Change Cell Properties">
-                        ${BooleanIcon({ width: 18, height: 18 })}
+                        ${BooleanIcon({ width: 15, height: 15 })}
                     </button>
 
                     <div class="dropdown-menu" style="min-width: 244px">
@@ -183,12 +185,8 @@ export class CellElement extends LitElement {
                 </div>
 
                 <button @click="${() => emit({ id, type: "REMOVE_CELL" })}" class="cell-controls-button auto-hide" title="Remove Cell">
-                    ${DeleteIcon({ width: 18, height: 18 })}
+                    ${DeleteIcon({ width: 15, height: 15 })}
                 </button>
-                <button @click="${() => emit({ id, type: "INSERT_CELL", position: "before" })}" class="cell-controls-button auto-hide" title="Add Cell Above">
-                    ${AssetsAddedIcon({ width: 18, height: 18 })}
-                </button>
-
             </div>
 
             <div class="cell-controls cell-controls-left cell-controls-left-top"></div>
@@ -196,7 +194,7 @@ export class CellElement extends LitElement {
             <div class="cell-controls cell-controls-left cell-controls-left-bottom"></div>
             <div class="cell-bottom"></div>
 
-        <starboard-insertion-line></starboard-insertion-line>
+        <starboard-insertion-line class="insertion-line-bottom"></starboard-insertion-line>
     `;
     }
 

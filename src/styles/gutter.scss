@@ -9,7 +9,7 @@ the focus state of the cell */
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    min-width: 4px;
+    min-width: 2px;
     background-color: var(--gutter-background-color);
 }
 
@@ -39,7 +39,7 @@ the focus state of the cell */
 
 .cell-gutter-button {
     box-sizing: border-box;
-    width: 4px;
+    width: 2px;
     height: calc(100%);
     padding: 0;
     border: 0;
@@ -52,14 +52,18 @@ the focus state of the cell */
 }
 
 .cell-gutter-button:focus {
-    /* width: 4px; */
-    filter: brightness(0.925);
+    filter: brightness(0.90);
     outline: 1px solid #99999940;
 }
 
-starboard-cell:hover * .cell-gutter-button {
-    background-color: #f9f9f9;
+starboard-cell:hover .cell-gutter-button {
+    background-color: #f8f8f8;
 }
+
+// starboard-cell:hover div[class*="cell-gutter-left"] {
+//     background-color: #fdfdfd;
+// }
+
 
 starboard-cell:focus-within * .cell-gutter-button,
 starboard-cell:focus-within:hover * .cell-gutter-button

@@ -19,7 +19,10 @@ function requireIndexOfCellId(cells: Cell[], id?: string) {
     return idx;
 }
 
-export function addCellToNotebookContent(runtime: Runtime, data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string, ) {
+/**
+ * Returns the ID of the created cell
+ */
+export function addCellToNotebookContent(runtime: Runtime, data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string): string {
     const nb = runtime.content;
     let idx: number;
     let cellType: string | undefined = data.cellType;
@@ -44,6 +47,8 @@ export function addCellToNotebookContent(runtime: Runtime, data: Partial<Cell>, 
             id,
     };
     nb.cells.splice(idx, 0, cell);
+
+    return id;
 }
 
 export function removeCellFromNotebookById(nb: NotebookContent, id: string) {

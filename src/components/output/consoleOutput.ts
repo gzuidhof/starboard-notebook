@@ -56,7 +56,7 @@ export class ConsoleOutputElement extends LitElement {
         const comPromise = import(/* webpackChunkName: "console-output", webpackPrefetch: true */ "./consoleOutputModule");
 
         const rootEl = document.createElement('div');
-        rootEl.setAttribute("style", "background-color: rgb(36, 36, 36)");
+        rootEl.classList.add("starboard-console-output-inner");
         comPromise.then(c => {
             c.renderStandardConsoleOutputIntoElement(rootEl, this.logs);
             this.updatePending = false;

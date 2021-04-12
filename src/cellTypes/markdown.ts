@@ -7,7 +7,7 @@ import mdlib from "markdown-it";
 
 import { BaseCellHandler } from "./base";
 import { cellControlsTemplate } from "../components/controls";
-import { TextEditIcon, CodeIcon } from "@spectrum-web-components/icons-workflow";
+import { TextEditIcon, CodeIcon, EditIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell } from "../types";
 import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
@@ -31,7 +31,7 @@ async function isKatexAlreadyLoaded() {
 }
 
 type EditMode = "wysiwyg" | "code" | "display";
-const DEFAULT_EDIT_MODE = "wysiwyg";
+const DEFAULT_EDIT_MODE = "code";
 
 export const MARKDOWN_CELL_TYPE_DEFINITION = {
     name: "Markdown",
@@ -56,20 +56,29 @@ export class MarkdownCellHandler extends BaseCellHandler {
             editOrRunButton = {
                 icon: TextEditIcon,
                 tooltip: "Edit as rich text",
-                callback: () => this.enterEditMode("wysiwyg"),
+                callback: () => {
+                    setTimeout( () => this.editor && this.editor.focus());
+                    this.enterEditMode("wysiwyg");
+                }
             };
         }
         else if (this.editMode === "wysiwyg") {
             editOrRunButton = {
                 icon: CodeIcon,
                 tooltip: "Edit markdown source directly",
-                callback: () => this.enterEditMode("code"),
+                callback: () => {
+                    setTimeout( () => this.editor && this.editor.focus());
+                    this.enterEditMode("code");
+                }
             };
         } else {
             editOrRunButton = {
-                icon: TextEditIcon,
+                icon: EditIcon,
                 tooltip: "Edit Markdown",
-                callback: () => this.enterEditMode("wysiwyg"),
+                callback: () => {
+                    this.enterEditMode(DEFAULT_EDIT_MODE);
+                    setTimeout( () => this.editor && this.editor.focus());
+                },
             };
         }
 
@@ -79,8 +88,10 @@ export class MarkdownCellHandler extends BaseCellHandler {
     attach(params: CellHandlerAttachParameters) {
         this.elements = params.elements;
 
-        // Initial render
-        this.run();
+        if (this.cell.textContent !== "") {
+            // Initial render
+            this.run();
+        }
 
         const topElement = this.elements.topElement;
         topElement.addEventListener("dblclick", (_event: any) => {
@@ -142,7 +153,6 @@ export class MarkdownCellHandler extends BaseCellHandler {
             katexHookPromise.then(() => outDiv.innerHTML = md.render(this.cell.textContent));
         }
         topElement.appendChild(outDiv);
-
         render(this.getControls(), this.elements.topControlsElement);
     }
 
@@ -154,7 +164,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
 
     focusEditor() {
         this.enterEditMode(DEFAULT_EDIT_MODE);
-
+        setTimeout( () => this.editor && this.editor.focus());
         if (this.editor) {
             this.editor.focus();
         }

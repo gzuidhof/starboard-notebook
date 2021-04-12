@@ -29,7 +29,7 @@ export function getPropertiesIcons(cell: Cell, togglePropertyFunction: (name: st
         const propertyDef = registry.get(prop) || {icon: AlertCircleIcon, textEnabled: `Unknown property "${prop}"`, textDisabled: ``, name: `Unknown`};
         const templateResult = html`
             <button @click=${() => togglePropertyFunction(prop)} class="cell-controls-button" title=${propertyDef.textEnabled}>
-                            ${propertyDef.icon({width: 16, height:16})}
+                            ${propertyDef.icon({width: 15, height:15})}
             </button>
         `;
         iconTemplates.push(templateResult);

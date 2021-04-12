@@ -73,6 +73,15 @@ export class StarboardNotebookElement extends LitElement {
     }
   }
 
+  focusCell(cellId: string) {
+    this.updateComplete.then(() => {
+      const cellElement = this.querySelector("#" + cellId);
+      if (cellElement) {
+        (cellElement as CellElement).focus();
+      }
+    });
+  }
+
   performUpdate() {
     super.performUpdate();
     // We manually manage the cell elements, lit-html doesn't do a good job here
@@ -119,17 +128,16 @@ export class StarboardNotebookElement extends LitElement {
 
   render() {
     return html`
+      <div style="position: absolute; height: 800px"></div>
       <main class="cells-container"></main>
       
-      <footer class="starboard-notebook-footer">
-        <div></div>
-        <div></div>
-        <div>
+      <footer class="starboard-notebook-footer line-grid">
+        <div class="starboard-notebook-footer-content">
           <span>${StarboardLogo({width: 10, height: 10})} Starboard Notebook v${this.runtime.version}
           ${window.starboardEditUrl ? html`- <a href=${window.starboardEditUrl}>Edit on Starboard.gg</a>`: ""}
           </span>
-          <button @click="${() => this.runtime.controls.insertCell({}, "end")}" class="cell-controls-button" title="Add Cell Here" style="opacity: 0.5 !important; float: right; opacity: 1; padding: 0px 3px 0px 18px;">
-          ${AssetsAddedIcon({ width: 18, height: 18 })}
+          <button @click="${() => this.runtime.controls.insertCell({}, "end")}" class="cell-controls-button" title="Add Cell Here" style="opacity: 0.4 !important; float: right; opacity: 1; padding: 0px 1px 0px 18px;">
+          ${AssetsAddedIcon({ width: 15, height: 15 })}
         </button>
         </div>
       </footer>

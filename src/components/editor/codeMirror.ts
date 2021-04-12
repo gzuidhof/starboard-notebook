@@ -153,12 +153,14 @@ const commonExtensions = [
     history(),
 
     keymap.of([
+        {key: "Shift-Enter", run: () => true},
         ...defaultKeymap,
         ...commentKeymap,
         ...completionKeymap,
         ...historyKeymap,
         ...foldKeymap,
         ...searchKeymap,
+        
     ]),
     autocompletion(),
 ];

@@ -1,12 +1,20 @@
 starboard-insertion-line {
-    top: 100%;
+    &.insertion-line-top {
+        // top: 0%;
+        grid-row: above;
+    }
+
+    &.insertion-line-bottom {
+        top: 100%;
+        grid-row: bottom;
+    }
+    
     left: 0;
     right: 0;
     height: 0;
     grid-column: margin-left-start / margin-right-end;
-    grid-row: bottom;
+    
     position: relative;
-
 
     .hover-area {
         display: flex;
@@ -18,6 +26,10 @@ starboard-insertion-line {
         right: 0;
         transform: translateY(-50%);
         z-index: 1;
+
+        &:hover .insert-button {
+            color: var(--insertion-line-plus-color);
+        }
     }
 
     .button-container {
@@ -51,12 +63,12 @@ starboard-insertion-line {
         filter: brightness(0.6);
     }
 
-    &:hover .content-line {
-        background-color: var(--insertion-line-color);
+    .insert-button:focus-visible {
+        outline: 1px solid #99999940;
     }
 
-    &:hover .insert-button {
-        color: var(--insertion-line-color);
+    &:hover .content-line {
+        background-color: var(--insertion-line-color);
     }
 
 
@@ -75,7 +87,7 @@ starboard-insertion-line {
 }
 
 starboard-cell:focus-within * .insert-button, starboard-cell:hover * .insert-button {
-    color: var(--insertion-line-color);
+    color: var(--insertion-line-plus-color);
 }
 
 starboard-cell-type-picker {
