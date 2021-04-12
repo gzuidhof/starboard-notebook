@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.8.4
+**Date:** 2021-04-12
+
+
+* Fix for text editor overflowing when the notebook contains very long lines.
+
 ## Release 0.8.3
 **Date:** 2021-04-12
 
