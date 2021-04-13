@@ -58,7 +58,7 @@ $border-radius: var(--border-radius);
     --foreground-color-secondary: #4c4c4c;
     --foreground-color-tertiary: #777;
 
-    --code-background-color: #f5f7f8;
+    --code-background-color: #fafafa;
 
     --editor-line-number-color: #ccc;
 
@@ -86,7 +86,7 @@ $border-radius: var(--border-radius);
 
     // Cell styling
     --controls-color: #999;
-    --cell-collapsed-line-color: var(--border-color);
+    --cell-collapsed-line-color: var(--code-background-color);
 
     --gutter-background-color: var(--background-color);
     --gutter-selected-background-color: var(--background-color-tertiary);

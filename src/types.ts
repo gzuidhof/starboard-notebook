@@ -144,6 +144,8 @@ export interface ControlsDefinition {
 export interface CellPropertyDefinition {
     /**
      * Identifier for the cell property, e.g. "collapsed" or "run_on_load"
+     * 
+     * Must be a string without spaces or special characters, `snake_case` is recommended.
      */
     cellProperty: string;
 

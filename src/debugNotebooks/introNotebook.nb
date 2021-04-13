@@ -14,7 +14,7 @@ Let's see it in action!
 
 # %%--- [javascript]
 # properties:
-#   collapsed: true
+#   top_hidden: true
 # ---%%
 // You write vanilla Javascript
 const greeting = "Hello world!";

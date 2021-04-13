@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { cellControlsTemplate } from "../components/controls";
-import { StarboardLogo } from "../components/logo";
+import { StarboardLogo } from "../components/icons";
 import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon, TextEditIcon, GearsIcon, LockClosedIcon } from "@spectrum-web-components/icons-workflow";
 import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
 import { createCellProxy } from "../components/helpers/cellProxy";

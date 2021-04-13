@@ -5,7 +5,7 @@
 .cell-grid {
     display: grid;
     grid-template-columns: [full-width-start] auto [margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(auto, calc(min(var(--cell-base-width), 100% - var(--cell-margin-left) - var(--cell-margin-right)))) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
-    grid-template-rows:  22px auto auto;
+    grid-template-rows:  20px auto auto;
     grid-template-areas: 
     "gutter-left-above margin-left-above above margin-right-above gutter-right-above"
     "gutter-left-top margin-left-top top margin-right-top gutter-right-top"
@@ -30,7 +30,7 @@ starboard-cell:focus {
     display: none !important;
 }
 
-starboard-cell:not(:focus):not(:focus-within).collapsed {
+starboard-cell:not(:focus):not(:focus-within).property-collapsed {
     .cell-top,
     .cell-bottom,
     .cell-controls-left-top,
@@ -48,14 +48,43 @@ starboard-cell:not(:focus):not(:focus-within).collapsed {
     }
 }
 
+.property-bottom_hidden {
+    .cell-bottom,
+    .cell-controls-left-bottom,
+    .cell-gutter-bottom {
+        display: none;
+    }
+
+    .cell-bottom:focus-within,
+    .cell-controls-left-bottom:focus-within,
+    .cell-gutter-bottom:focus-within {
+        background-color: red !important;
+        display: flex !important;
+    }
+}
+
+.property-top_hidden {
+    .cell-top,
+    .cell-controls-left-top,
+    .cell-gutter-top {
+        display: none;
+    }
+
+    .cell-top:focus-within,
+    .cell-controls-left-top:focus-within,
+    .cell-gutter-top:focus-within {
+        background-color: red !important;
+        display: flex !important;;
+    }
+}
+
 .cell-top {
     grid-area: top;
+    max-height: 100vh;
     min-height: 24px;
-    overflow: auto;
 }
 
 .cell-bottom {
-    overflow: auto;
     grid-area: bottom;
     max-height: 100vh;
     padding-bottom: 0.25em;

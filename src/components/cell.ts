@@ -8,13 +8,15 @@ import { toggleCellFlagProperty } from '../content/notebookContent';
 import { BaseCellHandler } from '../cellTypes/base';
 import { getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cellTypes/registry';
 
-import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
+import { DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { getPropertiesIcons, getPropertiesPopoverIcons } from './controls';
 import { Cell } from '../types';
 import { Runtime, CellTypeDefinition } from '../runtime';
 import "./insertionLine";
 
 import Dropdown from "bootstrap/js/dist/dropdown";
+import { syncPropertyElementClassNames } from '../cellProperties/dom';
+import { cellHasProperty } from '../cellProperties/util';
 
 
 @customElement('starboard-cell')
@@ -108,28 +110,38 @@ export class CellElement extends LitElement {
         });
     }
 
-    private toggleProperty(name: string) {
-        toggleCellFlagProperty(this.cell, name);
+    private toggleProperty(name: string, force?: boolean) {
+        toggleCellFlagProperty(this.cell, name, force);
         this.performUpdate();
+    }
+
+    private onTopGutterButtonClick() {
+        if (cellHasProperty(this.cell, "top_hidden")) {
+            this.toggleProperty("top_hidden", false);
+        } else if (cellHasProperty(this.cell, "bottom_hidden")) {
+            this.toggleProperty("bottom_hidden", false);
+        } else {
+            this.toggleProperty("collapsed");
+        }
     }
 
     render() {
         const id = this.cell.id;
         const emit = this.runtime.controls.emit;
 
-        this.classList.toggle("collapsed", !!this.cell.metadata.properties.collapsed);
+        syncPropertyElementClassNames(this, this.cell.metadata.properties);
         return html`
             <starboard-insertion-line class="insertion-line-top"></starboard-insertion-line>
 
             <!-- Gutter (left side outside the document) -->
             <div class="cell-gutter cell-gutter-left-above">
-                <button @click=${() => this.toggleProperty("collapsed")} class="cell-gutter-button" title=${this.cell.metadata.properties.collapsed ? "Maximize cell" : "Minimize cell"}></button>
+                <button @click=${() => this.onTopGutterButtonClick()} class="cell-gutter-button" title=${this.cell.metadata.properties.collapsed ? "Toggle cell visibility" : "Toggle cell visibility"}></button>
             </div>
             <div class="cell-gutter cell-gutter-left-top">
-                <button class="cell-gutter-button" title="This gutter button doesn't do anything yet.."></button>
+                <button  @click=${() => this.toggleProperty("top_hidden")} class="cell-gutter-button" title="Hide cell input"></button>
             </div>
             <div class="cell-gutter cell-gutter-left-bottom">
-                <button class="cell-gutter-button" title="This gutter button doesn't do anything yet.."></button>
+                <button  @click=${() => this.toggleProperty("bottom_hidden")} class="cell-gutter-button" title="Hide cell output"></button>
             </div>
 
 

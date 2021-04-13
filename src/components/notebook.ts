@@ -7,7 +7,7 @@ import { CellElement } from './cell';
 import { IFramePage } from 'iframe-resizer';
 import { createCellProxy } from './helpers/cellProxy';
 import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';
-import { StarboardLogo } from './logo';
+import { StarboardLogo } from './icons';
 import { insertHTMLChildAtIndex } from './helpers/dom';
 import { Runtime, RuntimeConfig } from '../runtime';
 import { setupRuntime } from '../runtime/create';
@@ -71,15 +71,6 @@ export class StarboardNotebookElement extends LitElement {
     if (this.runtime.content.cells.length > 0) {
       this.notebookInitialize();
     }
-  }
-
-  focusCell(cellId: string) {
-    this.updateComplete.then(() => {
-      const cellElement = this.querySelector("#" + cellId);
-      if (cellElement) {
-        (cellElement as CellElement).focus();
-      }
-    });
   }
 
   performUpdate() {

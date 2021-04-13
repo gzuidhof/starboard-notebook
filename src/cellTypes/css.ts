@@ -39,7 +39,7 @@ export class CSSCellHandler extends BaseCellHandler {
     async run() {
         const content = this.cell.textContent;
         if (content) {
-            render(html`${unsafeHTML("<style>" + content + "</style>")}`, this.elements.bottomElement);
+            render(html`${unsafeHTML("<style>\n" + content + "\n</style>")}`, this.elements.bottomElement);
         }
     }
 

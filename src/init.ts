@@ -9,8 +9,6 @@ import "iframe-resizer/js/iframeResizer.contentWindow.js";
 import * as lithtml from "lit-html";
 
 import * as YAML from "yaml";
-import { katexEventualPromise, katexLoader } from "./components/helpers/katex";
-import katex from "katex";
 import { RuntimeConfig } from "./runtime";
 
 declare global {
@@ -21,8 +19,6 @@ declare global {
     html: typeof lithtml.html;
     svg: typeof lithtml.svg;
     litHtml: typeof lithtml;
-    katex?: typeof katex;
-    katexLoader: typeof katexLoader;
     YAML: typeof YAML;
   }
 }
@@ -32,9 +28,5 @@ window.html = lithtml.html;
 window.svg = lithtml.svg;
 window.litHtml = lithtml;
 window.YAML = YAML;
-
-window.katexLoader = katexLoader;
-katexEventualPromise.then(m => window.katex = m.katex);
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// window.initialNotebookContent = require("./debugNotebooks/latex.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/introNotebook.nb").default;

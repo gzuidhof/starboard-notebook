@@ -65,8 +65,8 @@ export function changeCellType(nb: NotebookContent, id: string, newCellType: str
     nb.cells.splice(idx, 1, newCell);
 }
 
-export function toggleCellFlagProperty(cell: Cell, propertyName: string) {
-    if (cell.metadata.properties[propertyName]) {
+export function toggleCellFlagProperty(cell: Cell, propertyName: string, force?: boolean) {
+    if (cell.metadata.properties[propertyName] || force === false) {
         delete cell.metadata.properties[propertyName];
     } else {
         cell.metadata.properties[propertyName] = true;

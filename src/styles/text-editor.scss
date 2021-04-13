@@ -8,7 +8,7 @@
 }
 
 .cm-gutters {
-    background-color: #fbfbfb !important;
+    background-color: var(--code-background-color) !important;
     border-right: 1px solid transparent !important;
     color: var(--editor-line-number-color) !important;
 }
@@ -37,12 +37,6 @@
     background-color: #e1ebf5 !important;
 }
 
-starboard-text-editor {
-    display: block;
-    padding-bottom: 0.25em;
-}
-
-
 .starboard-text-editor {
     position: relative;
     box-sizing: border-box;
@@ -50,12 +44,24 @@ starboard-text-editor {
     height: 100%;
 
     color: #000;
-    background-color: #fbfbfb;
+    background-color: var(--code-background-color);
     font-size: 14px;
     
-    border: 1px solid var(--border-color-secondary);
-    border-radius: var(--border-radius);
+    border: 1px solid transparent;
+    // border-radius: var(--border-radius);
+    transition: border ease-in 100ms;
 }
+
+// .cell-bottom.flush .starboard-text-editor {
+//     border-top-left-radius: 0;
+//     border-top-right-radius: 0;
+// }
+
+// .cell-top.flush .starboard-text-editor {
+//     border-bottom-left-radius: 0;
+//     border-bottom-right-radius: 0;
+// }
+
 
 .starboard-text-editor:focus-within {
     border: 1px solid #ccc;
@@ -99,6 +105,8 @@ starboard-text-editor:hover .starboard-text-editor-controls {
 
 .cell-select-editor-popover {
     position: absolute;
-    background-color: white;
+    transform: translateX(-50%);
+    left: 50%;
+    background-color: #ffffffaa;
     padding: 0.5em;
 }

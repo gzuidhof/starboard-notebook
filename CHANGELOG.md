@@ -1,8 +1,24 @@
 # Changelog
 
+## Release 0.8.6
+**Date:** 2021-04-14
+
+* Introduced `hide_top` and `hide_bottom` to hide half the cell when not focused. Useful for hiding the code or output when it doesn't add to your narrative.
+* All cell properties now add a `property-<NAME>` class to the cell to allow for easy semantic styling.
+* Fixed the Javascript cell run button tooltip stating "cell is running" when it was not.
+
+## Release 0.8.5
+**Date:** 2021-04-13
+
+* Fix overflow issue when using Monaco editor.
+* Removed `overflow: auto` from cell-top and cell-botom, it makes doing popovers unnecessarily difficult.
+* Made the text editor outline invisible unless selected.
+* Removed the rounded edges of editors and console output. It looks pretty, but it can't be styled flush without a bit of Javascript.
+* Made the collapsed cell indicator line less confusing.
+* *Breaking change* (I don't think any plugins were using this, so probably nobody will notice): removed `katex` and `katexLoader` globals. You can access it as `await runtime.exports.libraries.async.KaTeX()` instead.
+
 ## Release 0.8.4
 **Date:** 2021-04-12
-
 
 * Fix for text editor overflowing when the notebook contains very long lines.
 

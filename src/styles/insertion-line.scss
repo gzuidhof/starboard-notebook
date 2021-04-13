@@ -21,7 +21,7 @@ starboard-insertion-line {
         align-items: center;
 
         position: absolute;
-        height: 20px;
+        height: 8px;
         left: 0;
         right: 0;
         transform: translateY(-50%);
@@ -84,6 +84,11 @@ starboard-insertion-line {
         grid-column: content-start / content-end;
         height: 2px;
     }
+}
+
+/* Makes the current hovered cell + buttons above visible only, except for the first cell. */
+starboard-cell:not(:first-of-type, :hover) .insertion-line-top {
+    display: none;
 }
 
 starboard-cell:focus-within * .insert-button, starboard-cell:hover * .insert-button {

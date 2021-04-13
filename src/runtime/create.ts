@@ -83,7 +83,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
           notebook.performUpdate();
           controls.contentChanged();
 
-          notebook.focusCell(id);
+          return id;
         },
       
         removeCell(id: string) {

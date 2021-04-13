@@ -96,13 +96,16 @@ starboard-cell:focus .cell-controls-button
 .collapsed-cell-line {
     display: none;
     background-color: var(--cell-collapsed-line-color);
-    height: 2px;
+    height: 6px;
     flex-grow: 1;
     cursor: pointer;
-    transform: translateY(-10px);
+    transform: translateY(-8px);
+    z-index: 1;
+    transition: all 100ms ease-in-out;
 }
 
 .collapsed-cell-line:hover {
-    background-color: #eaeaea;
-    height: 4px;
+    filter: brightness(0.95);
+    height: 8px;
+    transform: translateY(-7px);
 }

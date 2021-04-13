@@ -42,7 +42,9 @@ let monacoModule: Promise<{createMonacoEditor: any}> | undefined;
 let currentEditor: "monaco" | "codemirror" | undefined;
 try {
     // Use ternary condition to be robust to other invalid values
-    currentEditor = localStorage[EDITOR_PREFERENCE_KEY] === undefined ? undefined : (localStorage[EDITOR_PREFERENCE_KEY] === "monaco" ? "monaco" : "codemirror");
+    if (localStorage[EDITOR_PREFERENCE_KEY] !== undefined) {
+        currentEditor = localStorage[EDITOR_PREFERENCE_KEY] === "monaco" ? "monaco" : "codemirror";
+    }
 } catch(e) {
     console.warn("Could not read editor preference (localStorage is probably not available)");
 }
@@ -93,7 +95,7 @@ export class StarboardTextEditor extends LitElement {
         super.firstUpdated(changedProperties);
         [].slice.call(document.querySelectorAll('.dropdown-toggle')).map(e => new Dropdown(e));
 
-        if (currentEditor === "codemirror" || currentEditor === "monaco" || this.runtime.config.defaultTextEditor === "smart") {
+        if (currentEditor === "codemirror" || currentEditor === "monaco" || this.runtime.config.defaultTextEditor) {
             this.initEditor();
             // While it loads, render markdown
             const mdText =  md.render("```" + `${this.opts.language}\n${this.cell.textContent}\n` + "```");
