@@ -54,13 +54,6 @@ starboard-cell:not(:focus):not(:focus-within).property-collapsed {
     .cell-gutter-bottom {
         display: none;
     }
-
-    .cell-bottom:focus-within,
-    .cell-controls-left-bottom:focus-within,
-    .cell-gutter-bottom:focus-within {
-        background-color: red !important;
-        display: flex !important;
-    }
 }
 
 .property-top_hidden {
@@ -68,13 +61,6 @@ starboard-cell:not(:focus):not(:focus-within).property-collapsed {
     .cell-controls-left-top,
     .cell-gutter-top {
         display: none;
-    }
-
-    .cell-top:focus-within,
-    .cell-controls-left-top:focus-within,
-    .cell-gutter-top:focus-within {
-        background-color: red !important;
-        display: flex !important;;
     }
 }
 

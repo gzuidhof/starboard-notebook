@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.8.7
+**Date:** 2021-04-15 [unreleased]
+
+* Fixed width issues that would sometimes occur with wide content in iframe mode.
+
 ## Release 0.8.6
 **Date:** 2021-04-14
 
