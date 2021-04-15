@@ -39,7 +39,7 @@ export class JavascriptCellHandler extends BaseCellHandler {
 
     private getControls(): TemplateResult {
         const icon = this.isCurrentlyRunning ? ClockIcon : PlayCircleIcon;
-        const tooltip = this.isCurrentlyRunning ? "Run Cell": "Cell is running";
+        const tooltip = this.isCurrentlyRunning ? "Cell is running" : "Run Cell";
         const runButton: ControlButton = {
             icon,
             tooltip,
@@ -52,6 +52,7 @@ export class JavascriptCellHandler extends BaseCellHandler {
         this.elements = params.elements;
         
         const topElement = this.elements.topElement;
+        topElement.classList.add("flush");
         render(this.getControls(), this.elements.topControlsElement);
         this.editor = new StarboardTextEditor(this.cell, this.runtime, {language: "javascript"});
         topElement.appendChild(this.editor);

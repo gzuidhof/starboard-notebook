@@ -1,0 +1,10 @@
+# %% [markdown]
+# Starboard WYSIWYG editor
+This is a sentence with $\LaTeX$, **bold** and `code` text. 
+
+* A list element
+* Inline math $e=mc^2$.
+
+$$
+\LaTeX
+$$

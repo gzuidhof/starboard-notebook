@@ -2,14 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { html, render, TemplateResult } from "lit-html";
+import { html, render } from "lit-html";
 import { BaseCellHandler } from "./base";
-import { cellControlsTemplate } from "../components/controls";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
-import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell } from "../types";
-import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
+import { Runtime, CellElements, CellHandlerAttachParameters } from "../runtime";
 
 export const CSS_CELL_TYPE_DEFINITION = {
     name: "CSS",
@@ -41,7 +39,7 @@ export class CSSCellHandler extends BaseCellHandler {
     async run() {
         const content = this.cell.textContent;
         if (content) {
-            render(html`${unsafeHTML("<style>" + content + "</style>")}`, this.elements.bottomElement);
+            render(html`${unsafeHTML("<style>\n" + content + "\n</style>")}`, this.elements.bottomElement);
         }
     }
 

@@ -1,0 +1,53 @@
+starboard-cell-type-picker {
+    border-radius: var(--border-radius);
+    .inner {
+        background-color: var(--background-color);
+        min-width: 320px;
+        border: 2px solid var(--border-color);
+        display: flex;
+        border-radius: var(--border-radius);
+    }
+
+    .sidebar {
+        border-right: 1px solid var(--border-color);
+        background-color: var(--background-color-secondary);
+
+        border-top-left-radius: var(--border-radius);
+        border-bottom-left-radius: var(--border-radius);
+
+        .dropdown-item {
+            border: 1px solid transparent;
+        }
+
+        .dropdown-item:focus-visible {
+            /* Don't worry - selection state still visible by being a different background color. */
+            outline: none;
+        }
+
+        .dropdown-item.active {
+            color: var(--text-color);
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-right: none;
+            margin-left: -2px;
+            width: calc(100% + 3px);
+            border-left: var(--brand-color) 2px solid;
+        }
+        padding-bottom: 1em;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
+        font-size: 0.9em;
+        width: 360px;
+        min-height: 100%;
+    }
+
+    .cta-button {
+        margin-top: auto;
+    }
+
+
+}

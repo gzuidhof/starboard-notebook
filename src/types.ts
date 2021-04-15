@@ -11,10 +11,12 @@ import { TemplateResult } from "lit-html";
  */
 export type CellEvent =
     { id: string; type: "RUN_CELL"; focusNextCell?: boolean; insertNewCell?: boolean }
-    | { id: string; type: "INSERT_CELL"; position: "before" | "after" }
+    | { id: string; type: "INSERT_CELL"; position: "before" | "after"; data?: Partial<Cell> }
     | { id: string; type: "REMOVE_CELL" }
     | { id: string; type: "CHANGE_CELL_TYPE"; newCellType: string }
+    | { id: string; type: "RESET_CELL"}
     | { type: "SAVE" };
+
 
 /**
  * The backing data for a cell, can be JSON serialized or converted to a notebook string.
@@ -28,25 +30,38 @@ export interface Cell {
     textContent: string;
 
     metadata: {
+        /**
+         * The cell identifier, if it is present in the metadata it should be persisted between runs.
+         */
+        id?: string;
         properties: {
             run_on_load?: true;
             collapsed?: true;
             locked?: true;
             [key: string]: any;
         };
+
+        [key: string]: any;
     };
 
     /**
      * Every cell has a unique ID, this is not persisted between runs.
+     * It has to be unique within this notebook.
      */
     id: string;
 }
 
 export interface NotebookMetadata {
+    title?: string;
+    /**
+     * The subtitle description for the notebook, should be under 200 characters ideally.
+     */
+    description?: string;
+    tags?: string[];
+
     starboard?: {
-        notebook?: {
+        notebook: {
             format_version: 1;
-            default_cell_type: "javascript" | "python";
             runtime_version: string;
         };
     };
@@ -69,11 +84,17 @@ export interface CellTypeDefinition {
      * Name for human consumption, e.g. "Javascript"
      */
     name: string;
+
     /**
      * Identifiers for this cell type, can be a single value (e.g. "html") or multiple (e.g. ["javascript", "js"])
      * If multiple identifiers are defined, the first one is the preferred one.
      */
     cellType: string | string[];
+
+    /**
+     * Specify this to customize the cell creation interface. By default the name is shown at the top with a big button underneath.
+     */
+    createCellCreationInterface?: (runtime: Runtime, opts: {create: () => void}) => CellCreationInterface;
 }
 
 /**
@@ -89,6 +110,12 @@ export interface CellHandler {
     focusEditor(): void;
 }
 
+export interface CellCreationInterface {
+    render(): string | TemplateResult | HTMLElement;
+    getCellInit?(): Partial<Cell>;
+    dispose?(): void;
+}
+
 export interface CellHandlerAttachParameters {
     elements: CellElements;
 }
@@ -101,7 +128,7 @@ export interface CellElements {
     bottomControlsElement: HTMLElement;
 }
 
-export type IconTemplate = (iconOpts?: { width?: number; height?: number; hidden?: boolean; title?:string }) => (TemplateResult | string);
+export type IconTemplate = (iconOpts?: { width?: number; height?: number; hidden?: boolean; title?: string }) => (TemplateResult | string);
 
 export interface ControlButton {
     icon: IconTemplate;
@@ -117,6 +144,8 @@ export interface ControlsDefinition {
 export interface CellPropertyDefinition {
     /**
      * Identifier for the cell property, e.g. "collapsed" or "run_on_load"
+     * 
+     * Must be a string without spaces or special characters, `snake_case` is recommended.
      */
     cellProperty: string;
 

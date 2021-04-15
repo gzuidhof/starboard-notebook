@@ -4,7 +4,7 @@
 
 import { customElement, LitElement, property, html } from "lit-element";
 
-import { ConsoleCatcher, Message } from "src/console/console";
+import { ConsoleCatcher, Message } from "../../console/console";
 
 
 @customElement('starboard-console-output')
@@ -38,7 +38,7 @@ export class ConsoleOutputElement extends LitElement {
         return new Promise(resolve => window.setTimeout(() => 
             {
                 this.unhook(consoleCatcher);
-                resolve();
+                resolve(undefined);
             }, 0
         ));
     }
@@ -56,11 +56,11 @@ export class ConsoleOutputElement extends LitElement {
         const comPromise = import(/* webpackChunkName: "console-output", webpackPrefetch: true */ "./consoleOutputModule");
 
         const rootEl = document.createElement('div');
-        rootEl.setAttribute("style", "background-color: rgb(36, 36, 36)");
+        rootEl.classList.add("starboard-console-output-inner");
         comPromise.then(c => {
             c.renderStandardConsoleOutputIntoElement(rootEl, this.logs);
             this.updatePending = false;
-        })
+        });
         return html`${rootEl}`;
     }
 }

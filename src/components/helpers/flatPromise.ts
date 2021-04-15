@@ -20,7 +20,8 @@ export function flatPromise<T = any, E = any>(
     let reject!: (reason?: E) => void;
 
     const promise: Promise<T> = new Promise((res, rej) => {
-        resolve = res;
+        // Is this any cast necessary?
+        (resolve as any) = res;
         reject = rej;
     });
 

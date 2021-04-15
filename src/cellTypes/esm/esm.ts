@@ -35,7 +35,7 @@ export class ESModuleCellHandler extends BaseCellHandler {
 
     private getControls(): TemplateResult {
         const icon = this.isCurrentlyRunning ? ClockIcon : PlayCircleIcon;
-        const tooltip = this.isCurrentlyRunning ? "Run Cell": "Cell is running";
+        const tooltip = this.isCurrentlyRunning ? "Cell is running" : "Run Cell";
         const runButton: ControlButton = {
             icon,
             tooltip,

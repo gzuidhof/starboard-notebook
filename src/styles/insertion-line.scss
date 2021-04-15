@@ -1,0 +1,100 @@
+starboard-insertion-line {
+    &.insertion-line-top {
+        // top: 0%;
+        grid-row: above;
+    }
+
+    &.insertion-line-bottom {
+        top: 100%;
+        grid-row: bottom;
+    }
+    
+    left: 0;
+    right: 0;
+    height: 0;
+    grid-column: margin-left-start / margin-right-end;
+    
+    position: relative;
+
+    .hover-area {
+        display: flex;
+        align-items: center;
+
+        position: absolute;
+        height: 8px;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        z-index: 1;
+
+        &:hover .insert-button {
+            color: var(--insertion-line-plus-color);
+        }
+    }
+
+    .button-container {
+        position: relative;
+        width: var(--cell-margin-left);
+        height: 100%;
+    }
+    
+    .insert-button {
+        transition: all 150ms ease-in-out;
+        position: absolute;
+        right: -11px;
+        width: 28px; // <6 pix padding, 22 pix button (50% of that is 11px)
+        height: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+
+        padding: 0;
+        padding-left: 6px;
+        background-color: transparent;
+        color: transparent;
+        
+        border: 0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .insert-button:hover {
+        filter: brightness(0.6);
+    }
+
+    .insert-button:focus-visible {
+        outline: 1px solid #99999940;
+    }
+
+    &:hover .content-line {
+        background-color: var(--insertion-line-color);
+    }
+
+
+    .content-line {
+        transition: all 150ms ease-in-out;
+        position: absolute;
+        top: 50%;
+        background-color: transparent;
+        transform: translateY(-50%);
+        left: calc(var(--cell-margin-left) + 12px);
+        right: calc(var(--cell-margin-right));
+
+        grid-column: content-start / content-end;
+        height: 2px;
+    }
+}
+
+/* Makes the current hovered cell + buttons above visible only, except for the first cell. */
+starboard-cell:not(:first-of-type, :hover) .insertion-line-top {
+    display: none;
+}
+
+starboard-cell:focus-within * .insert-button, starboard-cell:hover * .insert-button {
+    color: var(--insertion-line-plus-color);
+}
+
+starboard-cell-type-picker {
+    z-index: 100;
+}

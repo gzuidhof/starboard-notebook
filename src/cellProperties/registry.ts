@@ -1,6 +1,7 @@
 import { CellPropertyDefinition } from "../runtime";
-import { ReplayIcon, VisibilityOffIcon, LockClosedIcon } from "@spectrum-web-components/icons-workflow";
+import { ReplayIcon, LockClosedIcon } from "@spectrum-web-components/icons-workflow";
 import { MapRegistry } from "../runtime/registry";
+import { ChevronBarExpandIcon, EyeSlashFilledIcon, EyeSlashIcon } from "../components/icons";
 
 const builtinCellProperties: CellPropertyDefinition[] = [
     {
@@ -12,10 +13,24 @@ const builtinCellProperties: CellPropertyDefinition[] = [
     },
     {
         cellProperty: "collapsed",
-        icon: VisibilityOffIcon,
+        icon: ChevronBarExpandIcon,
         name: "Collapse Cell",
         textEnabled: "This cell is collapsed (hidden when not focused)",
         textDisabled: "Collapse cell (hide cell when not focused)",
+    },
+    {
+        cellProperty: "bottom_hidden",
+        icon: EyeSlashFilledIcon,
+        name: "Hide this cell's bottom part",
+        textEnabled: "Cell bottom is hidden",
+        textDisabled: "Hide cell bottom",
+    },
+    {
+        cellProperty: "top_hidden",
+        icon: EyeSlashIcon,
+        name: "Hide this cell's top part",
+        textEnabled: "Cell top is hidden",
+        textDisabled: "Hide cell top",
     },
     {
         cellProperty: "locked",

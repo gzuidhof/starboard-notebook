@@ -29,7 +29,7 @@ export function getPropertiesIcons(cell: Cell, togglePropertyFunction: (name: st
         const propertyDef = registry.get(prop) || {icon: AlertCircleIcon, textEnabled: `Unknown property "${prop}"`, textDisabled: ``, name: `Unknown`};
         const templateResult = html`
             <button @click=${() => togglePropertyFunction(prop)} class="cell-controls-button" title=${propertyDef.textEnabled}>
-                            ${propertyDef.icon({width: 16, height:16})}
+                            ${propertyDef.icon({width: 15, height:15})}
             </button>
         `;
         iconTemplates.push(templateResult);
@@ -39,7 +39,7 @@ export function getPropertiesIcons(cell: Cell, togglePropertyFunction: (name: st
 
 export function getPropertiesPopoverIcons(cell: Cell, togglePropertyFunction: (name: string) => void) {
     return html`
-        <div style="display: flex">
+        <div class="m-2 d-flex">
         ${
            getAvailablePropertyTypes().map( (def) => {
                 const isActive = cell.metadata.properties[def.cellProperty] !== undefined;

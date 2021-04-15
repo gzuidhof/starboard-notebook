@@ -6,6 +6,7 @@ import { Cell, NotebookContent } from '../types';
 import { cellToText } from './serialization';
 import { textToNotebookContent } from './parsing';
 import { generateUniqueCellId } from '../components/helpers/random';
+import { Runtime } from '../runtime';
 
 function requireIndexOfCellId(cells: Cell[], id?: string) {
     if (id === undefined) {
@@ -18,28 +19,36 @@ function requireIndexOfCellId(cells: Cell[], id?: string) {
     return idx;
 }
 
-export function addCellToNotebookContent(nb: NotebookContent, position: "end" | "before" | "after", adjacentCellId?: string, id?: string) {
+/**
+ * Returns the ID of the created cell
+ */
+export function addCellToNotebookContent(runtime: Runtime, data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string): string {
+    const nb = runtime.content;
     let idx: number;
-    let cellType: string;
+    let cellType: string | undefined = data.cellType;
 
     if (position === "end") {
         idx = nb.cells.length;
-        cellType = nb.cells.length === 0 ? "js": nb.cells[nb.cells.length-1].cellType;
+        cellType = cellType || (nb.cells.length === 0 ? "markdown": nb.cells[nb.cells.length-1].cellType);
     } else {
         idx = requireIndexOfCellId(nb.cells, adjacentCellId);
-        cellType = idx === 0 && adjacentCellId === undefined ? "js" : nb.cells[idx].cellType;
+        cellType = cellType || (idx === 0 && adjacentCellId === undefined ? "markdown" : nb.cells[idx].cellType);
     }
 
     if (position === "after") {
         idx += 1;
     }
+
+    const id = data.id || generateUniqueCellId();
     const cell: Cell = {
             cellType,
             textContent: "",
-            metadata: {properties: {}},
-            id: (id || generateUniqueCellId()),
+            metadata: {properties: {}, ...(data.metadata ? data.metadata : {}), ...(runtime.config.persistCellIds ? {id} : {})},
+            id,
     };
     nb.cells.splice(idx, 0, cell);
+
+    return id;
 }
 
 export function removeCellFromNotebookById(nb: NotebookContent, id: string) {
@@ -56,8 +65,8 @@ export function changeCellType(nb: NotebookContent, id: string, newCellType: str
     nb.cells.splice(idx, 1, newCell);
 }
 
-export function toggleCellFlagProperty(cell: Cell, propertyName: string) {
-    if (cell.metadata.properties[propertyName]) {
+export function toggleCellFlagProperty(cell: Cell, propertyName: string, force?: boolean) {
+    if (cell.metadata.properties[propertyName] || force === false) {
         delete cell.metadata.properties[propertyName];
     } else {
         cell.metadata.properties[propertyName] = true;

@@ -1,5 +1,163 @@
 # Changelog
 
+## Release 0.8.7
+**Date:** 2021-04-15 [unreleased]
+
+* Fixed width issues that would sometimes occur with wide content in iframe mode.
+
+## Release 0.8.6
+**Date:** 2021-04-14
+
+* Introduced `hide_top` and `hide_bottom` to hide half the cell when not focused. Useful for hiding the code or output when it doesn't add to your narrative.
+* All cell properties now add a `property-<NAME>` class to the cell to allow for easy semantic styling.
+* Fixed the Javascript cell run button tooltip stating "cell is running" when it was not.
+
+## Release 0.8.5
+**Date:** 2021-04-13
+
+* Fix overflow issue when using Monaco editor.
+* Removed `overflow: auto` from cell-top and cell-botom, it makes doing popovers unnecessarily difficult.
+* Made the text editor outline invisible unless selected.
+* Removed the rounded edges of editors and console output. It looks pretty, but it can't be styled flush without a bit of Javascript.
+* Made the collapsed cell indicator line less confusing.
+* *Breaking change* (I don't think any plugins were using this, so probably nobody will notice): removed `katex` and `katexLoader` globals. You can access it as `await runtime.exports.libraries.async.KaTeX()` instead.
+
+## Release 0.8.4
+**Date:** 2021-04-12
+
+* Fix for text editor overflowing when the notebook contains very long lines.
+
+## Release 0.8.3
+**Date:** 2021-04-12
+
+* Cell type definitions now include a method that allows for a customized cell creation interface.
+* Some fixes for math behavior in Markdown cells (we now import `prosemirror-math` where possible).
+* Fix: Pressing shift-enter in the codemirror editor no longer adds a newline.
+* Removed the old cell insertion button and added the +-line button above cells too now.
+* The default editor for Markdown cells is the plaintext one again. In a future version it should  probably remember the preferred editor.
+* Quality of life: When inserting a new cell, press enter to insert the selected cell type immediately.
+* Lots of style improvements:
+  * The borders of the text editors and console output are less pronounced and corners are rounded.
+  * The "cell type color hint" left border was removed.
+  * All cell bottoms now default to having a little bit of padding underneath.
+  * Fix the notebook footer not aligning with the cells.
+  * The top bar of cells is now smaller
+  * The cell gutter button (in the left margin) is now thinner by default.
+  * The cell type selector menu selected state looks a lot better now.
+  * The notebook will now grow a bit if it is too small when the cell type selector is opened.
+  * Responsivity tweak: On small devices the gutters will be reduced in width.
+  * CSS fade in animations added to cells.
+
+## Release 0.8.2
+**Date:** 2021-04-01
+
+* Running the last cell no longer inserts a new cell (like Jupyter would).
+* Every cell's HTML is now simplified, the intermediate `<section class="cell-container">` was removed, this container class is now on the custom cell element itself.
+* The margin is now variable and larger. For small screens we can resize it responsively through CSS in the future.
+* A cell insertion line is now visible when hovering or selecting a cell, with a small `+` button on the left to insert a new cell.
+* A new menu is now visible when inserting a new cell, in the future this will contain information about the cell type.
+* Double-clicking the cell-insertion + inserts the same cell type right away.
+* Updated highlighting package (audit fix).
+* Removed global letter spacing rule (used to be `-0.01em`), it now only applies to (Markdown) content.
+* Font size reduced to `14px`, only in content (i.e. Markdown) it still defaults to `16px`.
+
+## Release 0.8.1
+**Date:** 2021-03-26
+
+* Update `starboard-python` version 0.5.1 which allows user code to catch Python errors.
+
+## Release 0.8.0
+**Date:** 2021-03-24
+
+* Markdown cells now have their own WYSIWYG editor (as well as a plaintext editor for advanced users).
+  * Shift-enter and ctrl-enter no longer run the next cell when the WYSIWYG content editor is focused.
+  * The WYSIWYFG editor has LaTeX inline editing support (based on prosemirror-math package). It's a bit experimental at this stage, remember you can use the fallback plaintext editor.
+  * Double-clicking a markdown cell triggers this editor.
+* A newly inserted cell now defaults to Markdown instead of Javascript when no cells are present.
+* Clicking anywhere outside of a markdown cell stops its edit mode.
+* Minor style changes
+  * Slightly reduced the margin below paragraphs and list items (`1em` to `0.8em`). 
+  * Added padding around all markdown content, including inside the WYSIWYG editor.
+* Codemirror editor
+  * Updated to codemirror version `0.16.0`.
+  * Codemirror editor now has Markdown syntax highlighting support.
+  * Removed naive CodeMirror JS autocompletion that would previously only autocomplete stuff present on the Window object.
+
+
+## Release 0.7.21
+**Date:**: 2021-03-19
+* A small fix for the ProseMirror-based editor: if the prosemirror package hadn't been loaded yet asynchronously a CSS class for the markdown output would not be applied.
+
+## Release 0.7.20
+**Date:**: 2021-03-19
+* Introduce ProseMirror as the default editor for Markdown content. Note that it isn't enabled yet for Markdown editors by default, it still needs some love (in particular it needs KaTeX support)
+* `StarboardContentEditor` element is exposed in the exports for plugins to use.
+* Removed custom text selection styling with CSS.
+* Made `build:stats` command require less manual effort (you no longer need to know which line to edit in `webpack.config.js` to make it work).
+
+## Release 0.7.19
+**Date:** 2021-03-17
+* Update `starboard-python` to 0.5.0.
+* Starboard Python is now exported allowing plugins to more easily invoke Python code outside of a Python cell.
+
+## Release 0.7.18
+**Date:** 2021-03-17
+* Starboard Notebook's distribution now includes runtime exports as a convenient ESM package for easier plugin development. These can be found at `starboard-notebook/dist/src/runtime/esm` and submodules.
+
+## Release 0.7.17
+**Date:** 2021-03-16
+* Starboard now users Bootstrap 5 as the base of its CSS.
+* Added the `popper` library to the exports of the runtime.
+* The right gutter placeholder HTML elements don't get created anymore which saves 3 empty HTML elements per cell.
+
+## Release 0.7.16
+**Date:** 2021-03-12
+* Added `RESET_CELL` functionality
+* Cells which persist their IDs now correctly reset when they have a new cell type definition loaded for them.
+
+## Release 0.7.15
+**Date:** 2021-03-11
+
+* Change the cell's metadata type definition to allow for arbitrary other keys.
+
+## Release 0.7.14
+**Date:** 2021-03-08
+
+* The cell ID is now also the ID of the cell DOM element automatically.
+* Randomly generated cell IDs are now prefixed with `cell-`.
+* A config object can now be put on the `window` with the name `runtimeConfig`.
+  * This config can be used to customize the runtime, for instance to enable persistent cell IDs (useful for compatibility with Jupyter).
+  * In the future this is also where you would disable certain cell types.
+
+## Release 0.7.13
+**Date:** 2021-03-08
+
+* Rename message `"NOTEBOOK_REFRESH_PAGE"` to `"NOTEBOOK_RELOAD_PAGE"` as it's a reload instruction, not refresh.
+* The base URL of the notebook can now be set through the init data message, instead of through a separate message.
+
+## Release 0.7.12
+**Date:** 2021-03-08
+
+* Fix small styling regression causing the footer to be drawn too far to the left.
+
+## Release 0.7.11
+**Date:** 2021-03-07
+
+* Simplified the content struct in messages between an iframed notebook and the parent webpage.
+
+## Release 0.7.10
+**Date:** 2021-03-07
+
+* Changes to the inbound and outbound messages between a notebook iFrame and the parent webpage. They are now defined in a type-safe manner in the `/messages` folder.
+* Minor type improvements (non-breaking) for cell change listener callback functions.
+* The `LockClosedIcon` is now exported allowing for re-use in plugins / user code.
+* Added `name` field to the runtime object, which for this project will always equal `"starboard-notebook"`.
+
+## Release 0.7.9
+**Date:** 2021-02-22
+
+* Added `lock` cell property which allows you to make cells edit-only. Thank you @unhott!
+
 ## Release 0.7.8
 **Date:** 2021-01-06
 

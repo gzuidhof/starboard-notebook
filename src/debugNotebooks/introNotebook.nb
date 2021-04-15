@@ -1,10 +1,10 @@
 # %% [markdown]
 # Introducing Starboard Notebook
-Starboard brings cell-by-cell notebooks to the browser, no code is running on the backend here!
+Starboard brings cell-by-cell notebooks to the browser, no code is running on the backend here!  
 It's probably the quickest way to visualize some data with interactivity, do some prototyping, or build a rudimentary dashboard.
 
 #### Some features 
-* Mix Markdown, HTML, CSS $\LaTeX$, Python, and Javascript.
+* Mix Markdown, HTML, CSS, $\LaTeX$, Python, and Javascript.
 * The file format is a plaintext file, which plays nice with version control systems like git.
 * Runs entirely in your browser, everything is static: no server, no setup and no build step.
 
@@ -12,7 +12,10 @@ Let's see it in action!
 
 > Tip: Press the ▶ Play button on the left to run a cell's code.
 
-# %% [javascript]
+# %%--- [javascript]
+# properties:
+#   top_hidden: true
+# ---%%
 // You write vanilla Javascript
 const greeting = "Hello world!";
 
@@ -74,7 +77,7 @@ In the future you will be able to load code that adds new cell types or language
 For now: let's just make the editor a bit more funky by adding some CSS */
 
 .cell-container:focus-within {
-    background-color: rgb(255, 243, 175);
+    /*background-color: rgb(255, 243, 175);*/
     transition: all ease-in-out 200ms;
 }
 # %% [js]

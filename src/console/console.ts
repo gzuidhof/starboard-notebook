@@ -5,7 +5,6 @@
 import Hook from "console-feed-modern/lib/Hook/index";
 import methods, { Methods } from "console-feed-modern/lib/definitions/Methods";
 
-
 export type MessageMethod = Methods | 'result' | 'command';
 
 export interface Message {

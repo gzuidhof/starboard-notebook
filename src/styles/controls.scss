@@ -28,6 +28,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 0.25em;
 }
 
 .cell-controls-left-above {
@@ -65,7 +66,7 @@ starboard-cell:focus .cell-controls-button
 .cell-controls-button {
     background: transparent;
     color: var(--controls-color);
-    font-size: 12px;
+    font-size: 10px;
     cursor: pointer;
     user-select: none;
     padding: 2px 4px;
@@ -80,16 +81,12 @@ starboard-cell:focus .cell-controls-button
 }
 
 .cell-controls-button-language {
-    padding: 2px 6px;
+    padding: 2px 4px;
     text-transform: uppercase;
 }
 
-.with-hover-border:hover {
-    border: 1px solid #f3f3f3;
-}
-
 .cell-controls-button:hover {
-    color: #7e7e7e;
+    color: var(--brand-color);
 }
 .cell-controls-button:focus {
     outline: none;
@@ -99,13 +96,16 @@ starboard-cell:focus .cell-controls-button
 .collapsed-cell-line {
     display: none;
     background-color: var(--cell-collapsed-line-color);
-    height: 2px;
+    height: 6px;
     flex-grow: 1;
     cursor: pointer;
-    transform: translateY(-10px);
+    transform: translateY(-8px);
+    z-index: 1;
+    transition: all 100ms ease-in-out;
 }
 
 .collapsed-cell-line:hover {
-    background-color: #eaeaea;
-    height: 4px;
+    filter: brightness(0.95);
+    height: 8px;
+    transform: translateY(-7px);
 }

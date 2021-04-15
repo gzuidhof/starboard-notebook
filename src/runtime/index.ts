@@ -2,35 +2,40 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { CellEvent, NotebookContent, CellTypeDefinition, CellPropertyDefinition, ControlsDefinition, IconTemplate } from "../types";
-import { ConsoleCatcher } from "../console/console";
-import { CellElement } from "../components/cell";
-import { StarboardNotebookElement } from "../components/notebook";
-import { TemplateResult } from "lit-html";
-import { StarboardTextEditor } from "../components/textEditor";
-import { ConsoleOutputElement } from "../components/output/consoleOutput";
+import type { CellEvent, NotebookContent, CellTypeDefinition, CellPropertyDefinition, ControlsDefinition, IconTemplate, Cell } from "../types";
+import type { ConsoleCatcher } from "../console/console";
+import type { CellElement } from "../components/cell";
+import type { StarboardNotebookElement } from "../components/notebook";
+import type { TemplateResult } from "lit-html";
+import type { StarboardTextEditor } from "../components/textEditor";
+import type { ConsoleOutputElement } from "../components/output/consoleOutput";
 
-import * as lithtmlLibrary from "lit-html";
-import * as litElementLibrary from "lit-element";
-import katex from "katex";
-import * as YAML from "yaml";
-import mdlib from "markdown-it";
-import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
-import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
-import { createCellProxy } from "../components/helpers/cellProxy";
-import { cellToText, notebookContentToText } from "../content/serialization";
-import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
-import { MapRegistry } from "./registry";
-import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
-import { renderIfHtmlOutput } from "../components/output/htmlOutput";
-import { hookMarkdownItToEmojiPlugin } from "src/components/helpers/emoji";
+import type * as lithtmlLibrary from "lit-html";
+import type * as litElementLibrary from "lit-element";
+import type katex from "katex";
+import type * as YAML from "yaml";
+import type mdlib from "markdown-it";
+import type * as Popper from "@popperjs/core";
+
+import type { JavascriptEvaluator } from "../cellTypes/javascript/eval";
+import type { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
+import type { createCellProxy } from "../components/helpers/cellProxy";
+import type { cellToText, notebookContentToText } from "../content/serialization";
+import type { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
+import type { MapRegistry } from "./registry";
+import type { hookMarkdownItToKaTeX } from "../components/helpers/katex";
+import type { renderIfHtmlOutput } from "../components/output/htmlOutput";
+import type { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
+import type { OutboundNotebookMessage } from "../messages/types";
+import type { StarboardContentEditor } from "../components/editor/contentEditor";
 
 export * from "../types";
 
 export interface RuntimeControls {
-    insertCell(position: "end" | "before" | "after", adjacentCellId?: string): void;
+    insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string): void;
     removeCell(id: string): void;
     changeCellType(id: string, newCellType: string): void;
+    resetCell(id: string): void;
     runCell(id: string, focusNext?: boolean, insertNewCell?: boolean): void;
     runAllCells(opts: {onlyRunOnLoad?: boolean}): Promise<void>;
 
@@ -48,7 +53,7 @@ export interface RuntimeControls {
      * Optionally you can pass the only target origin you want the message to be sent to, see the iframeresizer docs.
      * Returns whether a listening parent iframe is present (and thus if the message coudl be sent).
      */
-    sendMessage(message: any, targetOrigin?: string): boolean;
+    sendMessage(message: OutboundNotebookMessage, targetOrigin?: string): boolean;
 
     /**
      * Publish to the notebook event bus, used to propagate messages upwards such as "focus on the next cell".
@@ -81,12 +86,14 @@ export interface RuntimeExports {
             PlayCircleIcon: IconTemplate;
             TextEditIcon: IconTemplate;
             GearsIcon: IconTemplate;
+            LockClosedIcon: IconTemplate;
         };
     };
 
     elements: {
         StarboardTextEditor: typeof StarboardTextEditor;
         ConsoleOutputElement: typeof ConsoleOutputElement;
+        StarboardContentEditor: typeof StarboardContentEditor;
     };
 
     /**
@@ -113,12 +120,14 @@ export interface RuntimeExports {
         LitElement: typeof litElementLibrary;
         MarkdownIt: typeof mdlib;
         YAML: typeof YAML;
+        Popper: typeof Popper;
 
         /**
          * Libraries that are loaded asynchronously on demand.
          */
         async: {
             KaTeX: () => Promise<typeof katex>;
+            StarboardPython: () => Promise<any>;
         };
     };
 }
@@ -163,6 +172,16 @@ export interface Runtime {
      * Version of Starboard Notebook
      */
     version: string;
+    
+    /**
+     * Name of the runtime.
+     */
+    name: "starboard-notebook";
+
+    /**
+     * "Settings" for the runtime itself.
+     */
+    config: RuntimeConfig;
 
     /**
      * Contains all actions that can be performed on the runtime
@@ -176,8 +195,19 @@ export interface Runtime {
      */
     internal: {
         listeners: {
-            cellContentChanges: Map<string, Function[]>;
-        }
-    }
+            cellContentChanges: Map<string, (()=>void)[]>;
+        };
+    };
     
+}
+
+/**
+ * "Settings" for the runtime, these can be set from the surrounding webpage.
+ */
+export interface RuntimeConfig {
+    /**
+     * Cell IDs written to the metadata of the cell for new cells if this is true, which causes them to be persisted.
+     */
+    persistCellIds: boolean;
+    defaultTextEditor: "monaco" | "codemirror" | "smart" | "";
 }

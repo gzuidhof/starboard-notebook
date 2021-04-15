@@ -9,12 +9,22 @@
     src: local("Inter var"), url(../../static/fonts/inter.var.woff2?v=3.15) format("woff2")
 }
 
+$brand-color: #5e5ef8;
+$primary: $brand-color;
+$border-radius: var(--border-radius);
 
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+@import "./animations.scss";
 @import "./cell.scss";
-@import "./controls.css";
-@import "./popover.css";
-@import "./gutter.css";
-@import "./text-editor.css";
+@import "./insertion-line.scss";
+@import "./cell-type-picker.scss";
+@import "./controls.scss";
+@import "./gutter.scss";
+@import "./text-editor.scss";
+@import "./console-output.scss";
+@import "./prosemirror.scss";
+@import "./math.scss";
 
 @import "./reset-markdown.scss";
 @import "./starboard-markdown.scss";
@@ -22,15 +32,24 @@
 :root {
     --font-sans: "Inter var", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     --font-mono: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
-    --font-size: 16px;
+    --font-size: 14px;
+    
+
     --h1-size: 2.3rem;
     --h2-size: 2.0rem;
     --h3-size: 1.4rem;
     --h4-size: 1.1rem;
     --line-height: calc(var(--font-size) * 1.5);
-    --baseline: calc(var(--line-height) / 2);
+    
+    --content-font-size: 16px;
+    --content-line-height: calc(var(--content-font-size) * 1.5);
+    --content-baseline: calc(var(--content-line-height) / 2);
 
-    --brand-color: #6666fd;;
+    --cell-base-width: 980px;
+    --cell-margin-left: 34px;
+    --cell-margin-right: 6px;
+
+    --brand-color: #5e5ef8;
 
     --background-color: #fff;    
     --background-color-secondary: #fdfdfd;  
@@ -39,7 +58,7 @@
     --foreground-color-secondary: #4c4c4c;
     --foreground-color-tertiary: #777;
 
-    --code-background-color: #f5f7f8;
+    --code-background-color: #fafafa;
 
     --editor-line-number-color: #ccc;
 
@@ -53,6 +72,7 @@
 
     --border-color: #e2e2e2;
     --border-color-secondary: #ececec;
+    --border-radius: 7px;
 
     --hr-thickness: 2px;
     --hr-color: var(--border-color);
@@ -61,44 +81,62 @@
     --blockquote-text-color: var(--foreground-color-secondary);
     --blockquote-border-left-color: #ececec; 
 
-    --selection-background: #555;
-    --selection-color: #fff;
+    --insertion-line-color: #eee;
+    --insertion-line-plus-color: #e4e4e4;
 
     // Cell styling
-    --controls-color: var(--foreground-color-tertiary);
-    --cell-collapsed-line-color: var(--border-color);
+    --controls-color: #999;
+    --cell-collapsed-line-color: var(--code-background-color);
 
     --gutter-background-color: var(--background-color);
     --gutter-selected-background-color: var(--background-color-tertiary);
 }
 
-::selection {
-    background: var(--selection-background);
-    color: var(--selection-color);
+
+@media only screen and (max-width: 768px) {
+
+    :root {
+        --cell-margin-left: 26px;
+        --cell-margin-right: 4px;
+    }
 }
 
+@media only screen and (max-width: 576px) {
+
+    :root {
+        --cell-margin-left: 22px;
+    }
+}
+
+
 html {
-    font-family: var(--sansFont), -system-ui, system-ui, sans-serif;
-    font-size: var(--fontSize);
+    font-family: var(--font-sans), -system-ui, system-ui, sans-serif;
+    font-size: var(--font-size);
     line-height: var(--line-height);
     background: var(--background-color);
     color: var(--foreground-color);
-    letter-spacing: -0.01em;
     text-size-adjust: 100%;
     font-variant-ligatures: contextual common-ligatures;
     font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'cv10' 1;
-
+    display: flex;
 }
 
 html,
 body {
-    min-height: auto;
+    max-width: 100%;
     height: auto;
     margin: 0;
     padding: 0;
 }
 
 body {
+    flex: 1;
+}
+
+starboard-notebook {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
     font-family: var(--font-sans);
 }
 
@@ -112,12 +150,16 @@ i {
 
 .cells-container {
     background-color: var(--background-color);
+    padding-bottom: 0.75em;
 }
 
 .starboard-notebook-footer {
-    display: grid;
-    grid-template-columns: auto 26px minmax(auto, calc(min(980px, 100% - 36px))) 6px auto;
-    margin-top: 8px;
+    height: 22px;
+}
+
+
+.starboard-notebook-footer-content {
+    grid-column: content-start / content-end;
 }
 
 .starboard-notebook-footer span, .starboard-notebook-footer a {
@@ -134,25 +176,14 @@ i {
     text-decoration: underline;
 }
 
-.starboard-editor-picker-overlay {
-    position: absolute;
-    width: 80%;
-    padding: 1rem;
-    color: var(--foreground-color);
-    background-color: var(--background-color);
-    border: 1px solid var(--border-color-secondary);
-    border-radius: 4px;
-    display: none;
-}
-
-.starboard-editor-picker-overlay * {
-    margin: 0;
-}
-
 .force-display {
     display: initial !important;
 }
 
-starboard-console-output {
-    line-height: 1.2;
+.hidden {
+    display: hidden;
 }
+
+/*
+Custom Bootstrap styles
+*/
