@@ -1,7 +1,14 @@
 # Changelog
 
+## Release 0.8.8
+**Date:** 2021-04-16
+
+* Added Source button in the footer to allow for easy viewing and downloading of the notebook source.
+* Removed rounded corners of console output (whoops).
+* Added a quick-insert button for cells next to the + insert button.
+
 ## Release 0.8.7
-**Date:** 2021-04-15 [unreleased]
+**Date:** 2021-04-15
 
 * Fixed width issues that would sometimes occur with wide content in iframe mode.
 

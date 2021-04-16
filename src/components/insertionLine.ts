@@ -16,17 +16,21 @@ let globalCellTypePicker: CellTypePicker;
 @customElement('starboard-insertion-line')
 export class InsertionLine extends LitElement {
 
-  @query(".insert-button")
+  @query(".insert-button.plus")
   buttonElement?: HTMLButtonElement;
 
   @query(".hover-area")
   hoverArea?: HTMLDivElement;
+
+  private insertPosition: "before" | "after" = "after";
 
   createRenderRoot() {
     return this;
   }
 
   connectedCallback() {
+    this.insertPosition = this.classList.contains("insertion-line-top") ? "before" : "after";
+
     if (!globalCellTypePicker) {
       // TODO: Flow runtime into this some nicer way.
       globalCellTypePicker = new CellTypePicker((window as any).runtime);
@@ -76,8 +80,7 @@ export class InsertionLine extends LitElement {
         globalCellTypePicker.onInsert = (cellData: Partial<Cell>) => {
             // Right now we assume the insertion line has a cell as parent
             if (parent && parent instanceof CellElement) {
-              const position = this.classList.contains("insertion-line-top") ? "before" : "after";
-              parent.runtime.controls.emit({type: "INSERT_CELL", position: position, id: parent.cell.id, data: cellData});
+              parent.runtime.controls.emit({type: "INSERT_CELL", position: this.insertPosition, id: parent.cell.id, data: cellData});
               unpop();
             }
         };
@@ -86,12 +89,31 @@ export class InsertionLine extends LitElement {
     }
   }
 
+  quickInsert(cellType: string) {
+    const parent = this.parentElement;
+    if (parent && parent instanceof CellElement) {
+      parent.runtime.controls.emit({type: "INSERT_CELL", position: this.insertPosition, id: parent.cell.id, data: {cellType}});
+    }
+  }
+
   render() {
+    const parent = this.parentElement;
+    let cellType = "markdown";
+
+    if (parent && parent instanceof CellElement) {
+      cellType = parent.cell.cellType;
+    }
+
     return html`
     <div class="hover-area" contenteditable="off">
       <div class="button-container">
-        <button class="insert-button" title="Insert Cell here">
+        <button class="insert-button plus" title="Insert Cell">
             ${AddIcon({width: 16, height: 16})}
+        </button>
+      </div>
+      <div class="button-container ms-2 pe-3">
+        <button @click=${() => this.quickInsert(cellType)} class="insert-button" title="Insert ${cellType} Cell">
+            <span>+${cellType}</span>
         </button>
       </div>
       <div class="content-line">

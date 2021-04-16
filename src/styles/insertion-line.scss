@@ -1,3 +1,7 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
 starboard-insertion-line {
     &.insertion-line-top {
         // top: 0%;
@@ -36,17 +40,30 @@ starboard-insertion-line {
         position: relative;
         width: var(--cell-margin-left);
         height: 100%;
+        font-size: 10px;
+        z-index: 2;
+    }
+
+    .button-container:nth-child(2) {
+        opacity: 0;
+    }
+
+    .button-container:nth-child(2):hover {
+        opacity: 1;
+        background-color: #ffffffaa;
+    }
+
+    .insert-button.plus {
+        right: -11px;
+        width: 28px; // <6 pix padding, 22 pix button (50% of that is 11px)
     }
     
     .insert-button {
-        transition: all 150ms ease-in-out;
-        position: absolute;
-        right: -11px;
-        width: 28px; // <6 pix padding, 22 pix button (50% of that is 11px)
         height: 100%;
         top: 50%;
         transform: translateY(-50%);
-
+        transition: all 150ms ease-in-out;
+        position: absolute;
         padding: 0;
         padding-left: 6px;
         background-color: transparent;

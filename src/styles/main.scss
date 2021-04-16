@@ -162,14 +162,12 @@ i {
     grid-column: content-start / content-end;
 }
 
-.starboard-notebook-footer span, .starboard-notebook-footer a {
-    color: #bbb;
-    font-size: 11px;
-    text-decoration: none;
-}
-
-.starboard-notebook-footer button {
-    color: var(--text-color-secondary);
+.starboard-notebook-footer {
+    a, span, button {
+        color: #bbb;
+        font-size: 11px;
+        text-decoration: none;
+    }
 }
 
 .starboard-notebook-footer a:hover {
@@ -183,7 +181,3 @@ i {
 .hidden {
     display: hidden;
 }
-
-/*
-Custom Bootstrap styles
-*/

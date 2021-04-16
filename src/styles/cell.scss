@@ -15,7 +15,6 @@
 .line-grid {
     display: grid;
     grid-template-columns: [full-width-start] auto [margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(auto, calc(min(var(--cell-base-width), 100% - var(--cell-margin-left) - var(--cell-margin-right)))) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
-    grid-template-rows: 0px;
 }
 
 starboard-cell {
