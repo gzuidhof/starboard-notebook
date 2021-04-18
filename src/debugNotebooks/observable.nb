@@ -1,0 +1,34 @@
+# %%--- [esm]
+# properties:
+#   run_on_load: true
+# ---%%
+import {registerObservablePlugin} from "http://localhost:8080/dist/starboard-observable.js";
+registerObservablePlugin();
+# %% [observable]
+function samples(array, m) {
+  if (!((m = Math.floor(m)) > 0)) return []; // return nothing
+  const n = array.length;
+  if (!(n > m)) return array.slice(); // return everything
+  const samples = [];
+  for (let i = 0, D = 2 * m - n; i < n; ++i, D += 2 * m) {
+    if (D > 0) {
+      samples.push(array[i]);
+      D -= 2 * n;
+    }
+  }
+  return samples;
+}
+# %%--- [observable]
+# properties:
+#   bottom_hidden: true
+# ---%%
+viewof m = Range([0, 1000], {value: 320, step: 1, label: tex`m`})
+# %% [observable]
+samples(array, m) // m evenly-spaced samples
+# %%--- [observable]
+# properties:
+#   bottom_hidden: true
+# ---%%
+array = Array.from({length: 1000}, (_, i) => i) // fake source data
+# %% [observable]
+import {Range} from "@observablehq/inputs"
