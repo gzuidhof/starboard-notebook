@@ -88,10 +88,10 @@ starboard-cell:focus .cell-controls-button
 .cell-controls-button:hover {
     color: var(--brand-color);
 }
-.cell-controls-button:focus {
-    outline: none;
-    border: 1px solid #eee;
-}
+// .cell-controls-button:focus {
+//     outline: none;
+//     border: 1px solid #eee;
+// }
 
 .collapsed-cell-line {
     display: none;

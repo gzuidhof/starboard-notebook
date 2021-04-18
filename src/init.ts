@@ -30,4 +30,4 @@ window.litHtml = lithtml;
 window.YAML = YAML;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// window.initialNotebookContent = require("./debugNotebooks/jupyter.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/introNotebook.nb").default;

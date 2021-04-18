@@ -107,12 +107,12 @@ export class InsertionLine extends LitElement {
     return html`
     <div class="hover-area" contenteditable="off">
       <div class="button-container">
-        <button class="insert-button plus" title="Insert Cell">
+        <button class="btn insert-button plus" title="Insert Cell">
             ${AddIcon({width: 16, height: 16})}
         </button>
       </div>
       <div class="button-container ms-2 pe-3">
-        <button @click=${() => this.quickInsert(cellType)} class="insert-button" title="Insert ${cellType} Cell">
+        <button class="btn insert-button" @click=${() => this.quickInsert(cellType)} title="Insert ${cellType} Cell">
             <span>+${cellType}</span>
         </button>
       </div>

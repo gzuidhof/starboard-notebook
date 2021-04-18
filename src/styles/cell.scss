@@ -65,13 +65,11 @@ starboard-cell:not(:focus):not(:focus-within).property-collapsed {
 
 .cell-top {
     grid-area: top;
-    max-height: 100vh;
     min-height: 24px;
 }
 
 .cell-bottom {
     grid-area: bottom;
-    max-height: 100vh;
     padding-bottom: 0.25em;
 }
 

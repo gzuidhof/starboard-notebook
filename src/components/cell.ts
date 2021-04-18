@@ -135,13 +135,13 @@ export class CellElement extends LitElement {
 
             <!-- Gutter (left side outside the document) -->
             <div class="cell-gutter cell-gutter-left-above">
-                <button @click=${() => this.onTopGutterButtonClick()} class="cell-gutter-button" title=${this.cell.metadata.properties.collapsed ? "Toggle cell visibility" : "Toggle cell visibility"}></button>
+                <button @click=${() => this.onTopGutterButtonClick()} class="btn cell-gutter-button" title=${this.cell.metadata.properties.collapsed ? "Toggle cell visibility" : "Toggle cell visibility"}></button>
             </div>
             <div class="cell-gutter cell-gutter-left-top">
-                <button  @click=${() => this.toggleProperty("top_hidden")} class="cell-gutter-button" title="Hide cell input"></button>
+                <button  @click=${() => this.toggleProperty("top_hidden")} class="btn cell-gutter-button" title="Hide cell input"></button>
             </div>
             <div class="cell-gutter cell-gutter-left-bottom">
-                <button  @click=${() => this.toggleProperty("bottom_hidden")} class="cell-gutter-button" title="Hide cell output"></button>
+                <button  @click=${() => this.toggleProperty("bottom_hidden")} class="btn cell-gutter-button" title="Hide cell output"></button>
             </div>
 
 
@@ -149,11 +149,11 @@ export class CellElement extends LitElement {
             <div class="cell-controls cell-controls-left-above">
                 ${this.isCurrentlyRunning
                 ? html`
-                    <button @mousedown=${() => emit({ id, type: "RUN_CELL" })}  class="cell-controls-button display-when-collapsed" title="Cell is running">
+                    <button @mousedown=${() => emit({ id, type: "RUN_CELL" })}  class="btn cell-controls-button display-when-collapsed" title="Cell is running">
                         ${ClockIcon({ width: 20, height: 20 })}
                 </button>`
                 : html`
-                    <button @mousedown=${() => emit({ id, type: "RUN_CELL" })} class="cell-controls-button display-when-collapsed" title="Run cell">
+                    <button @mousedown=${() => emit({ id, type: "RUN_CELL" })} class="btn cell-controls-button display-when-collapsed" title="Run cell">
                         ${PlayCircleIcon({ width: 20, height: 20 })}
                 </button>`
                 }
@@ -169,7 +169,7 @@ export class CellElement extends LitElement {
                 <div class="collapsed-cell-line" title="Click to reveal collapsed cell temporarily"></div>
                 
                 <div class="dropdown">
-                    <button data-bs-toggle="dropdown" title="Change Cell Type" class="cell-controls-button cell-controls-button-language auto-hide" @click=${/*(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)*/()=>0}>${this.cellTypeDefinition.name}</button>
+                    <button data-bs-toggle="dropdown" title="Change Cell Type" class="btn cell-controls-button cell-controls-button-language auto-hide" @click=${/*(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)*/()=>0}>${this.cellTypeDefinition.name}</button>
                     <div class="dropdown-menu" style="min-width: 244px">
                         <li><h6 class="dropdown-header">Change Cell Type</h6></li>
                         ${getAvailableCellTypes().map((ct) => {
@@ -186,7 +186,7 @@ export class CellElement extends LitElement {
 
                 <!-- Properties change button -->
                 <div class="dropdown">
-                    <button data-bs-toggle="dropdown" class="cell-controls-button auto-hide" title="Change Cell Properties">
+                    <button data-bs-toggle="dropdown" class="btn cell-controls-button auto-hide" title="Change Cell Properties">
                         ${BooleanIcon({ width: 15, height: 15 })}
                     </button>
 
@@ -196,7 +196,7 @@ export class CellElement extends LitElement {
                     </div>
                 </div>
 
-                <button @click="${() => emit({ id, type: "REMOVE_CELL" })}" class="cell-controls-button auto-hide" title="Remove Cell">
+                <button @click="${() => emit({ id, type: "REMOVE_CELL" })}" class="btn cell-controls-button auto-hide" title="Remove Cell">
                     ${DeleteIcon({ width: 15, height: 15 })}
                 </button>
             </div>

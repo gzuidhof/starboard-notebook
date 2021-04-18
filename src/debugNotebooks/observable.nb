@@ -4,6 +4,13 @@
 # ---%%
 import {registerObservablePlugin} from "http://localhost:8080/dist/starboard-observable.js";
 registerObservablePlugin();
+# %% [markdown]
+# Standard markdown cell
+## subtitle
+# %% [observable]
+md`# Observable markdown cell
+## subtitle
+`
 # %% [observable]
 function samples(array, m) {
   if (!((m = Math.floor(m)) > 0)) return []; // return nothing

@@ -1,5 +1,15 @@
 # Changelog
 
+## Release 0.8.9
+**Date:** 2021-04-18
+
+* Removed our own CSS rest: we can rely on Bootstrap for that.
+* Removed most of the `markdown-body` class, instead all content now has reasonable styling out of the box. The only thing it changes now is the base font size.
+* Removed custom cell-controls-button focus, we just rely on Bootstrap now.
+* Fixed the quick-insert button not being visible if selected but not hovered.
+* Added "Copy to clipboard" button to source view.
+* Removed maximum view height for `cell-top` and `cell-bottom`.
+
 ## Release 0.8.8
 **Date:** 2021-04-16
 

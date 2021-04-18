@@ -12,6 +12,7 @@ import { insertHTMLChildAtIndex } from './helpers/dom';
 import { Runtime, RuntimeConfig } from '../runtime';
 import { setupRuntime } from '../runtime/create';
 import Modal from "bootstrap/js/dist/modal";
+import { copyToClipboard } from './helpers/clipboard';
 
 declare global {
   interface Window {
@@ -152,16 +153,17 @@ export class StarboardNotebookElement extends LitElement {
       </footer>
     
       <div class="modal fade" id="starboard-source-modal" tabindex="-1" aria-labelledby="starboard-source-modal-label" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-fullscreen-lg-down modal-dialog-scrollable">
+        <div class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="starboard-source-modal-label">Notebook Source</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body bg-light py-1" style="overflow-x: auto">
-              <pre id="starboard-source-modal-content" class="my-0" style="overflow: visible; line-height: 1.2;"></pre>
+              <pre id="starboard-source-modal-content" class="my-1 p-0" style="overflow: visible; line-height: 1.2;"></pre>
             </div>
             <div class="modal-footer">
+              <button @click=${() => {console.log("Copied to clipboard!");copyToClipboard(this.runtime.exports.core.notebookContentToText(this.runtime.content));}} class="btn text-dark">Copy to clipboard</button>
               <a id="download-source-button" download="notebook.sb" target="_blank" class="btn text-dark">Download as file</a>
               <button type="button" class="btn btn-primary"  data-bs-dismiss="modal">Close</button>
             </div>
