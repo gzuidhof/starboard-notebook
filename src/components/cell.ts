@@ -10,14 +10,12 @@ import { getCellTypeDefinitionForCellType, getAvailableCellTypes } from '../cell
 
 import { DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { getPropertiesIcons, getPropertiesPopoverIcons } from './controls';
-import { Cell } from '../types';
-import { Runtime, CellTypeDefinition } from '../runtime';
+import { Cell, Runtime, CellTypeDefinition } from '../types';
 import "./insertionLine";
 
 import Dropdown from "bootstrap/js/dist/dropdown";
 import { syncPropertyElementClassNames } from '../cellProperties/dom';
 import { cellHasProperty } from '../cellProperties/util';
-
 
 @customElement('starboard-cell')
 export class CellElement extends LitElement {

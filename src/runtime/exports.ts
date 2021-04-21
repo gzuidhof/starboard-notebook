@@ -21,7 +21,7 @@ import * as StarboardPython from "starboard-python";
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import * as YAML from "yaml";
 import { hookMarkdownItToKaTeX, katexLoader } from "../components/helpers/katex";
-import { RuntimeExports } from ".";
+import { RuntimeExports } from "../types";
 import { ConsoleCatcher } from "../console/console";
 import { cellToText, notebookContentToText } from "../content/serialization";
 import { renderIfHtmlOutput } from "../components/output/htmlOutput";

@@ -4,7 +4,7 @@
 
 /* This file is internal and should never be imported externally if using starboard-notebook as a library */
 
-import { Runtime, CellEvent, RuntimeControls, RuntimeConfig, Cell } from ".";
+import { Runtime, CellEvent, RuntimeControls, RuntimeConfig, Cell } from "../types";
 import { StarboardNotebookElement } from "../components/notebook";
 import { textToNotebookContent } from "../content/parsing";
 import { ConsoleCatcher } from "../console/console";
@@ -14,9 +14,9 @@ import { addCellToNotebookContent, removeCellFromNotebookById, changeCellType } 
 import { notebookContentToText } from "../content/serialization";
 import { debounce } from "@github/mini-throttle";
 import { CellElement } from "../components/cell";
-import { registerDefaultPlugins, setupCommunicationWithParentFrame, setupGlobalKeybindings, updateCellsWhenCellDefinitionChanges } from "./core";
+import { registerDefaultPlugins, setupCommunicationWithParentFrame, setupGlobalKeybindings, updateCellsWhenCellDefinitionChanges, updateCellsWhenPropertyGetsDefined } from "./core";
 import { createExports } from "./exports";
-import { OutboundNotebookMessage } from "../messages/types";
+import { OutboundNotebookMessage } from "../types/messages";
  
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
@@ -222,6 +222,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
     /** Initialize certain functionality */
     updateCellsWhenCellDefinitionChanges(rt);
+    updateCellsWhenPropertyGetsDefined(rt);
 
     (window as any).runtime = rt;
   

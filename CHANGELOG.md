@@ -1,5 +1,14 @@
 # Changelog
 
+## Release 0.8.10
+**Date:** 2021-04-21
+
+* Consolidated all types into the `types` path instead of being spread in multiple `types.ts` files.
+* Now supports dynamically loaded property types being present on cells prior to where it gets registered.
+* Added `property-<NAME>` to the cell property toggle buttons to allow you to hide individually using CSS.
+* Added `NOTEBOOK_SET_METADATA` message that can be sent from parent iframe to overwrite the notebook metadata.
+
+
 ## Release 0.8.9
 **Date:** 2021-04-18
 

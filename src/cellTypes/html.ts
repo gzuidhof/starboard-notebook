@@ -8,8 +8,7 @@ import { cellControlsTemplate } from "../components/controls";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
-import { Cell } from "../types";
-import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
+import { Cell, CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../types";
 
 
 export const HTML_CELL_TYPE_DEFINITION = {

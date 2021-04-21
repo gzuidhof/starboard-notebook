@@ -1,6 +1,5 @@
-import { CellPropertyDefinition } from "../runtime";
 import { ReplayIcon, LockClosedIcon } from "@spectrum-web-components/icons-workflow";
-import { MapRegistry } from "../runtime/registry";
+import { CellPropertyDefinition, MapRegistry } from "../types";
 import { ChevronBarExpandIcon, EyeSlashFilledIcon, EyeSlashIcon } from "../components/icons";
 
 const builtinCellProperties: CellPropertyDefinition[] = [

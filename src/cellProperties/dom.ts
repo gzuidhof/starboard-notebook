@@ -1,4 +1,4 @@
-import { CellPropertyDefinition } from "src/types";
+import { CellPropertyDefinition } from "../types";
 import { registry } from "./registry";
 
 /**

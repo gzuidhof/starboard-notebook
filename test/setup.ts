@@ -1,7 +1,7 @@
-import fetch from "node-fetch"
+import fetch from "node-fetch";
 const { Crypto } = require("@peculiar/webcrypto");
 
-declare var global: any;
+declare let global: any;
 
 Object.assign(global, {
   fetch: fetch,

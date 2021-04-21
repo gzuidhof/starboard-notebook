@@ -6,8 +6,7 @@ import { html, render } from "lit-html";
 import { BaseCellHandler } from "./base";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { StarboardTextEditor } from "../components/textEditor";
-import { Cell } from "../types";
-import { Runtime, CellElements, CellHandlerAttachParameters } from "../runtime";
+import { Cell, Runtime, CellElements, CellHandlerAttachParameters } from "../types";
 
 export const CSS_CELL_TYPE_DEFINITION = {
     name: "CSS",

@@ -2,8 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Cell } from "../types";
-import { Runtime, CellHandlerAttachParameters, CellHandler } from "../runtime";
+import { Cell, Runtime, CellHandlerAttachParameters, CellHandler } from "../types";
 
 export abstract class BaseCellHandler implements CellHandler {
     public cell: Cell;

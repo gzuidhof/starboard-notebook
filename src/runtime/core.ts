@@ -3,13 +3,12 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { textToNotebookContent } from "../content/parsing";
-import { CellTypeDefinition, Runtime } from ".";
-import { RegistryEvent } from "./registry";
+import { CellPropertyDefinition, CellTypeDefinition, Runtime, RegistryEvent } from "../types";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { registerPython } from "starboard-python/dist/index.js";
-import { InboundNotebookMessage } from "../messages/types";
+import { InboundNotebookMessage } from "../types/messages";
 import { notebookContentToText } from "../content/serialization";
 
 
@@ -31,6 +30,25 @@ export function updateCellsWhenCellDefinitionChanges(runtime: Runtime) {
     };
 
     runtime.definitions.cellTypes.subscribe(newCellTypeListenerFunction);
+}
+
+/**
+ * When new cell property is registered, or overwritten, the corresponding cells should update.
+ */
+ export function updateCellsWhenPropertyGetsDefined(runtime: Runtime) {
+  const newCellPropertyListenerFunction = (e: RegistryEvent<string, CellPropertyDefinition>) => {
+      if (e.type !== "register") {
+          return;
+      }
+      for (const c of runtime.dom.cells) {
+        if (c.cell.metadata.properties[e.key] !== undefined){
+          // c.requestUpdate("cell", c.cell);
+          c.requestUpdate();
+        }
+      }
+  };
+
+  runtime.definitions.cellProperties.subscribe(newCellPropertyListenerFunction);
 }
 
 export function setupCommunicationWithParentFrame(runtime: Runtime) {
@@ -79,6 +97,8 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
             }
           } else if (msg.type === "NOTEBOOK_RELOAD_PAGE") {
             window.location.reload();
+          } else if (msg.type === "NOTEBOOK_SET_METADATA") {
+            runtime.content.metadata = msg.payload.metadata;
           }
         }
       };

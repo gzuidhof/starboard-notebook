@@ -8,7 +8,7 @@ import { customElement, html, LitElement, query } from "lit-element";
 import {createPopper} from "@popperjs/core";
 import { CellTypePicker } from "./cellTypePicker";
 import { CellElement } from "./cell";
-import { Cell } from "src/types";
+import { Cell } from "../types";
 
 // Lazily initialized.. but cached for re-use.
 let globalCellTypePicker: CellTypePicker;

@@ -9,7 +9,7 @@ import { createCellProxy } from './helpers/cellProxy';
 import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';
 import { CodeIcon, StarboardLogo } from './icons';
 import { insertHTMLChildAtIndex } from './helpers/dom';
-import { Runtime, RuntimeConfig } from '../runtime';
+import { Runtime, RuntimeConfig } from '../types';
 import { setupRuntime } from '../runtime/create';
 import Modal from "bootstrap/js/dist/modal";
 import { copyToClipboard } from './helpers/clipboard';
@@ -111,7 +111,6 @@ export class StarboardNotebookElement extends LitElement {
         if (changeListeners) {
           changeListeners.forEach(v => v());
         }
-
         this.runtime.controls.contentChanged();
       });
 
