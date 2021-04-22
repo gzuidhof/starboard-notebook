@@ -29,49 +29,49 @@ import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
 import { StarboardContentEditor } from "../components/editor/contentEditor";
 
 export function createExports(): RuntimeExports {
-    return {
-      templates: {
-        cellControls: cellControlsTemplate,
-        icons: {
-          StarboardLogo: StarboardLogo,
-          AssetsAddedIcon: AssetsAddedIcon,
-          DeleteIcon: DeleteIcon,
-          BooleanIcon: BooleanIcon,
-          ClockIcon: ClockIcon,
-          PlayCircleIcon: PlayCircleIcon,
-          TextEditIcon: TextEditIcon,
-          GearsIcon: GearsIcon,
-          LockClosedIcon: LockClosedIcon,
-        }
-      },
-      core: {
-        ConsoleCatcher: ConsoleCatcher,
-        JavascriptEvaluator: JavascriptEvaluator,
-        renderIfHtmlOutput: renderIfHtmlOutput,
-        createCellProxy: createCellProxy,
-        hookMarkdownItToPrismHighlighter: hookMarkdownItToPrismHighlighter,
-        hookMarkdownItToKaTeX: hookMarkdownItToKaTeX,
-        hookMarkDownItToEmojiPlugin: hookMarkdownItToEmojiPlugin,
-        cellToText: cellToText,
-        notebookContentToText: notebookContentToText,
-        precompileJavascriptCode: precompileJavascriptCode,
-      },
-      elements: {
-        StarboardTextEditor: StarboardTextEditor,
-        ConsoleOutputElement: ConsoleOutputElement,
-        StarboardContentEditor: StarboardContentEditor,
-      },
-      libraries: {
-        LitElement: LitElement,
-        LitHtml: LitHtml,
-        MarkdownIt: MarkdownIt,
-        YAML: YAML,
-        Popper: popper,
-
-        async: {
-          KaTeX: katexLoader,
-          StarboardPython: () => Promise.resolve(StarboardPython),
-        },
+  return {
+    templates: {
+      cellControls: cellControlsTemplate,
+      icons: {
+        StarboardLogo: StarboardLogo,
+        AssetsAddedIcon: AssetsAddedIcon,
+        DeleteIcon: DeleteIcon,
+        BooleanIcon: BooleanIcon,
+        ClockIcon: ClockIcon,
+        PlayCircleIcon: PlayCircleIcon,
+        TextEditIcon: TextEditIcon,
+        GearsIcon: GearsIcon,
+        LockClosedIcon: LockClosedIcon,
       }
-    };
+    },
+    core: {
+      ConsoleCatcher: ConsoleCatcher,
+      JavascriptEvaluator: JavascriptEvaluator,
+      renderIfHtmlOutput: renderIfHtmlOutput,
+      createCellProxy: createCellProxy,
+      hookMarkdownItToPrismHighlighter: hookMarkdownItToPrismHighlighter,
+      hookMarkdownItToKaTeX: hookMarkdownItToKaTeX,
+      hookMarkDownItToEmojiPlugin: hookMarkdownItToEmojiPlugin,
+      cellToText: cellToText,
+      notebookContentToText: notebookContentToText,
+      precompileJavascriptCode: precompileJavascriptCode,
+    },
+    elements: {
+      StarboardTextEditor: StarboardTextEditor,
+      ConsoleOutputElement: ConsoleOutputElement,
+      StarboardContentEditor: StarboardContentEditor,
+    },
+    libraries: {
+      LitElement: LitElement,
+      LitHtml: LitHtml,
+      MarkdownIt: MarkdownIt,
+      YAML: YAML,
+      Popper: popper,
+
+      async: {
+        KaTeX: katexLoader,
+        StarboardPython: () => Promise.resolve(StarboardPython),
+      },
+    }
+  };
 }

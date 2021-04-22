@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.8.11
+**Date:** 2021-04-22
+
+* Added `runtime.plugins` and `runtime.controls.registerPlugin(plugin)` to formalize a structure for Starboard plugins. See the type in `types/plugins`.
+* The `attach` callback for Cell Type Handlers now receives the cell element itself too.
+
 ## Release 0.8.10
 **Date:** 2021-04-21
 

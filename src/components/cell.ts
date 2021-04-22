@@ -79,6 +79,7 @@ export class CellElement extends LitElement {
 
         this.cellHandler.attach({
             elements: {
+                cell: this,
                 topElement: this.topElement,
                 topControlsElement: this.topControlsElement,
                 bottomElement: this.bottomElement,

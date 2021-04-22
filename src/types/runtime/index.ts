@@ -28,6 +28,7 @@ import type { renderIfHtmlOutput } from "../../components/output/htmlOutput";
 import type { hookMarkdownItToEmojiPlugin } from "../../components/helpers/emoji";
 import type { OutboundNotebookMessage } from "../messages";
 import type { StarboardContentEditor } from "../../components/editor/contentEditor";
+import { StarboardPlugin } from "../plugins";
 
 export interface RuntimeControls {
     insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string): void;
@@ -65,6 +66,8 @@ export interface RuntimeControls {
      */
     subscribeToCellChanges(id: string, callback: () => void): void;
     unsubscribeToCellChanges(id: string, callback: () => void): void;
+
+    registerPlugin(plugin: StarboardPlugin): Promise<void>;
 }
 
 
@@ -196,6 +199,11 @@ export interface Runtime {
             cellContentChanges: Map<string, (() => void)[]>;
         };
     };
+
+    /**
+     * If plugins want to expose data or functionality this is a good place for it.
+     */
+    plugins: MapRegistry<string, any>;
 
 }
 

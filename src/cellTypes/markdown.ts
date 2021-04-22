@@ -101,7 +101,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
         });
 
         // The cell itself loses focus to somewhere outside of the cell, in that case we just render Markdown itself again.
-        topElement.parentElement!.addEventListener("focusout", (event: FocusEvent) => {
+        this.elements.cell.addEventListener("focusout", (event: FocusEvent) => {
             if (this.editMode !== "display" && (!event.relatedTarget || !hasParentWithId(event.relatedTarget as HTMLElement, this.cell.id))) {
                 setTimeout(() => { // Workaround for some plugins (prosemirror-math) focusing later in the same tick.
                     if (!hasParentWithId(document.activeElement, this.cell.id)) {

@@ -4,6 +4,7 @@
 
  import { Runtime } from "../runtime";
  import { TemplateResult } from "lit-html";
+import { CellElement } from "src/components/cell";
  
  
  /**
@@ -121,6 +122,7 @@
  }
  
  export interface CellElements {
+     cell: CellElement;
      topElement: HTMLElement;
      bottomElement: HTMLElement;
  
