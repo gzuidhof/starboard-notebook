@@ -21,7 +21,7 @@ export interface StarboardPlugin<PluginExports extends Record<string, any> | und
     /**
      * Called automatically when the plugin gets registered, use this to create any DOM elements or register any cell types.
      */
-    register(): Promise<void>;
+    register(opts?: any): Promise<void>;
 
     [key: string]: any;
 }

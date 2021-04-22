@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.8.12
+**Date:** 2021-04-22
+
+* Changed typing of `plugin.register` to allow for an optional argument to configure the plugin, which you can also pass to `runtime.controls.registerPlugin`.
+
 ## Release 0.8.11
 **Date:** 2021-04-22
 

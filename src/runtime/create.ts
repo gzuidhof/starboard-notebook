@@ -220,8 +220,8 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       listeners.splice(idx, 1);
     },
 
-    async registerPlugin(plugin: StarboardPlugin) {
-      await plugin.register();
+    async registerPlugin(plugin: StarboardPlugin, opts?: any) {
+      await plugin.register(opts);
       rt.plugins.register(plugin.id, plugin);
     }
   };

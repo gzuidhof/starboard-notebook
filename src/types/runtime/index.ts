@@ -67,7 +67,7 @@ export interface RuntimeControls {
     subscribeToCellChanges(id: string, callback: () => void): void;
     unsubscribeToCellChanges(id: string, callback: () => void): void;
 
-    registerPlugin(plugin: StarboardPlugin): Promise<void>;
+    registerPlugin(plugin: StarboardPlugin, opts?: any): Promise<void>;
 }
 
 
