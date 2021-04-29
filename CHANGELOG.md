@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.8.13
+**Date:** Unreleased
+
+* Added `textToNotebookContent` to `runtime.exports.core` to allow external plugins to more easily parse notebook content.
+
 ## Release 0.8.12
 **Date:** 2021-04-22
 

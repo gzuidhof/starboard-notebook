@@ -29,6 +29,7 @@ import type { hookMarkdownItToEmojiPlugin } from "../../components/helpers/emoji
 import type { OutboundNotebookMessage } from "../messages";
 import type { StarboardContentEditor } from "../../components/editor/contentEditor";
 import { StarboardPlugin } from "../plugins";
+import { textToNotebookContent } from "../../content/parsing";
 
 export interface RuntimeControls {
     insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string): void;
@@ -110,6 +111,7 @@ export interface RuntimeExports {
         hookMarkDownItToEmojiPlugin: typeof hookMarkdownItToEmojiPlugin;
         cellToText: typeof cellToText;
         notebookContentToText: typeof notebookContentToText;
+        textToNotebookContent: typeof textToNotebookContent;
         precompileJavascriptCode: typeof precompileJavascriptCode;
     };
 
