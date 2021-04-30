@@ -27,6 +27,7 @@ import { cellToText, notebookContentToText } from "../content/serialization";
 import { renderIfHtmlOutput } from "../components/output/htmlOutput";
 import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
 import { StarboardContentEditor } from "../components/editor/contentEditor";
+import { textToNotebookContent } from "../content/parsing";
 
 export function createExports(): RuntimeExports {
   return {
@@ -55,6 +56,7 @@ export function createExports(): RuntimeExports {
       cellToText: cellToText,
       notebookContentToText: notebookContentToText,
       precompileJavascriptCode: precompileJavascriptCode,
+      textToNotebookContent: textToNotebookContent
     },
     elements: {
       StarboardTextEditor: StarboardTextEditor,
