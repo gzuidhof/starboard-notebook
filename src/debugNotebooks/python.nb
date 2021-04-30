@@ -1,0 +1,15 @@
+# %%--- [python]
+# properties:
+#   run_on_load: true
+# ---%%
+print("Hello world")
+# %% [python]
+from js import fetch
+import pandas as pd
+import io
+
+response = await fetch("https://cdn.jsdelivr.net/gh/selva86/datasets/mtcars.csv")
+csv = await response.text()
+
+df = pd.read_csv(io.StringIO(csv))
+df

@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.8.13
+**Date:** Unreleased
+
+* Update to Starboard Python 0.6.0, which wraps [Pyodide version 0.17.0](https://pyodide.org/en/stable/project/changelog.html#version-0-17-0).
+
 ## Release 0.8.12
 **Date:** 2021-04-22
 

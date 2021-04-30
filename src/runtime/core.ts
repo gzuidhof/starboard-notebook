@@ -7,7 +7,7 @@ import { CellPropertyDefinition, CellTypeDefinition, Runtime, RegistryEvent } fr
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { registerPython } from "starboard-python/dist/index.js";
+import { plugin as pythonPlugin } from "starboard-python/dist/index.js";
 import { InboundNotebookMessage } from "../types/messages";
 import { notebookContentToText } from "../content/serialization";
 
@@ -104,8 +104,8 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
   };
 }
 
-export function registerDefaultPlugins(_runtime: Runtime) {
-  registerPython();
+export async function registerDefaultPlugins(runtime: Runtime) {
+    await runtime.controls.registerPlugin(pythonPlugin);
 }
 
 export function setupGlobalKeybindings(runtime: Runtime) {
