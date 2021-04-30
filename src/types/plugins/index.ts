@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-export interface StarboardPlugin<PluginExports extends Record<string, any> | undefined = any> {
+export interface StarboardPlugin<PluginRegisterOpts = any, PluginExports extends Record<string, any> | undefined = any> {
     /**
      * Unique identifier for this plugin.
      */
@@ -21,7 +21,7 @@ export interface StarboardPlugin<PluginExports extends Record<string, any> | und
     /**
      * Called automatically when the plugin gets registered, use this to create any DOM elements or register any cell types.
      */
-    register(opts?: any): Promise<void>;
+    register(opts?: PluginRegisterOpts): Promise<void> | void;
 
     [key: string]: any;
 }

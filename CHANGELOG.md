@@ -1,10 +1,12 @@
 # Changelog
 
 ## Release 0.8.13
-**Date:** Unreleased
+**Date:** 2021-04-30
 
 * Update to Starboard Python 0.6.0, which wraps [Pyodide version 0.17.0](https://pyodide.org/en/stable/project/changelog.html#version-0-17-0).
 * Added `textToNotebookContent` to `runtime.exports.core` to allow external plugins to more easily parse notebook content.
+* Added optional generic type parameter to allow plugins to be explicit about its register options object.
+* Small fix to an import in a typing in `types/core`.
 
 ## Release 0.8.12
 **Date:** 2021-04-22
