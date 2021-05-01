@@ -122,7 +122,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
         if (this.editMode === "code") {
             this.editor = new StarboardTextEditor(this.cell, this.runtime, { language: "markdown", wordWrap: "on" });
         } else {
-            this.editor = new StarboardContentEditor(this.cell, { focusAfterInit: true });
+            this.editor = new StarboardContentEditor(this.cell, this.runtime, { focusAfterInit: true });
         }
         topElement.appendChild(this.editor);
     }
