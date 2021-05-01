@@ -103,6 +103,39 @@ function addEditorKeyboardShortcuts(
     });
 
     editor.addAction({
+        id: 'run-cell-and-next',
+        label: 'Run Cell and Select Below',
+        keybindings: [monaco.KeyCode.DownArrow],
+
+        contextMenuGroupId: 'starboard',
+        contextMenuOrder: 2,
+        run: (_ed) => {
+            const lastLine = _ed.getModel()?.getLineCount();
+            if(lastLine !== undefined && _ed.getPosition()?.lineNumber === lastLine) {
+                emit({
+                    id: cellId, type: "RUN_CELL", focusNext: "after"
+                })
+            }
+        }
+    });
+
+    editor.addAction({
+        id: 'run-cell-and-previous',
+        label: 'Run Cell and Select Above',
+        keybindings: [monaco.KeyCode.UpArrow],
+
+        contextMenuGroupId: 'starboard',
+        contextMenuOrder: 2,
+        run: (_ed) => {
+            if(_ed.getPosition()?.lineNumber === 1) {
+                emit({
+                    id: cellId, type: "RUN_CELL", focusNext: "before"
+                })
+            }
+        }
+    });
+
+    editor.addAction({
         id: 'run-cell-and-insert-cell',
         label: 'Run Cell and Insert Cell',
         keybindings: [monaco.KeyMod.Alt | monaco.KeyCode.Enter],
