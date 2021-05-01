@@ -92,14 +92,17 @@
 
 .starboard-text-editor-controls {
     position: absolute;
-    visibility: hidden;
     font-size: 12px;
     right: 0;
     top: 0;
     z-index: 10;
 }
 
-starboard-text-editor:hover .starboard-text-editor-controls {
+.starboard-text-editor-controls .btn {
+    visibility: hidden;
+}
+
+starboard-text-editor:hover .starboard-text-editor-controls .btn {
     visibility: visible;
 }
 
