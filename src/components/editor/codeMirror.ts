@@ -159,7 +159,6 @@ const commonExtensions = [
         ...historyKeymap,
         ...foldKeymap,
         ...searchKeymap,
-        
     ]),
     autocompletion(),
 ];
@@ -173,12 +172,45 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
 
     const readOnlyExtension = tagExtension('readOnly', EditorView.editable.of(!cell.metadata.properties.locked));
 
+    const cellSwitchExtension = keymap.of([
+        { key: "ArrowUp", run: (target) => { 
+                if(target.state.selection.ranges.length === 1 && target.state.selection.ranges[0].empty) {
+                    let firstLine = target.state.doc.line(1);
+                    let cursorPosition = target.state.selection.ranges[0].head;
+                    if(firstLine.from <= cursorPosition && cursorPosition <= firstLine.to) {
+                        _runtime.controls.emit({id: cell.id, type: "RUN_CELL", focusNext: "before"});
+                        return true
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false; 
+                }
+            }
+        },
+        { key: "ArrowDown", run: (target) => { 
+                if(target.state.selection.ranges.length == 1 && target.state.selection.ranges[0].empty) {
+                    let lastline = target.state.doc.line(target.state.doc.lines);
+                    let cursorPosition = target.state.selection.ranges[0].head;
+                    if(lastline.from <= cursorPosition && cursorPosition <= lastline.to) {
+                        _runtime.controls.emit({id: cell.id, type: "RUN_CELL", focusNext: "after"});
+                        return true
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false; 
+                }
+            }
+        }]);
+
     const editorView = new EditorView(
         {
             state: EditorState.create(
                 {
                     doc: cell.textContent.length === 0 ? undefined : cell.textContent,
                     extensions: [
+                        cellSwitchExtension,
                         ...commonExtensions,
                         ...(opts.language === "javascript" ? [javascript()] : []),
                         ...(opts.language === "python" ? [python()] : []),
@@ -193,6 +225,7 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
                 })
         },
     );
+    
 
     const setEditable = function (editor: EditorView, _isLocked: boolean | undefined): void {
         editor.dispatch({

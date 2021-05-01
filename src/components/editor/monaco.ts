@@ -86,7 +86,7 @@ function addEditorKeyboardShortcuts(
         contextMenuGroupId: 'starboard',
         contextMenuOrder: 0,
         run: (_ed) => emit({
-            id: cellId, type: "RUN_CELL", focusNextCell: false, insertNewCell: false
+            id: cellId, type: "RUN_CELL"
         })
     });
 
@@ -98,7 +98,7 @@ function addEditorKeyboardShortcuts(
         contextMenuGroupId: 'starboard',
         contextMenuOrder: 1,
         run: (_ed) => emit({
-            id: cellId, type: "RUN_CELL", focusNextCell: true, insertNewCell: false
+            id: cellId, type: "RUN_CELL", focusNext: "after"
         })
     });
 
@@ -110,7 +110,7 @@ function addEditorKeyboardShortcuts(
         contextMenuGroupId: 'starboard',
         contextMenuOrder: 2,
         run: (_ed) => emit({
-            id: cellId, type: "RUN_CELL", focusNextCell: true, insertNewCell: true
+            id: cellId, type: "RUN_CELL", focusNext: "after", insertNewCell: true
         })
     });
 

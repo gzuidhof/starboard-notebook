@@ -114,7 +114,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       notebook.performUpdate();
     },
 
-    runCell(id: string, focusNext: boolean, insertNewCell: boolean) {
+    runCell(id: string, focusNext?: "before" | "after", insertNewCell?: boolean) {
       const cellElements = rt.dom.cells;
 
       let idxOfCell = -1;
@@ -130,10 +130,17 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       if (insertNewCell) {
         controls.insertCell({}, "after", id);
       }
-      if (focusNext) {
+      if (focusNext === "before") {
+        window.setTimeout(() => {
+          const next = cellElements[idxOfCell - 1];
+          if (next) next.focusEditor();
+        });
+      } else if(focusNext === "after") {
         window.setTimeout(() => {
           const next = cellElements[idxOfCell + 1];
-          if (next) next.focusEditor();
+          if (next) {
+            next.focusEditor();
+          }
         });
       }
     },
@@ -188,7 +195,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
     emit(event: CellEvent) {
       if (event.type === "RUN_CELL") {
-        controls.runCell(event.id, !!event.focusNextCell, !!event.insertNewCell);
+        controls.runCell(event.id, event.focusNext, !!event.insertNewCell);
       } else if (event.type === "INSERT_CELL") {
         controls.insertCell(event.data || {}, event.position, event.id);
       } else if (event.type === "REMOVE_CELL") {
