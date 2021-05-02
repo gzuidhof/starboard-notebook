@@ -1,5 +1,14 @@
 # Changelog
 
+## Release 0.8.14
+**Date:** 2021-05-02
+
+* Fix for alt+enter not always inserting a new cell (thank you @unhott).
+* Fix for the cell editor control menu disappearing behavior (thank you @unhott).
+* Pressing up or down arrow when at the start or end of a cell's code editor now focuses the adjacent cell (thank you @stefnotch).
+* Update to starboard-python 0.6.3 which fixes Matplotlib output rendering and prevents multiple cells having overlapped execution.
+* Removed `minify-lit-html-loader`, which means the build pipeline requires less hacks and we can use ES2019 and ES2020 features such as nullish coalescing and optional chaining (`?.` and `??`). The build target remains `ES2018`.
+
 ## Release 0.8.13
 **Date:** 2021-04-30
 
