@@ -103,8 +103,8 @@ function addEditorKeyboardShortcuts(
     });
 
     editor.addAction({
-        id: 'run-cell-and-next',
-        label: 'Run Cell and Select Below',
+        id: 'focus-next-cell',
+        label: 'Select Next Cell',
         keybindings: [monaco.KeyCode.DownArrow],
 
         contextMenuGroupId: 'starboard',
@@ -120,8 +120,8 @@ function addEditorKeyboardShortcuts(
     });
 
     editor.addAction({
-        id: 'run-cell-and-previous',
-        label: 'Run Cell and Select Above',
+        id: 'focus-previous-cell',
+        label: 'Select Previous Cell',
         keybindings: [monaco.KeyCode.UpArrow],
 
         contextMenuGroupId: 'starboard',
