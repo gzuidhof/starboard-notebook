@@ -115,7 +115,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     },
 
     runCell(id: string, focus?: "previous" | "next", insertNewCell?: boolean) {
-      const cellElements = rt.dom.cells;
+      let cellElements = rt.dom.cells;
 
       let idxOfCell = -1;
       for (let i = 0; i < cellElements.length; i++) {
@@ -129,6 +129,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
       if (insertNewCell) {
         controls.insertCell({}, "after", id);
+        cellElements = rt.dom.cells;
       }
       if (focus === "previous") {
         window.setTimeout(() => {
