@@ -7,13 +7,14 @@
     font-weight: 200 900;
     font-display: swap;
     src: local("Inter var"), url(../../static/fonts/inter.var.woff2?v=3.15) format("woff2")
-}
+}  
 
 $brand-color: #5e5ef8;
 $primary: $brand-color;
 $border-radius: var(--border-radius);
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
+@import "./base.scss";
 
 @import "./animations.scss";
 @import "./cell.scss";
@@ -26,13 +27,15 @@ $border-radius: var(--border-radius);
 @import "./prosemirror.scss";
 @import "./math.scss";
 
-@import "./reset-markdown.scss";
-@import "./starboard-markdown.scss";
+
 
 :root {
     --font-sans: "Inter var", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     --font-mono: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
     --font-size: 14px;
+
+    --bs-font-sans-serif: var(--font-sans);
+    --bs-font-monospace: var(--font-mono);
     
 
     --h1-size: 2.3rem;
@@ -108,6 +111,10 @@ $border-radius: var(--border-radius);
     }
 }
 
+.markdown-body {
+    font-size: var(--content-font-size);
+}
+
 
 html {
     font-family: var(--font-sans), -system-ui, system-ui, sans-serif;
@@ -127,10 +134,6 @@ body {
     height: auto;
     margin: 0;
     padding: 0;
-}
-
-body {
-    flex: 1;
 }
 
 starboard-notebook {
@@ -162,14 +165,12 @@ i {
     grid-column: content-start / content-end;
 }
 
-.starboard-notebook-footer span, .starboard-notebook-footer a {
-    color: #bbb;
-    font-size: 11px;
-    text-decoration: none;
-}
-
-.starboard-notebook-footer button {
-    color: var(--text-color-secondary);
+.starboard-notebook-footer {
+    a, span, button {
+        color: #bbb;
+        font-size: 11px;
+        text-decoration: none;
+    }
 }
 
 .starboard-notebook-footer a:hover {
@@ -183,7 +184,3 @@ i {
 .hidden {
     display: hidden;
 }
-
-/*
-Custom Bootstrap styles
-*/

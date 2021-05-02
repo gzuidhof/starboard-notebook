@@ -11,12 +11,11 @@ import { registry, getAvailablePropertyTypes } from "../cellProperties/registry"
 
 export function cellControlsTemplate(controls: ControlsDefinition) {
     const buttons = controls.buttons;
-
     return html`
         ${buttons.map((button) => 
             html`
-            <button @click="${button.callback}" class="cell-controls-button ${button.hide === undefined ? "auto-hide": button.hide} " title="${button.tooltip}">
-                ${button.icon({width: 20, height:20})}
+            <button @click="${button.callback}" class="btn cell-controls-button ${button.hide === undefined ? "auto-hide": button.hide} " title="${button.tooltip}">
+                ${button.icon({width: 18, height:18})}
             </button>
             `
         )}
@@ -26,9 +25,9 @@ export function cellControlsTemplate(controls: ControlsDefinition) {
 export function getPropertiesIcons(cell: Cell, togglePropertyFunction: (name: string) => void) {
     const iconTemplates = [];
     for(const prop of Object.getOwnPropertyNames(cell.metadata.properties)) {
-        const propertyDef = registry.get(prop) || {icon: AlertCircleIcon, textEnabled: `Unknown property "${prop}"`, textDisabled: ``, name: `Unknown`};
+        const propertyDef = registry.get(prop) || {icon: AlertCircleIcon, textEnabled: `Unknown property "${prop}"`, textDisabled: ``, name: `Unknown`, cellProperty: "unknown"};
         const templateResult = html`
-            <button @click=${() => togglePropertyFunction(prop)} class="cell-controls-button" title=${propertyDef.textEnabled}>
+            <button @click=${() => togglePropertyFunction(prop)} class="btn cell-controls-button property-${propertyDef.cellProperty}" title=${propertyDef.textEnabled}>
                             ${propertyDef.icon({width: 15, height:15})}
             </button>
         `;
@@ -46,7 +45,7 @@ export function getPropertiesPopoverIcons(cell: Cell, togglePropertyFunction: (n
                 const helpText = isActive ? def.textEnabled : def.textDisabled;
                 const style = isActive ? "color: #8d27f4":"";
                 return html`
-                    <button style=${style} @click=${() => togglePropertyFunction(def.cellProperty)} class="cell-controls-button" title=${helpText}>
+                    <button style=${style} @click=${() => togglePropertyFunction(def.cellProperty)} class="btn cell-controls-button property-${def.cellProperty}" title=${helpText}>
                                     ${def.icon({width: 16, height:16})}
                     </button>
                 `;

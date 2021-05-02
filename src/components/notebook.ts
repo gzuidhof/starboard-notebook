@@ -7,10 +7,12 @@ import { CellElement } from './cell';
 import { IFramePage } from 'iframe-resizer';
 import { createCellProxy } from './helpers/cellProxy';
 import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';
-import { StarboardLogo } from './icons';
+import { CodeIcon, StarboardLogo } from './icons';
 import { insertHTMLChildAtIndex } from './helpers/dom';
-import { Runtime, RuntimeConfig } from '../runtime';
+import { Runtime, RuntimeConfig } from '../types';
 import { setupRuntime } from '../runtime/create';
+import Modal from "bootstrap/js/dist/modal";
+import { copyToClipboard } from './helpers/clipboard';
 
 declare global {
   interface Window {
@@ -33,6 +35,11 @@ export class StarboardNotebookElement extends LitElement {
   @query(".cells-container")
   private cellsParentElement!: HTMLElement;
 
+  @query("#starboard-source-modal")
+  private sourceModalElement!: HTMLElement;
+
+  private sourceModal!: Modal;
+
   createRenderRoot() {
     return this;
   }
@@ -50,7 +57,7 @@ export class StarboardNotebookElement extends LitElement {
       const encoded = encodeURIComponent(content); 
       const a = document.createElement(`a`);
       a.target = `_blank`;
-      a.href = `data:plaintext;charset=utf-8,${encoded}`;
+      a.href = `data:text/plain;charset=utf-8,${encoded}`;
       a.style.display = `none`;
       document.body.appendChild(a);
       a.click();
@@ -68,6 +75,8 @@ export class StarboardNotebookElement extends LitElement {
 
   firstUpdated(changedProperties: any) {
     super.firstUpdated(changedProperties);
+    this.sourceModal = new Modal(this.sourceModalElement, {});
+
     if (this.runtime.content.cells.length > 0) {
       this.notebookInitialize();
     }
@@ -102,7 +111,6 @@ export class StarboardNotebookElement extends LitElement {
         if (changeListeners) {
           changeListeners.forEach(v => v());
         }
-
         this.runtime.controls.contentChanged();
       });
 
@@ -117,21 +125,50 @@ export class StarboardNotebookElement extends LitElement {
     }
   }
 
+  showSourceModal() {
+    const source = this.runtime.exports.core.notebookContentToText(this.runtime.content);
+    (this.querySelector("#starboard-source-modal-content") as Element).textContent = source;
+    (this.querySelector("#download-source-button") as HTMLAnchorElement).href = `data:nb;charset=utf-8,${encodeURIComponent(source)}`;
+    this.sourceModal.show();
+  }
+
   render() {
     return html`
-      <div style="position: absolute; height: 800px"></div>
       <main class="cells-container"></main>
-      
       <footer class="starboard-notebook-footer line-grid">
-        <div class="starboard-notebook-footer-content">
+        <div class="starboard-notebook-footer-content d-flex align-items-center">
           <span>${StarboardLogo({width: 10, height: 10})} Starboard Notebook v${this.runtime.version}
-          ${window.starboardEditUrl ? html`- <a href=${window.starboardEditUrl}>Edit on Starboard.gg</a>`: ""}
+            ${window.starboardEditUrl ? html`- <a href=${window.starboardEditUrl}>Edit on Starboard.gg</a>`: ""}
           </span>
-          <button @click="${() => this.runtime.controls.insertCell({}, "end")}" class="cell-controls-button" title="Add Cell Here" style="opacity: 0.4 !important; float: right; opacity: 1; padding: 0px 1px 0px 18px;">
+          <button @click=${() => this.showSourceModal()} class="btn btn-sm py-0 px-1 ms-2">
+              <span>${CodeIcon({width: 15, height: 15})}</span>
+              Source
+          </button>
+
+          <button @click="${() => this.runtime.controls.insertCell({}, "end")}" class="cell-controls-button" title="Add Cell Here" style="opacity: 0.4 !important; margin-left: auto; padding: 0px 1px 0px 18px;">
           ${AssetsAddedIcon({ width: 15, height: 15 })}
         </button>
         </div>
       </footer>
+    
+      <div class="modal fade" id="starboard-source-modal" tabindex="-1" aria-labelledby="starboard-source-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="starboard-source-modal-label">Notebook Source</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light py-1" style="overflow-x: auto">
+              <pre id="starboard-source-modal-content" class="my-1 p-0" style="overflow: visible; line-height: 1.2;"></pre>
+            </div>
+            <div class="modal-footer">
+              <button @click=${() => {console.log("Copied to clipboard!");copyToClipboard(this.runtime.exports.core.notebookContentToText(this.runtime.content));}} class="btn text-dark">Copy to clipboard</button>
+              <a id="download-source-button" download="notebook.sb" target="_blank" class="btn text-dark">Download as file</a>
+              <button type="button" class="btn btn-primary"  data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
         `;
   }
 }

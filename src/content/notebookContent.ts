@@ -2,11 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Cell, NotebookContent } from '../types';
+import { Cell, NotebookContent, Runtime } from '../types';
 import { cellToText } from './serialization';
 import { textToNotebookContent } from './parsing';
 import { generateUniqueCellId } from '../components/helpers/random';
-import { Runtime } from '../runtime';
 
 function requireIndexOfCellId(cells: Cell[], id?: string) {
     if (id === undefined) {

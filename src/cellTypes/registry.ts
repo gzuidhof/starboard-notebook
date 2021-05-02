@@ -7,9 +7,7 @@ import { MARKDOWN_CELL_TYPE_DEFINITION } from "./markdown";
 import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript/javascript";
 import { HTML_CELL_TYPE_DEFINITION } from "./html";
 import { CSS_CELL_TYPE_DEFINITION } from "./css";
-import { Cell } from "../types";
-import { Runtime, CellTypeDefinition } from "../runtime";
-import { MapRegistry } from "../runtime/registry";
+import { Cell, Runtime, CellTypeDefinition, MapRegistry } from "../types";
 import { ES_MODULE_CELL_TYPE_DEFINITION } from "./esm/esm";
 import { LATEX_CELL_TYPE_DEFINITION } from "./latex";
 

@@ -5,8 +5,7 @@
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { debounce } from '@github/mini-throttle';
 import { WordWrapSetting } from '../textEditor';
-import { CellEvent, Cell } from '../../types';
-import { Runtime } from '../../runtime';
+import { CellEvent, Cell, Runtime } from '../../types';
 
 export type MonacoEditorSupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";
 

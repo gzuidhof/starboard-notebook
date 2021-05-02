@@ -1,5 +1,7 @@
 # starboard-notebook docs
 
+**Update: Consider using the `starboard-wrap` NPM package instead for easier integration.
+
 ## Guides
 
 * [Starboard Notebook in a static HTML file](./static.md)

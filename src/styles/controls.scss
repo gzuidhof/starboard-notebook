@@ -42,7 +42,6 @@
     grid-area: margin-left-bottom;
 }
 
-
 .cell-controls .cell-controls-button.auto-hide {
     opacity: 0.2;
 }
@@ -88,10 +87,10 @@ starboard-cell:focus .cell-controls-button
 .cell-controls-button:hover {
     color: var(--brand-color);
 }
-.cell-controls-button:focus {
-    outline: none;
-    border: 1px solid #eee;
-}
+// .cell-controls-button:focus {
+//     outline: none;
+//     border: 1px solid #eee;
+// }
 
 .collapsed-cell-line {
     display: none;

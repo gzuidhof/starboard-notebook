@@ -23,8 +23,7 @@ import { html } from "@codemirror/next/lang-html";
 import { history, historyKeymap } from "@codemirror/next/history";
 import { autocompletion, completionKeymap } from "@codemirror/next/autocomplete";
 import { searchKeymap, highlightSelectionMatches } from "@codemirror/next/search";
-import { Cell } from "../../types";
-import { Runtime } from "../../runtime";
+import { Cell, Runtime } from "../../types";
 
 // function createJSCompletion() {
 //     return completeFromList(

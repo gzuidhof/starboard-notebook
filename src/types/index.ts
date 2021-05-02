@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Runtime } from "../../types";
-
-export const runtime: Runtime = (window as any).runtime;
+export * from "./core";
+export * from "./messages";
+export * from "./runtime";
+export * from "./registry";
+export * from "./plugins";

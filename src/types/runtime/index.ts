@@ -2,13 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import type { CellEvent, NotebookContent, CellTypeDefinition, CellPropertyDefinition, ControlsDefinition, IconTemplate, Cell } from "../types";
-import type { ConsoleCatcher } from "../console/console";
-import type { CellElement } from "../components/cell";
-import type { StarboardNotebookElement } from "../components/notebook";
+import type { CellEvent, NotebookContent, CellTypeDefinition, CellPropertyDefinition, ControlsDefinition, IconTemplate, Cell } from "..";
+import type { ConsoleCatcher } from "../../console/console";
+import type { CellElement } from "../../components/cell";
+import type { StarboardNotebookElement } from "../../components/notebook";
 import type { TemplateResult } from "lit-html";
-import type { StarboardTextEditor } from "../components/textEditor";
-import type { ConsoleOutputElement } from "../components/output/consoleOutput";
+import type { StarboardTextEditor } from "../../components/textEditor";
+import type { ConsoleOutputElement } from "../../components/output/consoleOutput";
 
 import type * as lithtmlLibrary from "lit-html";
 import type * as litElementLibrary from "lit-element";
@@ -17,19 +17,19 @@ import type * as YAML from "yaml";
 import type mdlib from "markdown-it";
 import type * as Popper from "@popperjs/core";
 
-import type { JavascriptEvaluator } from "../cellTypes/javascript/eval";
-import type { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
-import type { createCellProxy } from "../components/helpers/cellProxy";
-import type { cellToText, notebookContentToText } from "../content/serialization";
-import type { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
-import type { MapRegistry } from "./registry";
-import type { hookMarkdownItToKaTeX } from "../components/helpers/katex";
-import type { renderIfHtmlOutput } from "../components/output/htmlOutput";
-import type { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
-import type { OutboundNotebookMessage } from "../messages/types";
-import type { StarboardContentEditor } from "../components/editor/contentEditor";
-
-export * from "../types";
+import type { JavascriptEvaluator } from "../../cellTypes/javascript/eval";
+import type { hookMarkdownItToPrismHighlighter } from "../../components/helpers/highlight";
+import type { createCellProxy } from "../../components/helpers/cellProxy";
+import type { cellToText, notebookContentToText } from "../../content/serialization";
+import type { precompileJavascriptCode } from "../../cellTypes/javascript/precompile";
+import type { MapRegistry } from "./../registry";
+import type { hookMarkdownItToKaTeX } from "../../components/helpers/katex";
+import type { renderIfHtmlOutput } from "../../components/output/htmlOutput";
+import type { hookMarkdownItToEmojiPlugin } from "../../components/helpers/emoji";
+import type { OutboundNotebookMessage } from "../messages";
+import type { StarboardContentEditor } from "../../components/editor/contentEditor";
+import { StarboardPlugin } from "../plugins";
+import { textToNotebookContent } from "../../content/parsing";
 
 export interface RuntimeControls {
     insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string): void;
@@ -37,7 +37,7 @@ export interface RuntimeControls {
     changeCellType(id: string, newCellType: string): void;
     resetCell(id: string): void;
     runCell(id: string, focusNext?: boolean, insertNewCell?: boolean): void;
-    runAllCells(opts: {onlyRunOnLoad?: boolean}): Promise<void>;
+    runAllCells(opts: { onlyRunOnLoad?: boolean }): Promise<void>;
 
     /** 
      * Requests a save operation from the parent iframe.
@@ -65,8 +65,10 @@ export interface RuntimeControls {
      * @param id 
      * @param callback 
      */
-    subscribeToCellChanges(id: string, callback: () => void):  void;
-    unsubscribeToCellChanges(id: string, callback: () => void):  void;
+    subscribeToCellChanges(id: string, callback: () => void): void;
+    unsubscribeToCellChanges(id: string, callback: () => void): void;
+
+    registerPlugin(plugin: StarboardPlugin, opts?: any): Promise<void>;
 }
 
 
@@ -109,6 +111,7 @@ export interface RuntimeExports {
         hookMarkDownItToEmojiPlugin: typeof hookMarkdownItToEmojiPlugin;
         cellToText: typeof cellToText;
         notebookContentToText: typeof notebookContentToText;
+        textToNotebookContent: typeof textToNotebookContent;
         precompileJavascriptCode: typeof precompileJavascriptCode;
     };
 
@@ -142,7 +145,7 @@ export interface Runtime {
      * The state of the notebook that exactly describes the text in the notebook.
      */
     content: NotebookContent;
- 
+
     definitions: {
         /**
          * Map of registered cell types, indexed by cellType (e.g. "javascript").
@@ -172,7 +175,7 @@ export interface Runtime {
      * Version of Starboard Notebook
      */
     version: string;
-    
+
     /**
      * Name of the runtime.
      */
@@ -195,10 +198,15 @@ export interface Runtime {
      */
     internal: {
         listeners: {
-            cellContentChanges: Map<string, (()=>void)[]>;
+            cellContentChanges: Map<string, (() => void)[]>;
         };
     };
-    
+
+    /**
+     * If plugins want to expose data or functionality this is a good place for it.
+     */
+    plugins: MapRegistry<string, any>;
+
 }
 
 /**

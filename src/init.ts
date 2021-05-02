@@ -9,13 +9,13 @@ import "iframe-resizer/js/iframeResizer.contentWindow.js";
 import * as lithtml from "lit-html";
 
 import * as YAML from "yaml";
-import { RuntimeConfig } from "./runtime";
+import { RuntimeConfig } from "./types";
 
 declare global {
   interface Window {
     initialNotebookContent?: string;
     runtimeConfig?: Partial<RuntimeConfig>;
-  
+
     html: typeof lithtml.html;
     svg: typeof lithtml.svg;
     litHtml: typeof lithtml;
@@ -28,5 +28,6 @@ window.html = lithtml.html;
 window.svg = lithtml.svg;
 window.litHtml = lithtml;
 window.YAML = YAML;
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// window.initialNotebookContent = require("./debugNotebooks/introNotebook.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/python.nb").default;

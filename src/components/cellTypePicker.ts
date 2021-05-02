@@ -1,7 +1,7 @@
 import { LitElement, customElement, property } from "lit-element";
 import { html } from "lit-html";
-import { CellCreationInterface, CellTypeDefinition, Runtime } from "src/runtime";
-import { Cell } from "src/types";
+import { CellCreationInterface, CellTypeDefinition, Runtime } from "../types";
+import { Cell } from "../types";
 import { getAvailableCellTypes, getCellTypeDefinitionForCellType } from "../cellTypes/registry";
 
 

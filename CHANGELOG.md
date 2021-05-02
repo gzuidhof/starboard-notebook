@@ -1,7 +1,52 @@
 # Changelog
 
+## Release 0.8.13
+**Date:** 2021-04-30
+
+* Update to Starboard Python 0.6.0, which wraps [Pyodide version 0.17.0](https://pyodide.org/en/stable/project/changelog.html#version-0-17-0).
+* Added `textToNotebookContent` to `runtime.exports.core` to allow external plugins to more easily parse notebook content.
+* Added optional generic type parameter to allow plugins to be explicit about its register options object.
+* Small fix to an import in a typing in `types/core`.
+
+## Release 0.8.12
+**Date:** 2021-04-22
+
+* Changed typing of `plugin.register` to allow for an optional argument to configure the plugin, which you can also pass to `runtime.controls.registerPlugin`.
+
+## Release 0.8.11
+**Date:** 2021-04-22
+
+* Added `runtime.plugins` and `runtime.controls.registerPlugin(plugin)` to formalize a structure for Starboard plugins. See the type in `types/plugins`.
+* The `attach` callback for Cell Type Handlers now receives the cell element itself too.
+
+## Release 0.8.10
+**Date:** 2021-04-21
+
+* Consolidated all types into the `types` path instead of being spread in multiple `types.ts` files.
+* Now supports dynamically loaded property types being present on cells prior to where it gets registered.
+* Added `property-<NAME>` to the cell property toggle buttons to allow you to hide individually using CSS.
+* Added `NOTEBOOK_SET_METADATA` message that can be sent from parent iframe to overwrite the notebook metadata.
+
+
+## Release 0.8.9
+**Date:** 2021-04-18
+
+* Removed our own CSS rest: we can rely on Bootstrap for that.
+* Removed most of the `markdown-body` class, instead all content now has reasonable styling out of the box. The only thing it changes now is the base font size.
+* Removed custom cell-controls-button focus, we just rely on Bootstrap now.
+* Fixed the quick-insert button not being visible if selected but not hovered.
+* Added "Copy to clipboard" button to source view.
+* Removed maximum view height for `cell-top` and `cell-bottom`.
+
+## Release 0.8.8
+**Date:** 2021-04-16
+
+* Added Source button in the footer to allow for easy viewing and downloading of the notebook source.
+* Removed rounded corners of console output (whoops).
+* Added a quick-insert button for cells next to the + insert button.
+
 ## Release 0.8.7
-**Date:** 2021-04-15 [unreleased]
+**Date:** 2021-04-15
 
 * Fixed width issues that would sometimes occur with wide content in iframe mode.
 

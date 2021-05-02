@@ -10,7 +10,7 @@ import { cellControlsTemplate } from "../components/controls";
 import { TextEditIcon, CodeIcon, EditIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell } from "../types";
-import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../runtime";
+import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } from "../types";
 import { promiseState } from "./javascript/util";
 
 import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
@@ -57,7 +57,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
                 icon: TextEditIcon,
                 tooltip: "Edit as rich text",
                 callback: () => {
-                    setTimeout( () => this.editor && this.editor.focus());
+                    setTimeout(() => this.editor && this.editor.focus());
                     this.enterEditMode("wysiwyg");
                 }
             };
@@ -67,7 +67,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
                 icon: CodeIcon,
                 tooltip: "Edit markdown source directly",
                 callback: () => {
-                    setTimeout( () => this.editor && this.editor.focus());
+                    setTimeout(() => this.editor && this.editor.focus());
                     this.enterEditMode("code");
                 }
             };
@@ -77,7 +77,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
                 tooltip: "Edit Markdown",
                 callback: () => {
                     this.enterEditMode(DEFAULT_EDIT_MODE);
-                    setTimeout( () => this.editor && this.editor.focus());
+                    setTimeout(() => this.editor && this.editor.focus());
                 },
             };
         }
@@ -101,9 +101,9 @@ export class MarkdownCellHandler extends BaseCellHandler {
         });
 
         // The cell itself loses focus to somewhere outside of the cell, in that case we just render Markdown itself again.
-        topElement.parentElement!.addEventListener("focusout", (event: FocusEvent) => {
+        this.elements.cell.addEventListener("focusout", (event: FocusEvent) => {
             if (this.editMode !== "display" && (!event.relatedTarget || !hasParentWithId(event.relatedTarget as HTMLElement, this.cell.id))) {
-                setTimeout( () => { // Workaround for some plugins (prosemirror-math) focusing later in the same tick.
+                setTimeout(() => { // Workaround for some plugins (prosemirror-math) focusing later in the same tick.
                     if (!hasParentWithId(document.activeElement, this.cell.id)) {
                         this.run();
                     }
@@ -164,7 +164,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
 
     focusEditor() {
         this.enterEditMode(DEFAULT_EDIT_MODE);
-        setTimeout( () => this.editor && this.editor.focus());
+        setTimeout(() => this.editor && this.editor.focus());
         if (this.editor) {
             this.editor.focus();
         }

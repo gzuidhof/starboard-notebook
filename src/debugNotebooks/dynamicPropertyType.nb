@@ -1,0 +1,19 @@
+# %%--- [markdown]
+# properties:
+#   my_property: true
+# ---%%
+# Custom cell property
+
+In this notebook we register a custom cell type which compiles [Coffeescript](https://coffeescript.org/#overview) code and displays the transpiled code.
+# %%--- [esm]
+# properties:
+#   run_on_load: true
+#   my_property: true
+# ---%%
+runtime.definitions.cellProperties.register("my_property", {
+    name: "Custom property",
+    textEnabled: "My Custom Property Enabled",
+    textDisabled: "My Custom Property Disabled",
+    cellProperty: "my_property",
+    icon: () => "MYPROPERTY",
+});
