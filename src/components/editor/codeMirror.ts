@@ -175,32 +175,28 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
     const cellSwitchExtension = keymap.of([
         { key: "ArrowUp", run: (target) => { 
                 if(target.state.selection.ranges.length === 1 && target.state.selection.ranges[0].empty) {
-                    let firstLine = target.state.doc.line(1);
-                    let cursorPosition = target.state.selection.ranges[0].head;
+                    const firstLine = target.state.doc.line(1);
+                    const cursorPosition = target.state.selection.ranges[0].head;
                     if(firstLine.from <= cursorPosition && cursorPosition <= firstLine.to) {
-                        _runtime.controls.emit({id: cell.id, type: "RUN_CELL", focusNext: "before"});
-                        return true
-                    } else {
-                        return false;
+                        _runtime.controls.emit({id: cell.id, type: "FOCUS_CELL", focus: "previous"});
+                        return true;
                     }
-                } else {
-                    return false; 
                 }
+                return false; 
+                
             }
         },
         { key: "ArrowDown", run: (target) => { 
-                if(target.state.selection.ranges.length == 1 && target.state.selection.ranges[0].empty) {
-                    let lastline = target.state.doc.line(target.state.doc.lines);
-                    let cursorPosition = target.state.selection.ranges[0].head;
+                if(target.state.selection.ranges.length === 1 && target.state.selection.ranges[0].empty) {
+                    const lastline = target.state.doc.line(target.state.doc.lines);
+                    const cursorPosition = target.state.selection.ranges[0].head;
                     if(lastline.from <= cursorPosition && cursorPosition <= lastline.to) {
-                        _runtime.controls.emit({id: cell.id, type: "RUN_CELL", focusNext: "after"});
-                        return true
-                    } else {
-                        return false;
+                        _runtime.controls.emit({id: cell.id, type: "FOCUS_CELL", focus: "next"});
+                        return true;
                     }
-                } else {
-                    return false; 
                 }
+                return false; 
+                
             }
         }]);
 

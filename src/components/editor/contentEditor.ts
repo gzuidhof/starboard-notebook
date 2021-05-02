@@ -6,6 +6,7 @@ import { customElement, LitElement, property } from "lit-element";
 import { TextSelection } from "prosemirror-state";
 import type { EditorView } from "prosemirror-view";
 import { Cell, Runtime } from '../../types';
+import { ContentContainer } from "./prosemirror/module";
 
 const prosemirrorPromise = import(/* webpackChunkName: "prosemirror", webpackPrefetch: true */ "./prosemirror/module");
 
@@ -22,20 +23,20 @@ prosemirrorPromise.then(pm => prosemirrorModule = pm);
 export class StarboardContentEditor extends LitElement {
     view?: EditorView<any>;
 
-    private cell: Cell;
+    private content: ContentContainer;
     private runtime: Runtime;
 
     createRenderRoot() {
         return this;
     }
 
-    constructor(cell: Cell, runtime: Runtime, opts: {focusAfterInit?: boolean} = {}) {
+    constructor(content: ContentContainer, runtime: Runtime, opts: {focusAfterInit?: boolean} = {}) {
         super();
         this.runtime = runtime;
-        this.cell = cell;
+        this.content = content;
         
         prosemirrorPromise.then(pm => {
-            this.view = pm.createProseMirrorEditor(this, this.cell, opts as any, this.runtime)
+            this.view = pm.createProseMirrorEditor(this, this.content, this.runtime, opts)
             
             if (opts.focusAfterInit) {
                 // TODO: why is the timeout necessary here? Can we do without?
@@ -61,7 +62,6 @@ export class StarboardContentEditor extends LitElement {
 
         prosemirrorPromise.then(pm => {
             if (this.view) {
-                // this.view.updateState(pm.createEditorState({content: this.content})); // TODO: dunno
                 this.querySelector(".ProseMirror")!.classList.add("markdown-body");
             } else {
                 console.warn("ProseMirror plugin: view is undefined in connected callback");
@@ -74,7 +74,7 @@ export class StarboardContentEditor extends LitElement {
         if (prosemirrorModule && this.view) {
             return prosemirrorModule.defaultMarkdownSerializer.serialize(this.view.state.doc);
         }
-        return this.cell.textContent;
+        return this.content.textContent;
     }
 
     focus() {

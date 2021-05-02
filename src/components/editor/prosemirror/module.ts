@@ -23,10 +23,10 @@ export { EditorView, EditorState, Plugin, defaultMarkdownSerializer };
 const schema = createSchema();
 const parser = createMarkdownParser(schema);
 
-export function createProseMirrorEditor(element: HTMLElement, cell: Cell, opts: { focusAfterInit?: boolean }, runtime: Runtime) {
-    let editorView = new EditorView(element, {
+export function createProseMirrorEditor(element: HTMLElement, content: ContentContainer, runtime: Runtime, opts: { focusAfterInit?: boolean } = {}) {
+    const editorView = new EditorView(element, {
         state: EditorState.create({
-            doc: parser.parse(cell.textContent),
+            doc: parser.parse(content.textContent),
             plugins: [
                 keymap({
                     "ArrowDown": function (state, dispatch, view) {
@@ -47,7 +47,7 @@ export function createProseMirrorEditor(element: HTMLElement, cell: Cell, opts: 
                     view: () => {
                         return {
                             update: debounce((view: EditorView) => {
-                                cell.textContent = defaultMarkdownSerializer.serialize(view.state.doc);
+                                content.textContent = defaultMarkdownSerializer.serialize(view.state.doc);
                             }, 50)
                         };
                     },

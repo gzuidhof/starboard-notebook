@@ -11,18 +11,25 @@ import { CellElement } from "src/components/cell";
   * Events that can be sent from the cell for central handling in the notebook component.
   */
  export type CellEvent =
-     { id: string; type: "RUN_CELL"; focusNext?: "before" | "after"; insertNewCell?: boolean }
+     { id: string; type: "RUN_CELL"; focus?: "previous" | "next"; insertNewCell?: boolean }
      | { id: string; type: "INSERT_CELL"; position: "before" | "after"; data?: Partial<Cell> }
      | { id: string; type: "REMOVE_CELL" }
      | { id: string; type: "CHANGE_CELL_TYPE"; newCellType: string }
      | { id: string; type: "RESET_CELL"}
+     | { id: string; type: "FOCUS_CELL"; focus?: "previous" | "next"; }
      | { type: "SAVE" };
  
- 
+/**
+ * The backing data for an editor
+ */
+export interface ContentContainer {
+    textContent: string;
+}
+
  /**
   * The backing data for a cell, can be JSON serialized or converted to a notebook string.
   */
- export interface Cell {
+ export interface Cell extends ContentContainer {
      /**
       * An identifier such as "javascript" or "markdown" for Javascript and Markdown respectively.
       */
