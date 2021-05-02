@@ -5,6 +5,8 @@
 import { customElement, LitElement, property } from "lit-element";
 import { TextSelection } from "prosemirror-state";
 import type { EditorView } from "prosemirror-view";
+import { Cell, Runtime } from '../../types';
+import { ContentContainer } from "./prosemirror/module";
 
 const prosemirrorPromise = import(/* webpackChunkName: "prosemirror", webpackPrefetch: true */ "./prosemirror/module");
 
@@ -15,34 +17,27 @@ let prosemirrorModule: ProsemirrorModule | undefined;
 prosemirrorPromise.then(pm => prosemirrorModule = pm);
 
 /**
- * Note: Cell implements this interface.
- */
-export interface ContentContainer {
-    textContent: string;
-}
-
-/**
  * The main WYSIWYM (what you see is what you mean) content editor for Markdown content in Starboard.
  */
 @customElement('starboard-content-editor')
 export class StarboardContentEditor extends LitElement {
     view?: EditorView<any>;
 
-    @property({type: Object})
-    content: ContentContainer;
+    private content: ContentContainer;
+    private runtime: Runtime;
 
     createRenderRoot() {
         return this;
     }
 
-    constructor(content: ContentContainer = {textContent: ""}, opts: {focusAfterInit?: boolean} = {}) {
+    constructor(content: ContentContainer, runtime: Runtime, opts: {focusAfterInit?: boolean} = {}) {
         super();
+        this.runtime = runtime;
         this.content = content;
         
         prosemirrorPromise.then(pm => {
-            this.view = new pm.EditorView(this, {
-                state: pm.createEditorState({content: this.content}),
-            });
+            this.view = pm.createProseMirrorEditor(this, this.content, this.runtime, opts)
+            
             if (opts.focusAfterInit) {
                 // TODO: why is the timeout necessary here? Can we do without?
                 setTimeout((_: any) => this.focus());
@@ -67,7 +62,6 @@ export class StarboardContentEditor extends LitElement {
 
         prosemirrorPromise.then(pm => {
             if (this.view) {
-                this.view.updateState(pm.createEditorState({content: this.content}));
                 this.querySelector(".ProseMirror")!.classList.add("markdown-body");
             } else {
                 console.warn("ProseMirror plugin: view is undefined in connected callback");

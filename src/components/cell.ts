@@ -66,11 +66,11 @@ export class CellElement extends LitElement {
         this.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
                 if (event.ctrlKey) {
-                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: false, insertNewCell: false });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL"});
                 } else if (event.shiftKey) {
-                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: true, insertNewCell: false });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focus: "next" });
                 } else if (event.altKey) {
-                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focusNextCell: true, insertNewCell: true });
+                    this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL", focus: "next", insertNewCell: true });
                 }
             }
         });

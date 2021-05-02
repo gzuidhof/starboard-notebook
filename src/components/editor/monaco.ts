@@ -86,7 +86,7 @@ function addEditorKeyboardShortcuts(
         contextMenuGroupId: 'starboard',
         contextMenuOrder: 0,
         run: (_ed) => emit({
-            id: cellId, type: "RUN_CELL", focusNextCell: false, insertNewCell: false
+            id: cellId, type: "RUN_CELL"
         })
     });
 
@@ -98,8 +98,41 @@ function addEditorKeyboardShortcuts(
         contextMenuGroupId: 'starboard',
         contextMenuOrder: 1,
         run: (_ed) => emit({
-            id: cellId, type: "RUN_CELL", focusNextCell: true, insertNewCell: false
+            id: cellId, type: "RUN_CELL", focus: "next"
         })
+    });
+
+    editor.addAction({
+        id: 'focus-next-cell',
+        label: 'Select Next Cell',
+        keybindings: [monaco.KeyCode.DownArrow],
+
+        contextMenuGroupId: 'starboard',
+        contextMenuOrder: 2,
+        run: (_ed) => {
+            const lastLine = _ed.getModel()?.getLineCount();
+            if(lastLine !== undefined && _ed.getPosition()?.lineNumber === lastLine) {
+                emit({
+                    id: cellId, type: "FOCUS_CELL", focus: "next"
+                })
+            }
+        }
+    });
+
+    editor.addAction({
+        id: 'focus-previous-cell',
+        label: 'Select Previous Cell',
+        keybindings: [monaco.KeyCode.UpArrow],
+
+        contextMenuGroupId: 'starboard',
+        contextMenuOrder: 2,
+        run: (_ed) => {
+            if(_ed.getPosition()?.lineNumber === 1) {
+                emit({
+                    id: cellId, type: "FOCUS_CELL", focus: "previous"
+                })
+            }
+        }
     });
 
     editor.addAction({
@@ -110,7 +143,7 @@ function addEditorKeyboardShortcuts(
         contextMenuGroupId: 'starboard',
         contextMenuOrder: 2,
         run: (_ed) => emit({
-            id: cellId, type: "RUN_CELL", focusNextCell: true, insertNewCell: true
+            id: cellId, type: "RUN_CELL", focus: "next", insertNewCell: true
         })
     });
 

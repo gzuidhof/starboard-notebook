@@ -114,7 +114,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       notebook.performUpdate();
     },
 
-    runCell(id: string, focusNext: boolean, insertNewCell: boolean) {
+    runCell(id: string, focus?: "previous" | "next", insertNewCell?: boolean) {
       let cellElements = rt.dom.cells;
 
       let idxOfCell = -1;
@@ -129,12 +129,46 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
       if (insertNewCell) {
         controls.insertCell({}, "after", id);
-      }
-      if (focusNext) {
         cellElements = rt.dom.cells;
+      }
+      if (focus === "previous") {
+        window.setTimeout(() => {
+          const next = cellElements[idxOfCell - 1];
+          if (next) next.focusEditor();
+        });
+      } else if(focus === "next") {
         window.setTimeout(() => {
           const next = cellElements[idxOfCell + 1];
+          if (next) {
+            next.focusEditor();
+          }
+        });
+      }
+    },
+
+    focusCell(id: string, focus?: "previous" | "next") {
+      const cellElements = rt.dom.cells;
+
+      let idxOfCell = -1;
+      for (let i = 0; i < cellElements.length; i++) {
+        const cellElement = cellElements[i];
+        if (cellElement.cell.id === id) {
+          idxOfCell = i;
+          break; // IDs should be unique, so after we find it we can stop searching.
+        }
+      }
+
+      if (focus === "previous") {
+        window.setTimeout(() => {
+          const next = cellElements[idxOfCell - 1];
           if (next) next.focusEditor();
+        });
+      } else if(focus === "next") {
+        window.setTimeout(() => {
+          const next = cellElements[idxOfCell + 1];
+          if (next) {
+            next.focusEditor();
+          }
         });
       }
     },
@@ -189,7 +223,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
     emit(event: CellEvent) {
       if (event.type === "RUN_CELL") {
-        controls.runCell(event.id, !!event.focusNextCell, !!event.insertNewCell);
+        controls.runCell(event.id, event.focus, !!event.insertNewCell);
       } else if (event.type === "INSERT_CELL") {
         controls.insertCell(event.data || {}, event.position, event.id);
       } else if (event.type === "REMOVE_CELL") {
@@ -198,6 +232,8 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         controls.changeCellType(event.id, event.newCellType);
       } else if (event.type === "RESET_CELL") {
         controls.resetCell(event.id);
+      } else if (event.type === "FOCUS_CELL") {
+        controls.focusCell(event.id, event.focus);
       } else if (event.type === "SAVE") {
         controls.save();
       }
