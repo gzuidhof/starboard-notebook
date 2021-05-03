@@ -46,18 +46,10 @@ export class CellTypePicker extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.performUpdate();
-
-    setTimeout(() => {
-      // Hack to ensure the iframe is not super tiny at this point
-      // We could consider modifying body instead
-      const dims = this.getBoundingClientRect();
-      (document.querySelector("starboard-notebook")! as HTMLElement).style.minHeight = dims.height + "px";
-    });
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    (document.querySelector("starboard-notebook")! as HTMLElement).style.minHeight = "unset";
   }
 
   setHighlightedCellType(highlightCellType: string) {
@@ -95,6 +87,7 @@ export class CellTypePicker extends LitElement {
   render() {
     return html`
     <!-- <div data-popper-arrow></div> -->
+    <starboard-ensure-parent-fits></starboard-ensure-parent-fits>
     <div class="inner">
         <nav class="sidebar">
         <h6 class="dropdown-header">Select Cell Type</h6>

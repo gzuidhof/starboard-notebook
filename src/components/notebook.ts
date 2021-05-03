@@ -4,6 +4,7 @@
 
 import { LitElement, html, customElement, query, property } from 'lit-element';
 import { CellElement } from './cell';
+import './helpers/minimumBodySize'; // registers starboard-ensure-fits
 import { IFramePage } from 'iframe-resizer';
 import { createCellProxy } from './helpers/cellProxy';
 import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';

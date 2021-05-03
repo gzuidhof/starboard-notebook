@@ -71,7 +71,7 @@ export class InsertionLine extends LitElement {
         };
 
         document.addEventListener("click", listener);
-        const pop = createPopper(btn, globalCellTypePicker, {placement: "right-start"});
+        const pop = createPopper(btn, globalCellTypePicker, {placement: "right-start", strategy: "fixed"});
         const parent = this.parentElement;
 
         if (parent && parent instanceof CellElement) {

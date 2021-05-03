@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.8.15
+**Date:** Unreleased
+
+* The iframe now resizes to at least show dropdown menus.
+
 ## Release 0.8.14
 **Date:** 2021-05-02
 

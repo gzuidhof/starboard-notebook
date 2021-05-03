@@ -170,6 +170,7 @@ export class CellElement extends LitElement {
                 <div class="dropdown">
                     <button data-bs-toggle="dropdown" title="Change Cell Type" class="btn cell-controls-button cell-controls-button-language auto-hide" @click=${/*(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)*/()=>0}>${this.cellTypeDefinition.name}</button>
                     <div class="dropdown-menu" style="min-width: 244px">
+                        <starboard-ensure-parent-fits></starboard-ensure-parent-fits>
                         <li><h6 class="dropdown-header">Change Cell Type</h6></li>
                         ${getAvailableCellTypes().map((ct) => {
                             const ctString = typeof ct.cellType === "string" ? ct.cellType : ct.cellType[0];
@@ -190,6 +191,7 @@ export class CellElement extends LitElement {
                     </button>
 
                     <div class="dropdown-menu" style="min-width: 244px">
+                        <starboard-ensure-parent-fits></starboard-ensure-parent-fits>
                         <li><h6 class="dropdown-header">Toggle Cell properties</h6></li>
                         ${getPropertiesPopoverIcons(this.cell, (propertyName: string) => this.toggleProperty(propertyName))}
                     </div>
