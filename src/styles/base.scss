@@ -8,9 +8,7 @@ $content-heading-color: $text-strong !default;
 $content-heading-weight: $weight-bold !default;
 $content-heading-line-height: 1.125 !default;
 
-$content-blockquote-background-color: var(
-  --blockquote-background-color
-) !default;
+$content-blockquote-background-color: var(--blockquote-background-color) !default;
 $content-blockquote-padding: 1.25em 1.5em !default;
 
 $content-pre-padding: 1.25em 1.5em !default;
@@ -98,9 +96,7 @@ li > p {
 
 hr:first-child {
   margin-top: calc(var(--hr-thickness) / -2);
-  margin-bottom: calc(
-    var(--content-line-height) - calc(var(--hr-thickness) / 2)
-  );
+  margin-bottom: calc(var(--content-line-height) - calc(var(--hr-thickness) / 2));
 }
 
 hr:last-child {
@@ -114,9 +110,7 @@ hr:only-child {
   background: var(--hr-color);
   height: var(--hr-thickness);
   margin-top: calc(var(--content-line-height) - calc(var(--hr-thickness) / 2));
-  margin-bottom: calc(
-    var(--content-line-height) - calc(var(--hr-thickness) / 2)
-  );
+  margin-bottom: calc(var(--content-line-height) - calc(var(--hr-thickness) / 2));
 }
 
 * + hr:last-child {

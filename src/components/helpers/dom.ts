@@ -8,13 +8,13 @@
  * @param parent
  * @param child element to be inserted
  * @param index where to insert, should be a positive number, defaults to 0.
-*/
+ */
 export function insertHTMLChildAtIndex(parent: HTMLElement, child: HTMLElement, index = 0) {
-    if (index >= parent.children.length) {
-      parent.appendChild(child);
-    } else {
-      parent.insertBefore(child, parent.children[index]);
-    }
+  if (index >= parent.children.length) {
+    parent.appendChild(child);
+  } else {
+    parent.insertBefore(child, parent.children[index]);
+  }
 }
 
 export function hasParentWithId(el: HTMLElement | Element | null, id: string) {
@@ -22,17 +22,17 @@ export function hasParentWithId(el: HTMLElement | Element | null, id: string) {
 
   let isChild = false;
 
-  if (el.id === id) { //is this the element itself?
+  if (el.id === id) {
+    //is this the element itself?
     isChild = true;
   }
 
   // eslint-disable-next-line no-cond-assign
-  while (el = el.parentNode as HTMLElement) {
+  while ((el = el.parentNode as HTMLElement)) {
     if (el.id == id) {
       isChild = true;
     }
   }
-  
-  return isChild;
 
+  return isChild;
 }

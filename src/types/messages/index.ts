@@ -14,6 +14,6 @@ export type NotebookMessageContentData = string;
  * The base type of a message sent to or from an iframe containing a Starboard Notebook.
  */
 export type NotebookMessage<Name extends string, PayloadType> = {
-    type: Name;
-    payload: PayloadType;
+  type: Name;
+  payload: PayloadType;
 };

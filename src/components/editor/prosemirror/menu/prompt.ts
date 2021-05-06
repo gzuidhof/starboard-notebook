@@ -9,7 +9,9 @@ export function openPrompt(options: any) {
   const wrapper = document.body.appendChild(document.createElement("div"));
   wrapper.className = prefix;
 
-  const mouseOutside = (e: any) => { if (!wrapper.contains(e.target)) close(); };
+  const mouseOutside = (e: any) => {
+    if (!wrapper.contains(e.target)) close();
+  };
   setTimeout(() => window.addEventListener("mousedown", mouseOutside), 50);
   const close = () => {
     window.removeEventListener("mousedown", mouseOutside);
@@ -17,7 +19,9 @@ export function openPrompt(options: any) {
   };
 
   const domFields: HTMLElement[] = [];
-  for (const name in options.fields) domFields.push(options.fields[name].render());
+  for (const name in options.fields) {
+    domFields.push(options.fields[name].render());
+  }
 
   const submitButton = document.createElement("button");
   submitButton.type = "submit";
@@ -30,8 +34,10 @@ export function openPrompt(options: any) {
   cancelButton.addEventListener("click", close);
 
   const form = wrapper.appendChild(document.createElement("form"));
-  if (options.title) form.appendChild(document.createElement("h5")).textContent = options.title;
-  domFields.forEach(field => {
+  if (options.title) {
+    form.appendChild(document.createElement("h5")).textContent = options.title;
+  }
+  domFields.forEach((field) => {
     form.appendChild(document.createElement("div")).appendChild(field);
   });
   const buttons = form.appendChild(document.createElement("div"));
@@ -41,8 +47,8 @@ export function openPrompt(options: any) {
   buttons.appendChild(cancelButton);
 
   const box = wrapper.getBoundingClientRect();
-  wrapper.style.top = ((window.innerHeight - box.height) / 2) + "px";
-  wrapper.style.left = ((window.innerWidth - box.width) / 2) + "px";
+  wrapper.style.top = (window.innerHeight - box.height) / 2 + "px";
+  wrapper.style.left = (window.innerWidth - box.width) / 2 + "px";
 
   const submit = () => {
     const params = getValues(options.fields, domFields);
@@ -52,12 +58,12 @@ export function openPrompt(options: any) {
     }
   };
 
-  form.addEventListener("submit", e => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
     submit();
   });
 
-  form.addEventListener("keydown", e => {
+  form.addEventListener("keydown", (e) => {
     if (e.keyCode == 27) {
       e.preventDefault();
       close();
@@ -77,10 +83,13 @@ export function openPrompt(options: any) {
 
 function getValues(fields: any, domFields: any) {
   // eslint-disable-next-line prefer-const
-  let result = Object.create(null), i = 0;
+  let result = Object.create(null),
+    i = 0;
   for (const name in fields) {
-    const field = fields[name], dom = domFields[i++];
-    const value = field.read(dom), bad = field.validate(value);
+    const field = fields[name],
+      dom = domFields[i++];
+    const value = field.read(dom),
+      bad = field.validate(value);
     if (bad) {
       reportInvalid(dom, bad);
       return null;
@@ -94,8 +103,8 @@ function reportInvalid(dom: HTMLElement, message: string) {
   // FIXME this is awful and needs a lot more work
   const parent = dom.parentNode;
   const msg = parent!.appendChild(document.createElement("div"));
-  msg.style.left = (dom.offsetLeft + dom.offsetWidth + 2) + "px";
-  msg.style.top = (dom.offsetTop - 5) + "px";
+  msg.style.left = dom.offsetLeft + dom.offsetWidth + 2 + "px";
+  msg.style.top = dom.offsetTop - 5 + "px";
   msg.className = "ProseMirror-invalid";
   msg.textContent = message;
   setTimeout(() => parent!.removeChild(msg), 1500);
@@ -129,22 +138,29 @@ export class Field {
   // **`validate`**`: ?(any) → ?string`
   //   : A function to validate the given value. Should return an
   //     error message if it is not valid.
-  constructor(options: FieldOptions) { this.options = options; }
+  constructor(options: FieldOptions) {
+    this.options = options;
+  }
 
   // render:: (state: EditorState, props: Object) → dom.Node
   // Render the field to the DOM. Should be implemented by all subclasses.
 
   // :: (dom.Node) → any
   // Read the field's value from its DOM node.
-  read(dom: {value: string | null | undefined}) { return dom.value; }
+  read(dom: { value: string | null | undefined }) {
+    return dom.value;
+  }
 
   // :: (any) → ?string
   // A field-type-specific validation function.
-  validateType(_value: any) {return undefined;}
+  validateType(_value: any) {
+    return undefined;
+  }
 
   validate(value: any) {
-    if (!value && this.options.required)
+    if (!value && this.options.required) {
       return "Required field";
+    }
     return this.validateType(value) || (this.options.validate && this.options.validate(value));
   }
 
@@ -164,7 +180,6 @@ export class TextField extends Field {
     return input;
   }
 }
-
 
 // ::- A field class for dropdown fields based on a plain `<select>`
 // tag. Expects an option `options`, which should be an array of

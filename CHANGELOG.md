@@ -8,6 +8,7 @@
 * Update to Monaco version `0.23.0`.
 * Fix code editor showing `loading CodeMirror editor` even though it is loading Monaco when the default is set to CodeMirror.
 * *Breaking change for plugin developers using the plugin `options` parameter*: plugins now receive the runtime as the first argument in the register function.
+* Update ESlint to latest version, all code is now formatted using prettier.
 
 ## Release 0.8.14
 **Date:** 2021-05-02

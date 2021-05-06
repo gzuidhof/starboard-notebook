@@ -3,11 +3,11 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 @font-face {
-    font-family: "Inter var";
-    font-weight: 200 900;
-    font-display: swap;
-    src: local("Inter var"), url(../../static/fonts/inter.var.woff2?v=3.15) format("woff2")
-}  
+  font-family: "Inter var";
+  font-weight: 200 900;
+  font-display: swap;
+  src: local("Inter var"), url(../../static/fonts/inter.var.woff2?v=3.15) format("woff2");
+}
 
 $brand-color: #5e5ef8;
 $primary: $brand-color;
@@ -27,160 +27,156 @@ $border-radius: var(--border-radius);
 @import "./prosemirror.scss";
 @import "./math.scss";
 
-
-
 :root {
-    --font-sans: "Inter var", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-    --font-mono: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace;
-    --font-size: 14px;
+  --font-sans: "Inter var", BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+  --font-mono: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New",
+    monospace;
+  --font-size: 14px;
 
-    --bs-font-sans-serif: var(--font-sans);
-    --bs-font-monospace: var(--font-mono);
-    
+  --bs-font-sans-serif: var(--font-sans);
+  --bs-font-monospace: var(--font-mono);
 
-    --h1-size: 2.3rem;
-    --h2-size: 2.0rem;
-    --h3-size: 1.4rem;
-    --h4-size: 1.1rem;
-    --line-height: calc(var(--font-size) * 1.5);
-    
-    --content-font-size: 16px;
-    --content-line-height: calc(var(--content-font-size) * 1.5);
-    --content-baseline: calc(var(--content-line-height) / 2);
+  --h1-size: 2.3rem;
+  --h2-size: 2rem;
+  --h3-size: 1.4rem;
+  --h4-size: 1.1rem;
+  --line-height: calc(var(--font-size) * 1.5);
 
-    --cell-base-width: 980px;
-    --cell-margin-left: 34px;
-    --cell-margin-right: 6px;
+  --content-font-size: 16px;
+  --content-line-height: calc(var(--content-font-size) * 1.5);
+  --content-baseline: calc(var(--content-line-height) / 2);
 
-    --brand-color: #5e5ef8;
+  --cell-base-width: 980px;
+  --cell-margin-left: 34px;
+  --cell-margin-right: 6px;
 
-    --background-color: #fff;
-    --background-color-secondary: #fdfdfd;  
-    --background-color-tertiary: #f7f7f7;
-    --foreground-color: #3d3d3d;
-    --foreground-color-secondary: #4c4c4c;
-    --foreground-color-tertiary: #777;
+  --brand-color: #5e5ef8;
 
-    --code-background-color: #fafafa;
+  --background-color: #fff;
+  --background-color-secondary: #fdfdfd;
+  --background-color-tertiary: #f7f7f7;
+  --foreground-color: #3d3d3d;
+  --foreground-color-secondary: #4c4c4c;
+  --foreground-color-tertiary: #777;
 
-    --editor-line-number-color: #ccc;
+  --code-background-color: #fafafa;
 
-    --block-spacing-top: 0;
-    --block-spacing-bottom: var(--font-size);
+  --editor-line-number-color: #ccc;
 
-    --text-color: var(--forceground-color);
-    --text-color-secondary: var(--foreground-color-secondary);
-    --text-color-tertiary: var(--foreground-color-tertiary);
-    --link-color: var(--brand-color);
+  --block-spacing-top: 0;
+  --block-spacing-bottom: var(--font-size);
 
-    --border-color: #e2e2e2;
-    --border-color-secondary: #ececec;
-    --border-radius: 7px;
+  --text-color: var(--forceground-color);
+  --text-color-secondary: var(--foreground-color-secondary);
+  --text-color-tertiary: var(--foreground-color-tertiary);
+  --link-color: var(--brand-color);
 
-    --hr-thickness: 2px;
-    --hr-color: var(--border-color);
+  --border-color: #e2e2e2;
+  --border-color-secondary: #ececec;
+  --border-radius: 7px;
 
-    --blockquote-background-color: #f8f8f8;
-    --blockquote-text-color: var(--foreground-color-secondary);
-    --blockquote-border-left-color: #ececec; 
+  --hr-thickness: 2px;
+  --hr-color: var(--border-color);
 
-    --insertion-line-color: #eee;
-    --insertion-line-plus-color: #e4e4e4;
+  --blockquote-background-color: #f8f8f8;
+  --blockquote-text-color: var(--foreground-color-secondary);
+  --blockquote-border-left-color: #ececec;
 
-    // Cell styling
-    --controls-color: #999;
-    --cell-collapsed-line-color: var(--code-background-color);
+  --insertion-line-color: #eee;
+  --insertion-line-plus-color: #e4e4e4;
 
-    --gutter-background-color: var(--background-color);
-    --gutter-selected-background-color: var(--background-color-tertiary);
+  // Cell styling
+  --controls-color: #999;
+  --cell-collapsed-line-color: var(--code-background-color);
+
+  --gutter-background-color: var(--background-color);
+  --gutter-selected-background-color: var(--background-color-tertiary);
 }
 
-
 @media only screen and (max-width: 768px) {
-
-    :root {
-        --cell-margin-left: 26px;
-        --cell-margin-right: 4px;
-    }
+  :root {
+    --cell-margin-left: 26px;
+    --cell-margin-right: 4px;
+  }
 }
 
 @media only screen and (max-width: 576px) {
-
-    :root {
-        --cell-margin-left: 22px;
-    }
+  :root {
+    --cell-margin-left: 22px;
+  }
 }
 
 .markdown-body {
-    font-size: var(--content-font-size);
+  font-size: var(--content-font-size);
 }
 
-
 html {
-    font-family: var(--font-sans), -system-ui, system-ui, sans-serif;
-    font-size: var(--font-size);
-    line-height: var(--line-height);
-    background: var(--background-color);
-    color: var(--foreground-color);
-    text-size-adjust: 100%;
-    font-variant-ligatures: contextual common-ligatures;
-    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1, 'cv10' 1;
-    display: flex;
+  font-family: var(--font-sans), -system-ui, system-ui, sans-serif;
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  background: var(--background-color);
+  color: var(--foreground-color);
+  text-size-adjust: 100%;
+  font-variant-ligatures: contextual common-ligatures;
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "cv10" 1;
+  display: flex;
 }
 
 html,
 body {
-    max-width: 100%;
-    height: auto;
-    margin: 0;
-    padding: 0;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
 }
 
 starboard-notebook {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    font-family: var(--font-sans);
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  font-family: var(--font-sans);
 }
 
 b {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 i {
-    font-style: italic;
+  font-style: italic;
 }
 
 .cells-container {
-    background-color: var(--background-color);
-    padding-bottom: 0.75em;
+  background-color: var(--background-color);
+  padding-bottom: 0.75em;
 }
 
 .starboard-notebook-footer {
-    height: 22px;
+  height: 22px;
 }
-
 
 .starboard-notebook-footer-content {
-    grid-column: content-start / content-end;
+  grid-column: content-start / content-end;
 }
 
 .starboard-notebook-footer {
-    a, span, button {
-        color: #bbb;
-        font-size: 11px;
-        text-decoration: none;
-    }
+  a,
+  span,
+  button {
+    color: #bbb;
+    font-size: 11px;
+    text-decoration: none;
+  }
 }
 
 .starboard-notebook-footer a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .force-display {
-    display: initial !important;
+  display: initial !important;
 }
 
 .hidden {
-    display: hidden;
+  display: hidden;
 }

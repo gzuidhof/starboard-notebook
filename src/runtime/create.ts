@@ -4,17 +4,23 @@
 
 /* This file is internal and should never be imported externally if using starboard-notebook as a library */
 
-import { Runtime, CellEvent, RuntimeControls, RuntimeConfig, Cell, MapRegistry } from "../types";
+import { Cell, CellEvent, MapRegistry, Runtime, RuntimeConfig, RuntimeControls } from "../types";
 import { StarboardNotebookElement } from "../components/notebook";
 import { textToNotebookContent } from "../content/parsing";
 import { ConsoleCatcher } from "../console/console";
 import { registry as cellTypeRegistry } from "../cellTypes/registry";
 import { registry as cellPropertiesRegistry } from "../cellProperties/registry";
-import { addCellToNotebookContent, removeCellFromNotebookById, changeCellType } from "../content/notebookContent";
+import { addCellToNotebookContent, changeCellType, removeCellFromNotebookById } from "../content/notebookContent";
 import { notebookContentToText } from "../content/serialization";
 import { debounce } from "@github/mini-throttle";
 import { CellElement } from "../components/cell";
-import { registerDefaultPlugins, setupCommunicationWithParentFrame, setupGlobalKeybindings, updateCellsWhenCellDefinitionChanges, updateCellsWhenPropertyGetsDefined } from "./core";
+import {
+  registerDefaultPlugins,
+  setupCommunicationWithParentFrame,
+  setupGlobalKeybindings,
+  updateCellsWhenCellDefinitionChanges,
+  updateCellsWhenPropertyGetsDefined,
+} from "./core";
 import { createExports } from "./exports";
 import { OutboundNotebookMessage } from "../types/messages";
 import { StarboardPlugin } from "../types/plugins";
@@ -43,7 +49,7 @@ function getConfig() {
   if (window.runtimeConfig) {
     config = {
       ...config,
-      ...window.runtimeConfig
+      ...window.runtimeConfig,
     };
   }
   return config;
@@ -73,8 +79,8 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     exports: null as any,
     internal: {
       listeners: {
-        cellContentChanges: new Map<string, (() => void)[]>()
-      }
+        cellContentChanges: new Map<string, (() => void)[]>(),
+      },
     },
     plugins: new MapRegistry<string, any>(),
   };
@@ -96,7 +102,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
     changeCellType(id: string, newCellType: string) {
       changeCellType(rt.content, id, newCellType);
-      rt.dom.cells.forEach(c => {
+      rt.dom.cells.forEach((c) => {
         if (c.cell.id === id) {
           c.remove();
         }
@@ -106,7 +112,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     },
 
     resetCell(id: string) {
-      rt.dom.cells.forEach(c => {
+      rt.dom.cells.forEach((c) => {
         if (c.id === id) {
           c.remove();
         }
@@ -136,7 +142,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
           const next = cellElements[idxOfCell - 1];
           if (next) next.focusEditor();
         });
-      } else if(focus === "next") {
+      } else if (focus === "next") {
         window.setTimeout(() => {
           const next = cellElements[idxOfCell + 1];
           if (next) {
@@ -163,7 +169,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
           const next = cellElements[idxOfCell - 1];
           if (next) next.focusEditor();
         });
-      } else if(focus === "next") {
+      } else if (focus === "next") {
         window.setTimeout(() => {
           const next = cellElements[idxOfCell + 1];
           if (next) {
@@ -175,9 +181,10 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
     save() {
       const couldSave = controls.sendMessage({
-        type: "NOTEBOOK_SAVE_REQUEST", payload: {
-          content: notebookContentToText(rt.content)
-        }
+        type: "NOTEBOOK_SAVE_REQUEST",
+        payload: {
+          content: notebookContentToText(rt.content),
+        },
       });
       if (!couldSave) {
         console.error("Can't save as parent frame is not listening for messages");
@@ -196,7 +203,6 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         }
         cellElement = cellElement.nextSibling as CellElement | null;
       }
-
     },
 
     sendMessage(message: OutboundNotebookMessage, targetOrigin?: string): boolean {
@@ -208,18 +214,16 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     },
 
     /**
-    * To be called when the notebook content text changes in any way.
-    */
-    contentChanged: debounce(
-      function () {
-        controls.sendMessage(({
-          type: "NOTEBOOK_CONTENT_UPDATE", payload: {
-            content: notebookContentToText(rt.content)
-          }
-        }));
-      },
-      100
-    ),
+     * To be called when the notebook content text changes in any way.
+     */
+    contentChanged: debounce(function () {
+      controls.sendMessage({
+        type: "NOTEBOOK_CONTENT_UPDATE",
+        payload: {
+          content: notebookContentToText(rt.content),
+        },
+      });
+    }, 100),
 
     emit(event: CellEvent) {
       if (event.type === "RUN_CELL") {
@@ -260,7 +264,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     async registerPlugin(plugin: StarboardPlugin, opts?: any) {
       await plugin.register(rt, opts);
       rt.plugins.register(plugin.id, plugin);
-    }
+    },
   };
 
   rt.controls = controls;

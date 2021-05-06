@@ -3,9 +3,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 /* Adapted from jsconsole, MIT licensed */
-import { precompileJavascriptCode } from './precompile';
-import { promiseState } from './util';
- 
+import { precompileJavascriptCode } from "./precompile";
+import { promiseState } from "./util";
+
 declare global {
   interface Window {
     $_: any;
@@ -14,9 +14,9 @@ declare global {
 }
 
 interface RunResult {
-    error: boolean;
-    code: string;
-    value?: any;
+  error: boolean;
+  code: string;
+  value?: any;
 }
 
 export class JavascriptEvaluator {
@@ -40,24 +40,25 @@ export class JavascriptEvaluator {
         res.value = "Run error: container or window is null";
         return res;
       }
-      
+
       const cellResult = await window.eval(codeToRun);
       if (cellResult === undefined) {
         res.value = undefined;
-        (window)["$_"] = res.value;
+        window["$_"] = res.value;
         return res;
       }
 
       const state = await promiseState(cellResult.returnValue);
-      if (state === "fulfilled") { // Result is either a promise that was awaited, or an not a promise.
+      if (state === "fulfilled") {
+        // Result is either a promise that was awaited, or an not a promise.
         res.value = await cellResult.returnValue;
-      } else { // Result is a promise that was not awaited, "finish" the cell.
+      } else {
+        // Result is a promise that was not awaited, "finish" the cell.
         res.value = cellResult.returnValue;
       }
-      (window)["$_"] = res.value;
+      window["$_"] = res.value;
 
       return res;
-
     } catch (error) {
       res.error = true;
       res.value = error;

@@ -3,116 +3,117 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 starboard-insertion-line {
-    &.insertion-line-top {
-        // top: 0%;
-        grid-row: above;
-    }
+  &.insertion-line-top {
+    // top: 0%;
+    grid-row: above;
+  }
 
-    &.insertion-line-bottom {
-        top: 100%;
-        grid-row: bottom;
-    }
-    
+  &.insertion-line-bottom {
+    top: 100%;
+    grid-row: bottom;
+  }
+
+  left: 0;
+  right: 0;
+  height: 0;
+  grid-column: margin-left-start / margin-right-end;
+
+  position: relative;
+
+  .hover-area {
+    display: flex;
+    align-items: center;
+
+    position: absolute;
+    height: 8px;
     left: 0;
     right: 0;
-    height: 0;
-    grid-column: margin-left-start / margin-right-end;
-    
+    transform: translateY(-50%);
+    z-index: 1;
+
+    &:hover .insert-button {
+      color: var(--insertion-line-plus-color);
+    }
+  }
+
+  .button-container {
     position: relative;
+    width: var(--cell-margin-left);
+    height: 100%;
+    font-size: 10px;
+    z-index: 2;
+  }
 
-    .hover-area {
-        display: flex;
-        align-items: center;
+  .button-container:nth-child(2) {
+    opacity: 0;
+  }
 
-        position: absolute;
-        height: 8px;
-        left: 0;
-        right: 0;
-        transform: translateY(-50%);
-        z-index: 1;
+  .button-container:nth-child(2):focus-within {
+    opacity: 1;
+    background-color: #ffffffaa;
+  }
 
-        &:hover .insert-button {
-            color: var(--insertion-line-plus-color);
-        }
-    }
+  .button-container:nth-child(2):hover {
+    opacity: 1;
+    background-color: #ffffffaa;
+  }
 
-    .button-container {
-        position: relative;
-        width: var(--cell-margin-left);
-        height: 100%;
-        font-size: 10px;
-        z-index: 2;
-    }
+  .insert-button.plus {
+    right: -11px;
+    width: 28px; // <6 pix padding, 22 pix button (50% of that is 11px)
+  }
 
-    .button-container:nth-child(2) {
-        opacity: 0;
-    }
+  .insert-button {
+    height: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 150ms ease-in-out;
+    position: absolute;
+    padding: 0;
+    padding-left: 6px;
+    background-color: transparent;
+    color: transparent;
 
-    .button-container:nth-child(2):focus-within {
-        opacity: 1;
-        background-color: #ffffffaa;
-    }
+    border: 0;
+    border-radius: 0;
 
-    .button-container:nth-child(2):hover {
-        opacity: 1;
-        background-color: #ffffffaa;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-    .insert-button.plus {
-        right: -11px;
-        width: 28px; // <6 pix padding, 22 pix button (50% of that is 11px)
-    }
-    
-    .insert-button {
-        height: 100%;
-        top: 50%;
-        transform: translateY(-50%);
-        transition: all 150ms ease-in-out;
-        position: absolute;
-        padding: 0;
-        padding-left: 6px;
-        background-color: transparent;
-        color: transparent;
-        
-        border: 0;
-        border-radius: 0;
+  .insert-button:hover {
+    filter: brightness(0.6);
+  }
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+  &:hover .content-line {
+    background-color: var(--insertion-line-color);
+  }
 
-    .insert-button:hover {
-        filter: brightness(0.6);
-    }
+  .content-line {
+    transition: all 150ms ease-in-out;
+    position: absolute;
+    top: 50%;
+    background-color: transparent;
+    transform: translateY(-50%);
+    left: calc(var(--cell-margin-left) + 12px);
+    right: calc(var(--cell-margin-right));
 
-    &:hover .content-line {
-        background-color: var(--insertion-line-color);
-    }
-
-    .content-line {
-        transition: all 150ms ease-in-out;
-        position: absolute;
-        top: 50%;
-        background-color: transparent;
-        transform: translateY(-50%);
-        left: calc(var(--cell-margin-left) + 12px);
-        right: calc(var(--cell-margin-right));
-
-        grid-column: content-start / content-end;
-        height: 2px;
-    }
+    grid-column: content-start / content-end;
+    height: 2px;
+  }
 }
 
 /* Makes the current hovered cell + buttons above visible only, except for the first cell. */
 starboard-cell:not(:first-of-type, :hover) .insertion-line-top {
-    display: none;
+  display: none;
 }
 
-starboard-cell:focus-within * .insert-button, starboard-cell:hover * .insert-button {
-    color: var(--insertion-line-plus-color);
+starboard-cell:focus-within * .insert-button,
+starboard-cell:hover * .insert-button {
+  color: var(--insertion-line-plus-color);
 }
 
 starboard-cell-type-picker {
-    z-index: 100;
+  z-index: 100;
 }

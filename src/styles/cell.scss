@@ -3,76 +3,88 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 .cell-grid {
-    display: grid;
-    grid-template-columns: [full-width-start] auto [margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(auto, calc(min(var(--cell-base-width), 100% - var(--cell-margin-left) - var(--cell-margin-right)))) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
-    grid-template-rows:  20px auto auto;
-    grid-template-areas: 
+  display: grid;
+  grid-template-columns:
+    [full-width-start] auto [margin-left-start] var(--cell-margin-left)
+    [margin-left-end content-start] minmax(
+      auto,
+      calc(min(var(--cell-base-width), 100% - var(--cell-margin-left) - var(--cell-margin-right)))
+    )
+    [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
+  grid-template-rows: 20px auto auto;
+  grid-template-areas:
     "gutter-left-above margin-left-above above margin-right-above gutter-right-above"
     "gutter-left-top margin-left-top top margin-right-top gutter-right-top"
     "gutter-left-bottom margin-left-bottom bottom margin-right-bottom gutter-right-bottom";
 }
 
 .line-grid {
-    display: grid;
-    grid-template-columns: [full-width-start] auto [margin-left-start] var(--cell-margin-left) [margin-left-end content-start] minmax(auto, calc(min(var(--cell-base-width), 100% - var(--cell-margin-left) - var(--cell-margin-right)))) [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
+  display: grid;
+  grid-template-columns:
+    [full-width-start] auto [margin-left-start] var(--cell-margin-left)
+    [margin-left-end content-start] minmax(
+      auto,
+      calc(min(var(--cell-base-width), 100% - var(--cell-margin-left) - var(--cell-margin-right)))
+    )
+    [content-end margin-right-start] var(--cell-margin-right) [margin-right-end] auto [full-width-end];
 }
 
 starboard-cell {
-    animation: starboard-fade-in ease-in 0.15s;
+  animation: starboard-fade-in ease-in 0.15s;
 }
 
 starboard-cell:focus {
-    outline: none;
+  outline: none;
 }
 
 .display-when-collapsed {
-    display: none !important;
+  display: none !important;
 }
 
 starboard-cell:not(:focus):not(:focus-within).property-collapsed {
-    .cell-top,
-    .cell-bottom,
-    .cell-controls-left-top,
-    .cell-controls-left-bottom,
-    .cell-gutter-top,
-    .cell-gutter-bottom {
-        display: none;
-    }
+  .cell-top,
+  .cell-bottom,
+  .cell-controls-left-top,
+  .cell-controls-left-bottom,
+  .cell-gutter-top,
+  .cell-gutter-bottom {
+    display: none;
+  }
 
-    * {
-        .collapsed-cell-line,
-        .display-when-collapsed {
-            display: flex !important;
-        }
+  * {
+    .collapsed-cell-line,
+    .display-when-collapsed {
+      display: flex !important;
     }
+  }
 }
 
 .property-bottom_hidden {
-    .cell-bottom,
-    .cell-controls-left-bottom,
-    .cell-gutter-bottom {
-        display: none;
-    }
+  .cell-bottom,
+  .cell-controls-left-bottom,
+  .cell-gutter-bottom {
+    display: none;
+  }
 }
 
 .property-top_hidden {
-    .cell-top,
-    .cell-controls-left-top,
-    .cell-gutter-top {
-        display: none;
-    }
+  .cell-top,
+  .cell-controls-left-top,
+  .cell-gutter-top {
+    display: none;
+  }
 }
 
 .cell-top {
-    grid-area: top;
-    min-height: 24px;
+  grid-area: top;
+  min-height: 24px;
 }
 
 .cell-bottom {
-    grid-area: bottom;
-    padding-bottom: 0.25em;
+  grid-area: bottom;
+  padding-bottom: 0.25em;
 }
 
 .cell-output-html {
-    overflow-x: auto;
+  overflow-x: auto;
 }
