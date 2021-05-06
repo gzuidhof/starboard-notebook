@@ -23,7 +23,7 @@
     "build:notebook": "webpack --mode=production",
     "build:stats": "rimraf ./dist && mkdir dist && webpack --mode=production --stats normal --json > dist/stats.json",
     "start": "webpack-dev-server --mode=development",
-    "test": "jest",
+    "test": "jest && npm run lint",
     "lint": "eslint src/**/*.ts test/**/*.ts && prettier -c src test",
     "format": "prettier -w src test",
     "prepublishOnly": "npm i && npm t && npm run build"
