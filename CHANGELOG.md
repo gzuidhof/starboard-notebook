@@ -1,9 +1,13 @@
 # Changelog
 
-## Release 0.8.15
-**Date:** Unreleased
+## Release 0.9.0
+**Date:** 2021-05-06
 
-* The iframe now resizes to at least show dropdown menus.
+* The iframe now resizes to at least be able to show dropdown menus.
+* Update to Bootstrap version `5.0.0`.
+* Update to Monaco version `0.23.0`.
+* Fix code editor showing `loading CodeMirror editor` even though it is loading Monaco when the default is set to CodeMirror.
+* *Breaking change for plugin developers using the plugin `options` parameter*: plugins now receive the runtime as the first argument in the register function.
 
 ## Release 0.8.14
 **Date:** 2021-05-02

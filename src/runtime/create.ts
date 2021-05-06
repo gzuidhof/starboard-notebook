@@ -258,7 +258,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     },
 
     async registerPlugin(plugin: StarboardPlugin, opts?: any) {
-      await plugin.register(opts);
+      await plugin.register(rt, opts);
       rt.plugins.register(plugin.id, plugin);
     }
   };

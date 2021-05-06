@@ -98,7 +98,7 @@ export class StarboardTextEditor extends LitElement {
             this.initEditor();
             // While it loads, render markdown
             const mdText =  md.render("```" + `${this.opts.language}\n${this.cell.textContent}\n` + "```");
-            render(html`<div class="cell-popover cell-select-editor-popover">Loading CodeMirror editor..</div>${unsafeHTML(mdText)}`, this.editorMountpoint);
+            render(html`<div class="cell-popover cell-select-editor-popover">Loading ${currentEditor || this.runtime.config.defaultTextEditor} editor..</div>${unsafeHTML(mdText)}`, this.editorMountpoint);
         } else {
             this.editorMountpoint.addEventListener("dblclick", () => this.handleDblClick(), {once: true, passive: true});
             const mdText =  md.render("```" + `${this.opts.language}\n${this.cell.textContent}\n` + "```");
