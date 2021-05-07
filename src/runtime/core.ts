@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { textToNotebookContent } from "../content/parsing";
-import { CellPropertyDefinition, CellTypeDefinition, Runtime, RegistryEvent } from "../types";
+import { CellPropertyDefinition, CellTypeDefinition, RegistryEvent, Runtime } from "../types";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -13,7 +13,7 @@ import { notebookContentToText } from "../content/serialization";
 
 /**
  * When new cell types are registered, or overwritten, the corresponding cells should update.
- * For example: if there is a my-language cell present, which is loaded dynamically in the first cell, 
+ * For example: if there is a my-language cell present, which is loaded dynamically in the first cell,
  * subsequent cells should update to this new definition.
  */
 export function updateCellsWhenCellDefinitionChanges(runtime: Runtime) {
@@ -23,7 +23,11 @@ export function updateCellsWhenCellDefinitionChanges(runtime: Runtime) {
     }
     for (const c of runtime.dom.cells) {
       if (e.key === c.cell.cellType) {
-        runtime.controls.emit({ id: c.cell.id, type: "CHANGE_CELL_TYPE", newCellType: c.cell.cellType });
+        runtime.controls.emit({
+          id: c.cell.id,
+          type: "CHANGE_CELL_TYPE",
+          newCellType: c.cell.cellType,
+        });
       }
     }
   };
@@ -69,9 +73,8 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
             runtime: {
               name: runtime.name,
               version: runtime.version,
-            }
-
-          }
+            },
+          },
         });
         numTries++;
         setTimeout(() => askForContent(), numTries * 100);
@@ -100,19 +103,23 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
       } else if (msg.type === "NOTEBOOK_SET_METADATA") {
         runtime.content.metadata = msg.payload.metadata;
       }
-    }
+    },
   };
 }
 
 export async function registerDefaultPlugins(runtime: Runtime) {
-    await runtime.controls.registerPlugin(pythonPlugin);
+  await runtime.controls.registerPlugin(pythonPlugin);
 }
 
 export function setupGlobalKeybindings(runtime: Runtime) {
-  document.addEventListener("keydown", (e: KeyboardEvent) => {
-    if (e.code === "KeyS" && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
-      e.preventDefault();
-      runtime.controls.save();
-    }
-  }, false);
+  document.addEventListener(
+    "keydown",
+    (e: KeyboardEvent) => {
+      if (e.code === "KeyS" (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+        e.preventDefault();
+        runtime.controls.save();
+      }
+    },
+    false
+  );
 }

@@ -5,7 +5,7 @@
 import { AddIcon } from "@spectrum-web-components/icons-workflow";
 import { customElement, html, LitElement, query } from "lit-element";
 
-import {createPopper} from "@popperjs/core";
+import { createPopper } from "@popperjs/core";
 import { CellTypePicker } from "./cellTypePicker";
 import { CellElement } from "./cell";
 import { Cell } from "../types";
@@ -13,9 +13,8 @@ import { Cell } from "../types";
 // Lazily initialized.. but cached for re-use.
 let globalCellTypePicker: CellTypePicker;
 
-@customElement('starboard-insertion-line')
+@customElement("starboard-insertion-line")
 export class InsertionLine extends LitElement {
-
   @query(".insert-button.plus")
   buttonElement?: HTMLButtonElement;
 
@@ -47,7 +46,7 @@ export class InsertionLine extends LitElement {
     // TODO: refactor into separate function (and maybe find a way to detect "out of bounds" click in a nicer way)
     if (this.buttonElement !== undefined) {
       const btn = this.buttonElement;
-      
+
       this.buttonElement.addEventListener("click", (_: MouseEvent) => {
         if (popoverIsActive) return;
         this.appendChild(globalCellTypePicker);
@@ -60,7 +59,8 @@ export class InsertionLine extends LitElement {
           }
         };
 
-        unpop = () => { // Clean up the overlay
+        unpop = () => {
+          // Clean up the overlay
           if (Date.now() - lastActive < 100) {
             return;
           }
@@ -71,18 +71,26 @@ export class InsertionLine extends LitElement {
         };
 
         document.addEventListener("click", listener);
-        const pop = createPopper(btn, globalCellTypePicker, {placement: "right-start", strategy: "fixed"});
+        const pop = createPopper(btn, globalCellTypePicker, {
+          placement: "right-start",
+          strategy: "fixed",
+        });
         const parent = this.parentElement;
 
         if (parent && parent instanceof CellElement) {
           globalCellTypePicker.setHighlightedCellType(parent.cell.cellType);
         }
         globalCellTypePicker.onInsert = (cellData: Partial<Cell>) => {
-            // Right now we assume the insertion line has a cell as parent
-            if (parent && parent instanceof CellElement) {
-              parent.runtime.controls.emit({type: "INSERT_CELL", position: this.insertPosition, id: parent.cell.id, data: cellData});
-              unpop();
-            }
+          // Right now we assume the insertion line has a cell as parent
+          if (parent && parent instanceof CellElement) {
+            parent.runtime.controls.emit({
+              type: "INSERT_CELL",
+              position: this.insertPosition,
+              id: parent.cell.id,
+              data: cellData,
+            });
+            unpop();
+          }
         };
         popoverIsActive = true;
       });
@@ -92,7 +100,12 @@ export class InsertionLine extends LitElement {
   quickInsert(cellType: string) {
     const parent = this.parentElement;
     if (parent && parent instanceof CellElement) {
-      parent.runtime.controls.emit({type: "INSERT_CELL", position: this.insertPosition, id: parent.cell.id, data: {cellType}});
+      parent.runtime.controls.emit({
+        type: "INSERT_CELL",
+        position: this.insertPosition,
+        id: parent.cell.id,
+        data: { cellType },
+      });
     }
   }
 
@@ -105,20 +118,17 @@ export class InsertionLine extends LitElement {
     }
 
     return html`
-    <div class="hover-area" contenteditable="off">
-      <div class="button-container">
-        <button class="btn insert-button plus" title="Insert Cell">
-            ${AddIcon({width: 16, height: 16})}
-        </button>
-      </div>
-      <div class="button-container ms-2 pe-3">
-        <button class="btn insert-button" @click=${() => this.quickInsert(cellType)} title="Insert ${cellType} Cell">
+      <div class="hover-area" contenteditable="off">
+        <div class="button-container">
+          <button class="btn insert-button plus" title="Insert Cell">${AddIcon({ width: 16, height: 16 })}</button>
+        </div>
+        <div class="button-container ms-2 pe-3">
+          <button class="btn insert-button" @click=${() => this.quickInsert(cellType)} title="Insert ${cellType} Cell">
             <span>+${cellType}</span>
-        </button>
+          </button>
+        </div>
+        <div class="content-line"></div>
       </div>
-      <div class="content-line">
-      </div>
-    </div>
     `;
   }
 }

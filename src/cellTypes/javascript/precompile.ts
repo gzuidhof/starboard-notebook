@@ -12,4 +12,3 @@ export async function precompileJavascriptCode(content: string): Promise<string>
 
   return (await prc).precompileJavascriptCode(content);
 }
-  

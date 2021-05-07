@@ -6,52 +6,53 @@ import { html, render } from "lit-html";
 import { BaseCellHandler } from "./base";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { StarboardTextEditor } from "../components/textEditor";
-import { Cell, Runtime, CellElements, CellHandlerAttachParameters } from "../types";
+import { Cell, CellElements, CellHandlerAttachParameters, Runtime } from "../types";
 
 export const CSS_CELL_TYPE_DEFINITION = {
-    name: "CSS",
-    cellType: "css",
-    createHandler: (c: Cell, r: Runtime) => new CSSCellHandler(c, r),
+  name: "CSS",
+  cellType: "css",
+  createHandler: (c: Cell, r: Runtime) => new CSSCellHandler(c, r),
 };
 
 export class CSSCellHandler extends BaseCellHandler {
+  private elements!: CellElements;
+  private editor!: StarboardTextEditor;
 
-    private elements!: CellElements;
-    private editor!: StarboardTextEditor;
+  private changeListener: () => any;
 
-    private changeListener: () => any;
+  constructor(cell: Cell, runtime: Runtime) {
+    super(cell, runtime);
+    this.changeListener = () => this.run();
+  }
 
-    constructor(cell: Cell, runtime: Runtime) {
-        super(cell, runtime);
-        this.changeListener = () => this.run();
+  attach(params: CellHandlerAttachParameters) {
+    this.elements = params.elements;
+
+    this.editor = new StarboardTextEditor(this.cell, this.runtime, {
+      language: "css",
+    });
+    this.elements.topElement.appendChild(this.editor);
+    this.runtime.controls.subscribeToCellChanges(this.cell.id, this.changeListener);
+    this.run();
+  }
+
+  async run() {
+    const content = this.cell.textContent;
+    if (content) {
+      render(html`${unsafeHTML("<style>\n" + content + "\n</style>")}`, this.elements.bottomElement);
     }
+  }
 
-    attach(params: CellHandlerAttachParameters) {
-        this.elements = params.elements;
-
-        this.editor = new StarboardTextEditor(this.cell, this.runtime, {language: "css"});
-        this.elements.topElement.appendChild(this.editor);
-        this.runtime.controls.subscribeToCellChanges(this.cell.id, this.changeListener);
-        this.run();
+  focusEditor() {
+    if (this.editor) {
+      this.editor.focus();
     }
+  }
 
-    async run() {
-        const content = this.cell.textContent;
-        if (content) {
-            render(html`${unsafeHTML("<style>\n" + content + "\n</style>")}`, this.elements.bottomElement);
-        }
+  async dispose() {
+    if (this.editor) {
+      this.editor.dispose();
     }
-
-    focusEditor() {
-        if (this.editor) {
-            this.editor.focus();
-        }
-    }
-
-    async dispose() {
-        if (this.editor) {
-            this.editor.dispose();
-        }
-        this.runtime.controls.unsubscribeToCellChanges(this.cell.id, this.changeListener);
-    }
+    this.runtime.controls.unsubscribeToCellChanges(this.cell.id, this.changeListener);
+  }
 }

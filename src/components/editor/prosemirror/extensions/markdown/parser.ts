@@ -3,15 +3,17 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import markdownit from "markdown-it";
-import {mathParserPlugin} from "./markdownitMathParserPlugin";
+import { mathParserPlugin } from "./markdownitMathParserPlugin";
 import { Mark, Node, NodeSpec, Schema } from "prosemirror-model";
 import Token from "markdown-it/lib/token";
 import { NodeType } from "babel-walk";
 import MarkdownIt from "markdown-it";
 
 function maybeMerge(a: Node, b: Node) {
-  if (a.isText && b.isText && Mark.sameSet(a.marks, b.marks))
+  if (a.isText && b.isText && Mark.sameSet(a.marks, b.marks)) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return (a as any).withText(a.text! + b.text!);
+  }
 }
 
 // Object used to track the context of a running parse.
@@ -41,11 +43,13 @@ class MarkdownParseState {
   // using the current marks as styling.
   addText(text: string) {
     if (!text) return;
-    const nodes = this.top().content, last = nodes[nodes.length - 1];
+    const nodes = this.top().content,
+      last = nodes[nodes.length - 1];
     const node = this.schema.text(text, this.marks);
     let merged;
-    if (last && (merged = maybeMerge(last, node))) nodes[nodes.length - 1] = merged;
-    else nodes.push(node);
+    if (last && (merged = maybeMerge(last, node))) {
+      nodes[nodes.length - 1] = merged;
+    } else nodes.push(node);
   }
 
   // : (Mark)
@@ -64,8 +68,9 @@ class MarkdownParseState {
     for (let i = 0; i < toks.length; i++) {
       const tok = toks[i];
       const handler = this.tokenHandlers[tok.type];
-      if (!handler)
+      if (!handler) {
         throw new Error("Token type `" + tok.type + "` not supported by Markdown parser");
+      }
       handler(this, tok, toks, i);
     }
   }
@@ -111,7 +116,9 @@ function withoutTrailingNewline(str: string) {
   return str[str.length - 1] == "\n" ? str.slice(0, str.length - 1) : str;
 }
 
-function noOp() {/* Do nothing */ }
+function noOp() {
+  /* Do nothing */
+}
 
 function tokenHandlers(schema: any, tokens: any) {
   const handlers = Object.create(null);
@@ -126,12 +133,14 @@ function tokenHandlers(schema: any, tokens: any) {
           state.closeNode();
         };
       } else {
-        handlers[type + "_open"] = (state: any, tok: any, tokens: any, i: any) => state.openNode(nodeType, attrs(spec, tok, tokens, i));
+        handlers[type + "_open"] = (state: any, tok: any, tokens: any, i: any) =>
+          state.openNode(nodeType, attrs(spec, tok, tokens, i));
         handlers[type + "_close"] = (state: any) => state.closeNode();
       }
     } else if (spec.node) {
       const nodeType = schema.nodeType(spec.node);
-      handlers[type] = (state: any, tok: any, tokens: any, i: any) => state.addNode(nodeType, attrs(spec, tok, tokens, i));
+      handlers[type] = (state: any, tok: any, tokens: any, i: any) =>
+        state.addNode(nodeType, attrs(spec, tok, tokens, i));
     } else if (spec.mark) {
       const markType = schema.marks[spec.mark];
       if (noCloseToken(spec, type)) {
@@ -141,15 +150,16 @@ function tokenHandlers(schema: any, tokens: any) {
           state.closeMark(markType);
         };
       } else {
-        handlers[type + "_open"] = (state: any, tok: any, tokens: any, i: any) => state.openMark(markType.create(attrs(spec, tok, tokens, i)));
+        handlers[type + "_open"] = (state: any, tok: any, tokens: any, i: any) =>
+          state.openMark(markType.create(attrs(spec, tok, tokens, i)));
         handlers[type + "_close"] = (state: any) => state.closeMark(markType);
       }
     } else if (spec.ignore) {
       if (noCloseToken(spec, type)) {
         handlers[type] = noOp;
       } else {
-        handlers[type + '_open'] = noOp;
-        handlers[type + '_close'] = noOp;
+        handlers[type + "_open"] = noOp;
+        handlers[type + "_close"] = noOp;
       }
     } else {
       throw new RangeError("Unrecognized parsing spec " + JSON.stringify(spec));
@@ -236,21 +246,23 @@ export class MarkdownParser {
     let doc;
     state.parseTokens(this.tokenizer.parse(text, {}));
 
-    do { doc = state.closeNode(); } while (state.stack.length);
+    do {
+      doc = state.closeNode();
+    } while (state.stack.length);
     return doc;
   }
 }
 
 function listIsTight(tokens: any[], i: number) {
-  while (++i < tokens.length)
+  while (++i < tokens.length) {
     if (tokens[i].type != "list_item_open") return tokens[i].hidden;
+  }
   return false;
 }
 
 type MarkdownToken = any;
 
 export function createMarkdownParser(schema: Schema) {
-
   const mdit = markdownit("commonmark", { html: false });
   mdit.use(mathParserPlugin);
 
@@ -258,36 +270,50 @@ export function createMarkdownParser(schema: Schema) {
     blockquote: { block: "blockquote" },
     paragraph: { block: "paragraph" },
     list_item: { block: "list_item" },
-    bullet_list: { block: "bullet_list", getAttrs: (_: MarkdownToken, tokens: MarkdownToken[], i: number) => ({ tight: listIsTight(tokens, i) }) },
-    ordered_list: {
-      block: "ordered_list", getAttrs: (tok: MarkdownToken, tokens: MarkdownToken[], i: number) => ({
-        order: +tok.attrGet("start") || 1,
-        tight: listIsTight(tokens, i)
-      })
+    bullet_list: {
+      block: "bullet_list",
+      getAttrs: (_: MarkdownToken, tokens: MarkdownToken[], i: number) => ({
+        tight: listIsTight(tokens, i),
+      }),
     },
-    heading: { block: "heading", getAttrs: (tok: MarkdownToken) => ({ level: +tok.tag.slice(1) }) },
+    ordered_list: {
+      block: "ordered_list",
+      getAttrs: (tok: MarkdownToken, tokens: MarkdownToken[], i: number) => ({
+        order: +tok.attrGet("start") || 1,
+        tight: listIsTight(tokens, i),
+      }),
+    },
+    heading: {
+      block: "heading",
+      getAttrs: (tok: MarkdownToken) => ({ level: +tok.tag.slice(1) }),
+    },
     code_block: { block: "code_block", noCloseToken: true },
-    fence: { block: "code_block", getAttrs: (tok: MarkdownToken) => ({ params: tok.info || "" }), noCloseToken: true },
+    fence: {
+      block: "code_block",
+      getAttrs: (tok: MarkdownToken) => ({ params: tok.info || "" }),
+      noCloseToken: true,
+    },
     hr: { node: "horizontal_rule" },
     image: {
-      node: "image", getAttrs: (tok: MarkdownToken) => ({
+      node: "image",
+      getAttrs: (tok: MarkdownToken) => ({
         src: tok.attrGet("src"),
         title: tok.attrGet("title") || null,
-        alt: tok.children[0] && tok.children[0].content || null
-      })
+        alt: (tok.children[0] && tok.children[0].content) || null,
+      }),
     },
     hardbreak: { node: "hard_break" },
-    math_inline: { block: "math_inline", noCloseToken: true  },
+    math_inline: { block: "math_inline", noCloseToken: true },
     math_display: { block: "math_display", noCloseToken: true },
     em: { mark: "em" },
     strong: { mark: "strong" },
     link: {
-      mark: "link", getAttrs: (tok: MarkdownToken) => ({
+      mark: "link",
+      getAttrs: (tok: MarkdownToken) => ({
         href: tok.attrGet("href"),
-        title: tok.attrGet("title") || null
-      })
+        title: tok.attrGet("title") || null,
+      }),
     },
-    code_inline: { mark: "code", noCloseToken: true }
+    code_inline: { mark: "code", noCloseToken: true },
   });
-
 }

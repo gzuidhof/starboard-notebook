@@ -41,7 +41,7 @@ module.exports = {
                 "varsIgnorePattern": "^_"
             }
         ],
-        "@typescript-eslint/ban-ts-ignore": "off",
+        "@typescript-eslint/ban-ts-comment": "off",
     },
     "extends": [
         "eslint:recommended",

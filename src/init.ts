@@ -14,6 +14,7 @@ import { RuntimeConfig } from "./types";
 declare global {
   interface Window {
     initialNotebookContent?: string;
+    starboardArtifactsUrl?: string;
     runtimeConfig?: Partial<RuntimeConfig>;
 
     html: typeof lithtml.html;

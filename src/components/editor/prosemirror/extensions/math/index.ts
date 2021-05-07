@@ -3,14 +3,15 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {
-	makeBlockMathInputRule, makeInlineMathInputRule,
-	REGEX_INLINE_MATH_DOLLARS, REGEX_BLOCK_MATH_DOLLARS
+  makeBlockMathInputRule,
+  makeInlineMathInputRule,
+  REGEX_BLOCK_MATH_DOLLARS,
+  REGEX_INLINE_MATH_DOLLARS,
 } from "@benrbray/prosemirror-math";
 
-
-import { Plugin} from "prosemirror-state";
+import { Plugin } from "prosemirror-state";
 import { Schema } from "prosemirror-model";
-import { mathBackspaceCmd, insertMathCmd} from "@benrbray/prosemirror-math";
+import { insertMathCmd, mathBackspaceCmd } from "@benrbray/prosemirror-math";
 
 import { inputRules } from "prosemirror-inputrules";
 import { keymap } from "prosemirror-keymap";
@@ -18,18 +19,18 @@ import { chainCommands, deleteSelection, joinBackward, selectNodeBackward } from
 import { mathPlugin } from "./plugin";
 
 export function buildMathPlugins(schema: Schema): Plugin<any, any>[] {
-	const inlineMathInputRule = makeInlineMathInputRule(REGEX_INLINE_MATH_DOLLARS, schema.nodes.math_inline);
-	const blockMathInputRule = makeBlockMathInputRule(REGEX_BLOCK_MATH_DOLLARS, schema.nodes.math_display);
+  const inlineMathInputRule = makeInlineMathInputRule(REGEX_INLINE_MATH_DOLLARS, schema.nodes.math_inline);
+  const blockMathInputRule = makeBlockMathInputRule(REGEX_BLOCK_MATH_DOLLARS, schema.nodes.math_display);
 
-	return [
-		mathPlugin,
-		keymap({
-			"Mod-Space" : insertMathCmd(schema.nodes.math_inline),
-			// modify the default keymap chain for backspace
-			"Backspace": chainCommands(deleteSelection, mathBackspaceCmd, joinBackward, selectNodeBackward),
-		}),
-		inputRules({ rules: [ inlineMathInputRule, blockMathInputRule ] })
-	];
+  return [
+    mathPlugin,
+    keymap({
+      "Mod-Space": insertMathCmd(schema.nodes.math_inline),
+      // modify the default keymap chain for backspace
+      Backspace: chainCommands(deleteSelection, mathBackspaceCmd, joinBackward, selectNodeBackward),
+    }),
+    inputRules({ rules: [inlineMathInputRule, blockMathInputRule] }),
+  ];
 }
 
 // export function insertMath(schema: Schema){

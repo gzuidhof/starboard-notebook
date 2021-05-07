@@ -3,10 +3,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 function getCurrentScriptPrefix() {
-    const cs = document.currentScript as HTMLScriptElement | null;
-    if (cs) {
-        return cs.src.substring(0, cs.src.lastIndexOf("/") + 1);
-    }
+  const cs = document.currentScript as HTMLScriptElement | null;
+  if (cs) {
+    return cs.src.substring(0, cs.src.lastIndexOf("/") + 1);
+  }
 }
 
 // @ts-ignore

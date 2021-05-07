@@ -6,25 +6,27 @@
 import { TemplateResult } from "lit-html";
 
 export function isProbablyTemplateResult(value: any) {
-    if (typeof value !== "object") {
-        return false;
-    }
-    if (value === null) {
-        return false;
-    }
-    if (value instanceof TemplateResult) {
-        return true;
-    }
-
-    if (value.prototype && value.prototype.hasOwnProperty("strings")
-    && value.prototype.hasOwnProperty("values")
-    && value.prototype.hasOwnProperty("type")
-    && value.prototype.hasOwnProperty("processor")
-    && !!(value as any)["getHTML"]
-    ) {
-        return true;
-    }
+  if (typeof value !== "object") {
     return false;
+  }
+  if (value === null) {
+    return false;
+  }
+  if (value instanceof TemplateResult) {
+    return true;
+  }
+
+  if (
+    value.prototype &&
+    value.prototype.hasOwnProperty("strings") &&
+    value.prototype.hasOwnProperty("values") &&
+    value.prototype.hasOwnProperty("type") &&
+    value.prototype.hasOwnProperty("processor") &&
+    !!(value as any)["getHTML"]
+  ) {
+    return true;
+  }
+  return false;
 }
 
 /**
@@ -32,7 +34,9 @@ export function isProbablyTemplateResult(value: any) {
  * @param p
  */
 export function promiseState(p: Promise<any>): Promise<"pending" | "fulfilled" | "rejected"> {
-    const t = {};
-    return Promise.race([p, t])
-      .then(v => (v === t)? "pending" : "fulfilled", () => "rejected");
+  const t = {};
+  return Promise.race([p, t]).then(
+    (v) => (v === t ? "pending" : "fulfilled"),
+    () => "rejected"
+  );
 }

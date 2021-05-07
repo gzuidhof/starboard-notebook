@@ -3,9 +3,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export function trySetLocalStorage(key: string, value: any) {
-    try {
-        localStorage.setItem(key, value);
-    } catch(e) {
-        console.warn(`Could not set localStorage (key = ${key}).`);
-    }
+  try {
+    localStorage.setItem(key, value);
+  } catch (e) {
+    console.warn(`Could not set localStorage (key = ${key}).`);
+  }
 }

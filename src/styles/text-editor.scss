@@ -2,54 +2,54 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-
 .cm-scroller {
-    border-radius: var(--border-radius);
+  border-radius: var(--border-radius);
 }
 
 .cm-gutters {
-    background-color: var(--code-background-color) !important;
-    border-right: 1px solid transparent !important;
-    color: var(--editor-line-number-color) !important;
+  background-color: var(--code-background-color) !important;
+  border-right: 1px solid transparent !important;
+  color: var(--editor-line-number-color) !important;
 }
 
 .cm-gutter-lineNumber {
-    min-width: 24px;
+  min-width: 24px;
 }
 
 .cm-wrap * {
-    font-family: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New", monospace !important;
+  font-family: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New",
+    monospace !important;
 }
 
 .cm-wrap.cm-focused {
-    outline: 1px solid transparent !important;
+  outline: 1px solid transparent !important;
 }
 
 .cm-activeLine {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
 
 .cm-focused .cm-activeLine {
-    background-color:  #33333308 !important;
+  background-color: #33333308 !important;
 }
 
 .cm-selectionMatch {
-    background-color: #e1ebf5 !important;
+  background-color: #e1ebf5 !important;
 }
 
 .starboard-text-editor {
-    position: relative;
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
 
-    color: #000;
-    background-color: var(--code-background-color);
-    font-size: 14px;
-    
-    border: 1px solid transparent;
-    // border-radius: var(--border-radius);
-    transition: border ease-in 100ms;
+  color: #000;
+  background-color: var(--code-background-color);
+  font-size: 14px;
+
+  border: 1px solid transparent;
+  // border-radius: var(--border-radius);
+  transition: border ease-in 100ms;
 }
 
 // .cell-bottom.flush .starboard-text-editor {
@@ -62,54 +62,54 @@
 //     border-bottom-right-radius: 0;
 // }
 
-
 .starboard-text-editor:focus-within {
-    border: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
 .cm-content *::selection {
-    background-color: #00000042
+  background-color: #00000042;
 }
 
-:not(pre) > code[class*="language-"], pre[class*="language-"] {
-    background-color: var(--code-background-color) !important;
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+  background-color: var(--code-background-color) !important;
 }
 
 .starboard-text-editor pre[class*="language-"] {
-    margin: 0 !important;
-    min-height: 24px;
+  margin: 0 !important;
+  min-height: 24px;
 }
 
 .monaco-editor {
-    outline: 1px solid #eee;
-    outline-offset: -1px;
-    min-height: 24px;
+  outline: 1px solid #eee;
+  outline-offset: -1px;
+  min-height: 24px;
 }
 
 .starboard-text-editor pre[class*="language-"] {
-    padding: 0 1em;
+  padding: 0 1em;
 }
 
 .starboard-text-editor-controls {
-    position: absolute;
-    font-size: 12px;
-    right: 0;
-    top: 0;
-    z-index: 10;
+  position: absolute;
+  font-size: 12px;
+  right: 0;
+  top: 0;
+  z-index: 10;
 }
 
 .starboard-text-editor-controls .btn {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 starboard-text-editor:hover .starboard-text-editor-controls .btn {
-    visibility: visible;
+  visibility: visible;
 }
 
 .cell-select-editor-popover {
-    position: absolute;
-    transform: translateX(-50%);
-    left: 50%;
-    background-color: #ffffffaa;
-    padding: 0.5em;
+  position: absolute;
+  transform: translateX(-50%);
+  left: 50%;
+  background-color: #ffffffaa;
+  padding: 0.5em;
 }

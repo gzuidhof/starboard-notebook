@@ -2,28 +2,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Cell, Runtime, CellHandlerAttachParameters, CellHandler } from "../types";
+import { Cell, CellHandler, CellHandlerAttachParameters, Runtime } from "../types";
 
 export abstract class BaseCellHandler implements CellHandler {
-    public cell: Cell;
-    public runtime: Runtime;
+  public cell: Cell;
+  public runtime: Runtime;
 
-    constructor(cell: Cell, runtime: Runtime) {
-        this.cell = cell;
-        this.runtime = runtime;
-    }
+  constructor(cell: Cell, runtime: Runtime) {
+    this.cell = cell;
+    this.runtime = runtime;
+  }
 
-    abstract attach(param: CellHandlerAttachParameters): void;
+  abstract attach(param: CellHandlerAttachParameters): void;
 
-    run(): Promise<any> {
-        return Promise.resolve();
-    }
+  run(): Promise<any> {
+    return Promise.resolve();
+  }
 
-    dispose(): Promise<void> {
-        return Promise.resolve();
-    }
+  dispose(): Promise<void> {
+    return Promise.resolve();
+  }
 
-    focusEditor(): void {
-        return;
-    }
+  focusEditor(): void {
+    return;
+  }
 }

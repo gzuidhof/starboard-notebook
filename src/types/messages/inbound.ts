@@ -6,12 +6,12 @@ import { NotebookMetadata } from "../core";
 import { NotebookMessage, NotebookMessageContentData } from ".";
 
 export interface NotebookInitPayload {
-    content: NotebookMessageContentData;
-    baseUrl?: string;
+  content: NotebookMessageContentData;
+  baseUrl?: string;
 }
 
 export interface NotebookSetMetadataPayload {
-    metadata: NotebookMetadata;
+  metadata: NotebookMetadata;
 }
 
 export type InboundNotebookMessage = SetContentMessage | ReloadMessage | SetMetdataMessage;
@@ -24,7 +24,7 @@ export type SetContentMessage = NotebookMessage<"NOTEBOOK_SET_INIT_DATA", Notebo
 /**
  * Sent from parent webpage to notebook to overwrite the metadata
  */
- export type SetMetdataMessage = NotebookMessage<"NOTEBOOK_SET_METADATA", NotebookSetMetadataPayload>;
+export type SetMetdataMessage = NotebookMessage<"NOTEBOOK_SET_METADATA", NotebookSetMetadataPayload>;
 
 /**
  * Sent from parent webpage to notebook to trigger a page refresh of the iframe, this is somewhat equivalent to a "kernel reset" in Jupyter.

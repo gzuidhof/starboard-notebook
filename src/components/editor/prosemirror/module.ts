@@ -10,52 +10,56 @@ import { keymap } from "prosemirror-keymap";
 import { createSchema } from "./schema";
 import { createMarkdownParser } from "./extensions/markdown/parser";
 import { createMarkdownSerializer } from "./extensions/markdown/serializer";
-import { CellEvent, Cell, Runtime } from '../../../types';
+import { Runtime } from "../../../types";
 
 export interface ContentContainer {
-    textContent: string;
+  textContent: string;
 }
 
 const defaultMarkdownSerializer = createMarkdownSerializer();
 
-export { EditorView, EditorState, Plugin, defaultMarkdownSerializer };
+export { defaultMarkdownSerializer, EditorState, EditorView, Plugin };
 
 const schema = createSchema();
 const parser = createMarkdownParser(schema);
 
-export function createProseMirrorEditor(element: HTMLElement, content: ContentContainer, runtime: Runtime, opts: { focusAfterInit?: boolean } = {}) {
-    const editorView = new EditorView(element, {
-        state: EditorState.create({
-            doc: parser.parse(content.textContent),
-            plugins: [
-                keymap({
-                    "ArrowDown": function (state, dispatch, view) {
-                        if(state.selection.empty) {
-                            // Now what?
-                        }
-                        return false;
-                    },
-                    "ArrowUp": function (state, dispatch, view) {
-                        if(state.selection.empty) {
-                            // Now what?
-                        }
-                        return false;
-                    },
-                }),
-                ...setupPlugins({ schema }),
-                new Plugin({
-                    view: () => {
-                        return {
-                            update: debounce((view: EditorView) => {
-                                content.textContent = defaultMarkdownSerializer.serialize(view.state.doc);
-                            }, 50)
-                        };
-                    },
-                }),
-            ],
-        })
-    });
+export function createProseMirrorEditor(
+  element: HTMLElement,
+  content: ContentContainer,
+  _runtime: Runtime,
+  _opts: { focusAfterInit?: boolean } = {}
+) {
+  const editorView = new EditorView(element, {
+    state: EditorState.create({
+      doc: parser.parse(content.textContent),
+      plugins: [
+        keymap({
+          ArrowDown: function (state, _dispatch, _view) {
+            if (state.selection.empty) {
+              // Now what?
+            }
+            return false;
+          },
+          ArrowUp: function (state, _dispatch, _view) {
+            if (state.selection.empty) {
+              // Now what?
+            }
+            return false;
+          },
+        }),
+        ...setupPlugins({ schema }),
+        new Plugin({
+          view: () => {
+            return {
+              update: debounce((view: EditorView) => {
+                content.textContent = defaultMarkdownSerializer.serialize(view.state.doc);
+              }, 50),
+            };
+          },
+        }),
+      ],
+    }),
+  });
 
-    return editorView;
+  return editorView;
 }
-

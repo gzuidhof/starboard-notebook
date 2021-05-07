@@ -19,8 +19,7 @@ import { Schema } from "prosemirror-model";
 
 import { buildMathPlugins } from "./extensions/math/";
 
-export { buildMenuItems, buildKeymap, buildInputRules };
-
+export { buildInputRules, buildKeymap, buildMenuItems };
 
 //   options::- The following options are recognized:
 //
@@ -38,8 +37,13 @@ export { buildMenuItems, buildKeymap, buildInputRules };
 //
 //     menuContent:: [[MenuItem]]
 //     Can be used to override the menu content.
-export function setupPlugins(options: { schema: Schema; mapKeys?: any; menuBar?: boolean; floatingMenu?: boolean; menuContent?: any }) {
-
+export function setupPlugins(options: {
+  schema: Schema;
+  mapKeys?: any;
+  menuBar?: boolean;
+  floatingMenu?: boolean;
+  menuContent?: any;
+}) {
   const plugins: Plugin<any, any>[] = [
     buildInputRules(options.schema),
     keymap(buildKeymap(options.schema, options.mapKeys)),
@@ -48,16 +52,21 @@ export function setupPlugins(options: { schema: Schema; mapKeys?: any; menuBar?:
     gapCursor(),
     ...buildMathPlugins(options.schema),
   ];
-  if (options.menuBar !== false)
-    plugins.push(menuBar({
-      floating: options.floatingMenu !== false,
-      content: options.menuContent || buildMenuItems(options.schema).fullMenu
-    }));
+  if (options.menuBar !== false) {
+    plugins.push(
+      menuBar({
+        floating: options.floatingMenu !== false,
+        content: options.menuContent || buildMenuItems(options.schema).fullMenu,
+      })
+    );
+  }
   plugins.push(history());
 
-  return plugins.concat(new Plugin({
-    props: {
-      attributes: { class: "ProseMirror-example-setup-style" }
-    }
-  }));
+  return plugins.concat(
+    new Plugin({
+      props: {
+        attributes: { class: "ProseMirror-example-setup-style" },
+      },
+    })
+  );
 }

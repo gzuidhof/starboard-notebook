@@ -4,7 +4,16 @@
 
 import { cellControlsTemplate } from "../components/controls";
 import { StarboardLogo } from "../components/icons";
-import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon, TextEditIcon, GearsIcon, LockClosedIcon } from "@spectrum-web-components/icons-workflow";
+import {
+  AssetsAddedIcon,
+  BooleanIcon,
+  ClockIcon,
+  DeleteIcon,
+  GearsIcon,
+  LockClosedIcon,
+  PlayCircleIcon,
+  TextEditIcon,
+} from "@spectrum-web-components/icons-workflow";
 import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
 import { createCellProxy } from "../components/helpers/cellProxy";
 import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
@@ -43,7 +52,7 @@ export function createExports(): RuntimeExports {
         TextEditIcon: TextEditIcon,
         GearsIcon: GearsIcon,
         LockClosedIcon: LockClosedIcon,
-      }
+      },
     },
     core: {
       ConsoleCatcher: ConsoleCatcher,
@@ -56,7 +65,7 @@ export function createExports(): RuntimeExports {
       cellToText: cellToText,
       notebookContentToText: notebookContentToText,
       precompileJavascriptCode: precompileJavascriptCode,
-      textToNotebookContent: textToNotebookContent
+      textToNotebookContent: textToNotebookContent,
     },
     elements: {
       StarboardTextEditor: StarboardTextEditor,
@@ -74,6 +83,6 @@ export function createExports(): RuntimeExports {
         KaTeX: katexLoader,
         StarboardPython: () => Promise.resolve(StarboardPython),
       },
-    }
+    },
   };
 }

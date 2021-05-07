@@ -5,39 +5,44 @@
 import { Cell, NotebookContent } from "../types";
 import * as YAML from "yaml";
 
-
 const PreferredCellDelimiter = "# %%";
 
 function objectIsEmpty(obj: any) {
-    return Object.keys(obj).length === 0 && obj.constructor === Object;
+  return Object.keys(obj).length === 0 && obj.constructor === Object;
 }
 
 export function notebookContentToText(nb: NotebookContent) {
-    const cellsAsText = nb.cells.map(cellToText).join("\n");
-    
-    if (!objectIsEmpty(nb.metadata)) {
-        const ymlHeader = YAML.stringify(nb.metadata);
-        return `---\n${ymlHeader}---\n${cellsAsText}`;
-    }
+  const cellsAsText = nb.cells.map(cellToText).join("\n");
 
-    return cellsAsText;
+  if (!objectIsEmpty(nb.metadata)) {
+    const ymlHeader = YAML.stringify(nb.metadata);
+    return `---\n${ymlHeader}---\n${cellsAsText}`;
+  }
+
+  return cellsAsText;
 }
 
 export function cellToText(cell: Cell) {
+  let cellHeader;
 
-    let cellHeader;
+  if (objectIsEmpty(cell.metadata.properties) && Object.keys(cell.metadata).length === 1) {
+    // The cell metadata is empty
+    cellHeader = `${PreferredCellDelimiter} [${cell.cellType}]`;
+  } else {
+    let ymlCellMetadata = YAML.stringify(cell.metadata);
+    // Add a comment marker to each of the lines.
+    // The last line contains a trailing \n, which we slice off
+    ymlCellMetadata = ymlCellMetadata
+      .split("\n")
+      .slice(0, -1)
+      .map((s) => PreferredCellDelimiter.replace("%%", "") + s)
+      .join("\n");
 
-    if (objectIsEmpty(cell.metadata.properties) && Object.keys(cell.metadata).length === 1) {
-        // The cell metadata is empty
-        cellHeader = `${PreferredCellDelimiter} [${cell.cellType}]`;
-    } else {
-        let ymlCellMetadata = YAML.stringify(cell.metadata);
-        // Add a comment marker to each of the lines.
-        // The last line contains a trailing \n, which we slice off
-        ymlCellMetadata = ymlCellMetadata.split("\n").slice(0, -1).map(s => PreferredCellDelimiter.replace("%%", "") + s).join("\n");
-
-        cellHeader = `${PreferredCellDelimiter}--- [${cell.cellType}]\n${ymlCellMetadata}\n${PreferredCellDelimiter.replace("%%", "---%%")}`;
-    }
-    const cellText = `${cellHeader}\n${cell.textContent}`;
-    return cellText;
+    cellHeader = `${PreferredCellDelimiter}--- [${cell.cellType}]\n${ymlCellMetadata}\n${PreferredCellDelimiter.replace(
+      "%%",
+      "---%%"
+    )}`;
+  }
+  const cellText = `${cellHeader}\n${cell.textContent}`;
+  return cellText;
 }

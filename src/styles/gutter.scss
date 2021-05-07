@@ -6,70 +6,68 @@
 the focus state of the cell */
 
 .cell-gutter {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    min-width: 2px;
-    background-color: var(--gutter-background-color);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-width: 2px;
+  background-color: var(--gutter-background-color);
 }
 
 .cell-gutter-left-above {
-    grid-area: gutter-left-above;
+  grid-area: gutter-left-above;
 }
 
 .cell-gutter-left-top {
-    grid-area: gutter-left-top;
+  grid-area: gutter-left-top;
 }
 
 .cell-gutter-left-bottom {
-    grid-area: gutter-left-bottom;
+  grid-area: gutter-left-bottom;
 }
 
 .cell-gutter-right-above {
-    grid-area: gutter-right-above;
+  grid-area: gutter-right-above;
 }
 
 .cell-gutter-right-top {
-    grid-area: gutter-right-top;
+  grid-area: gutter-right-top;
 }
 
 .cell-gutter-right-bottom {
-    grid-area: gutter-right-bottom;
+  grid-area: gutter-right-bottom;
 }
 
 .cell-gutter-button {
-    box-sizing: border-box;
-    width: 2px;
-    height: calc(100%);
-    padding: 0;
-    border: 0;
-    background-color: transparent; 
-    cursor: pointer;
-    border-radius: 0;
+  box-sizing: border-box;
+  width: 2px;
+  height: calc(100%);
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 0;
 }
 
 .cell-gutter-button:hover {
-    filter: brightness(0.95);
+  filter: brightness(0.95);
 }
 
 .cell-gutter-button:focus {
-    filter: brightness(0.90);
-    outline: 1px solid #99999940;
+  filter: brightness(0.9);
+  outline: 1px solid #99999940;
 }
 
 starboard-cell:hover .cell-gutter-button {
-    background-color: #f8f8f8;
+  background-color: #f8f8f8;
 }
 
 // starboard-cell:hover div[class*="cell-gutter-left"] {
 //     background-color: #fdfdfd;
 // }
 
-
 starboard-cell:focus-within * .cell-gutter-button,
-starboard-cell:focus-within:hover * .cell-gutter-button
-{
-    background-color: #f4f4f4;
+starboard-cell:focus-within:hover * .cell-gutter-button {
+  background-color: #f4f4f4;
 }
 
 /* starboard-cell:focus * .cell-gutter-button,
@@ -78,12 +76,12 @@ starboard-cell:focus-within * .cell-gutter-button {
 } */
 
 starboard-cell:focus .cell-gutter-button {
-    background-color: var(--brand-color) !important;
-    opacity: 0.5;
+  background-color: var(--brand-color) !important;
+  opacity: 0.5;
 }
 
 /* Entire left gutter */
 starboard-cell:focus div[class*="cell-gutter-left"],
 starboard-cell:focus-within div[class*="cell-gutter-left"] {
-    background-color: var(--gutter-selected-background-color);
+  background-color: var(--gutter-selected-background-color);
 }
