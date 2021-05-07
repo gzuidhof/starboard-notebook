@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.9.1
+**Date:** 2021-05-07
+
+* Update to starboard-python version 0.6.4, which allows for catching errors during execution by user code or third party plugins.
+
 ## Release 0.9.0
 **Date:** 2021-05-06
 
