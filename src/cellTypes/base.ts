@@ -26,4 +26,8 @@ export abstract class BaseCellHandler implements CellHandler {
   focusEditor(): void {
     return;
   }
+
+  clear(): void {
+    return;
+  }
 }

@@ -133,4 +133,8 @@ export class ESModuleCellHandler extends BaseCellHandler {
   async dispose() {
     this.editor.remove();
   }
+
+  clear() {
+    render(html``, this.elements.bottomElement);
+  }
 }

@@ -82,7 +82,7 @@ export class LatexCellHandler extends BaseCellHandler {
 
     (await katexLoader()).render(this.cell.textContent, topElement, {
       throwOnError: false,
-      errorColor: " #cc0000",
+      errorColor: "#cc0000",
       displayMode: true,
     });
     topElement.children[0].addEventListener("dblclick", (_event: any) => this.enterEditMode());
@@ -100,5 +100,9 @@ export class LatexCellHandler extends BaseCellHandler {
     if (this.editor) {
       this.editor.focus();
     }
+  }
+
+  clear() {
+    // Do nothing
   }
 }

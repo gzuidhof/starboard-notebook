@@ -47,6 +47,7 @@ export interface RuntimeControls {
   runCell(id: string, focus?: "previous" | "next", insertNewCell?: boolean): void;
   focusCell(id: string, focus?: "previous" | "next"): void;
   runAllCells(opts: { onlyRunOnLoad?: boolean }): Promise<void>;
+  clearAllCells(): void;
 
   /**
    * Requests a save operation from the parent iframe.

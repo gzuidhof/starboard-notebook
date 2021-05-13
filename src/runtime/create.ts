@@ -205,6 +205,12 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       }
     },
 
+    clearAllCells() {
+      for (const c of rt.dom.cells) {
+        c.clear();
+      }
+    },
+
     sendMessage(message: OutboundNotebookMessage, targetOrigin?: string): boolean {
       if (window.parentIFrame) {
         window.parentIFrame.sendMessage(message, targetOrigin);

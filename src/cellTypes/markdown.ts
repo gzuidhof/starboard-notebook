@@ -176,4 +176,8 @@ export class MarkdownCellHandler extends BaseCellHandler {
       this.editor.focus();
     }
   }
+
+  clear() {
+    // Do nothing
+  }
 }

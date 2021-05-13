@@ -166,7 +166,8 @@ export class StarboardNotebookElement extends LitElement {
         aria-labelledby="starboard-source-modal-label"
         aria-hidden="true"
       >
-        <div class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-scrollable">
+        <div class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-scrollable" style="min-height: 240px;">
+          <starboard-ensure-parent-fits></starboard-ensure-parent-fits>
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="starboard-source-modal-label">Notebook Source</h5>

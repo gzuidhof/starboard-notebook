@@ -1,5 +1,20 @@
 # Changelog
 
+## Release 0.9.4
+**Date:** Unreleased
+
+* Update to starboard-python version `0.6.5` which supports clearing its output.
+
+## Release 0.9.3
+**Date:** 2021-05-13
+
+* Cell handlers now need to have a `clear()` method defined which clears the output of the cell (whatever that means for that cell type). Although the Typescript typing is strict about this requirement, it checks for the existence for backwards compatibility purposes.
+* Added `runtime.controls.clearAllCells`.
+* Changed Bootstrap's theme colors to a more modern palette similar to Bulma (e.g. when using `bg-success` it is now a light green / teal color instead of dark green).
+* Update KaTeX to version `0.13.10`.
+* Update markdown-it to version `12.0.6`.
+* The `<> Source` button now creates a modal with a minimum size that resizes the iframe as well (before it would show a 1px high modal when there were no cells).
+
 ## Release 0.9.2
 **Date:** 2021-05-13
 

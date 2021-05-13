@@ -124,7 +124,12 @@ export interface CellHandler {
   attach(param: CellHandlerAttachParameters): void;
   run(): Promise<any>;
   dispose(): Promise<void>;
+
   focusEditor(): void;
+  /**
+   * Clear the output of the cell.
+   */
+  clear(): void;
 }
 
 export interface CellCreationInterface {

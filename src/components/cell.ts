@@ -107,6 +107,11 @@ export class CellElement extends LitElement {
     this.cellHandler.focusEditor();
   }
 
+  public clear() {
+    // ?. for backwards compatibility - prior to 0.9.3 cell handlers were not required to have a clear method.
+    this.cellHandler?.clear();
+  }
+
   changeCellType(newCellType: string | string[]) {
     // If these are multiple cell types, take the first one
     const newCellTypeIdentifier = typeof newCellType === "string" ? newCellType : newCellType[0];

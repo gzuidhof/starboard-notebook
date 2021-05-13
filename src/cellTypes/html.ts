@@ -61,4 +61,8 @@ export class HTMLCellHandler extends BaseCellHandler {
       this.editor.dispose();
     }
   }
+
+  clear() {
+    render(html``, this.elements.bottomElement);
+  }
 }

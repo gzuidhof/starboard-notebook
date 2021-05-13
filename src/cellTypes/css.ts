@@ -55,4 +55,8 @@ export class CSSCellHandler extends BaseCellHandler {
     }
     this.runtime.controls.unsubscribeToCellChanges(this.cell.id, this.changeListener);
   }
+
+  clear() {
+    // Do nothing
+  }
 }

@@ -9,8 +9,15 @@
   src: local("Inter var"), url(../../static/fonts/inter.var.woff2?v=3.15) format("woff2");
 }
 
+// Bootstrap overrides
 $brand-color: #5e5ef8;
 $primary: $brand-color;
+$secondary: #444;
+$info: #79b2e8;
+$success: #62d199;
+$warning: #ffe08a;
+$danger: #f14668;
+
 $border-radius: var(--border-radius);
 
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
