@@ -1,0 +1,10 @@
+# %%--- [esm]
+# properties:
+#   run_on_load: true
+# ---%%
+throw new Error("some error")
+# %%--- [javascript]
+# properties:
+#   run_on_load: true
+# ---%%
+console.log("This shouldn't be printed as there was an error in the cell above")

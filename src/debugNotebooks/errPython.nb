@@ -1,0 +1,10 @@
+# %%--- [python]
+# properties:
+#   run_on_load: true
+# ---%%
+raise "an error"
+# %%--- [python]
+# properties:
+#   run_on_load: true
+# ---%%
+print("This shouldn't be run")

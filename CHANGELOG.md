@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.9.2
+**Date:** 2021-05-13
+
+* Better support for error handling and error catching when invoking a cell programmatically. This fixes `run all cells` continuing after a cell throws an error.
+* Javascript errors are no longer printed twice in a cell's output.
+
 ## Release 0.9.1
 **Date:** 2021-05-07
 

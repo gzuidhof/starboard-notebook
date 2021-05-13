@@ -86,7 +86,6 @@ export class ESModuleCellHandler extends BaseCellHandler {
     }
 
     if (error) {
-      console.error(error); // NOTE: perhaps problematic for async code, don't want to loop this!
       if (error.stack !== undefined) {
         let stackToPrint: string = error.stack;
         const errMsg: string = error.toString();
@@ -120,6 +119,10 @@ export class ESModuleCellHandler extends BaseCellHandler {
     if (this.lastRunId === currentRunId) {
       this.isCurrentlyRunning = false;
       render(this.getControls(), this.elements.topControlsElement);
+    }
+
+    if (error) {
+      throw error;
     }
   }
 

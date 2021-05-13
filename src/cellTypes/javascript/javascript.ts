@@ -83,8 +83,6 @@ export class JavascriptCellHandler extends BaseCellHandler {
     if (!htmlOutputRendered && val !== undefined) {
       // Don't show undefined output
       if (outVal.error) {
-        console.error(val); // NOTE: perhaps problematic for async code, don't want to loop this!
-
         if (val.stack !== undefined) {
           let stackToPrint: string = val.stack;
           const errMsg: string = val.toString();
@@ -113,6 +111,10 @@ export class JavascriptCellHandler extends BaseCellHandler {
     if (this.lastRunId === currentRunId) {
       this.isCurrentlyRunning = false;
       render(this.getControls(), this.elements.topControlsElement);
+    }
+
+    if (outVal.error) {
+      throw val;
     }
   }
 
