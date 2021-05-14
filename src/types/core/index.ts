@@ -68,6 +68,16 @@ export interface Cell extends ContentContainer {
   id: string;
 }
 
+export interface PluginDependency {
+  src: string;
+
+  /**
+   * Args passed into the `register` function of the plugin.
+   */
+  args?: any;
+  async?: boolean;
+}
+
 export interface NotebookMetadata {
   title?: string;
   /**
@@ -77,10 +87,11 @@ export interface NotebookMetadata {
   tags?: string[];
 
   starboard?: {
-    notebook: {
+    notebook?: {
       format_version: 1;
       runtime_version: string;
     };
+    plugins?: PluginDependency[];
   };
   [key: string]: any;
 }

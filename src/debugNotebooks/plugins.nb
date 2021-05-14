@@ -1,0 +1,16 @@
+---
+starboard:
+  plugins:
+    - src: "https://unpkg.com/starboard-jupyter@0.2.8/dist/index.js"
+      args:
+        serverSettings: 
+          baseUrl: "http://localhost:8888"
+    - src: "https://unpkg.com/@illumidesk/starboard-nbgrader@0.1.6/dist/plugin.js"
+      async: true
+---
+# %%--- [jupyter]
+# properties: 
+#   run_on_load: true
+# ---%%
+import matplotlib.pyplot as plt
+plt.plot([1,2,4,8])

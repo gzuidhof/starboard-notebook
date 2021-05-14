@@ -1,9 +1,11 @@
 # Changelog
 
 ## Release 0.9.4
-**Date:** Unreleased
+**Date:** 2021-05-14
 
 * Update to starboard-python version `0.6.5` which supports clearing its output.
+* Support for defining plugins that should be loaded in the notebook metadata. It's a bit experimental at this point, do report any issues.
+* Switched to dart Sass, which makes building of the project on Windows machines easier.
 
 ## Release 0.9.3
 **Date:** 2021-05-13

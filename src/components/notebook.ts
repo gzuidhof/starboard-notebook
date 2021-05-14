@@ -14,6 +14,7 @@ import { Runtime, RuntimeConfig } from "../types";
 import { setupRuntime } from "../runtime/create";
 import Modal from "bootstrap/js/dist/modal";
 import { copyToClipboard } from "./helpers/clipboard";
+import { flatPromise } from "./helpers/flatPromise";
 
 declare global {
   interface Window {
@@ -50,25 +51,49 @@ export class StarboardNotebookElement extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.runtime = setupRuntime(this);
+  }
 
-    // Not to be relied upon, for debugging purposes during development.
-    // This global may be deleted at any time.
-    (window as any).viewNotebookSource = () => {
-      const content = this.runtime.exports.core.notebookContentToText(this.runtime.content);
-      const encoded = encodeURIComponent(content);
-      const a = document.createElement(`a`);
-      a.target = `_blank`;
-      a.href = `data:text/plain;charset=utf-8,${encoded}`;
-      a.style.display = `none`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    };
+  async loadPlugins() {
+    const pluginsToLoad = this.runtime.content.metadata.starboard?.plugins ?? [];
+
+    let previousPluginRegistered = Promise.resolve();
+    let syncPluginsPromise = Promise.resolve();
+
+    for (const pluginDef of pluginsToLoad) {
+      const { resolve, reject, promise } = flatPromise();
+      const promiseToAwaitBeforeRegistering = previousPluginRegistered;
+      previousPluginRegistered = promise;
+
+      (async () => {
+        try {
+          const { plugin } = await import(/* webpackIgnore: true */ pluginDef.src);
+          if (plugin === undefined) {
+            console.error(`Plugin loaded from ${pluginDef.src} does not have an export "plugin"`);
+            reject();
+            return;
+          }
+          await promiseToAwaitBeforeRegistering;
+          await this.runtime.controls.registerPlugin(plugin, pluginDef.args);
+          resolve();
+        } catch (e) {
+          console.error(`Failed to load plugin from ${pluginDef.src}`);
+          reject(e);
+        }
+      })();
+
+      if (!pluginDef.async) {
+        syncPluginsPromise = syncPluginsPromise.then(() => promise);
+      }
+    }
+
+    return syncPluginsPromise;
   }
 
   async notebookInitialize() {
     await this.updateComplete;
+
     if (!this.hasHadInitialRun) {
+      await this.loadPlugins();
       this.runtime.controls.runAllCells({ onlyRunOnLoad: true });
       this.hasHadInitialRun = true;
     }
@@ -78,9 +103,7 @@ export class StarboardNotebookElement extends LitElement {
     super.firstUpdated(changedProperties);
     this.sourceModal = new Modal(this.sourceModalElement, {});
 
-    if (this.runtime.content.cells.length > 0) {
-      this.notebookInitialize();
-    }
+    this.notebookInitialize();
   }
 
   performUpdate() {
