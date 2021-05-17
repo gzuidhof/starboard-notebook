@@ -115,7 +115,7 @@ export function setupGlobalKeybindings(runtime: Runtime) {
   document.addEventListener(
     "keydown",
     (e: KeyboardEvent) => {
-      if (e.key === "s" && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+      if (e.code === "KeyS" (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
         e.preventDefault();
         runtime.controls.save();
       }
