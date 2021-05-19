@@ -2,13 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { customElement, html, LitElement, property, query } from "lit-element";
+import { html, LitElement } from "lit";
+import { customElement, property, query } from "lit/decorators";
 import { toggleCellFlagProperty } from "../content/notebookContent";
 
 import { BaseCellHandler } from "../cellTypes/base";
 import { getAvailableCellTypes, getCellTypeDefinitionForCellType } from "../cellTypes/registry";
 
-import { BooleanIcon, ClockIcon, DeleteIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { getPropertiesIcons, getPropertiesPopoverIcons } from "./controls";
 import { Cell, CellTypeDefinition, Runtime } from "../types";
 import "./insertionLine";
@@ -96,10 +96,10 @@ export class CellElement extends LitElement {
 
   public async run() {
     this.isCurrentlyRunning = true;
-    this.performUpdate();
+    this.requestUpdate();
     await this.cellHandler.run();
     this.isCurrentlyRunning = false;
-    this.performUpdate();
+    this.requestUpdate();
   }
 
   public focusEditor() {
@@ -124,7 +124,7 @@ export class CellElement extends LitElement {
 
   private toggleProperty(name: string, force?: boolean) {
     toggleCellFlagProperty(this.cell, name, force);
-    this.performUpdate();
+    this.requestUpdate();
   }
 
   private onTopGutterButtonClick() {
@@ -169,7 +169,7 @@ export class CellElement extends LitElement {
       </div>
 
       <!-- Top left corner, used to display a run button if cell is collapsed -->
-      <div class="cell-controls cell-controls-left-above">
+      <div class="cell-controls cell-controls-left-above d-flex justify-content-center">
         ${this.isCurrentlyRunning
           ? html` <button
               @mousedown=${() =>
@@ -177,10 +177,10 @@ export class CellElement extends LitElement {
                   id,
                   type: "RUN_CELL",
                 })}
-              class="btn cell-controls-button display-when-collapsed"
+              class="btn cell-controls-button display-when-collapsed py-1"
               title="Cell is running"
             >
-              ${ClockIcon({ width: 20, height: 20 })}
+              <span class="bi bi-hourglass"></span>
             </button>`
           : html` <button
               @mousedown=${() =>
@@ -188,10 +188,10 @@ export class CellElement extends LitElement {
                   id,
                   type: "RUN_CELL",
                 })}
-              class="btn cell-controls-button display-when-collapsed"
+              class="btn cell-controls-button display-when-collapsed py-1"
               title="Run cell"
             >
-              ${PlayCircleIcon({ width: 20, height: 20 })}
+              <span class="bi bi-play-circle"></span>
             </button>`}
       </div>
 
@@ -237,27 +237,29 @@ export class CellElement extends LitElement {
         <!-- Properties change button -->
         <div class="dropdown">
           <button data-bs-toggle="dropdown" class="btn cell-controls-button auto-hide" title="Change Cell Properties">
-            ${BooleanIcon({ width: 15, height: 15 })}
+            <span class="bi bi-three-dots-vertical"></span>
           </button>
 
           <div class="dropdown-menu" style="min-width: 244px">
             <starboard-ensure-parent-fits></starboard-ensure-parent-fits>
-            <li><h6 class="dropdown-header">Toggle Cell properties</h6></li>
+            <li>
+              <button
+                @click="${() =>
+                  emit({
+                    id,
+                    type: "REMOVE_CELL",
+                  })}"
+                class="dropdown-item text-danger py-0"
+                title="Remove Cell"
+              >
+                <span class="bi bi-trash-fill me-2"></span> Remove Cell
+              </button>
+            </li>
+            <hr class="my-2" />
+            <!-- <li><h6 class="dropdown-header">Toggle Cell properties</h6></li> -->
             ${getPropertiesPopoverIcons(this.cell, (propertyName: string) => this.toggleProperty(propertyName))}
           </div>
         </div>
-
-        <button
-          @click="${() =>
-            emit({
-              id,
-              type: "REMOVE_CELL",
-            })}"
-          class="btn cell-controls-button auto-hide"
-          title="Remove Cell"
-        >
-          ${DeleteIcon({ width: 15, height: 15 })}
-        </button>
       </div>
 
       <div class="cell-controls cell-controls-left cell-controls-left-top"></div>

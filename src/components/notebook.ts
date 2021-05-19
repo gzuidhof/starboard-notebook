@@ -2,19 +2,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { customElement, html, LitElement, property, query } from "lit-element";
+import { html, LitElement } from "lit";
+import { customElement, property, query } from "lit/decorators";
+
 import { CellElement } from "./cell";
 import "./helpers/minimumBodySize"; // registers starboard-ensure-fits
 import { IFramePage } from "iframe-resizer";
 import { createCellProxy } from "./helpers/cellProxy";
-import { AssetsAddedIcon } from "@spectrum-web-components/icons-workflow";
-import { CodeIcon, StarboardLogo } from "./icons";
+import { StarboardLogo } from "./icons";
 import { insertHTMLChildAtIndex } from "./helpers/dom";
 import { Runtime, RuntimeConfig } from "../types";
 import { setupRuntime } from "../runtime/create";
 import Modal from "bootstrap/js/dist/modal";
 import { copyToClipboard } from "./helpers/clipboard";
 import { flatPromise } from "./helpers/flatPromise";
+import { renderIcon } from "./helpers/icon";
 
 declare global {
   interface Window {
@@ -108,7 +110,7 @@ export class StarboardNotebookElement extends LitElement {
 
   performUpdate() {
     super.performUpdate();
-    // We manually manage the cell elements, lit-html doesn't do a good job here
+    // We manually manage the cell elements, lit doesn't do a good job here
     // (or put differently: a too good job, it reuses components which is problematic)
 
     const content = this.runtime.content;
@@ -132,6 +134,8 @@ export class StarboardNotebookElement extends LitElement {
         continue;
       }
 
+      // We actually pass a proxy to cell handlers of the cell object so that we can
+      // monitor any changes.
       const cellProxy = createCellProxy(cell, () => {
         const changeListeners = this.runtime.internal.listeners.cellContentChanges.get(cell.id);
         if (changeListeners) {
@@ -167,7 +171,7 @@ export class StarboardNotebookElement extends LitElement {
             ${window.starboardEditUrl ? html`- <a href=${window.starboardEditUrl}>Edit on Starboard.gg</a>` : ""}
           </span>
           <button @click=${() => this.showSourceModal()} class="btn btn-sm py-0 px-1 ms-2">
-            <span>${CodeIcon({ width: 15, height: 15 })}</span>
+            <span>${renderIcon("bi bi-code-slash")}</span>
             Source
           </button>
 
@@ -175,9 +179,9 @@ export class StarboardNotebookElement extends LitElement {
             @click="${() => this.runtime.controls.insertCell({}, "end")}"
             class="cell-controls-button"
             title="Add Cell Here"
-            style="opacity: 0.4 !important; margin-left: auto; padding: 0px 1px 0px 18px;"
+            style="opacity: 0.7; margin-left: auto; padding: 0px 1px 0px 18px"
           >
-            ${AssetsAddedIcon({ width: 15, height: 15 })}
+            Add Cell <span class="bi bi-plus-square ms-2 me-1"></span>
           </button>
         </div>
       </footer>

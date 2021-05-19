@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { customElement, html, LitElement, property } from "lit-element";
+import { html, LitElement } from "lit";
+import { customElement, property } from "lit/decorators";
 
 import { ConsoleCatcher, Message } from "../../console/console";
 
@@ -46,7 +47,7 @@ export class ConsoleOutputElement extends LitElement {
     this.logs.push(msg);
     if (!this.updatePending) {
       this.updatePending = true;
-      requestAnimationFrame(() => this.performUpdate());
+      requestAnimationFrame(() => this.requestUpdate());
     }
   }
 

@@ -48,22 +48,12 @@
   font-size: 14px;
 
   border: 1px solid transparent;
-  // border-radius: var(--border-radius);
+  border-radius: var(--border-radius);
   transition: border ease-in 100ms;
 }
 
-// .cell-bottom.flush .starboard-text-editor {
-//     border-top-left-radius: 0;
-//     border-top-right-radius: 0;
-// }
-
-// .cell-top.flush .starboard-text-editor {
-//     border-bottom-left-radius: 0;
-//     border-bottom-right-radius: 0;
-// }
-
 .starboard-text-editor:focus-within {
-  border: 1px solid #ccc;
+  border: 1px solid #dbdbdb;
 }
 
 .cm-content *::selection {

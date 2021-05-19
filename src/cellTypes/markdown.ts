@@ -2,12 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { render, TemplateResult } from "lit-html";
+import { render, TemplateResult } from "lit";
 import mdlib from "markdown-it";
 
 import { BaseCellHandler } from "./base";
 import { cellControlsTemplate } from "../components/controls";
-import { CodeIcon, EditIcon, TextEditIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell } from "../types";
 import { CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../types";
@@ -53,7 +52,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
 
     if (this.editMode === "code") {
       editOrRunButton = {
-        icon: TextEditIcon,
+        icon: "bi bi-type",
         tooltip: "Edit as rich text",
         callback: () => {
           setTimeout(() => this.editor && this.editor.focus());
@@ -62,7 +61,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
       };
     } else if (this.editMode === "wysiwyg") {
       editOrRunButton = {
-        icon: CodeIcon,
+        icon: "bi bi-code-slash",
         tooltip: "Edit markdown source directly",
         callback: () => {
           setTimeout(() => this.editor && this.editor.focus());
@@ -71,7 +70,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
       };
     } else {
       editOrRunButton = {
-        icon: EditIcon,
+        icon: "bi-pencil-square",
         tooltip: "Edit Markdown",
         callback: () => {
           this.enterEditMode(DEFAULT_EDIT_MODE);

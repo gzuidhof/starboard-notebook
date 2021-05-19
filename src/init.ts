@@ -6,9 +6,9 @@ import "./styles/main.scss";
 import "./components/notebook";
 
 import "iframe-resizer/js/iframeResizer.contentWindow.js";
-import * as lithtml from "lit-html";
+import * as lit from "lit";
 
-import * as YAML from "yaml";
+import * as YAML from "js-yaml";
 import { RuntimeConfig } from "./types";
 
 declare global {
@@ -17,17 +17,17 @@ declare global {
     starboardArtifactsUrl?: string;
     runtimeConfig?: Partial<RuntimeConfig>;
 
-    html: typeof lithtml.html;
-    svg: typeof lithtml.svg;
-    litHtml: typeof lithtml;
+    html: typeof lit.html;
+    svg: typeof lit.svg;
+    lit: typeof lit;
     YAML: typeof YAML;
   }
 }
 
 // Globals available to the user in the notebook (excluding runtime, which is initialized in the notebook itself)
-window.html = lithtml.html;
-window.svg = lithtml.svg;
-window.litHtml = lithtml;
+window.html = lit.html;
+window.svg = lit.svg;
+window.lit = lit;
 window.YAML = YAML;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

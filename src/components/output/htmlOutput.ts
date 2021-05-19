@@ -1,4 +1,4 @@
-import { html, render } from "lit-html";
+import { html, render } from "lit";
 import { isProbablyTemplateResult } from "../../cellTypes/javascript/util";
 
 export function renderIfHtmlOutput(val: any, intoElement: HTMLElement) {

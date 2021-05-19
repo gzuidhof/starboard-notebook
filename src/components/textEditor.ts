@@ -7,13 +7,12 @@
  * This file needs a complete refactor..
  */
 
-import { customElement, html, LitElement, query } from "lit-element";
+import { html, LitElement, render } from "lit";
+import { unsafeHTML } from "lit/directives/unsafe-html";
+import { customElement, query } from "lit/decorators";
 
 import mdlib from "markdown-it";
 import { hookMarkdownItToPrismHighlighter } from "./helpers/highlight";
-import { render } from "lit-html";
-import { unsafeHTML } from "lit-html/directives/unsafe-html";
-import { DeviceDesktopIcon, DevicePhoneIcon, SettingsIcon } from "@spectrum-web-components/icons-workflow";
 import { Cell, Runtime } from "../types";
 import { copyToClipboard } from "./helpers/clipboard";
 import { trySetLocalStorage } from "./helpers/localStorage";
@@ -116,14 +115,14 @@ export class StarboardTextEditor extends LitElement {
                 title="Monaco Editor (advanced, desktop only)"
                 class="cell-popover-icon-button"
               >
-                ${DeviceDesktopIcon({ width: 12, height: 12 })} Monaco
+                Monaco
               </button>
               <button
                 @click=${() => this.switchToCodeMirrorEditor()}
                 title="CodeMirror Editor (simpler, touchscreen friendly)"
                 class="cell-popover-icon-button"
               >
-                ${DevicePhoneIcon({ width: 12, height: 12 })} CodeMirror
+                CodeMirror
               </button>
             </div>
             <span style="font-size: 0.85em"
@@ -182,7 +181,7 @@ export class StarboardTextEditor extends LitElement {
             this.opts as any,
             this.runtime
           );
-          this.performUpdate();
+          this.requestUpdate();
           setTimeout(() => resolve(), 0);
         });
       });
@@ -209,7 +208,7 @@ export class StarboardTextEditor extends LitElement {
           if (shouldCleanUpCodeMirror) this.editorInstance.dom.remove();
           this.editorMountpoint.innerHTML = "";
           this.editorInstance = m.createMonacoEditor(this.editorMountpoint, this.cell, this.opts as any, this.runtime);
-          this.performUpdate();
+          this.requestUpdate();
           setTimeout(() => resolve(), 0);
         });
       });
@@ -236,7 +235,7 @@ export class StarboardTextEditor extends LitElement {
               style="color: #00000066"
               title="Editor Actions"
             >
-              ${SettingsIcon({ width: 16, height: 16 })}
+              <span class="bi bi-gear"></span>
             </button>
             <div class="dropdown-menu">
               <li>

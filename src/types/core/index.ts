@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Runtime } from "../runtime";
-import { TemplateResult } from "lit-html";
+import { TemplateResult } from "lit";
 import { CellElement } from "src/components/cell";
 
 /**
@@ -162,12 +162,7 @@ export interface CellElements {
   bottomControlsElement: HTMLElement;
 }
 
-export type IconTemplate = (iconOpts?: {
-  width?: number;
-  height?: number;
-  hidden?: boolean;
-  title?: string;
-}) => TemplateResult | string;
+export type IconTemplate = string | ((iconOpts?: { width?: number; height?: number }) => TemplateResult | string);
 
 export interface ControlButton {
   icon: IconTemplate;

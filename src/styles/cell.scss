@@ -78,11 +78,12 @@ starboard-cell:not(:focus):not(:focus-within).property-collapsed {
 .cell-top {
   grid-area: top;
   min-height: 24px;
+  padding-bottom: 0.5em;
 }
 
 .cell-bottom {
   grid-area: bottom;
-  padding-bottom: 0.25em;
+  padding-bottom: 0.5em;
 }
 
 .cell-output-html {

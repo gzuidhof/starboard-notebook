@@ -88,7 +88,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
   const controls: RuntimeControls = {
     insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string) {
       const id = addCellToNotebookContent(rt, data, position, adjacentCellId);
-      notebook.performUpdate();
+      notebook.requestUpdate();
       controls.contentChanged();
 
       return id;
@@ -96,7 +96,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
     removeCell(id: string) {
       removeCellFromNotebookById(rt.content, id);
-      notebook.performUpdate();
+      notebook.requestUpdate();
       controls.contentChanged();
     },
 
@@ -107,7 +107,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
           c.remove();
         }
       });
-      notebook.performUpdate();
+      notebook.requestUpdate();
       controls.contentChanged();
     },
 
@@ -117,7 +117,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
           c.remove();
         }
       });
-      notebook.performUpdate();
+      notebook.requestUpdate();
     },
 
     runCell(id: string, focus?: "previous" | "next", insertNewCell?: boolean) {

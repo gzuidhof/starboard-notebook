@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { customElement, LitElement } from "lit-element";
+import { LitElement } from "lit";
+import { customElement } from "lit/decorators";
 
 /* This file contains routines for ensuring that the body of the notebook will be large enough to fit
 certain elements. In particular dropdowns that are too large, but this could be applied to any absolutely-positioned stuff.

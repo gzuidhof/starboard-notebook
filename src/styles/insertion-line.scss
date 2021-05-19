@@ -60,6 +60,7 @@ starboard-insertion-line {
 
   .insert-button.plus {
     right: -11px;
+    font-size: 16px;
     width: 28px; // <6 pix padding, 22 pix button (50% of that is 11px)
   }
 
@@ -73,6 +74,8 @@ starboard-insertion-line {
     padding-left: 6px;
     background-color: transparent;
     color: transparent;
+
+    font-size: 12px;
 
     border: 0;
     border-radius: 0;
@@ -105,7 +108,7 @@ starboard-insertion-line {
 }
 
 /* Makes the current hovered cell + buttons above visible only, except for the first cell. */
-starboard-cell:not(:first-of-type, :hover) .insertion-line-top {
+starboard-cell:not(:first-of-type, :hover, :focus-within) .insertion-line-top {
   display: none;
 }
 

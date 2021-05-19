@@ -20,6 +20,7 @@ $danger: #f14668;
 
 $border-radius: var(--border-radius);
 
+@import "../../node_modules/bootstrap-icons/font/bootstrap-icons.css";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 @import "./base.scss";
 
@@ -155,7 +156,7 @@ i {
 
 .cells-container {
   background-color: var(--background-color);
-  padding-bottom: 0.75em;
+  padding-bottom: 0.5em;
 }
 
 .starboard-notebook-footer {

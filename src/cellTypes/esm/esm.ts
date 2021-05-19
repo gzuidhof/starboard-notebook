@@ -2,10 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { html, render, TemplateResult } from "lit-html";
+import { html, render, TemplateResult } from "lit";
 import { BaseCellHandler } from "../base";
 import { cellControlsTemplate } from "../../components/controls";
-import { ClockIcon, PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 
 import { ConsoleOutputElement } from "../../components/output/consoleOutput";
 import { StarboardTextEditor } from "../../components/textEditor";
@@ -33,7 +32,7 @@ export class ESModuleCellHandler extends BaseCellHandler {
   }
 
   private getControls(): TemplateResult {
-    const icon = this.isCurrentlyRunning ? ClockIcon : PlayCircleIcon;
+    const icon = this.isCurrentlyRunning ? "bi bi-hourglass" : "bi bi-play-circle";
     const tooltip = this.isCurrentlyRunning ? "Cell is running" : "Run Cell";
     const runButton: ControlButton = {
       icon,

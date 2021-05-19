@@ -1,6 +1,6 @@
 {
   "name": "starboard-notebook",
-  "version": "0.9.4",
+  "version": "0.10.0",
   "description": "Starboard Notebook",
   "author": "Guido Zuidhof <me@guido.io>",
   "funding": {
@@ -37,6 +37,7 @@
     "@types/bootstrap": "^5.0.8",
     "@types/iframe-resizer": "^3.5.8",
     "@types/jest": "^25.2.1",
+    "@types/js-yaml": "^4.0.1",
     "@types/katex": "^0.11.0",
     "@types/markdown-it": "0.0.9",
     "@types/markdown-it-emoji": "^1.4.0",
@@ -86,16 +87,14 @@
     "@github/mini-throttle": "^2.0.1",
     "@iktakahiro/markdown-it-katex": "^4.0.1",
     "@popperjs/core": "^2.5.3",
-    "@spectrum-web-components/icons-ui": "^0.1.0",
-    "@spectrum-web-components/icons-workflow": "^0.2.0",
     "babel-walk": "^3.0.0",
     "bootstrap": "^5.0.0",
     "bootstrap-icons": "^1.5.0",
     "console-feed-modern": "^3.0.5",
     "iframe-resizer": "^4.2.10",
+    "js-yaml": "^4.1.0",
     "katex": "^0.13.10",
-    "lit-element": "^2.3.1",
-    "lit-html": "^1.2.1",
+    "lit": "*",
     "markdown-it": "^12.0.6",
     "markdown-it-emoji": "^2.0.0",
     "markdown-it-prism": "^2.1.6",
@@ -114,7 +113,6 @@
     "prosemirror-state": "^1.3.4",
     "prosemirror-transform": "^1.2.12",
     "prosemirror-view": "^1.18.1",
-    "starboard-python": "^0.6.5",
-    "yaml": "^2.0.0-1"
+    "starboard-python": "^0.6.5"
   }
 }

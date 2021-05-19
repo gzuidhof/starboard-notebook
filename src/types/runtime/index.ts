@@ -14,14 +14,13 @@ import type {
 import type { ConsoleCatcher } from "../../console/console";
 import type { CellElement } from "../../components/cell";
 import type { StarboardNotebookElement } from "../../components/notebook";
-import type { TemplateResult } from "lit-html";
+import type { TemplateResult } from "lit";
 import type { StarboardTextEditor } from "../../components/textEditor";
 import type { ConsoleOutputElement } from "../../components/output/consoleOutput";
 
-import type * as lithtmlLibrary from "lit-html";
-import type * as litElementLibrary from "lit-element";
+import type * as litLibrary from "lit";
 import type katex from "katex";
-import type * as YAML from "yaml";
+import type * as YAML from "js-yaml";
 import type mdlib from "markdown-it";
 import type * as Popper from "@popperjs/core";
 
@@ -88,15 +87,25 @@ export interface RuntimeControls {
 export interface RuntimeExports {
   templates: {
     cellControls: (c: ControlsDefinition) => TemplateResult | string;
+    /** @deprecated */
     icons: {
+      /** @deprecated */
       StarboardLogo: IconTemplate;
+      /** @deprecated */
       AssetsAddedIcon: IconTemplate;
+      /** @deprecated */
       DeleteIcon: IconTemplate;
+      /** @deprecated */
       BooleanIcon: IconTemplate;
+      /** @deprecated */
       ClockIcon: IconTemplate;
+      /** @deprecated */
       PlayCircleIcon: IconTemplate;
+      /** @deprecated */
       TextEditIcon: IconTemplate;
+      /** @deprecated */
       GearsIcon: IconTemplate;
+      /** @deprecated */
       LockClosedIcon: IconTemplate;
     };
   };
@@ -128,8 +137,11 @@ export interface RuntimeExports {
    * Libraries that are re-exported
    */
   libraries: {
-    LitHtml: typeof lithtmlLibrary;
-    LitElement: typeof litElementLibrary;
+    lit: typeof litLibrary;
+    /** @deprecated WILL BE REMOVED SOON - you must upgrade to use `lit` instead. */
+    LitHtml: typeof litLibrary;
+    /** @deprecated WILL BE REMOVED SOON - you must upgrade to use `lit` instead. */
+    LitElement: typeof litLibrary;
     MarkdownIt: typeof mdlib;
     YAML: typeof YAML;
     Popper: typeof Popper;

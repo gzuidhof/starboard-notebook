@@ -2,11 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { html, render, TemplateResult } from "lit-html";
+import { html, render, TemplateResult } from "lit";
 import { BaseCellHandler } from "./base";
 import { cellControlsTemplate } from "../components/controls";
-import { unsafeHTML } from "lit-html/directives/unsafe-html";
-import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
+import { unsafeHTML } from "lit/directives/unsafe-html";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell, CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../types";
 
@@ -25,7 +24,7 @@ export class HTMLCellHandler extends BaseCellHandler {
   }
 
   private getControls(): TemplateResult {
-    const icon = PlayCircleIcon;
+    const icon = "bi bi-play-circle";
     const tooltip = "Run Cell";
     const runButton: ControlButton = {
       icon,

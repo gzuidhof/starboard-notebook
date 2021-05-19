@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { BaseCellHandler } from "./base";
-import { html, render } from "lit-html";
+import { html, render } from "lit";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell, CellHandlerAttachParameters, Runtime } from "../types";
 

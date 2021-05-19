@@ -2,10 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { render, TemplateResult } from "lit-html";
+import { render, TemplateResult } from "lit";
 import { BaseCellHandler } from "./base";
 import { cellControlsTemplate } from "../components/controls";
-import { PlayCircleIcon, TextEditIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell, CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../types";
 import { katexLoader } from "../components/helpers/katex";
@@ -30,13 +29,13 @@ export class LatexCellHandler extends BaseCellHandler {
     let editOrRunButton: ControlButton;
     if (this.isInEditMode) {
       editOrRunButton = {
-        icon: PlayCircleIcon,
+        icon: "bi bi-play-circle",
         tooltip: "Render LaTeX",
         callback: () => this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL" }),
       };
     } else {
       editOrRunButton = {
-        icon: TextEditIcon,
+        icon: "bi bi-pencil-square",
         tooltip: "Edit LaTeX",
         callback: () => this.enterEditMode(),
       };

@@ -22,7 +22,7 @@ const greeting = "Hello world!";
 // The last statement in a cell will be displayed if it is not undefined.
 greeting
 # %% [html]
-<div id="my-element" style="background-color: #ddf; margin: 1em; padding: 0 1em;">
+<div id="my-element" style="background-color: #ddf; padding: 0 1em;">
   <b>You can mix and match different types of cells</b>
 </div>
 # %% [js]
@@ -58,7 +58,7 @@ function fireConfetti(event) {
     Confetti({origin: {x, y}});
 }
 
-// You can use lit-html for templating if you want to
+// You can use lit for templating if you want to
 html`<button @click=${fireConfetti}>Fire Confetti 🎉</button>`;
 # %% [esm]
 // There is also an ES module cell type, any variable or function you export is available in the global scope
@@ -95,7 +95,7 @@ async function onClick(event) {
 
 
 html`
-<div style="padding: 0.4em 1em; margin: 1em; background-color: #fff; border: 1px solid">
+<div style="padding: 0.4em 1em; margin: 0 1em; background-color: #fff; border: 1px solid">
     <button @click=${onClick}>Give me advice</button>
     ${adviceElement}
 </div>

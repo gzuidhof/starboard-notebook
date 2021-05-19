@@ -4,31 +4,20 @@
 
 import { cellControlsTemplate } from "../components/controls";
 import { StarboardLogo } from "../components/icons";
-import {
-  AssetsAddedIcon,
-  BooleanIcon,
-  ClockIcon,
-  DeleteIcon,
-  GearsIcon,
-  LockClosedIcon,
-  PlayCircleIcon,
-  TextEditIcon,
-} from "@spectrum-web-components/icons-workflow";
 import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
 import { createCellProxy } from "../components/helpers/cellProxy";
 import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
 import { StarboardTextEditor } from "../components/textEditor";
 import { ConsoleOutputElement } from "../components/output/consoleOutput";
 
-import * as LitElement from "lit-element";
-import * as LitHtml from "lit-html";
+import * as lit from "lit";
 import MarkdownIt from "markdown-it";
 import * as popper from "@popperjs/core";
 // @ts-ignore
 import * as StarboardPython from "starboard-python";
 
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
-import * as YAML from "yaml";
+import * as YAML from "js-yaml";
 import { hookMarkdownItToKaTeX, katexLoader } from "../components/helpers/katex";
 import { RuntimeExports } from "../types";
 import { ConsoleCatcher } from "../console/console";
@@ -44,14 +33,14 @@ export function createExports(): RuntimeExports {
       cellControls: cellControlsTemplate,
       icons: {
         StarboardLogo: StarboardLogo,
-        AssetsAddedIcon: AssetsAddedIcon,
-        DeleteIcon: DeleteIcon,
-        BooleanIcon: BooleanIcon,
-        ClockIcon: ClockIcon,
-        PlayCircleIcon: PlayCircleIcon,
-        TextEditIcon: TextEditIcon,
-        GearsIcon: GearsIcon,
-        LockClosedIcon: LockClosedIcon,
+        AssetsAddedIcon: "bi bi-plus-square",
+        DeleteIcon: "bi bi-trash-fill",
+        BooleanIcon: "bi bi-toggle",
+        ClockIcon: "bi bi-hourglass",
+        PlayCircleIcon: "bi bi-play-circle",
+        TextEditIcon: "bi bi-pencil-square",
+        GearsIcon: "bi bi-gear",
+        LockClosedIcon: "bi bi-lock",
       },
     },
     core: {
@@ -73,8 +62,11 @@ export function createExports(): RuntimeExports {
       StarboardContentEditor: StarboardContentEditor,
     },
     libraries: {
-      LitElement: LitElement,
-      LitHtml: LitHtml,
+      /* @deprecated, to be removed in a later version */
+      LitElement: lit, //litElement,
+      /* @deprecated, to be removed in a later version */
+      LitHtml: lit,
+      lit: lit,
       MarkdownIt: MarkdownIt,
       YAML: YAML,
       Popper: popper,

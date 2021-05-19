@@ -2,12 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { html } from "lit-html";
-import { AlertCircleIcon } from "@spectrum-web-components/icons-workflow";
+import { html } from "lit";
 import { Cell, ControlsDefinition } from "../types";
 import { getAvailablePropertyTypes, registry } from "../cellProperties/registry";
+import { renderIcon } from "./helpers/icon";
 
-// Note: These controls are not "Components" in the lit-element sense
+// Note: These controls are not "Components" in the lit sense
 
 export function cellControlsTemplate(controls: ControlsDefinition) {
   const buttons = controls.buttons;
@@ -17,10 +17,10 @@ export function cellControlsTemplate(controls: ControlsDefinition) {
         html`
           <button
             @click="${button.callback}"
-            class="btn cell-controls-button ${button.hide === undefined ? "auto-hide" : button.hide} "
+            class="btn cell-controls-button py-1 ${button.hide === undefined ? "auto-hide" : button.hide} "
             title="${button.tooltip}"
           >
-            ${button.icon({ width: 18, height: 18 })}
+            ${renderIcon(button.icon, { width: 16, height: 16 })}
           </button>
         `
     )}
@@ -31,7 +31,7 @@ export function getPropertiesIcons(cell: Cell, togglePropertyFunction: (name: st
   const iconTemplates = [];
   for (const prop of Object.getOwnPropertyNames(cell.metadata.properties)) {
     const propertyDef = registry.get(prop) || {
-      icon: AlertCircleIcon,
+      icon: "bi bi-exclamation-circle",
       textEnabled: `Unknown property "${prop}"`,
       textDisabled: ``,
       name: `Unknown`,
@@ -43,7 +43,7 @@ export function getPropertiesIcons(cell: Cell, togglePropertyFunction: (name: st
         class="btn cell-controls-button property-${propertyDef.cellProperty}"
         title=${propertyDef.textEnabled}
       >
-        ${propertyDef.icon({ width: 15, height: 15 })}
+        ${renderIcon(propertyDef.icon, { width: 14, height: 14 })}
       </button>
     `;
     iconTemplates.push(templateResult);
@@ -51,21 +51,21 @@ export function getPropertiesIcons(cell: Cell, togglePropertyFunction: (name: st
   return html`${iconTemplates}`;
 }
 
+// Shown in the dropdown where you can add new cell properties.
 export function getPropertiesPopoverIcons(cell: Cell, togglePropertyFunction: (name: string) => void) {
   return html`
-    <div class="m-2 d-flex">
+    <div class="mb-1 mt-3 d-flex justify-content-around">
       ${getAvailablePropertyTypes().map((def) => {
         const isActive = cell.metadata.properties[def.cellProperty] !== undefined;
         const helpText = isActive ? def.textEnabled : def.textDisabled;
-        const style = isActive ? "color: #8d27f4" : "";
+
         return html`
           <button
-            style=${style}
             @click=${() => togglePropertyFunction(def.cellProperty)}
-            class="btn cell-controls-button property-${def.cellProperty}"
+            class="btn cell-controls-button property-${def.cellProperty} ${isActive ? "text-primary" : ""}"
             title=${helpText}
           >
-            ${def.icon({ width: 16, height: 16 })}
+            ${renderIcon(def.icon, { width: 16, height: 16 })}
           </button>
         `;
       })}

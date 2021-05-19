@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { customElement, LitElement } from "lit-element";
+import { LitElement } from "lit";
+import { customElement } from "lit/decorators";
 import { TextSelection } from "prosemirror-state";
 import type { EditorView } from "prosemirror-view";
 import { Runtime } from "../../types";

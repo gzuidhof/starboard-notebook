@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { html, render } from "lit-html";
+import { html, render } from "lit";
 import { BaseCellHandler } from "./base";
-import { unsafeHTML } from "lit-html/directives/unsafe-html";
+import { unsafeHTML } from "lit/directives/unsafe-html";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell, CellElements, CellHandlerAttachParameters, Runtime } from "../types";
 

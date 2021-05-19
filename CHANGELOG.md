@@ -1,5 +1,18 @@
 # Changelog
 
+## Release 0.10.0
+**Date:** 2021-05-19
+
+* Visual overhaul - cell editors and console outputs are round again. Added space in between cell bottom and top, and between cells.
+* Switch to `js-yaml` from `yaml`, which saves 52KB in minified output size. This library has a slightly different interface, notebooks that use this library need to make small changes.
+* Added the `bootstrap-icons` font as the main source for icons, removed spectrum-icons.
+* Deprecated the exported icons on the runtime (you can now just use the `bi bi-icon-name` classes) - they will keep working but are now aliasing a bootstrap icon instead.
+* Upgraded to `lit` from `lit-html` and `lit-element`. The `litHtml` global is now replaced by `lit`.
+  * `LitHtml` and `LitElement` will remain in the exports for now as an alias for `lit`. **Plugins must upgrade to use lit instead** as this is a temporary stopgap for compatibility.
+* Fixed an issue where the cell insertion menu would disappear when hovering over a previous cell.
+* Replaced `performUpdate` with `requestUpdate` where possible. This means that there will now only be one update if multiple are requested per frame, leading to slightly better performance.
+
+
 ## Release 0.9.4
 **Date:** 2021-05-14
 

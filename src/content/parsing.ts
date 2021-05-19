@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Cell, NotebookContent } from "../types";
-import * as YAML from "yaml";
+import * as YAML from "js-yaml";
 import { generateUniqueCellId } from "../components/helpers/random";
 
 const eol = /\r\n|\r|\n/g;
@@ -135,7 +135,7 @@ export function parseNotebookContent(notebookContentString: string) {
     }
 
     try {
-      metadata = YAML.parse(allLines.slice(yamlHeaderStartIndex + 1, yamlHeaderEndIndex).join("\n")) || {};
+      metadata = YAML.load(allLines.slice(yamlHeaderStartIndex + 1, yamlHeaderEndIndex).join("\n")) || {};
       if (typeof metadata !== "object") {
         throw new Error("Failed to parse notebook metadata - it should be a map at the root.");
       }
@@ -212,7 +212,7 @@ export function parseNotebookContent(notebookContentString: string) {
           if (CellMetadataEndDelimiterRegex.test(line)) {
             try {
               // This is the end of the YAML block at the start of a cell, parse the lines as yaml.
-              currentCell.metadata = YAML.parse(currentCell.lines.join("\n")) || {};
+              currentCell.metadata = YAML.load(currentCell.lines.join("\n")) || {};
               if (typeof currentCell.metadata !== "object") {
                 console.error(
                   `Cell (type: ${currentCell.type}) has invalid metadata (${JSON.stringify(

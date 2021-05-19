@@ -88,7 +88,7 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
         contentHasBeenSetFromParentIframe = true;
         nb.hasHadInitialRun = false;
         nb.notebookInitialize();
-        nb.performUpdate();
+        nb.requestUpdate();
 
         if (msg.payload.baseUrl !== undefined) {
           const baseEl = document.querySelector("base");

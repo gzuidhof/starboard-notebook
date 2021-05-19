@@ -1,5 +1,6 @@
-import { customElement, LitElement, property } from "lit-element";
-import { html } from "lit-html";
+import { html, LitElement } from "lit";
+import { customElement, property } from "lit/decorators";
+
 import { CellCreationInterface, CellTypeDefinition, Runtime } from "../types";
 import { Cell } from "../types";
 import { getAvailableCellTypes, getCellTypeDefinitionForCellType } from "../cellTypes/registry";
@@ -40,7 +41,6 @@ export class CellTypePicker extends LitElement {
   constructor(runtime: Runtime) {
     super();
     this.runtime = runtime;
-    this.setHighlightedCellType("markdown");
   }
 
   createRenderRoot() {
@@ -49,7 +49,8 @@ export class CellTypePicker extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.performUpdate();
+    this.setHighlightedCellType("markdown");
+    this.requestUpdate();
   }
 
   disconnectedCallback() {
@@ -70,7 +71,7 @@ export class CellTypePicker extends LitElement {
       create: () => this.insertCell(),
     });
 
-    this.performUpdate();
+    this.requestUpdate();
     this.querySelector(".dropdown-item.active") && (this.querySelector(".dropdown-item.active") as HTMLElement).focus();
   }
 

@@ -6,4 +6,6 @@ starboard-console-output .starboard-console-output-inner {
   line-height: 1.2;
   background-color: #242424;
   overflow-x: hidden;
+
+  border-radius: var(--border-radius);
 }

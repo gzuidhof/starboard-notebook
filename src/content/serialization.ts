@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Cell, NotebookContent } from "../types";
-import * as YAML from "yaml";
+import * as YAML from "js-yaml";
 
 const PreferredCellDelimiter = "# %%";
 
@@ -15,7 +15,7 @@ export function notebookContentToText(nb: NotebookContent) {
   const cellsAsText = nb.cells.map(cellToText).join("\n");
 
   if (!objectIsEmpty(nb.metadata)) {
-    const ymlHeader = YAML.stringify(nb.metadata);
+    const ymlHeader = YAML.dump(nb.metadata);
     return `---\n${ymlHeader}---\n${cellsAsText}`;
   }
 
@@ -29,7 +29,7 @@ export function cellToText(cell: Cell) {
     // The cell metadata is empty
     cellHeader = `${PreferredCellDelimiter} [${cell.cellType}]`;
   } else {
-    let ymlCellMetadata = YAML.stringify(cell.metadata);
+    let ymlCellMetadata = YAML.dump(cell.metadata);
     // Add a comment marker to each of the lines.
     // The last line contains a trailing \n, which we slice off
     ymlCellMetadata = ymlCellMetadata

@@ -9,6 +9,7 @@ import { runtime } from "../../";
 
 const l = runtime.exports.libraries;
 
+export const lit = l.lit;
 export const LitElement = l.LitElement;
 export const LitHtml = l.LitHtml;
 export const MarkdownIt = l.MarkdownIt as any;
