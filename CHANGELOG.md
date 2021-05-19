@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.10.1
+**Date:** 2021-05-20
+
+* `bootstrap-icons` css and woff2 file is now vendored, this helps prevent some webpack difficulties in downstream packages.
+* Update to starboard-python `0.6.6` (nothing substantial has updated aside from some icon changes).
+
 ## Release 0.10.0
 **Date:** 2021-05-19
 

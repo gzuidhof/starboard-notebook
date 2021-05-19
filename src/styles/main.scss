@@ -20,7 +20,7 @@ $danger: #f14668;
 
 $border-radius: var(--border-radius);
 
-@import "../../node_modules/bootstrap-icons/font/bootstrap-icons.css";
+@import "./bootstrap-icons";
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 @import "./base.scss";
 
