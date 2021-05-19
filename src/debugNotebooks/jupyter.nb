@@ -1,15 +1,11 @@
-# %%--- [esm]
-# properties:
-#   run_on_load: true
-# ---%%
-import "http://localhost:8080/dist/starboard-jupyter.js";
-
-registerJupyterPlugin({
-    serverSettings: {
-        baseUrl: "http://localhost:8888",
-        token: "myfixedtokensecret",
-    }
-})
+---
+starboard:
+  plugins: 
+    - src: "http://localhost:8080/dist/index.js"
+      args:
+        serverSettings:
+          baseUrl: "https://localhost:8888"
+---
 # %% [jupyter]
 import matplotlib.pyplot as plt
 
