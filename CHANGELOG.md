@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.10.2
+**Date:** Unreleased
+
+* Added `litDecorators` and `litDirectives` to the exports in `runtime.exports.libraries`.
+
 ## Release 0.10.1
 **Date:** 2021-05-20
 

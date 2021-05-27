@@ -11,6 +11,9 @@ import { StarboardTextEditor } from "../components/textEditor";
 import { ConsoleOutputElement } from "../components/output/consoleOutput";
 
 import * as lit from "lit";
+import * as litDirectives from "lit/directive";
+import * as litDecorators from "lit/decorators";
+
 import MarkdownIt from "markdown-it";
 import * as popper from "@popperjs/core";
 // @ts-ignore
@@ -67,6 +70,8 @@ export function createExports(): RuntimeExports {
       /* @deprecated, to be removed in a later version */
       LitHtml: lit,
       lit: lit,
+      litDirectives: litDirectives,
+      litDecorators: litDecorators,
       MarkdownIt: MarkdownIt,
       YAML: YAML,
       Popper: popper,

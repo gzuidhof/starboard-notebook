@@ -19,6 +19,8 @@ import type { StarboardTextEditor } from "../../components/textEditor";
 import type { ConsoleOutputElement } from "../../components/output/consoleOutput";
 
 import type * as litLibrary from "lit";
+import type * as litDirectives from "lit/directive";
+import type * as litDecorators from "lit/decorators";
 import type katex from "katex";
 import type * as YAML from "js-yaml";
 import type mdlib from "markdown-it";
@@ -142,6 +144,8 @@ export interface RuntimeExports {
     LitHtml: typeof litLibrary;
     /** @deprecated WILL BE REMOVED SOON - you must upgrade to use `lit` instead. */
     LitElement: typeof litLibrary;
+    litDirectives: typeof litDirectives;
+    litDecorators: typeof litDecorators;
     MarkdownIt: typeof mdlib;
     YAML: typeof YAML;
     Popper: typeof Popper;
