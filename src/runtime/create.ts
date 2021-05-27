@@ -144,7 +144,6 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         window.setTimeout(() => {
           const next = rt.dom.cells[idxOfCell + 1];
           if (next) {
-            console.log("focusing next cell");
             next.focusEditor({ position: "start" });
           }
         });

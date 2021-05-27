@@ -31,13 +31,13 @@ export class StarboardContentEditor extends LitElement {
     return this;
   }
 
-  constructor(content: ContentContainer, runtime: Runtime, opts: {} = {}) {
+  constructor(content: ContentContainer, runtime: Runtime) {
     super();
     this.runtime = runtime;
     this.content = content;
 
     prosemirrorPromise.then((pm) => {
-      this.view = pm.createProseMirrorEditor(this, this.content, this.runtime, opts);
+      this.view = pm.createProseMirrorEditor(this, this.content, this.runtime);
     });
   }
 

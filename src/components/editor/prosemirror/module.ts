@@ -23,12 +23,7 @@ export { defaultMarkdownSerializer, EditorState, EditorView, Plugin };
 const schema = createSchema();
 const parser = createMarkdownParser(schema);
 
-export function createProseMirrorEditor(
-  element: HTMLElement,
-  content: ContentContainer,
-  _runtime: Runtime,
-  _opts: {} = {}
-) {
+export function createProseMirrorEditor(element: HTMLElement, content: ContentContainer, _runtime: Runtime) {
   const editorView = new EditorView(element, {
     state: EditorState.create({
       doc: parser.parse(content.textContent),
