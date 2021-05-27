@@ -168,11 +168,17 @@ export class MarkdownCellHandler extends BaseCellHandler {
     }
   }
 
-  focusEditor() {
+  focusEditor(opts: { position?: "start" | "end" }) {
     this.enterEditMode(DEFAULT_EDIT_MODE);
-    setTimeout(() => this.editor && this.editor.focus());
+    setTimeout(() => {
+      if (this.editor) {
+        this.editor.focus();
+        this.editor.setCaretPosition(opts.position ?? "start");
+      }
+    });
     if (this.editor) {
       this.editor.focus();
+      this.editor.setCaretPosition(opts.position ?? "start");
     }
   }
 

@@ -102,9 +102,9 @@ export class CellElement extends LitElement {
     this.requestUpdate();
   }
 
-  public focusEditor() {
+  public focusEditor(opts: { position?: "start"|"end"}) {
     this.focus();
-    this.cellHandler.focusEditor();
+    this.cellHandler.focusEditor(opts);
   }
 
   public clear() {

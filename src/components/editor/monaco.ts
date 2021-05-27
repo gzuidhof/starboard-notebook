@@ -120,7 +120,7 @@ function addEditorKeyboardShortcuts(
           focus: "next",
         });
       }
-    } else if(e.keyCode === monaco.KeyCode.UpArrow) {
+    } else if (e.keyCode === monaco.KeyCode.UpArrow) {
       if (editor.getPosition()?.lineNumber === 1) {
         emit({
           id: cellId,

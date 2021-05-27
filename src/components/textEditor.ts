@@ -278,6 +278,38 @@ export class StarboardTextEditor extends LitElement {
     }
   }
 
+  setCaretPosition(position: "start" | "end") {
+    if (this.editorInstance) {
+      // Feels like a hack
+      if (currentEditor === "monaco") {
+        if (position === "start") {
+          this.editorInstance.setSelection({ startLineNumber: 0, endLineNumber: 0, startColumn: 0, endColumn: 0 });
+        } else if (position === "end") {
+          const lastLine = this.editorInstance.getModel()?.getLineCount();
+          if (lastLine !== undefined) {
+            const lastColumn = this.editorInstance.getModel()?.getLineMaxColumn() ?? 0;
+            this.editorInstance.setSelection({
+              startLineNumber: lastLine,
+              endLineNumber: lastLine,
+              startColumn: lastColumn,
+              endColumn: lastColumn,
+            });
+          }
+        }
+      } else if (currentEditor === "codemirror") {
+        if (position === "start") {
+          this.editorInstance.dispatch({
+            selection: { anchor: 0 },
+          });
+        } else if (position === "end") {
+          this.editorInstance.dispatch({
+            selection: { anchor: this.editorInstance.state.doc.length },
+          });
+        }
+      }
+    }
+  }
+
   dispose() {
     this.remove();
   }

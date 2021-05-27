@@ -125,8 +125,9 @@ export class ESModuleCellHandler extends BaseCellHandler {
     }
   }
 
-  focusEditor() {
+  focusEditor(opts: { position?: "start" | "end" }) {
     this.editor.focus();
+    this.editor.setCaretPosition(opts.position ?? "start");
   }
 
   async dispose() {

@@ -70,8 +70,9 @@ class CoffeeScriptCellHandler {
         return undefined;
     }
 
-    focusEditor() {
-        this.editor.focus();
+    focusEditor(opts) {
+      this.editor.focus();
+      this.editor.setCaretPosition(opts.position ?? "start");
     }
 
     async dispose() {

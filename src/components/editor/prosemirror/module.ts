@@ -27,7 +27,7 @@ export function createProseMirrorEditor(
   element: HTMLElement,
   content: ContentContainer,
   _runtime: Runtime,
-  _opts: { focusAfterInit?: boolean } = {}
+  _opts: {} = {}
 ) {
   const editorView = new EditorView(element, {
     state: EditorState.create({

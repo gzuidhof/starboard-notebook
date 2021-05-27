@@ -136,7 +136,7 @@ export interface CellHandler {
   run(): Promise<any>;
   dispose(): Promise<void>;
 
-  focusEditor(): void;
+  focusEditor(opts: { position?: "start" | "end" }): void;
   /**
    * Clear the output of the cell.
    */
