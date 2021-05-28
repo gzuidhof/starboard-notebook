@@ -126,9 +126,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
         wordWrap: "on",
       });
     } else {
-      this.editor = new StarboardContentEditor(this.cell, this.runtime, {
-        focusAfterInit: true,
-      });
+      this.editor = new StarboardContentEditor(this.cell, this.runtime);
     }
     topElement.appendChild(this.editor);
   }
