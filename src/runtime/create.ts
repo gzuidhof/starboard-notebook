@@ -10,7 +10,12 @@ import { textToNotebookContent } from "../content/parsing";
 import { ConsoleCatcher } from "../console/console";
 import { registry as cellTypeRegistry } from "../cellTypes/registry";
 import { registry as cellPropertiesRegistry } from "../cellProperties/registry";
-import { addCellToNotebookContent, changeCellType, removeCellFromNotebookById } from "../content/notebookContent";
+import {
+  addCellToNotebookContent,
+  changeCellType,
+  removeCellFromNotebookById,
+  requireIndexOfCellId,
+} from "../content/notebookContent";
 import { notebookContentToText } from "../content/serialization";
 import { debounce } from "@github/mini-throttle";
 import { CellElement } from "../components/cell";
@@ -24,6 +29,7 @@ import {
 import { createExports } from "./exports";
 import { OutboundNotebookMessage } from "../types/messages";
 import { StarboardPlugin } from "../types/plugins";
+import { arrayMoveElement } from "../components/helpers/array";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
@@ -100,6 +106,22 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       controls.contentChanged();
     },
 
+    moveCell(id: string, delta: number) {
+      const idx = requireIndexOfCellId(rt.content.cells, id);
+      controls.moveCellToIndex(id, idx + delta);
+    },
+
+    moveCellToIndex(id: string, index: number) {
+      const fromIndex = requireIndexOfCellId(rt.content.cells, id);
+      const maxIndex = rt.content.cells.length - 1;
+      const toIndexClamped = Math.max(Math.min(index, Math.max(0, maxIndex)), Math.min(0, maxIndex));
+      if (fromIndex === toIndexClamped) return;
+
+      arrayMoveElement(rt.content.cells, fromIndex, toIndexClamped);
+      rt.dom.notebook.moveCellDomElement(fromIndex, toIndexClamped);
+      controls.contentChanged();
+    },
+
     changeCellType(id: string, newCellType: string) {
       changeCellType(rt.content, id, newCellType);
       rt.dom.cells.forEach((c) => {
@@ -121,7 +143,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     },
 
     runCell(id: string, focus?: "previous" | "next", insertNewCell?: boolean) {
-      let cellElements = rt.dom.cells;
+      const cellElements = rt.dom.cells;
 
       let idxOfCell = -1;
       for (let i = 0; i < cellElements.length; i++) {
@@ -244,6 +266,8 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         controls.focusCell(event.id, event.focus);
       } else if (event.type === "SAVE") {
         controls.save();
+      } else if (event.type === "MOVE_CELL") {
+        controls.moveCell(event.id, event.amount);
       }
     },
 

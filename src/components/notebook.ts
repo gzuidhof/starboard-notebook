@@ -17,6 +17,8 @@ import Modal from "bootstrap/js/dist/modal";
 import { copyToClipboard } from "./helpers/clipboard";
 import { flatPromise } from "./helpers/flatPromise";
 import { renderIcon } from "./helpers/icon";
+import { downloadAsHtml } from "../content/export";
+import { arrayMoveElement } from "./helpers/array";
 
 declare global {
   interface Window {
@@ -106,6 +108,19 @@ export class StarboardNotebookElement extends LitElement {
     this.sourceModal = new Modal(this.sourceModalElement, {});
 
     this.notebookInitialize();
+  }
+
+  moveCellDomElement(fromIndex: number, toIndex: number) {
+    const el = this.runtime.dom.cells[fromIndex] as CellElement;
+    const delta = toIndex - fromIndex;
+    const moveBeforeIndex = delta === 1 ? toIndex + 1 : toIndex;
+
+    // A bit hacky: without this the connectedCallback and disconnectedCallback would
+    // prompt creation or cleanup of the cell handler.
+    el.isBeingMoved = true;
+    this.cellsParentElement.insertBefore(el, this.runtime.dom.cells[moveBeforeIndex] || null);
+    el.isBeingMoved = false;
+    arrayMoveElement(this.runtime.dom.cells, fromIndex, toIndex);
   }
 
   performUpdate() {
@@ -210,7 +225,14 @@ export class StarboardNotebookElement extends LitElement {
             <div class="modal-footer">
               <button
                 @click=${() => {
-                  console.log("Copied to clipboard!");
+                  downloadAsHtml(this.runtime);
+                }}
+                class="btn text-dark"
+              >
+                Export HTML
+              </button>
+              <button
+                @click=${() => {
                   copyToClipboard(this.runtime.exports.core.notebookContentToText(this.runtime.content));
                 }}
                 class="btn text-dark"
@@ -218,7 +240,7 @@ export class StarboardNotebookElement extends LitElement {
                 Copy to clipboard
               </button>
               <a id="download-source-button" download="notebook.sb" target="_blank" class="btn text-dark"
-                >Download as file</a
+                >Download notebook</a
               >
               <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
             </div>

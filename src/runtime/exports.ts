@@ -75,7 +75,6 @@ export function createExports(): RuntimeExports {
       MarkdownIt: MarkdownIt,
       YAML: YAML,
       Popper: popper,
-
       async: {
         KaTeX: katexLoader,
         StarboardPython: () => Promise.resolve(StarboardPython),

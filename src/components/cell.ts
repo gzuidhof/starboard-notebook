@@ -35,6 +35,7 @@ export class CellElement extends LitElement {
   public cell: Cell;
 
   private isCurrentlyRunning = false;
+  public isBeingMoved = false;
 
   @property({ attribute: false })
   public runtime: Runtime;
@@ -45,6 +46,7 @@ export class CellElement extends LitElement {
     this.id = this.cell.id;
     this.runtime = runtime;
     this.setAttribute("tabindex", "0");
+    this.classList.add("starboard-fade-in");
   }
 
   createRenderRoot() {
@@ -53,9 +55,15 @@ export class CellElement extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    if (this.isBeingMoved) return;
+
     this.cellTypeDefinition = getCellTypeDefinitionForCellType(this.cell.cellType);
     this.cellHandler = this.cellTypeDefinition.createHandler(this.cell, this.runtime);
     this.classList.add("cell-grid", "cell-container", `celltype-${this.cell.cellType}`);
+
+    // Hacky.. only on first creation of the cell we want to fade in, otherwise it would also fade
+    // when being moved.
+    setTimeout(() => this.classList.remove("starboard-fade-in"), 500);
   }
 
   firstUpdated(changedProperties: any) {
@@ -102,7 +110,7 @@ export class CellElement extends LitElement {
     this.requestUpdate();
   }
 
-  public focusEditor(opts: { position?: "start"|"end"}) {
+  public focusEditor(opts: { position?: "start" | "end" }) {
     this.focus();
     this.cellHandler.focusEditor(opts);
   }
@@ -203,6 +211,32 @@ export class CellElement extends LitElement {
 
         <div class="collapsed-cell-line" title="Click to reveal collapsed cell temporarily"></div>
 
+        <button
+          @click=${() =>
+            this.runtime.controls.emit({
+              id: this.cell.id,
+              type: "MOVE_CELL",
+              amount: -1,
+            })}
+          class="btn cell-controls-button auto-hide"
+          title="Move cell up"
+        >
+          <span class="bi bi-chevron-up"></span>
+        </button>
+
+        <button
+          @click=${() =>
+            this.runtime.controls.emit({
+              id: this.cell.id,
+              type: "MOVE_CELL",
+              amount: 1,
+            })}
+          class="btn cell-controls-button auto-hide"
+          title="Move cell down"
+        >
+          <span class="bi bi-chevron-down"></span>
+        </button>
+
         <div class="dropdown">
           <button
             data-bs-toggle="dropdown"
@@ -273,6 +307,7 @@ export class CellElement extends LitElement {
 
   public disconnectedCallback() {
     super.disconnectedCallback();
+    if (this.isBeingMoved) return;
     this.cellHandler.dispose();
   }
 }

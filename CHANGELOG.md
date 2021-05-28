@@ -4,6 +4,9 @@
 **Date:** Unreleased
 
 * Added `litDecorators` and `litDirectives` to the exports in `runtime.exports.libraries`.
+* Fixes and improvements to cell switching and Monaco editor behavior when using the up and down arrows (thank you @stefnotch!).
+* Added **Export HTML** button to the `<> Source` view.
+* You can now move cells up and down. In `runtime.controls` you will now find `moveCell` and `moveCellToIndex`.
 
 ## Release 0.10.1
 **Date:** 2021-05-20

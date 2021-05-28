@@ -7,7 +7,13 @@ import { cellToText } from "./serialization";
 import { textToNotebookContent } from "./parsing";
 import { generateUniqueCellId } from "../components/helpers/random";
 
-function requireIndexOfCellId(cells: Cell[], id?: string) {
+/**
+ * Finds the given cell index, if not present throws an error
+ * @param cells
+ * @param id
+ * @returns
+ */
+export function requireIndexOfCellId(cells: Cell[], id?: string) {
   if (id === undefined) {
     return cells.length - 1;
   }

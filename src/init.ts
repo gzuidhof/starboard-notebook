@@ -31,4 +31,4 @@ window.lit = lit;
 window.YAML = YAML;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// window.initialNotebookContent = require("./debugNotebooks/introNotebook.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/ids.nb").default;

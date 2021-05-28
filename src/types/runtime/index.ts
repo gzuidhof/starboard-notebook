@@ -50,6 +50,9 @@ export interface RuntimeControls {
   runAllCells(opts: { onlyRunOnLoad?: boolean }): Promise<void>;
   clearAllCells(): void;
 
+  moveCellToIndex(id: string, index: number): void;
+  moveCell(id: string, amount: number): void;
+
   /**
    * Requests a save operation from the parent iframe.
    * Returns whether save message was succesfully sent, note that it doesn't guarantee it was actually saved!

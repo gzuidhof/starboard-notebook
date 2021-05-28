@@ -77,7 +77,6 @@ export class MathView implements NodeView, ICursorPosObserver {
     mathPluginKey: PluginKey<IMathPluginState>,
     onDestroy?: () => void
   ) {
-    console.log("MathView :: constructor :: received node", node);
     // store arguments
     this._node = node;
     this._outerView = view;

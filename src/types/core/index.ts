@@ -26,6 +26,7 @@ export type CellEvent =
   | { id: string; type: "CHANGE_CELL_TYPE"; newCellType: string }
   | { id: string; type: "RESET_CELL" }
   | { id: string; type: "FOCUS_CELL"; focus?: "previous" | "next" }
+  | { id: string; type: "MOVE_CELL"; amount: number } // +1 for down, -1 for up
   | { type: "SAVE" };
 
 /**
