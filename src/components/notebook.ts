@@ -112,8 +112,7 @@ export class StarboardNotebookElement extends LitElement {
 
   moveCellDomElement(fromIndex: number, toIndex: number) {
     const el = this.runtime.dom.cells[fromIndex] as CellElement;
-    const delta = toIndex - fromIndex;
-    const moveBeforeIndex = delta === 1 ? toIndex + 1 : toIndex;
+    const moveBeforeIndex = toIndex <= fromIndex ? toIndex : toIndex + 1;
 
     // A bit hacky: without this the connectedCallback and disconnectedCallback would
     // prompt creation or cleanup of the cell handler.
