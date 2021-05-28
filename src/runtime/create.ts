@@ -132,21 +132,19 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
           break; // IDs should be unique, so after we find it we can stop searching.
         }
       }
-
       if (insertNewCell) {
         controls.insertCell({}, "after", id);
-        cellElements = rt.dom.cells;
       }
       if (focus === "previous") {
         window.setTimeout(() => {
-          const next = cellElements[idxOfCell - 1];
-          if (next) next.focusEditor();
+          const next = rt.dom.cells[idxOfCell - 1];
+          if (next) next.focusEditor({ position: "end" });
         });
       } else if (focus === "next") {
         window.setTimeout(() => {
-          const next = cellElements[idxOfCell + 1];
+          const next = rt.dom.cells[idxOfCell + 1];
           if (next) {
-            next.focusEditor();
+            next.focusEditor({ position: "start" });
           }
         });
       }
@@ -167,13 +165,13 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       if (focus === "previous") {
         window.setTimeout(() => {
           const next = cellElements[idxOfCell - 1];
-          if (next) next.focusEditor();
+          if (next) next.focusEditor({ position: "end" });
         });
       } else if (focus === "next") {
         window.setTimeout(() => {
           const next = cellElements[idxOfCell + 1];
           if (next) {
-            next.focusEditor();
+            next.focusEditor({ position: "start" });
           }
         });
       }

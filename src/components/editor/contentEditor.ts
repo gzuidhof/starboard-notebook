@@ -31,18 +31,13 @@ export class StarboardContentEditor extends LitElement {
     return this;
   }
 
-  constructor(content: ContentContainer, runtime: Runtime, opts: { focusAfterInit?: boolean } = {}) {
+  constructor(content: ContentContainer, runtime: Runtime) {
     super();
     this.runtime = runtime;
     this.content = content;
 
     prosemirrorPromise.then((pm) => {
-      this.view = pm.createProseMirrorEditor(this, this.content, this.runtime, opts);
-
-      if (opts.focusAfterInit) {
-        // TODO: why is the timeout necessary here? Can we do without?
-        setTimeout((_: any) => this.focus());
-      }
+      this.view = pm.createProseMirrorEditor(this, this.content, this.runtime);
     });
   }
 
@@ -81,6 +76,16 @@ export class StarboardContentEditor extends LitElement {
     if (this.view) {
       this.view.dispatch(this.view.state.tr.setSelection(TextSelection.atStart(this.view.state.doc)));
       this.view.focus();
+    }
+  }
+
+  setCaretPosition(position: "start" | "end") {
+    if (this.view) {
+      if (position === "start") {
+        this.view.dispatch(this.view.state.tr.setSelection(TextSelection.atStart(this.view.state.doc)));
+      } else if (position === "end") {
+        this.view.dispatch(this.view.state.tr.setSelection(TextSelection.atEnd(this.view.state.doc)));
+      }
     }
   }
 

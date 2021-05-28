@@ -49,9 +49,10 @@ export class HTMLCellHandler extends BaseCellHandler {
     render(html`${unsafeHTML(htmlContent)}`, this.elements.bottomElement);
   }
 
-  focusEditor() {
+  focusEditor(opts: { position?: "start" | "end" }) {
     if (this.editor) {
       this.editor.focus();
+      this.editor.setCaretPosition(opts.position ?? "start");
     }
   }
 
