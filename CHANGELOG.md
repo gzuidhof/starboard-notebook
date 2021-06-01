@@ -1,7 +1,7 @@
 # Changelog
 
 ## Release 0.10.2
-**Date:** Unreleased
+**Date:** 2021-06-01
 
 * Added `litDecorators` and `litDirectives` to the exports in `runtime.exports.libraries`.
 * Fixes and improvements to cell switching and Monaco editor behavior when using the up and down arrows (thank you @stefnotch!).
