@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html, LitElement } from "lit";
-import { customElement, property, query } from "lit/decorators";
+import { customElement, property, query } from "lit/decorators.js";
 import { toggleCellFlagProperty } from "../content/notebookContent";
 
 import { BaseCellHandler } from "../cellTypes/base";

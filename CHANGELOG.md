@@ -1,5 +1,18 @@
 # Changelog
 
+## Release 0.11.0
+**Date:** Unreleased
+
+* Update to Webpack 5.
+* Update to Codemirror editor `0.18.*`.
+* Removed PrismJS
+   * We now use Codemirror for syntax highlighting.
+   * The export `runtime.exports.core.hookMarkdownItToPrismHighlighter` is no longer present, instead there is `runtime.exports.core.hookMarkdownItToCodemirrorHighlighter`.
+   * This change shaves off 1/3rd of the initial bundle size.
+* Codemirror now supports many languages for syntax highlighting out of the box.
+* Removed global YAML library, you can use `runtime.exports.libraries.YAML` instead.
+* Removed built-in support for Coffeescript syntax highlighting in Monaco editor.
+
 ## Release 0.10.2
 **Date:** 2021-06-01
 

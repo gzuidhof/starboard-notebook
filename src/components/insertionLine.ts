@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html, LitElement } from "lit";
-import { customElement, query } from "lit/decorators";
+import { customElement, query } from "lit/decorators.js";
 
 import { createPopper } from "@popperjs/core";
 import { CellTypePicker } from "./cellTypePicker";

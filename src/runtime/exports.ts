@@ -6,17 +6,15 @@ import { cellControlsTemplate } from "../components/controls";
 import { StarboardLogo } from "../components/icons";
 import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
 import { createCellProxy } from "../components/helpers/cellProxy";
-import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
 import { StarboardTextEditor } from "../components/textEditor";
 import { ConsoleOutputElement } from "../components/output/consoleOutput";
 
 import * as lit from "lit";
-import * as litDirectives from "lit/directive";
-import * as litDecorators from "lit/decorators";
+import * as litDirectives from "lit/directive.js";
+import * as litDecorators from "lit/decorators.js";
 
 import MarkdownIt from "markdown-it";
 import * as popper from "@popperjs/core";
-// @ts-ignore
 import * as StarboardPython from "starboard-python";
 
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
@@ -29,6 +27,7 @@ import { renderIfHtmlOutput } from "../components/output/htmlOutput";
 import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
 import { StarboardContentEditor } from "../components/editor/contentEditor";
 import { textToNotebookContent } from "../content/parsing";
+import { hookMarkdownItToCodemirrorHighlighter } from "../components/helpers/highlight";
 
 export function createExports(): RuntimeExports {
   return {
@@ -51,13 +50,13 @@ export function createExports(): RuntimeExports {
       JavascriptEvaluator: JavascriptEvaluator,
       renderIfHtmlOutput: renderIfHtmlOutput,
       createCellProxy: createCellProxy,
-      hookMarkdownItToPrismHighlighter: hookMarkdownItToPrismHighlighter,
       hookMarkdownItToKaTeX: hookMarkdownItToKaTeX,
       hookMarkDownItToEmojiPlugin: hookMarkdownItToEmojiPlugin,
       cellToText: cellToText,
       notebookContentToText: notebookContentToText,
       precompileJavascriptCode: precompileJavascriptCode,
       textToNotebookContent: textToNotebookContent,
+      hookMarkdownItToCodemirrorHighlighter: hookMarkdownItToCodemirrorHighlighter,
     },
     elements: {
       StarboardTextEditor: StarboardTextEditor,

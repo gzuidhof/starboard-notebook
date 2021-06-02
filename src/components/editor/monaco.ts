@@ -39,7 +39,7 @@ monaco.languages.typescript.javascriptDefaults.addExtraLib(
         * render to and update a container.
         */
         declare const svg: (strings: TemplateStringsArray, ...values: unknown[]) => any;
-        declare const litHtml: any;
+        declare const lit: any;
         declare const runtime: any;
 `,
   "global.d.ts"

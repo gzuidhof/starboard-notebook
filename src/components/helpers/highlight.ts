@@ -1,76 +1,45 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-
-import prism from "markdown-it-prism";
-
-import "prismjs/themes/prism.css";
-
-import "prismjs/components/prism-markup";
-import "prismjs/components/prism-markup-templating";
-import "prismjs/components/prism-css";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
-
-import "prismjs/components/prism-asciidoc";
-import "prismjs/components/prism-brainfuck";
-import "prismjs/components/prism-c";
-import "prismjs/components/prism-cpp";
-import "prismjs/components/prism-coffeescript";
-
-import "prismjs/components/prism-dart";
-import "prismjs/components/prism-docker";
-import "prismjs/components/prism-elixir";
-import "prismjs/components/prism-erlang";
-import "prismjs/components/prism-glsl";
-import "prismjs/components/prism-go";
-import "prismjs/components/prism-graphql";
-import "prismjs/components/prism-java";
-import "prismjs/components/prism-julia";
-import "prismjs/components/prism-lua";
-import "prismjs/components/prism-markdown";
-import "prismjs/components/prism-ocaml";
-import "prismjs/components/prism-perl";
-import "prismjs/components/prism-php";
-import "prismjs/components/prism-python";
-import "prismjs/components/prism-jsx";
-import "prismjs/components/prism-tsx";
-import "prismjs/components/prism-r";
-import "prismjs/components/prism-ruby";
-import "prismjs/components/prism-scss";
-import "prismjs/components/prism-scala";
-import "prismjs/components/prism-scheme";
-import "prismjs/components/prism-smalltalk";
-import "prismjs/components/prism-sql";
-import "prismjs/components/prism-swift";
-import "prismjs/components/prism-typescript";
-import "prismjs/components/prism-wasm";
-import "prismjs/components/prism-yaml";
-
-// Depends on Ruby so must be imported later
-import "prismjs/components/prism-crystal";
+import { EditorView } from "@codemirror/view";
 import MarkdownIt from "markdown-it";
+import { generateUniqueId } from "./random";
 
-export function hookMarkdownItToPrismHighlighter(markdownItInstance: MarkdownIt) {
-  markdownItInstance.use(prism, {
-    plugins: [/*"autolinker",*/ "highlight-keywords"],
-  });
+function highlight(markdownIt: MarkdownIt, opts: any, text: string, lang: string) {
+  const cmHighlight = import(
+    /* webpackChunkName: "codemirrorHighlight", preload: true */ "../editor/codemirror/highlight"
+  );
 
-  /**
-   * The typing seems wrong, it is missing the options field.. Maybe we should verify it's existence at
-   * runtime too.
-   */
-  const markdownItThatHasOptions: MarkdownIt & {
-    options: any;
-  } = markdownItInstance as any;
+  // An empty line is inserted without this at the end in codemirror, not sure why.
+  if (text.endsWith("\n")) {
+    text = text.substring(0, text.length - 1);
+  }
 
-  const originalHighlight = markdownItThatHasOptions.options.highlight;
+  const uid = generateUniqueId(12);
+  cmHighlight
+    .then((cm) => {
+      return cm.createCodeMirrorCodeHighlight(text, { language: lang });
+    })
+    .then((ev: EditorView) => {
+      const placeholderEl = document.getElementById(uid);
+      if (placeholderEl) {
+        placeholderEl.id = "";
+        placeholderEl.innerText = "";
+        placeholderEl.appendChild(ev.contentDOM);
+      }
+    });
 
-  // Monkeypatch for webpack build support for unknown languages
-  markdownItThatHasOptions.options.highlight = (...args: any) => {
-    if ((globalThis as any).Prism.languages[args[1]] === undefined) {
-      args[1] = "clike";
-    }
-    return originalHighlight(...args);
-  };
+  // Placeholder while we load codemirror asynchrionously.
+  const placeholder = `<pre><code id="${uid}">${text}</code></pre>`;
+  return placeholder;
+}
+
+function markdownItCodemirrorHighlight(markdownit: MarkdownIt, userOptions: any): void {
+  // register ourselves as highlighter
+  (markdownit as any).options.highlight = (text: string, lang: string) =>
+    highlight(markdownit, userOptions, text, lang);
+}
+
+export function hookMarkdownItToCodemirrorHighlighter(markdownItInstance: MarkdownIt) {
+  markdownItInstance.use(markdownItCodemirrorHighlight);
 }

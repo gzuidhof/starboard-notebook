@@ -9,15 +9,16 @@
 
 import { html, LitElement, render } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html";
-import { customElement, query } from "lit/decorators";
+import { customElement, query } from "lit/decorators.js";
 
 import mdlib from "markdown-it";
-import { hookMarkdownItToPrismHighlighter } from "./helpers/highlight";
+import { hookMarkdownItToCodemirrorHighlighter } from "./helpers/highlight";
 import { Cell, Runtime } from "../types";
 import { copyToClipboard } from "./helpers/clipboard";
 import { trySetLocalStorage } from "./helpers/localStorage";
 import { isATouchScreenDevice } from "./helpers/detect";
 import Dropdown from "bootstrap/js/dist/dropdown";
+import { hookMarkdownItToEmojiPlugin } from "./helpers/emoji";
 
 export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python" | "latex"; // latex is not actually supported..
 export type WordWrapSetting = "off" | "on";
@@ -48,7 +49,8 @@ try {
 }
 
 const md = new mdlib();
-hookMarkdownItToPrismHighlighter(md);
+hookMarkdownItToCodemirrorHighlighter(md);
+hookMarkdownItToEmojiPlugin(md);
 
 /**
  * StarboardTextEditor abstracts over different text editors that are loaded dynamically.
@@ -162,7 +164,7 @@ export class StarboardTextEditor extends LitElement {
     currentEditor = "codemirror";
     trySetLocalStorage(EDITOR_PREFERENCE_KEY, "codemirror");
     if (!codeMirrorModule) {
-      codeMirrorModule = import(/* webpackChunkName: "codemirror" */ "./editor/codemirror");
+      codeMirrorModule = import(/* webpackChunkName: "codemirrorEditor" */ "./editor/codemirror/editor");
 
       document
         .querySelectorAll(".cell-select-editor-popover")

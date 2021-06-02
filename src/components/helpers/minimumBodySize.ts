@@ -3,7 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { LitElement } from "lit";
-import { customElement } from "lit/decorators";
+import { customElement } from "lit/decorators.js";
 
 /* This file contains routines for ensuring that the body of the notebook will be large enough to fit
 certain elements. In particular dropdowns that are too large, but this could be applied to any absolutely-positioned stuff.

@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const webpack = require('webpack')
 
@@ -23,7 +24,15 @@ const baseConfig = {
             "react-dom": path.resolve("./node_modules/preact/compat")
         }
     },
+    cache: {
+        type: "filesystem",
+        buildDependencies: {
+            config: [__filename],
+        },
+    },
     optimization: {
+        moduleIds: "named",
+        chunkIds: "named",
         usedExports: true,
         minimizer: [
             new CssMinimizerPlugin(),
@@ -42,37 +51,37 @@ const baseConfig = {
     stats: "minimal",
     module: {
         rules: [{
-                test: /\.tsx?$/,
-                use: [
-                    'ts-loader'
-                ],
-                exclude: [/node_modules/],
-            },
-            {
-                test: /\.(s?css|sass)$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: {}
-                    },
-                    'sass-loader'
-                ]
-            },
-            {
-                test: /\.ttf$|\.woff2$/,
-                use: ['file-loader?name=[name].[ext]'],
-                exclude: [/.*KaTeX.*.ttf/],
-            },
-            { // KaTeX ttf fonts are not omitted. Starboard only supports browsers that understand woff2 anyway.
-                test: /(KaTeX).*\.ttf$/,
-                use: ['file-loader?emitFile=false'],
-            },
-            {
-                test: /\.ico$|\.svg$|\.eot|\.woff$/,
-                use: ['file-loader?emitFile=false'],
+            test: /\.tsx?$/,
+            use: [
+                'ts-loader'
+            ],
+            exclude: [/node_modules/],
+        },
+        {
+            test: /\.(s?css|sass)$/,
+            use: [
+                MiniCssExtractPlugin.loader,
+                {
+                    loader: 'css-loader',
+                    options: {}
+                },
+                'sass-loader'
+            ]
+        },
+        {
+            test: /\.ttf$|\.woff2$/,
+            use: ['file-loader?name=[name].[ext]'],
+            exclude: [/.*KaTeX.*.ttf/],
+        },
+        { // KaTeX ttf fonts are not omitted. Starboard only supports browsers that understand woff2 anyway.
+            test: /(KaTeX).*\.ttf$/,
+            use: ['file-loader?emitFile=false'],
+        },
+        {
+            test: /\.ico$|\.svg$|\.eot|\.woff$/,
+            use: ['file-loader?emitFile=false'],
 
-            },
+        },
         ]
     },
     plugins: [
@@ -88,7 +97,7 @@ const baseConfig = {
         }),
         new MonacoWebpackPlugin({
             languages: [
-                "markdown", "html", "css", "javascript", "typescript", "python", "coffee",
+                "markdown", "html", "css", "javascript", "typescript", "python",
             ],
             features: [
                 "!toggleHighContrast", "!gotoSymbol"
@@ -96,7 +105,7 @@ const baseConfig = {
         }),
     ],
     devServer: {
-        contentBase: path.join(__dirname, './dist/'),
+        // contentBase: path.join(__dirname, './dist/'),
         compress: true,
         port: 9001,
         hot: true,
@@ -119,7 +128,9 @@ module.exports = (env, argv) => {
     }
 
     if (argv.stats) {
-        config.stats = argv.stats
+        config.plugins.push(new BundleAnalyzerPlugin({
+            analyzerMode: "static"
+        }))
     }
 
     return config;
