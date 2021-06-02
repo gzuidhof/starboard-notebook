@@ -1,7 +1,7 @@
 # Changelog
 
 ## Release 0.11.0
-**Date:** Unreleased
+**Date:** 2012-06-03
 
 * Update to Webpack 5.
 * Update to Codemirror editor `0.18.*`.
