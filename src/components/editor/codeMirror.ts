@@ -216,6 +216,24 @@ export function createCodeMirrorEditor(
         return false;
       },
     },
+    {
+      key: "Backspace",
+      run: (target) => {
+        const selections = target.state.selection.ranges;
+        if (
+          target.state.doc.lines === 1 &&
+          selections.length === 1 &&
+          selections[0].head <= 0 &&
+          cell.textContent == ""
+        ) {
+          _runtime.controls.emit({
+            id: cell.id,
+            type: "REMOVE_CELL",
+          });
+        }
+        return false;
+      },
+    },
   ]);
 
   const editorView = new EditorView({

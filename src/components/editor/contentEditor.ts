@@ -52,6 +52,11 @@ export class StarboardContentEditor extends LitElement {
           event.stopPropagation();
           return true;
         }
+      } else if (event.key === "Backspace" && this.view && this.view.hasFocus() && this.content.textContent == "") {
+        /*this.runtime.controls.emit({
+          id: this.content.id,
+          type: "REMOVE_CELL",
+        });*/
       }
     });
 

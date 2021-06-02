@@ -79,7 +79,8 @@ function makeEditorResizeToFitContent(editor: monaco.editor.IStandaloneCodeEdito
 function addEditorKeyboardShortcuts(
   editor: monaco.editor.IStandaloneCodeEditor,
   emit: (event: CellEvent) => void,
-  cellId: string
+  cellId: string,
+  isCellEmpty: () => boolean
 ) {
   editor.addAction({
     id: "run-cell",
@@ -126,6 +127,14 @@ function addEditorKeyboardShortcuts(
           id: cellId,
           type: "FOCUS_CELL",
           focus: "previous",
+        });
+      }
+    } else if (e.keyCode === monaco.KeyCode.Backspace) {
+      // Check if we're at the beginning, only then check the actual contents
+      if (editor.getModel()?.getLineCount() === 1 && editor.getPosition()?.column === 1 && isCellEmpty()) {
+        emit({
+          id: cellId,
+          type: "REMOVE_CELL",
         });
       }
     }
@@ -197,7 +206,7 @@ export function createMonacoEditor(
   window.addEventListener("resize", resizeDebounced);
 
   makeEditorResizeToFitContent(editor);
-  addEditorKeyboardShortcuts(editor, runtime.controls.emit, cell.id);
+  addEditorKeyboardShortcuts(editor, runtime.controls.emit, cell.id, () => cell.textContent == "");
 
   const model = editor.getModel();
   if (model) {
