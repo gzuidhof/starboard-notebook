@@ -23,7 +23,7 @@ export abstract class BaseCellHandler implements CellHandler {
     return Promise.resolve();
   }
 
-  focusEditor(opts: { position?: "start" | "end" }): void {
+  focusEditor(_opts: { position?: "start" | "end" }): void {
     return;
   }
 
