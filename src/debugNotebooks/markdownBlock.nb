@@ -1,0 +1,12 @@
+# %% [markdown]
+# Markdown code blocks
+
+```javascript
+console.log("Hello world!");
+const x = 123;
+x
+```
+
+```
+No language
+```

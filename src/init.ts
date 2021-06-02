@@ -8,7 +8,6 @@ import "./components/notebook";
 import "iframe-resizer/js/iframeResizer.contentWindow.js";
 import * as lit from "lit";
 
-import * as YAML from "js-yaml";
 import { RuntimeConfig } from "./types";
 
 declare global {
@@ -20,7 +19,6 @@ declare global {
     html: typeof lit.html;
     svg: typeof lit.svg;
     lit: typeof lit;
-    YAML: typeof YAML;
   }
 }
 
@@ -28,7 +26,6 @@ declare global {
 window.html = lit.html;
 window.svg = lit.svg;
 window.lit = lit;
-window.YAML = YAML;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// window.initialNotebookContent = require("./debugNotebooks/ids.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/markdownBlock.nb").default;

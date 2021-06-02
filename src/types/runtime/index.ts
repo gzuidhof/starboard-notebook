@@ -27,7 +27,6 @@ import type mdlib from "markdown-it";
 import type * as Popper from "@popperjs/core";
 
 import type { JavascriptEvaluator } from "../../cellTypes/javascript/eval";
-import type { hookMarkdownItToPrismHighlighter } from "../../components/helpers/highlight";
 import type { createCellProxy } from "../../components/helpers/cellProxy";
 import type { cellToText, notebookContentToText } from "../../content/serialization";
 import type { precompileJavascriptCode } from "../../cellTypes/javascript/precompile";
@@ -39,6 +38,7 @@ import type { OutboundNotebookMessage } from "../messages";
 import type { StarboardContentEditor } from "../../components/editor/contentEditor";
 import { StarboardPlugin } from "../plugins";
 import { textToNotebookContent } from "../../content/parsing";
+import { hookMarkdownItToCodemirrorHighlighter } from "src/components/helpers/highlight";
 
 export interface RuntimeControls {
   insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string): void;
@@ -129,9 +129,9 @@ export interface RuntimeExports {
     ConsoleCatcher: typeof ConsoleCatcher;
     renderIfHtmlOutput: typeof renderIfHtmlOutput;
     createCellProxy: typeof createCellProxy;
-    hookMarkdownItToPrismHighlighter: typeof hookMarkdownItToPrismHighlighter;
     hookMarkdownItToKaTeX: typeof hookMarkdownItToKaTeX;
     hookMarkDownItToEmojiPlugin: typeof hookMarkdownItToEmojiPlugin;
+    hookMarkdownItToCodemirrorHighlighter: typeof hookMarkdownItToCodemirrorHighlighter;
     cellToText: typeof cellToText;
     notebookContentToText: typeof notebookContentToText;
     textToNotebookContent: typeof textToNotebookContent;

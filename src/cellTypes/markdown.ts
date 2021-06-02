@@ -12,14 +12,14 @@ import { Cell } from "../types";
 import { CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../types";
 import { promiseState } from "./javascript/util";
 
-import { hookMarkdownItToPrismHighlighter } from "../components/helpers/highlight";
+import { hookMarkdownItToCodemirrorHighlighter } from "../components/helpers/highlight";
 import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
 import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 import { StarboardContentEditor } from "../components/editor/contentEditor";
 import { hasParentWithId } from "../components/helpers/dom";
 
 const md = new mdlib({ html: true });
-hookMarkdownItToPrismHighlighter(md);
+hookMarkdownItToCodemirrorHighlighter(md);
 hookMarkdownItToEmojiPlugin(md);
 
 const katexHookPromise = hookMarkdownItToKaTeX(md);
