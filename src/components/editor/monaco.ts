@@ -165,6 +165,26 @@ export function createMonacoEditor(
     wordWrap: opts.wordWrap,
   });
 
+  function preventStopPropagation(ev: KeyboardEvent) {
+    // @ts-ignore
+    ev._stopImmediatePropagation = ev.stopImmediatePropagation;
+    ev.stopImmediatePropagation = () => {};
+    // @ts-ignore
+    ev._stopPropagation = ev.stopPropagation;
+    ev.stopPropagation = () => {};
+  }
+  function restoreStopPropagation(ev: KeyboardEvent) {
+    // @ts-ignore
+    ev.stopImmediatePropagation = ev._stopImmediatePropagation;
+    // @ts-ignore
+    ev.stopPropagation = ev._stopPropagation;
+  }
+  element.addEventListener("keydown", preventStopPropagation, true);
+  element.addEventListener("keydown", restoreStopPropagation);
+  editor.onDidDispose(() => {
+    element.removeEventListener("keydown", preventStopPropagation, true);
+    element.removeEventListener("keydown", restoreStopPropagation);
+  });
   const setEditable = function (editor: monaco.editor.IStandaloneCodeEditor, _isLocked: boolean | undefined): void {
     editor.updateOptions({ readOnly: !!_isLocked });
   };
