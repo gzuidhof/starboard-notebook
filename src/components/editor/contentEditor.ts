@@ -43,22 +43,22 @@ export class StarboardContentEditor extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener("keydown", (event: KeyboardEvent) => {
-      if (event.key === "Enter" && this.view && this.view.hasFocus()) {
-        if (event.ctrlKey) {
-          event.stopPropagation();
-          return true;
-        } else if (event.shiftKey) {
-          event.stopPropagation();
-          return true;
+    this.addEventListener(
+      "keydown",
+      (event: KeyboardEvent) => {
+        // Stop the text editor from inserting a new line
+        if (event.key === "Enter" && this.view && this.view.hasFocus()) {
+          if (event.ctrlKey) {
+            event.stopPropagation();
+            return true;
+          } else if (event.shiftKey) {
+            event.stopPropagation();
+            return true;
+          }
         }
-      } else if (event.key === "Backspace" && this.view && this.view.hasFocus() && this.content.textContent == "") {
-        /*this.runtime.controls.emit({
-          id: this.content.id,
-          type: "REMOVE_CELL",
-        });*/
-      }
-    });
+      },
+      true
+    );
 
     prosemirrorPromise.then((_pm) => {
       if (this.view) {

@@ -69,6 +69,7 @@ export class CellElement extends LitElement {
   firstUpdated(changedProperties: any) {
     super.firstUpdated(changedProperties);
     this.addEventListener("keydown", (event) => {
+      // When the event comes back up the tree and hasn't been cancelled
       if (event.key === "Enter") {
         if (event.ctrlKey) {
           this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL" });
@@ -86,6 +87,11 @@ export class CellElement extends LitElement {
             insertNewCell: true,
           });
         }
+      } else if (event.key === "Backspace" && (this.cell.textContent == null || this.cell.textContent == "")) {
+        this.runtime.controls.emit({
+          id: this.cell.id,
+          type: "REMOVE_CELL",
+        });
       }
     });
 

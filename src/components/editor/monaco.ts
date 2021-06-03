@@ -79,8 +79,7 @@ function makeEditorResizeToFitContent(editor: monaco.editor.IStandaloneCodeEdito
 function addEditorKeyboardShortcuts(
   editor: monaco.editor.IStandaloneCodeEditor,
   emit: (event: CellEvent) => void,
-  cellId: string,
-  isCellEmpty: () => boolean
+  cellId: string
 ) {
   editor.addAction({
     id: "run-cell",
@@ -89,11 +88,7 @@ function addEditorKeyboardShortcuts(
 
     contextMenuGroupId: "starboard",
     contextMenuOrder: 0,
-    run: (_ed) =>
-      emit({
-        id: cellId,
-        type: "RUN_CELL",
-      }),
+    run: (_ed) => {},
   });
 
   editor.addAction({
@@ -103,12 +98,7 @@ function addEditorKeyboardShortcuts(
 
     contextMenuGroupId: "starboard",
     contextMenuOrder: 1,
-    run: (_ed) =>
-      emit({
-        id: cellId,
-        type: "RUN_CELL",
-        focus: "next",
-      }),
+    run: (_ed) => {},
   });
 
   editor.onKeyDown((e) => {
@@ -129,14 +119,6 @@ function addEditorKeyboardShortcuts(
           focus: "previous",
         });
       }
-    } else if (e.keyCode === monaco.KeyCode.Backspace) {
-      // Check if we're at the beginning, only then check the actual contents
-      if (editor.getModel()?.getLineCount() === 1 && editor.getPosition()?.column === 1 && isCellEmpty()) {
-        emit({
-          id: cellId,
-          type: "REMOVE_CELL",
-        });
-      }
     }
   });
 
@@ -147,13 +129,7 @@ function addEditorKeyboardShortcuts(
 
     contextMenuGroupId: "starboard",
     contextMenuOrder: 2,
-    run: (_ed) =>
-      emit({
-        id: cellId,
-        type: "RUN_CELL",
-        focus: "next",
-        insertNewCell: true,
-      }),
+    run: (_ed) => {},
   });
 }
 
@@ -206,7 +182,7 @@ export function createMonacoEditor(
   window.addEventListener("resize", resizeDebounced);
 
   makeEditorResizeToFitContent(editor);
-  addEditorKeyboardShortcuts(editor, runtime.controls.emit, cell.id, () => cell.textContent == "");
+  addEditorKeyboardShortcuts(editor, runtime.controls.emit, cell.id);
 
   const model = editor.getModel();
   if (model) {
