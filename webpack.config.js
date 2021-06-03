@@ -93,7 +93,10 @@ const baseConfig = {
             filename: "starboard-notebook.css"
         }),
         new webpack.DefinePlugin({
-            STARBOARD_NOTEBOOK_VERSION: JSON.stringify(pkg.version),
+            STARBOARD_NOTEBOOK_VERSION: JSON.stringify(pkg.version)
+        }),
+        new webpack.ProvidePlugin({
+            process: 'process/browser.js',
         }),
         new MonacoWebpackPlugin({
             languages: [

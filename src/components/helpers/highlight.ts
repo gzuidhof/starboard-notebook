@@ -7,7 +7,7 @@ import { generateUniqueId } from "./random";
 
 function highlight(markdownIt: MarkdownIt, opts: any, text: string, lang: string) {
   const cmHighlight = import(
-    /* webpackChunkName: "codemirrorHighlight", preload: true */ "../editor/codemirror/highlight"
+    /* webpackChunkName: "codemirrorHighlight", webpackPrefetch: true */ "../editor/codemirror/highlight"
   );
 
   // An empty line is inserted without this at the end in codemirror, not sure why.

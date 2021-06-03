@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.11.1
+
+* Fix javascript cell type (Babel expected a stub for Node's `process`, which Webpack 5 no longer insterted)
+* The highlight module now has a prefetch hint in Webpack, which should cause it to be fetched earlier even if no highlighting has to be performed yet.
+
 ## Release 0.11.0
 **Date:** 2012-06-03
 
