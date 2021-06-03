@@ -87,13 +87,27 @@ export class CellElement extends LitElement {
             insertNewCell: true,
           });
         }
-      } else if (event.key === "Backspace" && (this.cell.textContent == null || this.cell.textContent == "")) {
+        // After the event comes up (hasn't been cancelled) and it's a deletion-event
+        // @ts-ignore
+      } else if (event.key === "Backspace" && event._maybeDeleteCell) {
         this.runtime.controls.emit({
           id: this.cell.id,
           type: "REMOVE_CELL",
         });
       }
     });
+
+    this.addEventListener(
+      "keydown",
+      (event) => {
+        // Before anything happens, note down if this could be a deletion-event
+        if (event.key === "Backspace" && (this.cell.textContent == null || this.cell.textContent == "")) {
+          // @ts-ignore
+          event._maybeDeleteCell = true;
+        }
+      },
+      true
+    );
 
     [].slice.call(document.querySelectorAll(".dropdown-toggle")).map((e) => new Dropdown(e));
 
