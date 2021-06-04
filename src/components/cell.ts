@@ -101,7 +101,7 @@ export class CellElement extends LitElement {
       "keydown",
       (event) => {
         // Before anything happens, note down if this could be a deletion-event
-        if (event.key === "Backspace" && (this.cell.textContent == null || this.cell.textContent == "")) {
+        if (event.key === "Backspace" && (this.cell.textContent === null || this.cell.textContent === "")) {
           // @ts-ignore
           event._maybeDeleteCell = true;
         }
