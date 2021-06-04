@@ -165,6 +165,10 @@ export function createMonacoEditor(
     wordWrap: opts.wordWrap,
   });
 
+  // Monaco swallows all keyboard shortcuts (calls .stopPropagation on them)
+  // This means that usually, no shortcuts would bubble up from monaco to starboard (breaking all shortcuts)
+  // Therefore, we replace .stopPropagation with a dummy event in the capturing phase
+  // And restore .stopPropagation in the bubbling phase
   function preventStopPropagation(ev: KeyboardEvent) {
     // @ts-ignore
     ev._stopImmediatePropagation = ev.stopImmediatePropagation;
