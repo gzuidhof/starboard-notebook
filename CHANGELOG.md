@@ -12,6 +12,7 @@
 * A focus cell event/controls call without a specific target `previous` or `next` will now focus the cell with the given ID itself.
 * Removed the optional `hide` field from `ControlButton` interface and template (it was never used anyway).
 * The editor will now be focused correctly when switching to a cell whose celltype is unknown.
+* The option for inserting a cell at the end of the notebook now uses `notebookEnd` instead of `end` to remove ambiguity.
 
 
 ## Release 0.11.1

@@ -30,14 +30,20 @@ export function requireIndexOfCellId(cells: Cell[], id?: string) {
 export function addCellToNotebookContent(
   runtime: Runtime,
   data: Partial<Cell>,
-  position: "end" | "before" | "after",
+  position: "notebookEnd" | "before" | "after",
   adjacentCellId?: string
 ): string {
   const nb = runtime.content;
   let idx: number;
   let cellType: string | undefined = data.cellType;
 
-  if (position === "end") {
+  // Changed in 0.12.0, this is here for backwards compatibility.
+  // Feel free to remove after 2021-10-07
+  if ((position as string) === "end") {
+    position = "notebookEnd";
+  }
+
+  if (position === "notebookEnd") {
     idx = nb.cells.length;
     cellType = cellType || (nb.cells.length === 0 ? "markdown" : nb.cells[nb.cells.length - 1].cellType);
   } else {

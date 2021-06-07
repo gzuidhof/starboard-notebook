@@ -44,7 +44,7 @@ import { createStarboardEvent, dispatchStarboardEvent } from "../../components/h
 export interface RuntimeControls {
   insertCell(
     adjacentCellId: string | undefined,
-    opts: { position: "end" | "before" | "after"; data?: Partial<Cell> }
+    opts: { position: "notebookEnd" | "before" | "after"; data?: Partial<Cell> }
   ): void;
   removeCell(id: string): void;
   changeCellType(id: string, opts: { newCellType: string }): void;
