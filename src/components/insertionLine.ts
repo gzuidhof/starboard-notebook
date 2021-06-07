@@ -9,6 +9,7 @@ import { createPopper } from "@popperjs/core";
 import { CellTypePicker } from "./cellTypePicker";
 import { CellElement } from "./cell";
 import { Cell } from "../types";
+import { dispatchStarboardEvent } from "./helpers/event";
 
 // Lazily initialized.. but cached for re-use.
 let globalCellTypePicker: CellTypePicker;
@@ -81,10 +82,9 @@ export class InsertionLine extends LitElement {
         globalCellTypePicker.onInsert = (cellData: Partial<Cell>) => {
           // Right now we assume the insertion line has a cell as parent
           if (parent && parent instanceof CellElement) {
-            parent.runtime.controls.emit({
-              type: "INSERT_CELL",
-              position: this.insertPosition,
+            dispatchStarboardEvent(this, "sb:insert_cell", {
               id: parent.cell.id,
+              position: this.insertPosition,
               data: cellData,
             });
             unpop();
@@ -98,10 +98,9 @@ export class InsertionLine extends LitElement {
   quickInsert(cellType: string) {
     const parent = this.parentElement;
     if (parent && parent instanceof CellElement) {
-      parent.runtime.controls.emit({
-        type: "INSERT_CELL",
-        position: this.insertPosition,
+      dispatchStarboardEvent(this, "sb:insert_cell", {
         id: parent.cell.id,
+        position: this.insertPosition,
         data: { cellType },
       });
     }

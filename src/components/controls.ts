@@ -6,6 +6,8 @@ import { html } from "lit";
 import { Cell, ControlsDefinition } from "../types";
 import { getAvailablePropertyTypes, registry } from "../cellProperties/registry";
 import { renderIcon } from "./helpers/icon";
+import { dispatchStarboardEvent } from "./helpers/event";
+import { StarboardEventName } from "src/types/events";
 
 // Note: These controls are not "Components" in the lit sense
 
@@ -16,8 +18,11 @@ export function cellControlsTemplate(controls: ControlsDefinition) {
       (button) =>
         html`
           <button
-            @click="${button.callback}"
-            class="btn cell-controls-button py-1 ${button.hide === undefined ? "auto-hide" : button.hide} "
+            @click="${(evt: Event) =>
+              button.callback(evt, (name: StarboardEventName, detail: any) =>
+                dispatchStarboardEvent(evt.target as HTMLElement, name, detail)
+              )}"
+            class="btn cell-controls-button py-1"
             title="${button.tooltip}"
           >
             ${renderIcon(button.icon, { width: 16, height: 16 })}

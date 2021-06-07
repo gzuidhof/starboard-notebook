@@ -4,7 +4,8 @@
 
 import { Runtime } from "../runtime";
 import { TemplateResult } from "lit";
-import { CellElement } from "src/components/cell";
+import { CellElement } from "../../components/cell";
+import { StarboardEventInitDict, StarboardEventMap, StarboardEventName } from "../events";
 
 /**
  * Events that can be sent from the cell for central handling in the notebook component.
@@ -165,11 +166,15 @@ export interface CellElements {
 
 export type IconTemplate = string | ((iconOpts?: { width?: number; height?: number }) => TemplateResult | string);
 
-export interface ControlButton {
+export type ControlButtonCallbackDispatchFunction<E extends StarboardEventName> = (
+  name: E,
+  detail: StarboardEventInitDict<StarboardEventMap[E]>
+) => boolean;
+
+export interface ControlButton<T extends StarboardEventName = any> {
   icon: IconTemplate;
   tooltip: string;
-  hide?: boolean;
-  callback: () => any | Promise<any>;
+  callback: (event: Event, dispatch: ControlButtonCallbackDispatchFunction<T>) => any | Promise<any>;
 }
 
 export interface ControlsDefinition {

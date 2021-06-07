@@ -20,6 +20,7 @@ import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
 import type { Cell, Runtime } from "../../../types";
 import { starboardHighlighter } from "./highlightStyle";
 import { getCodemirrorLanguageExtension } from "./languages";
+import { dispatchStarboardEvent } from "../../../components/helpers/event";
 
 // Shared between all instances
 const commonExtensions = [
@@ -73,11 +74,7 @@ export function createCodeMirrorEditor(
           const firstLine = target.state.doc.line(1);
           const cursorPosition = target.state.selection.ranges[0].head;
           if (firstLine.from <= cursorPosition && cursorPosition <= firstLine.to) {
-            _runtime.controls.emit({
-              id: cell.id,
-              type: "FOCUS_CELL",
-              focus: "previous",
-            });
+            dispatchStarboardEvent(target.dom, "sb:focus_cell", { id: cell.id, focusTarget: "previous" });
             return true;
           }
         }
@@ -91,11 +88,7 @@ export function createCodeMirrorEditor(
           const lastline = target.state.doc.line(target.state.doc.lines);
           const cursorPosition = target.state.selection.ranges[0].head;
           if (lastline.from <= cursorPosition && cursorPosition <= lastline.to) {
-            _runtime.controls.emit({
-              id: cell.id,
-              type: "FOCUS_CELL",
-              focus: "next",
-            });
+            dispatchStarboardEvent(target.dom, "sb:focus_cell", { id: cell.id, focusTarget: "next" });
             return true;
           }
         }

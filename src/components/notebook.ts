@@ -190,7 +190,7 @@ export class StarboardNotebookElement extends LitElement {
           </button>
 
           <button
-            @click="${() => this.runtime.controls.insertCell({}, "end")}"
+            @click="${() => this.runtime.controls.insertCell(undefined, { position: "end", data: {} })}"
             class="cell-controls-button"
             title="Add Cell Here"
             style="opacity: 0.7; margin-left: auto; padding: 0px 1px 0px 18px"

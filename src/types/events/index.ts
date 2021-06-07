@@ -4,6 +4,34 @@
 
 import { Cell } from "../core";
 
+declare global {
+  interface HTMLElementEventMap {
+    "sb:run_cell": RunCellEvent;
+    "sb:insert_cell": InsertCellEvent;
+    "sb:change_cell_type": ChangeCellTypeEvent;
+    "sb:remove_cell": RemoveCellEvent;
+    "sb:reset_cell": ResetCellEvent;
+    "sb:focus_cell": FocusCellEvent;
+    "sb:move_cell": MoveCellEvent;
+    "sb:save": SaveEvent;
+  }
+}
+
+export interface StarboardEventMap {
+  "sb:run_cell": RunCellEvent;
+  "sb:insert_cell": InsertCellEvent;
+  "sb:change_cell_type": ChangeCellTypeEvent;
+  "sb:remove_cell": RemoveCellEvent;
+  "sb:reset_cell": ResetCellEvent;
+  "sb:focus_cell": FocusCellEvent;
+  "sb:move_cell": MoveCellEvent;
+  "sb:save": SaveEvent;
+}
+
+export type StarboardEventName = keyof StarboardEventMap;
+export type StarboardEvent = StarboardEventMap[keyof StarboardEventMap];
+export type StarboardEventInitDict<EV extends CustomEvent> = EV["detail"];
+
 export type InsertCellEvent = CustomEvent<{
   id: string;
   position: "before" | "after";
@@ -38,14 +66,3 @@ export type MoveCellEvent = CustomEvent<{
 }>;
 
 export type SaveEvent = CustomEvent<Record<string, never>>;
-
-export interface StarboardEventMap {
-  "sb:run_cell": RunCellEvent;
-  "sb:insert_cell": InsertCellEvent;
-  "sb:change_cell_type": ChangeCellTypeEvent;
-  "sb:remove_cell": RemoveCellEvent;
-  "sb:reset_cell": ResetCellEvent;
-  "sb:focus_cell": FocusCellEvent;
-  "sb:move_cell": MoveCellEvent;
-  "sb:save": SaveEvent;
-}

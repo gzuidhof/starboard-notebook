@@ -16,6 +16,7 @@ import "./insertionLine";
 import Dropdown from "bootstrap/js/dist/dropdown";
 import { syncPropertyElementClassNames } from "../cellProperties/dom";
 import { cellHasProperty } from "../cellProperties/util";
+import { dispatchStarboardEvent } from "./helpers/event";
 
 @customElement("starboard-cell")
 export class CellElement extends LitElement {
@@ -71,20 +72,14 @@ export class CellElement extends LitElement {
     this.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         if (event.ctrlKey) {
-          this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL" });
+          dispatchStarboardEvent(this, "sb:run_cell", { id: this.id });
         } else if (event.shiftKey) {
-          this.runtime.controls.emit({
-            id: this.cell.id,
-            type: "RUN_CELL",
-            focus: "next",
-          });
+          dispatchStarboardEvent(this, "sb:run_cell", { id: this.id });
+          dispatchStarboardEvent(this, "sb:focus_cell", { id: this.id, focusTarget: "next" });
         } else if (event.altKey) {
-          this.runtime.controls.emit({
-            id: this.cell.id,
-            type: "RUN_CELL",
-            focus: "next",
-            insertNewCell: true,
-          });
+          dispatchStarboardEvent(this, "sb:run_cell", { id: this.id });
+          dispatchStarboardEvent(this, "sb:insert_cell", { id: this.id, position: "after" });
+          dispatchStarboardEvent(this, "sb:focus_cell", { id: this.id, focusTarget: "next" });
         }
       }
     });
@@ -123,9 +118,8 @@ export class CellElement extends LitElement {
   changeCellType(newCellType: string | string[]) {
     // If these are multiple cell types, take the first one
     const newCellTypeIdentifier = typeof newCellType === "string" ? newCellType : newCellType[0];
-    this.runtime.controls.emit({
+    return dispatchStarboardEvent(this, "sb:change_cell_type", {
       id: this.cell.id,
-      type: "CHANGE_CELL_TYPE",
       newCellType: newCellTypeIdentifier,
     });
   }
@@ -147,7 +141,6 @@ export class CellElement extends LitElement {
 
   render() {
     const id = this.cell.id;
-    const emit = this.runtime.controls.emit;
 
     syncPropertyElementClassNames(this, this.cell.metadata.properties);
     return html`
@@ -180,22 +173,14 @@ export class CellElement extends LitElement {
       <div class="cell-controls cell-controls-left-above d-flex justify-content-center">
         ${this.isCurrentlyRunning
           ? html` <button
-              @mousedown=${() =>
-                emit({
-                  id,
-                  type: "RUN_CELL",
-                })}
+              @mousedown=${() => dispatchStarboardEvent(this, "sb:run_cell", { id })}
               class="btn cell-controls-button display-when-collapsed py-1"
               title="Cell is running"
             >
               <span class="bi bi-hourglass"></span>
             </button>`
           : html` <button
-              @mousedown=${() =>
-                emit({
-                  id,
-                  type: "RUN_CELL",
-                })}
+              @mousedown=${() => dispatchStarboardEvent(this, "sb:run_cell", { id })}
               class="btn cell-controls-button display-when-collapsed py-1"
               title="Run cell"
             >
@@ -212,12 +197,7 @@ export class CellElement extends LitElement {
         <div class="collapsed-cell-line" title="Click to reveal collapsed cell temporarily"></div>
 
         <button
-          @click=${() =>
-            this.runtime.controls.emit({
-              id: this.cell.id,
-              type: "MOVE_CELL",
-              amount: -1,
-            })}
+          @click=${() => dispatchStarboardEvent(this, "sb:move_cell", { id, amount: -1 })}
           class="btn cell-controls-button auto-hide"
           title="Move cell up"
         >
@@ -225,12 +205,7 @@ export class CellElement extends LitElement {
         </button>
 
         <button
-          @click=${() =>
-            this.runtime.controls.emit({
-              id: this.cell.id,
-              type: "MOVE_CELL",
-              amount: 1,
-            })}
+          @click=${() => dispatchStarboardEvent(this, "sb:move_cell", { id, amount: 1 })}
           class="btn cell-controls-button auto-hide"
           title="Move cell down"
         >
@@ -278,11 +253,7 @@ export class CellElement extends LitElement {
             <starboard-ensure-parent-fits></starboard-ensure-parent-fits>
             <li>
               <button
-                @click="${() =>
-                  emit({
-                    id,
-                    type: "REMOVE_CELL",
-                  })}"
+                @click="${() => dispatchStarboardEvent(this, "sb:remove_cell", { id })}"
                 class="dropdown-item text-danger py-0"
                 title="Remove Cell"
               >

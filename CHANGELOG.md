@@ -1,5 +1,19 @@
 # Changelog
 
+## Release 0.12.0
+**Date:** Unreleased
+
+* **Breaking change**: Moving from an event bus architecture to a HTML event-based system for controls propagation from DOM elements:
+  * **Breaking change**: Changed the order of the arguments of `runtime.controls.insertCell` to be more consistent with other controls functions.
+  * **Breaking change**: Run cell no longer takes `focusTarget?: "previous" | "next"` and ` insertNewCell?: boolean` arguments. You should insert and focus after running as separate actions.
+  * All `runtime.controls` functions now take an options argument if they have more than one argument.
+  * The callback function of a `ControlsButton` in the provided `ControlsButtonTemplate` now gets arguments to make responding easier: the original HTML Event and a dispatch function.
+  * `runtime.exports.core.createStarboardEvent` and `runtime.exports.core.dispatchStarboardEvent` are now exposed.
+* A focus cell event/controls call without a specific target `previous` or `next` will now focus the cell with the given ID itself.
+* Removed the optional `hide` field from `ControlButton` interface and template (it was never used anyway).
+* The editor will now be focused correctly when switching to a cell whose celltype is unknown.
+
+
 ## Release 0.11.1
 **Date:** 2012-06-03
 

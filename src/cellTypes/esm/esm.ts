@@ -11,6 +11,7 @@ import { StarboardTextEditor } from "../../components/textEditor";
 import { Cell } from "../../types";
 import { CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../../types";
 import { renderIfHtmlOutput } from "../../components/output/htmlOutput";
+import { dispatchStarboardEvent } from "../../components/helpers/event";
 
 export const ES_MODULE_CELL_TYPE_DEFINITION = {
   name: "ES Module",
@@ -37,7 +38,7 @@ export class ESModuleCellHandler extends BaseCellHandler {
     const runButton: ControlButton = {
       icon,
       tooltip,
-      callback: () => this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL" }),
+      callback: (evt, dispatch) => dispatch("sb:run_cell", { id: this.cell.id }),
     };
     return cellControlsTemplate({ buttons: [runButton] });
   }

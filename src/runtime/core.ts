@@ -11,6 +11,20 @@ import { plugin as pythonPlugin } from "starboard-python/dist/index.js";
 import { InboundNotebookMessage } from "../types/messages";
 import { notebookContentToText } from "../content/serialization";
 
+export function respondToStarboardDOMEvents(runtime: Runtime) {
+  const nb = runtime.dom.notebook;
+  const controls = runtime.controls;
+
+  nb.addEventListener("sb:run_cell", (evt) => controls.runCell(evt.detail.id));
+  nb.addEventListener("sb:insert_cell", (evt) => controls.insertCell(evt.detail.id, evt.detail));
+  nb.addEventListener("sb:remove_cell", (evt) => controls.removeCell(evt.detail.id));
+  nb.addEventListener("sb:change_cell_type", (evt) => controls.changeCellType(evt.detail.id, evt.detail));
+  nb.addEventListener("sb:reset_cell", (evt) => controls.resetCell(evt.detail.id));
+  nb.addEventListener("sb:focus_cell", (evt) => controls.focusCell(evt.detail.id, evt.detail));
+  nb.addEventListener("sb:move_cell", (evt) => controls.moveCell(evt.detail.id, evt.detail));
+  nb.addEventListener("sb:save", (_evt) => controls.save());
+}
+
 /**
  * When new cell types are registered, or overwritten, the corresponding cells should update.
  * For example: if there is a my-language cell present, which is loaded dynamically in the first cell,
@@ -23,11 +37,7 @@ export function updateCellsWhenCellDefinitionChanges(runtime: Runtime) {
     }
     for (const c of runtime.dom.cells) {
       if (e.key === c.cell.cellType) {
-        runtime.controls.emit({
-          id: c.cell.id,
-          type: "CHANGE_CELL_TYPE",
-          newCellType: c.cell.cellType,
-        });
+        runtime.controls.changeCellType(c.cell.id, { newCellType: c.cell.cellType });
       }
     }
   };

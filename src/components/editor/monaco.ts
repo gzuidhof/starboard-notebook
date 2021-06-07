@@ -5,7 +5,8 @@
 import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { debounce } from "@github/mini-throttle";
 import { WordWrapSetting } from "../textEditor";
-import { Cell, CellEvent, Runtime } from "../../types";
+import { Cell, Runtime } from "../../types";
+import { dispatchStarboardEvent } from "../helpers/event";
 
 export type MonacoEditorSupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";
 
@@ -76,11 +77,7 @@ function makeEditorResizeToFitContent(editor: monaco.editor.IStandaloneCodeEdito
   requestAnimationFrame(() => updateEditorHeight());
 }
 
-function addEditorKeyboardShortcuts(
-  editor: monaco.editor.IStandaloneCodeEditor,
-  emit: (event: CellEvent) => void,
-  cellId: string
-) {
+function addEditorKeyboardShortcuts(editor: monaco.editor.IStandaloneCodeEditor, cellId: string, node: HTMLElement) {
   editor.addAction({
     id: "run-cell",
     label: "Run Cell",
@@ -88,11 +85,9 @@ function addEditorKeyboardShortcuts(
 
     contextMenuGroupId: "starboard",
     contextMenuOrder: 0,
-    run: (_ed) =>
-      emit({
-        id: cellId,
-        type: "RUN_CELL",
-      }),
+    run: (_ed) => {
+      dispatchStarboardEvent(node, "sb:run_cell", { id: cellId });
+    },
   });
 
   editor.addAction({
@@ -102,33 +97,10 @@ function addEditorKeyboardShortcuts(
 
     contextMenuGroupId: "starboard",
     contextMenuOrder: 1,
-    run: (_ed) =>
-      emit({
-        id: cellId,
-        type: "RUN_CELL",
-        focus: "next",
-      }),
-  });
-
-  editor.onKeyDown((e) => {
-    if (e.keyCode === monaco.KeyCode.DownArrow) {
-      const lastLine = editor.getModel()?.getLineCount();
-      if (lastLine !== undefined && editor.getPosition()?.lineNumber === lastLine) {
-        emit({
-          id: cellId,
-          type: "FOCUS_CELL",
-          focus: "next",
-        });
-      }
-    } else if (e.keyCode === monaco.KeyCode.UpArrow) {
-      if (editor.getPosition()?.lineNumber === 1) {
-        emit({
-          id: cellId,
-          type: "FOCUS_CELL",
-          focus: "previous",
-        });
-      }
-    }
+    run: (_ed) => {
+      dispatchStarboardEvent(node, "sb:run_cell", { id: cellId });
+      dispatchStarboardEvent(node, "sb:focus_cell", { id: cellId, focusTarget: "next" });
+    },
   });
 
   editor.addAction({
@@ -138,13 +110,24 @@ function addEditorKeyboardShortcuts(
 
     contextMenuGroupId: "starboard",
     contextMenuOrder: 2,
-    run: (_ed) =>
-      emit({
-        id: cellId,
-        type: "RUN_CELL",
-        focus: "next",
-        insertNewCell: true,
-      }),
+    run: (_ed) => {
+      dispatchStarboardEvent(node, "sb:run_cell", { id: cellId });
+      dispatchStarboardEvent(node, "sb:insert_cell", { id: cellId, position: "after" });
+      dispatchStarboardEvent(node, "sb:focus_cell", { id: cellId, focusTarget: "next" });
+    },
+  });
+
+  editor.onKeyDown((e) => {
+    if (e.keyCode === monaco.KeyCode.DownArrow) {
+      const lastLine = editor.getModel()?.getLineCount();
+      if (lastLine !== undefined && editor.getPosition()?.lineNumber === lastLine) {
+        dispatchStarboardEvent(node, "sb:focus_cell", { id: cellId, focusTarget: "next" });
+      }
+    } else if (e.keyCode === monaco.KeyCode.UpArrow) {
+      if (editor.getPosition()?.lineNumber === 1) {
+        dispatchStarboardEvent(node, "sb:focus_cell", { id: cellId, focusTarget: "previous" });
+      }
+    }
   });
 }
 
@@ -197,7 +180,7 @@ export function createMonacoEditor(
   window.addEventListener("resize", resizeDebounced);
 
   makeEditorResizeToFitContent(editor);
-  addEditorKeyboardShortcuts(editor, runtime.controls.emit, cell.id);
+  addEditorKeyboardShortcuts(editor, cell.id, element);
 
   const model = editor.getModel();
   if (model) {

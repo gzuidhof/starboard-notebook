@@ -25,6 +25,7 @@ import {
   setupGlobalKeybindings,
   updateCellsWhenCellDefinitionChanges,
   updateCellsWhenPropertyGetsDefined,
+  respondToStarboardDOMEvents,
 } from "./core";
 import { createExports } from "./exports";
 import { OutboundNotebookMessage } from "../types/messages";
@@ -92,8 +93,11 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
   };
 
   const controls: RuntimeControls = {
-    insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string) {
-      const id = addCellToNotebookContent(rt, data, position, adjacentCellId);
+    insertCell(
+      adjacentCellId: string | undefined,
+      opts: { position: "end" | "before" | "after"; data: Partial<Cell> }
+    ) {
+      const id = addCellToNotebookContent(rt, opts.data, opts.position, adjacentCellId);
       notebook.requestUpdate();
       controls.contentChanged();
 
@@ -106,15 +110,15 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       controls.contentChanged();
     },
 
-    moveCell(id: string, delta: number) {
+    moveCell(id: string, opts: { amount: number }) {
       const idx = requireIndexOfCellId(rt.content.cells, id);
-      controls.moveCellToIndex(id, idx + delta);
+      controls.moveCellToIndex(id, { index: idx + opts.amount });
     },
 
-    moveCellToIndex(id: string, index: number) {
+    moveCellToIndex(id: string, opts: { index: number }) {
       const fromIndex = requireIndexOfCellId(rt.content.cells, id);
       const maxIndex = rt.content.cells.length - 1;
-      const toIndexClamped = Math.max(Math.min(index, Math.max(0, maxIndex)), Math.min(0, maxIndex));
+      const toIndexClamped = Math.max(Math.min(opts.index, Math.max(0, maxIndex)), Math.min(0, maxIndex));
       if (fromIndex === toIndexClamped) return;
 
       arrayMoveElement(rt.content.cells, fromIndex, toIndexClamped);
@@ -122,8 +126,8 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       controls.contentChanged();
     },
 
-    changeCellType(id: string, newCellType: string) {
-      changeCellType(rt.content, id, newCellType);
+    changeCellType(id: string, opts: { newCellType: string }) {
+      changeCellType(rt.content, id, opts.newCellType);
       rt.dom.cells.forEach((c) => {
         if (c.cell.id === id) {
           c.remove();
@@ -142,37 +146,19 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       notebook.requestUpdate();
     },
 
-    runCell(id: string, focus?: "previous" | "next", insertNewCell?: boolean) {
+    runCell(id: string) {
       const cellElements = rt.dom.cells;
 
-      let idxOfCell = -1;
       for (let i = 0; i < cellElements.length; i++) {
         const cellElement = cellElements[i];
         if (cellElement.cell.id === id) {
-          idxOfCell = i;
           cellElement.run();
-          break; // IDs should be unique, so after we find it we can stop searching.
+          return; // IDs should be unique, so after we find it we can stop searching.
         }
-      }
-      if (insertNewCell) {
-        controls.insertCell({}, "after", id);
-      }
-      if (focus === "previous") {
-        window.setTimeout(() => {
-          const next = rt.dom.cells[idxOfCell - 1];
-          if (next) next.focusEditor({ position: "end" });
-        });
-      } else if (focus === "next") {
-        window.setTimeout(() => {
-          const next = rt.dom.cells[idxOfCell + 1];
-          if (next) {
-            next.focusEditor({ position: "start" });
-          }
-        });
       }
     },
 
-    focusCell(id: string, focus?: "previous" | "next") {
+    focusCell(id: string, opts: { focusTarget?: "previous" | "next" } = {}) {
       const cellElements = rt.dom.cells;
 
       let idxOfCell = -1;
@@ -184,18 +170,20 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         }
       }
 
-      if (focus === "previous") {
+      if (opts.focusTarget === "previous") {
         window.setTimeout(() => {
           const next = cellElements[idxOfCell - 1];
           if (next) next.focusEditor({ position: "end" });
         });
-      } else if (focus === "next") {
+      } else if (opts.focusTarget === "next") {
         window.setTimeout(() => {
           const next = cellElements[idxOfCell + 1];
           if (next) {
             next.focusEditor({ position: "start" });
           }
         });
+      } else if (opts.focusTarget === undefined) {
+        cellElements[idxOfCell].focus({});
       }
     },
 
@@ -251,23 +239,31 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       });
     }, 100),
 
+    /**
+     * @deprecated use native DOM events instead, you can use the helper functions `createStarboardEvent`
+     * and `dispatchStarboardEvent` in `runtime.exports.core` (or use vanilla `new CustomEvent`).
+     * @param event
+     */
     emit(event: CellEvent) {
+      console.warn(
+        "runtime.controls.emit is DEPRECATED and will be removed in an upcoming version of Starboard! Please update your plugins."
+      );
       if (event.type === "RUN_CELL") {
-        controls.runCell(event.id, event.focus, !!event.insertNewCell);
+        controls.runCell(event.id);
       } else if (event.type === "INSERT_CELL") {
-        controls.insertCell(event.data || {}, event.position, event.id);
+        controls.insertCell(event.id, { position: event.position, data: event.data || {} });
       } else if (event.type === "REMOVE_CELL") {
         controls.removeCell(event.id);
       } else if (event.type === "CHANGE_CELL_TYPE") {
-        controls.changeCellType(event.id, event.newCellType);
+        controls.changeCellType(event.id, { newCellType: event.newCellType });
       } else if (event.type === "RESET_CELL") {
         controls.resetCell(event.id);
       } else if (event.type === "FOCUS_CELL") {
-        controls.focusCell(event.id, event.focus);
+        controls.focusCell(event.id, { focusTarget: event.focus });
       } else if (event.type === "SAVE") {
         controls.save();
       } else if (event.type === "MOVE_CELL") {
-        controls.moveCell(event.id, event.amount);
+        controls.moveCell(event.id, { amount: event.amount });
       }
     },
 
@@ -303,7 +299,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
   /** Initialize certain functionality */
   updateCellsWhenCellDefinitionChanges(rt);
   updateCellsWhenPropertyGetsDefined(rt);
-
+  respondToStarboardDOMEvents(rt);
   (window as any).runtime = rt;
 
   setupCommunicationWithParentFrame(rt);

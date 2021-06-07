@@ -38,20 +38,24 @@ import type { OutboundNotebookMessage } from "../messages";
 import type { StarboardContentEditor } from "../../components/editor/contentEditor";
 import { StarboardPlugin } from "../plugins";
 import { textToNotebookContent } from "../../content/parsing";
-import { hookMarkdownItToCodemirrorHighlighter } from "src/components/helpers/highlight";
+import { hookMarkdownItToCodemirrorHighlighter } from "../../components/helpers/highlight";
+import { createStarboardEvent, dispatchStarboardEvent } from "../../components/helpers/event";
 
 export interface RuntimeControls {
-  insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string): void;
+  insertCell(
+    adjacentCellId: string | undefined,
+    opts: { position: "end" | "before" | "after"; data?: Partial<Cell> }
+  ): void;
   removeCell(id: string): void;
-  changeCellType(id: string, newCellType: string): void;
+  changeCellType(id: string, opts: { newCellType: string }): void;
   resetCell(id: string): void;
-  runCell(id: string, focus?: "previous" | "next", insertNewCell?: boolean): void;
-  focusCell(id: string, focus?: "previous" | "next"): void;
+  runCell(id: string): void;
+  focusCell(id: string, opts: { focusTarget?: "previous" | "next" }): void;
   runAllCells(opts: { onlyRunOnLoad?: boolean }): Promise<void>;
   clearAllCells(): void;
 
-  moveCellToIndex(id: string, index: number): void;
-  moveCell(id: string, amount: number): void;
+  moveCellToIndex(id: string, opts: { index: number }): void;
+  moveCell(id: string, opts: { amount: number }): void;
 
   /**
    * Requests a save operation from the parent iframe.
@@ -65,11 +69,12 @@ export interface RuntimeControls {
   /**
    * Send a message to the parent iframe through the iframeResizer library.
    * Optionally you can pass the only target origin you want the message to be sent to, see the iframeresizer docs.
-   * Returns whether a listening parent iframe is present (and thus if the message coudl be sent).
+   * Returns whether a listening parent iframe is present (and thus if the message could be sent).
    */
   sendMessage(message: OutboundNotebookMessage, targetOrigin?: string): boolean;
 
   /**
+   * @deprecated Use native DOM events instead, see `runtime.exports.core.dispatchStarboardEvent`.
    * Publish to the notebook event bus, used to propagate messages upwards such as "focus on the next cell".
    */
   emit(e: CellEvent): void;
@@ -136,6 +141,9 @@ export interface RuntimeExports {
     notebookContentToText: typeof notebookContentToText;
     textToNotebookContent: typeof textToNotebookContent;
     precompileJavascriptCode: typeof precompileJavascriptCode;
+
+    createStarboardEvent: typeof createStarboardEvent;
+    dispatchStarboardEvent: typeof dispatchStarboardEvent;
   };
 
   /**
