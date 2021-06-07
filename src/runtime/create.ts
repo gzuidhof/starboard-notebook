@@ -245,7 +245,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
      * @param event
      */
     emit(event: CellEvent) {
-      console.warn(
+      console.error(
         "runtime.controls.emit is DEPRECATED and will be removed in an upcoming version of Starboard! Please update your plugins."
       );
       if (event.type === "RUN_CELL") {
