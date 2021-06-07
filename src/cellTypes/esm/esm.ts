@@ -11,7 +11,6 @@ import { StarboardTextEditor } from "../../components/textEditor";
 import { Cell } from "../../types";
 import { CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../../types";
 import { renderIfHtmlOutput } from "../../components/output/htmlOutput";
-import { dispatchStarboardEvent } from "../../components/helpers/event";
 
 export const ES_MODULE_CELL_TYPE_DEFINITION = {
   name: "ES Module",
