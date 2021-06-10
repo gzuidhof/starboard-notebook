@@ -153,6 +153,14 @@ export function updateIframeWhenSizeChanges(runtime: Runtime) {
     console.warn(
       "ResizeObserver is not supported in this browser, the iframe will not resize automatically to display some larger-than-iframe elements."
     );
+    // "Graceful" degradation
+    runtime.controls.sendMessage({
+          type: "NOTEBOOK_RESIZE_REQUEST",
+          payload: {
+            width: "512px",
+            height: "512px",
+          },
+        });
   }
 }
 
