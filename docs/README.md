@@ -1,6 +1,6 @@
 # starboard-notebook docs
 
-**Update: Consider using the `starboard-wrap` NPM package instead for easier integration.
+**Update: Consider using the `starboard-wrap` NPM package instead for easier integration.**
 
 ## Guides
 

@@ -40,7 +40,7 @@ export class JavascriptCellHandler extends BaseCellHandler {
     const runButton: ControlButton = {
       icon,
       tooltip,
-      callback: () => this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL" }),
+      callback: (_evt) => this.runtime.controls.runCell({ id: this.cell.id }),
     };
     return cellControlsTemplate({ buttons: [runButton] });
   }

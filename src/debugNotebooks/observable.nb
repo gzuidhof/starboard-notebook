@@ -2,8 +2,8 @@
 # properties:
 #   run_on_load: true
 # ---%%
-import {registerObservablePlugin} from "http://localhost:8080/dist/starboard-observable.js";
-registerObservablePlugin();
+import {plugin} from "http://localhost:8080/dist/starboard-observable.js";
+runtime.controls.registerPlugin(plugin);
 # %% [markdown]
 # Standard markdown cell
 ## subtitle

@@ -23,11 +23,7 @@ export function updateCellsWhenCellDefinitionChanges(runtime: Runtime) {
     }
     for (const c of runtime.dom.cells) {
       if (e.key === c.cell.cellType) {
-        runtime.controls.emit({
-          id: c.cell.id,
-          type: "CHANGE_CELL_TYPE",
-          newCellType: c.cell.cellType,
-        });
+        runtime.controls.changeCellType({ id: c.cell.id, newCellType: c.cell.cellType });
       }
     }
   };
@@ -59,10 +55,10 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
 
   const nb = runtime.dom.notebook;
 
-  // It is possible that the parent iFrame isn't ready for messages yet, so we try to make contact a few times.+
+  // It is possible that the parent iFrame isn't ready for messages yet, so we try to make contact a few times.
   let numTries = 0;
   const askForContent = () => {
-    if (contentHasBeenSetFromParentIframe || numTries > 30) return;
+    if (contentHasBeenSetFromParentIframe || numTries > 1000) return;
     runtime.controls.sendMessage({
       type: "NOTEBOOK_READY_SIGNAL",
       payload: {
@@ -75,7 +71,7 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
       },
     });
     numTries++;
-    setTimeout(() => askForContent(), Math.pow(numTries, 1.7) * 50);
+    setTimeout(() => askForContent(), 60);
   };
   askForContent();
 
@@ -155,12 +151,12 @@ export function updateIframeWhenSizeChanges(runtime: Runtime) {
     );
     // "Graceful" degradation
     runtime.controls.sendMessage({
-          type: "NOTEBOOK_RESIZE_REQUEST",
-          payload: {
-            width: "512px",
-            height: "512px",
-          },
-        });
+      type: "NOTEBOOK_RESIZE_REQUEST",
+      payload: {
+        width: 768,
+        height: 768,
+      },
+    });
   }
 }
 
@@ -174,7 +170,7 @@ export function setupGlobalKeybindings(runtime: Runtime) {
     (e: KeyboardEvent) => {
       if (e.code === "KeyS" && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
         e.preventDefault();
-        runtime.controls.save();
+        runtime.controls.save({});
       }
     },
     false

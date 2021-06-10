@@ -17,12 +17,21 @@ export const DEFAULT_CELL_TYPE_DEFINITION = {
  * The cell handler that gets used when there is an unknown cell type
  */
 export class DefaultCellHandler extends BaseCellHandler {
+  private editor: StarboardTextEditor;
+
   constructor(cell: Cell, runtime: Runtime) {
     super(cell, runtime);
+    this.editor = new StarboardTextEditor(this.cell, this.runtime);
   }
 
   attach(params: CellHandlerAttachParameters) {
-    const ed = new StarboardTextEditor(this.cell, this.runtime);
-    render(html`${ed}`, params.elements.topElement);
+    render(html`${this.editor}`, params.elements.topElement);
+  }
+
+  focusEditor(opts: { position?: "start" | "end" }) {
+    if (this.editor) {
+      this.editor.focus();
+      this.editor.setCaretPosition(opts.position ?? "start");
+    }
   }
 }

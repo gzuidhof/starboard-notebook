@@ -16,7 +16,6 @@ import { hookMarkdownItToCodemirrorHighlighter } from "./helpers/highlight";
 import { Cell, Runtime } from "../types";
 import { copyToClipboard } from "./helpers/clipboard";
 import { trySetLocalStorage } from "./helpers/localStorage";
-import { isATouchScreenDevice } from "./helpers/detect";
 import Dropdown from "bootstrap/js/dist/dropdown";
 import { hookMarkdownItToEmojiPlugin } from "./helpers/emoji";
 
@@ -146,12 +145,7 @@ export class StarboardTextEditor extends LitElement {
     } else if (currentEditor === "monaco") {
       this.switchToMonacoEditor();
     } else {
-      let newEditor: string;
-      if (this.runtime.config.defaultTextEditor === "smart") {
-        newEditor = isATouchScreenDevice() ? "codemirror" : "monaco";
-      } else {
-        newEditor = this.runtime.config.defaultTextEditor;
-      }
+      const newEditor = this.runtime.config.defaultTextEditor;
       newEditor === "monaco" ? this.switchToMonacoEditor() : this.switchToCodeMirrorEditor();
     }
   }

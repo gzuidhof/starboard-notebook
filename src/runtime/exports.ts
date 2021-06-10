@@ -5,7 +5,7 @@
 import { cellControlsTemplate } from "../components/controls";
 import { StarboardLogo } from "../components/icons";
 import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
-import { createCellProxy } from "../components/helpers/cellProxy";
+import { createCellProxy } from "../components/helpers/proxy/cellProxy";
 import { StarboardTextEditor } from "../components/textEditor";
 import { ConsoleOutputElement } from "../components/output/consoleOutput";
 

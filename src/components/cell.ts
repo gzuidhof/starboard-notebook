@@ -4,7 +4,6 @@
 
 import { html, LitElement } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { toggleCellFlagProperty } from "../content/notebookContent";
 
 import { BaseCellHandler } from "../cellTypes/base";
 import { getAvailableCellTypes, getCellTypeDefinitionForCellType } from "../cellTypes/registry";
@@ -71,20 +70,14 @@ export class CellElement extends LitElement {
     this.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         if (event.ctrlKey) {
-          this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL" });
+          this.runtime.controls.runCell({ id: this.id });
         } else if (event.shiftKey) {
-          this.runtime.controls.emit({
-            id: this.cell.id,
-            type: "RUN_CELL",
-            focus: "next",
-          });
+          this.runtime.controls.runCell({ id: this.id }) &&
+            this.runtime.controls.focusCell({ id: this.id, focusTarget: "next" });
         } else if (event.altKey) {
-          this.runtime.controls.emit({
-            id: this.cell.id,
-            type: "RUN_CELL",
-            focus: "next",
-            insertNewCell: true,
-          });
+          this.runtime.controls.runCell({ id: this.id }) &&
+            this.runtime.controls.insertCell({ adjacentCellId: this.id, position: "after" });
+          this.runtime.controls.focusCell({ id: this.id, focusTarget: "next" });
         }
       }
     });
@@ -123,16 +116,23 @@ export class CellElement extends LitElement {
   changeCellType(newCellType: string | string[]) {
     // If these are multiple cell types, take the first one
     const newCellTypeIdentifier = typeof newCellType === "string" ? newCellType : newCellType[0];
-    this.runtime.controls.emit({
+    return this.runtime.controls.changeCellType({
       id: this.cell.id,
-      type: "CHANGE_CELL_TYPE",
       newCellType: newCellTypeIdentifier,
     });
   }
 
+  /**
+   * Toggles the property between `true` and not present.
+   * If force is passed it is deleted in case you pass `false`, and set to `true` in case of `true`.
+   */
   private toggleProperty(name: string, force?: boolean) {
-    toggleCellFlagProperty(this.cell, name, force);
-    this.requestUpdate();
+    if (this.cell.metadata.properties[name] || force === false) {
+      this.runtime.controls.setCellProperty({ id: this.cell.id, property: name, value: undefined }) &&
+        this.requestUpdate();
+    } else {
+      this.runtime.controls.setCellProperty({ id: this.cell.id, property: name, value: true }) && this.requestUpdate();
+    }
   }
 
   private onTopGutterButtonClick() {
@@ -147,7 +147,6 @@ export class CellElement extends LitElement {
 
   render() {
     const id = this.cell.id;
-    const emit = this.runtime.controls.emit;
 
     syncPropertyElementClassNames(this, this.cell.metadata.properties);
     return html`
@@ -180,22 +179,14 @@ export class CellElement extends LitElement {
       <div class="cell-controls cell-controls-left-above d-flex justify-content-center">
         ${this.isCurrentlyRunning
           ? html` <button
-              @mousedown=${() =>
-                emit({
-                  id,
-                  type: "RUN_CELL",
-                })}
+              @mousedown=${() => this.runtime.controls.runCell({ id })}
               class="btn cell-controls-button display-when-collapsed py-1"
               title="Cell is running"
             >
               <span class="bi bi-hourglass"></span>
             </button>`
           : html` <button
-              @mousedown=${() =>
-                emit({
-                  id,
-                  type: "RUN_CELL",
-                })}
+              @mousedown=${() => this.runtime.controls.runCell({ id })}
               class="btn cell-controls-button display-when-collapsed py-1"
               title="Run cell"
             >
@@ -212,12 +203,7 @@ export class CellElement extends LitElement {
         <div class="collapsed-cell-line" title="Click to reveal collapsed cell temporarily"></div>
 
         <button
-          @click=${() =>
-            this.runtime.controls.emit({
-              id: this.cell.id,
-              type: "MOVE_CELL",
-              amount: -1,
-            })}
+          @click=${() => this.runtime.controls.moveCell({ id, amount: -1 })}
           class="btn cell-controls-button auto-hide"
           title="Move cell up"
         >
@@ -225,12 +211,7 @@ export class CellElement extends LitElement {
         </button>
 
         <button
-          @click=${() =>
-            this.runtime.controls.emit({
-              id: this.cell.id,
-              type: "MOVE_CELL",
-              amount: 1,
-            })}
+          @click=${() => this.runtime.controls.moveCell({ id, amount: 1 })}
           class="btn cell-controls-button auto-hide"
           title="Move cell down"
         >
@@ -278,11 +259,7 @@ export class CellElement extends LitElement {
             <starboard-ensure-parent-fits></starboard-ensure-parent-fits>
             <li>
               <button
-                @click="${() =>
-                  emit({
-                    id,
-                    type: "REMOVE_CELL",
-                  })}"
+                @click="${() => this.runtime.controls.removeCell({ id })}"
                 class="dropdown-item text-danger py-0"
                 title="Remove Cell"
               >

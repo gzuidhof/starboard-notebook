@@ -31,7 +31,7 @@ export class LatexCellHandler extends BaseCellHandler {
       editOrRunButton = {
         icon: "bi bi-play-circle",
         tooltip: "Render LaTeX",
-        callback: () => this.runtime.controls.emit({ id: this.cell.id, type: "RUN_CELL" }),
+        callback: (_evt) => this.runtime.controls.runCell({ id: this.cell.id }),
       };
     } else {
       editOrRunButton = {

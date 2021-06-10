@@ -89,7 +89,7 @@ export async function precompileJavascriptCode(content: string): Promise<string>
     return content;
   }
 
-  if (last.type === "ExpressionStatement") {
+  if (last.type === "ExpressionStatement" && !content.match(/;\s*$/)) {
     changes.push({
       text: "return {returnValue: (",
       start: last.start,

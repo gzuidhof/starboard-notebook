@@ -3,7 +3,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import type {
-  Cell,
   CellEvent,
   CellPropertyDefinition,
   CellTypeDefinition,
@@ -27,7 +26,7 @@ import type mdlib from "markdown-it";
 import type * as Popper from "@popperjs/core";
 
 import type { JavascriptEvaluator } from "../../cellTypes/javascript/eval";
-import type { createCellProxy } from "../../components/helpers/cellProxy";
+import type { createCellProxy } from "../../components/helpers/proxy/cellProxy";
 import type { cellToText, notebookContentToText } from "../../content/serialization";
 import type { precompileJavascriptCode } from "../../cellTypes/javascript/precompile";
 import type { MapRegistry } from "./../registry";
@@ -38,26 +37,37 @@ import type { OutboundNotebookMessage } from "../messages";
 import type { StarboardContentEditor } from "../../components/editor/contentEditor";
 import { StarboardPlugin } from "../plugins";
 import { textToNotebookContent } from "../../content/parsing";
-import { hookMarkdownItToCodemirrorHighlighter } from "src/components/helpers/highlight";
+import { hookMarkdownItToCodemirrorHighlighter } from "../../components/helpers/highlight";
+import {
+  ChangeCellTypeOptions,
+  ClearCellOptions,
+  FocusCellOptions,
+  InsertCellOptions,
+  RemoveCellOptions,
+  ResetCellOptions,
+  RunCellOptions,
+  SetCellPropertyOptions,
+} from "../events";
 
 export interface RuntimeControls {
-  insertCell(data: Partial<Cell>, position: "end" | "before" | "after", adjacentCellId?: string): void;
-  removeCell(id: string): void;
-  changeCellType(id: string, newCellType: string): void;
-  resetCell(id: string): void;
-  runCell(id: string, focus?: "previous" | "next", insertNewCell?: boolean): void;
-  focusCell(id: string, focus?: "previous" | "next"): void;
+  insertCell(opts: InsertCellOptions): string | false;
+  removeCell(opts: RemoveCellOptions): boolean;
+  changeCellType(opts: ChangeCellTypeOptions): boolean;
+  setCellProperty(opts: SetCellPropertyOptions): boolean;
+  resetCell(opts: ResetCellOptions): boolean;
+  runCell(opts: RunCellOptions): boolean;
+  focusCell(opts: FocusCellOptions): boolean;
+  clearCell(opts: ClearCellOptions): boolean;
   runAllCells(opts: { onlyRunOnLoad?: boolean }): Promise<void>;
-  clearAllCells(): void;
+  clearAllCells(opts: Record<string, any>): void;
 
-  moveCellToIndex(id: string, index: number): void;
-  moveCell(id: string, amount: number): void;
+  moveCellToIndex(opts: { id: string; toIndex: number }): boolean;
+  moveCell(opts: { id: string; amount: number }): boolean;
 
   /**
    * Requests a save operation from the parent iframe.
-   * Returns whether save message was succesfully sent, note that it doesn't guarantee it was actually saved!
    */
-  save(): boolean;
+  save(opts: any): boolean;
 
   /** To be called to indicate that the notebook content has changed */
   contentChanged(): void;
@@ -65,11 +75,12 @@ export interface RuntimeControls {
   /**
    * Send a message to the parent iframe through the iframeResizer library.
    * Optionally you can pass the only target origin you want the message to be sent to, see the iframeresizer docs.
-   * Returns whether a listening parent iframe is present (and thus if the message coudl be sent).
+   * Returns whether a listening parent iframe is present (and thus if the message could be sent).
    */
-  sendMessage(message: OutboundNotebookMessage, targetOrigin?: string): boolean;
+  sendMessage(message: OutboundNotebookMessage, opts?: { targetOrigin?: string }): boolean;
 
   /**
+   * @deprecated Use `runtime.controls` directly, these will emit DOM events.
    * Publish to the notebook event bus, used to propagate messages upwards such as "focus on the next cell".
    */
   emit(e: CellEvent): void;
@@ -190,6 +201,7 @@ export interface Runtime {
   dom: {
     notebook: StarboardNotebookElement;
     cells: CellElement[];
+    getCellById(id: string): CellElement | null;
   };
 
   /**
@@ -242,5 +254,5 @@ export interface RuntimeConfig {
    * Cell IDs written to the metadata of the cell for new cells if this is true, which causes them to be persisted.
    */
   persistCellIds: boolean;
-  defaultTextEditor: "monaco" | "codemirror" | "smart" | "";
+  defaultTextEditor: "monaco" | "codemirror" | "";
 }

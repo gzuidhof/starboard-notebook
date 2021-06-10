@@ -7,7 +7,7 @@ import { customElement, property, query } from "lit/decorators.js";
 
 import { CellElement } from "./cell";
 import "./helpers/minimumBodySize"; // registers starboard-ensure-fits
-import { createCellProxy } from "./helpers/cellProxy";
+import { createCellProxy } from "./helpers/proxy/cellProxy";
 import { StarboardLogo } from "./icons";
 import { insertHTMLChildAtIndex } from "./helpers/dom";
 import { Runtime, RuntimeConfig } from "../types";
@@ -184,7 +184,7 @@ export class StarboardNotebookElement extends LitElement {
           </button>
 
           <button
-            @click="${() => this.runtime.controls.insertCell({}, "end")}"
+            @click="${() => this.runtime.controls.insertCell({ position: "notebookEnd" })}"
             class="cell-controls-button"
             title="Add Cell Here"
             style="opacity: 0.7; margin-left: auto; padding: 0px 1px 0px 18px"

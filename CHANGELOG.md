@@ -1,5 +1,38 @@
 # Changelog
 
+## Release 0.12.0
+**Date:** 2012-06-11
+
+This release has breaking changes that will require changes to Starboard plugins, most notebooks should still work.
+
+* Cell metadata including properties can no longer be `undefined`. If you assign `undefined` to a prop it gets deleted.
+* Added `runtime.controls.setCellProperty` as a cancellable way to set properties.
+* Added `runtime.controls.clearCell` control and event.
+* **Breaking change**: Moving from an event bus architecture to a HTML event-based system to allow for cancelling actions:
+  * **Breaking change**: All `runtime.controls.*` functions that spawn an event now take a single options argument instead of a separate argument for the cell id.
+  * **Breaking change**: Renamed argument `id` to `adjacentCellId` of `runtime.controls.insertCell` to prevent confusion.
+  * **Breaking change**: Run cell no longer takes `focusTarget?: "previous" | "next"` and ` insertNewCell?: boolean` arguments. You should insert and focus after running as separate actions.
+  * The callback function of a `ControlsButton` now receives the event as its first and only argument.
+* A focus cell event/controls call without a specific target `previous` or `next` will now focus the cell with the given ID itself.
+* Removed the optional `hide` field from `ControlButton` interface and template (it was never used anyway).
+* The editor will now be focused correctly when switching to a cell whose celltype is unknown.
+* The option for inserting a cell at the end of the notebook now uses `notebookEnd` instead of `end` to remove ambiguity.
+* Added `runtime.dom.getCellById`.
+* There is no longer a content changed message sent when a cell type gets defined and a cell with that type is present.
+* Fixed HTML export by shimming `Buffer`.
+* `runtime.controls.sendMessage` now has an options argument for `targetOrigin`.
+* The Javascript cell type's last expression no longer becomes the cell return type and get displayed when the last expression ends with a semicolon (`;`), making it the same as Jupyter/Python.
+* Removed `"smart"` preset for default editor, it was rather flawed anyway (it depended on touchscreen detection, but there are plenty of laptops with touchscreens anyway).
+* **Breaking change**: Removed the `iframe-resizer` library dependency, opting for more simple `ResizeObserver` approach afforded by modern browsers (thank you @stefnotch), this means you should use starboard-wrap version `0.4.0` or later now.
+* Updated to `starboard-python` version `0.6.7` which is compatible with the changes introduced here.
+
+Mini-update guide for plugins:
+```javascript
+runtime.controls.emit({type: "RUN_CELL", id: cell.id})
+// change to
+runtime.controls.runCell({id: cell.id})
+```
+
 ## Release 0.11.1
 **Date:** 2012-06-03
 
