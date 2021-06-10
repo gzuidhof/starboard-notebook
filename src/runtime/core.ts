@@ -138,10 +138,6 @@ export function updateIframeWhenSizeChanges(runtime: Runtime) {
       }
 
       if (width != 0 && height != 0) {
-        console.log("resize request", {
-          width,
-          height,
-        });
         runtime.controls.sendMessage({
           type: "NOTEBOOK_RESIZE_REQUEST",
           payload: {
