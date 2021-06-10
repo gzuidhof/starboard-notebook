@@ -55,7 +55,7 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
 
   const nb = runtime.dom.notebook;
 
-  // It is possible that the parent iFrame isn't ready for messages yet, so we try to make contact a few times.+
+  // It is possible that the parent iFrame isn't ready for messages yet, so we try to make contact a few times.
   let numTries = 0;
   const askForContent = () => {
     if (contentHasBeenSetFromParentIframe || numTries > 1000) return;
@@ -71,7 +71,7 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
       },
     });
     numTries++;
-    setTimeout(() => askForContent(), 50);
+    setTimeout(() => askForContent(), 60);
   };
   askForContent();
 

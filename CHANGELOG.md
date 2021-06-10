@@ -1,7 +1,7 @@
 # Changelog
 
 ## Release 0.12.0
-**Date:** Unreleased
+**Date:** 2012-06-11
 
 This release has breaking changes that will require changes to Starboard plugins, most notebooks should still work.
 
@@ -23,6 +23,15 @@ This release has breaking changes that will require changes to Starboard plugins
 * `runtime.controls.sendMessage` now has an options argument for `targetOrigin`.
 * The Javascript cell type's last expression no longer becomes the cell return type and get displayed when the last expression ends with a semicolon (`;`), making it the same as Jupyter/Python.
 * Removed `"smart"` preset for default editor, it was rather flawed anyway (it depended on touchscreen detection, but there are plenty of laptops with touchscreens anyway).
+* **Breaking change**: Removed the `iframe-resizer` library dependency, opting for more simple `ResizeObserver` approach afforded by modern browsers (thank you @stefnotch), this means you should use starboard-wrap version `0.4.0` or later now.
+* Updated to `starboard-python` version `0.6.7` which is compatible with the changes introduced here.
+
+Mini-update guide for plugins:
+```javascript
+runtime.controls.emit({type: "RUN_CELL", id: cell.id})
+// change to
+runtime.controls.runCell({id: cell.id})
+```
 
 ## Release 0.11.1
 **Date:** 2012-06-03

@@ -170,7 +170,7 @@ export type ControlButtonCallbackDispatchFunction<E extends StarboardEventName> 
   detail: StarboardEventInitDict<StarboardEventMap[E]>
 ) => boolean;
 
-export interface ControlButton<T extends StarboardEventName = any> {
+export interface ControlButton {
   icon: IconTemplate;
   tooltip: string;
   callback: (event: Event) => any;
