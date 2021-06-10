@@ -62,7 +62,7 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
   // It is possible that the parent iFrame isn't ready for messages yet, so we try to make contact a few times.+
   let numTries = 0;
   const askForContent = () => {
-    if (contentHasBeenSetFromParentIframe || numTries > 15) return;
+    if (contentHasBeenSetFromParentIframe || numTries > 30) return;
     runtime.controls.sendMessage({
       type: "NOTEBOOK_READY_SIGNAL",
       payload: {
@@ -75,7 +75,7 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
       },
     });
     numTries++;
-    setTimeout(() => askForContent(), numTries * 100);
+    setTimeout(() => askForContent(), Math.pow(numTries, 1.7) * 50);
   };
   askForContent();
 
