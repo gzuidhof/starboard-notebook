@@ -25,6 +25,7 @@ import {
   setupGlobalKeybindings,
   updateCellsWhenCellDefinitionChanges,
   updateCellsWhenPropertyGetsDefined,
+  updateIframeWhenSizeChanges,
 } from "./core";
 import { createExports } from "./exports";
 import { OutboundNotebookMessage } from "../types/messages";
@@ -232,8 +233,8 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     },
 
     sendMessage(message: OutboundNotebookMessage, targetOrigin?: string): boolean {
-      if (window.parentIFrame) {
-        window.parentIFrame.sendMessage(message, targetOrigin);
+      if (window.parent) {
+        window.parent.postMessage(message, targetOrigin ?? "*");
         return true;
       }
       return false;
@@ -308,6 +309,8 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
   setupCommunicationWithParentFrame(rt);
   registerDefaultPlugins(rt);
+
+  updateIframeWhenSizeChanges(rt);
 
   return rt;
 }
