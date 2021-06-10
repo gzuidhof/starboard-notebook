@@ -29,10 +29,11 @@ export function requireIndexOfCellId(cells: Cell[], id?: string) {
  */
 export function addCellToNotebookContent(
   runtime: Runtime,
-  data: Partial<Cell>,
+  data: Partial<Cell> | undefined,
   position: "notebookEnd" | "before" | "after",
   adjacentCellId?: string
 ): string {
+  if (data === undefined) data = {};
   const nb = runtime.content;
   let idx: number;
   let cellType: string | undefined = data.cellType;
@@ -76,19 +77,18 @@ export function removeCellFromNotebookById(nb: NotebookContent, id: string) {
   nb.cells.splice(idx, 1);
 }
 
-export function changeCellType(nb: NotebookContent, id: string, newCellType: string) {
+/**
+ * Returns whether the cell type is different from the previous cell type.
+ */
+export function changeCellType(nb: NotebookContent, id: string, newCellType: string): boolean {
   const idx = requireIndexOfCellId(nb.cells, id);
 
   const cellAsString = cellToText(nb.cells[idx]);
   const newCell = textToNotebookContent(cellAsString).cells[0];
+  const didChange = newCell.cellType !== newCellType;
+
   newCell.cellType = newCellType;
   nb.cells.splice(idx, 1, newCell);
-}
 
-export function toggleCellFlagProperty(cell: Cell, propertyName: string, force?: boolean) {
-  if (cell.metadata.properties[propertyName] || force === false) {
-    delete cell.metadata.properties[propertyName];
-  } else {
-    cell.metadata.properties[propertyName] = true;
-  }
+  return didChange;
 }

@@ -4,7 +4,6 @@
 
 import { html, LitElement } from "lit";
 import { customElement, property, query } from "lit/decorators.js";
-import { toggleCellFlagProperty } from "../content/notebookContent";
 
 import { BaseCellHandler } from "../cellTypes/base";
 import { getAvailableCellTypes, getCellTypeDefinitionForCellType } from "../cellTypes/registry";
@@ -16,7 +15,6 @@ import "./insertionLine";
 import Dropdown from "bootstrap/js/dist/dropdown";
 import { syncPropertyElementClassNames } from "../cellProperties/dom";
 import { cellHasProperty } from "../cellProperties/util";
-import { dispatchStarboardEvent } from "./helpers/event";
 
 @customElement("starboard-cell")
 export class CellElement extends LitElement {
@@ -72,14 +70,14 @@ export class CellElement extends LitElement {
     this.addEventListener("keydown", (event) => {
       if (event.key === "Enter") {
         if (event.ctrlKey) {
-          dispatchStarboardEvent(this, "sb:run_cell", { id: this.id });
+          this.runtime.controls.runCell({ id: this.id });
         } else if (event.shiftKey) {
-          dispatchStarboardEvent(this, "sb:run_cell", { id: this.id });
-          dispatchStarboardEvent(this, "sb:focus_cell", { id: this.id, focusTarget: "next" });
+          this.runtime.controls.runCell({ id: this.id }) &&
+            this.runtime.controls.focusCell({ id: this.id, focusTarget: "next" });
         } else if (event.altKey) {
-          dispatchStarboardEvent(this, "sb:run_cell", { id: this.id });
-          dispatchStarboardEvent(this, "sb:insert_cell", { id: this.id, position: "after" });
-          dispatchStarboardEvent(this, "sb:focus_cell", { id: this.id, focusTarget: "next" });
+          this.runtime.controls.runCell({ id: this.id }) &&
+            this.runtime.controls.insertCell({ adjacentCellId: this.id, position: "after" });
+          this.runtime.controls.focusCell({ id: this.id, focusTarget: "next" });
         }
       }
     });
@@ -118,15 +116,23 @@ export class CellElement extends LitElement {
   changeCellType(newCellType: string | string[]) {
     // If these are multiple cell types, take the first one
     const newCellTypeIdentifier = typeof newCellType === "string" ? newCellType : newCellType[0];
-    return dispatchStarboardEvent(this, "sb:change_cell_type", {
+    return this.runtime.controls.changeCellType({
       id: this.cell.id,
       newCellType: newCellTypeIdentifier,
     });
   }
 
+  /**
+   * Toggles the property between `true` and not present.
+   * If force is passed it is deleted in case you pass `false`, and set to `true` in case of `true`.
+   */
   private toggleProperty(name: string, force?: boolean) {
-    toggleCellFlagProperty(this.cell, name, force);
-    this.requestUpdate();
+    if (this.cell.metadata.properties[name] || force === false) {
+      this.runtime.controls.setCellProperty({ id: this.cell.id, property: name, value: undefined }) &&
+        this.requestUpdate();
+    } else {
+      this.runtime.controls.setCellProperty({ id: this.cell.id, property: name, value: true }) && this.requestUpdate();
+    }
   }
 
   private onTopGutterButtonClick() {
@@ -173,14 +179,14 @@ export class CellElement extends LitElement {
       <div class="cell-controls cell-controls-left-above d-flex justify-content-center">
         ${this.isCurrentlyRunning
           ? html` <button
-              @mousedown=${() => dispatchStarboardEvent(this, "sb:run_cell", { id })}
+              @mousedown=${() => this.runtime.controls.runCell({ id })}
               class="btn cell-controls-button display-when-collapsed py-1"
               title="Cell is running"
             >
               <span class="bi bi-hourglass"></span>
             </button>`
           : html` <button
-              @mousedown=${() => dispatchStarboardEvent(this, "sb:run_cell", { id })}
+              @mousedown=${() => this.runtime.controls.runCell({ id })}
               class="btn cell-controls-button display-when-collapsed py-1"
               title="Run cell"
             >
@@ -197,7 +203,7 @@ export class CellElement extends LitElement {
         <div class="collapsed-cell-line" title="Click to reveal collapsed cell temporarily"></div>
 
         <button
-          @click=${() => dispatchStarboardEvent(this, "sb:move_cell", { id, amount: -1 })}
+          @click=${() => this.runtime.controls.moveCell({ id, amount: -1 })}
           class="btn cell-controls-button auto-hide"
           title="Move cell up"
         >
@@ -205,7 +211,7 @@ export class CellElement extends LitElement {
         </button>
 
         <button
-          @click=${() => dispatchStarboardEvent(this, "sb:move_cell", { id, amount: 1 })}
+          @click=${() => this.runtime.controls.moveCell({ id, amount: 1 })}
           class="btn cell-controls-button auto-hide"
           title="Move cell down"
         >
@@ -253,7 +259,7 @@ export class CellElement extends LitElement {
             <starboard-ensure-parent-fits></starboard-ensure-parent-fits>
             <li>
               <button
-                @click="${() => dispatchStarboardEvent(this, "sb:remove_cell", { id })}"
+                @click="${() => this.runtime.controls.removeCell({ id })}"
                 class="dropdown-item text-danger py-0"
                 title="Remove Cell"
               >

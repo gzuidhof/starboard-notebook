@@ -20,7 +20,6 @@ import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
 import type { Cell, Runtime } from "../../../types";
 import { starboardHighlighter } from "./highlightStyle";
 import { getCodemirrorLanguageExtension } from "./languages";
-import { dispatchStarboardEvent } from "../../../components/helpers/event";
 
 // Shared between all instances
 const commonExtensions = [
@@ -55,7 +54,7 @@ export function createCodeMirrorEditor(
     language?: string;
     wordWrap?: "off" | "on" | "wordWrapColumn" | "bounded";
   },
-  _runtime: Runtime
+  runtime: Runtime
 ) {
   const listen = EditorView.updateListener.of((update) => {
     if (update.docChanged) {
@@ -74,8 +73,7 @@ export function createCodeMirrorEditor(
           const firstLine = target.state.doc.line(1);
           const cursorPosition = target.state.selection.ranges[0].head;
           if (firstLine.from <= cursorPosition && cursorPosition <= firstLine.to) {
-            dispatchStarboardEvent(target.dom, "sb:focus_cell", { id: cell.id, focusTarget: "previous" });
-            return true;
+            return runtime.controls.focusCell({ id: cell.id, focusTarget: "previous" });
           }
         }
         return false;
@@ -88,8 +86,7 @@ export function createCodeMirrorEditor(
           const lastline = target.state.doc.line(target.state.doc.lines);
           const cursorPosition = target.state.selection.ranges[0].head;
           if (lastline.from <= cursorPosition && cursorPosition <= lastline.to) {
-            dispatchStarboardEvent(target.dom, "sb:focus_cell", { id: cell.id, focusTarget: "next" });
-            return true;
+            return runtime.controls.focusCell({ id: cell.id, focusTarget: "next" });
           }
         }
         return false;
@@ -119,7 +116,7 @@ export function createCodeMirrorEditor(
   };
 
   let isLocked: boolean | undefined = cell.metadata.properties.locked;
-  _runtime.controls.subscribeToCellChanges(cell.id, () => {
+  runtime.controls.subscribeToCellChanges(cell.id, () => {
     // Note this function will be called on ALL text changes, so any letter typed,
     // it's probably better for performance to only ask cm to change it's editable state if it actually changed.
     if (isLocked === cell.metadata.properties.locked) return;

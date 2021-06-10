@@ -103,7 +103,6 @@ export interface NotebookMetadata {
  */
 export interface NotebookContent {
   metadata: NotebookMetadata;
-
   cells: Cell[];
 }
 
@@ -174,7 +173,7 @@ export type ControlButtonCallbackDispatchFunction<E extends StarboardEventName> 
 export interface ControlButton<T extends StarboardEventName = any> {
   icon: IconTemplate;
   tooltip: string;
-  callback: (event: Event, dispatch: ControlButtonCallbackDispatchFunction<T>) => any | Promise<any>;
+  callback: (event: Event) => any;
 }
 
 export interface ControlsDefinition {

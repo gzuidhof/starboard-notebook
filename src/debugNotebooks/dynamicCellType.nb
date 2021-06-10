@@ -28,7 +28,7 @@ class CoffeeScriptCellHandler {
         const runButton = {
             icon: icons.PlayCircleIcon,
             tooltip: "Compile CoffeeScript",
-            callback: (evt, target) => dispatchStarboardEvent(target, "sb:run_cell", { id: this.cell.id }),
+            callback: (_evt) => this.runtime.controls.runCell({ id: this.cell.id }),
         };
         return cellControlsTemplate({ buttons: [runButton] });
     }

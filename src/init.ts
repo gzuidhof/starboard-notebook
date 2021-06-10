@@ -28,4 +28,4 @@ window.svg = lit.svg;
 window.lit = lit;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-window.initialNotebookContent = require("./debugNotebooks/dynamicCellType.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/events.nb").default;

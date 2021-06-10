@@ -20,5 +20,3 @@ export const cellToText = l.cellToText;
 export const notebookContentToText = l.notebookContentToText;
 export const precompileJavascriptCode = l.precompileJavascriptCode;
 export const textToNotebookContent = l.textToNotebookContent;
-export const createStarboardEvent = l.createStarboardEvent;
-export const dispatchStarboardEvent = l.dispatchStarboardEvent;

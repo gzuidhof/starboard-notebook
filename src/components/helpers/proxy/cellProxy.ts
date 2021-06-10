@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Cell } from "../../types";
+import { Cell } from "../../../types";
 
 function createOnChangeProxy(onChange: () => void, target: any): any {
   return new Proxy(target, {
@@ -19,7 +19,11 @@ function createOnChangeProxy(onChange: () => void, target: any): any {
       return retVal;
     },
     set(target, property, newValue) {
-      target[property] = newValue;
+      if (newValue === undefined) {
+        delete target[property];
+      } else {
+        target[property] = newValue;
+      }
       onChange();
       return true;
     },

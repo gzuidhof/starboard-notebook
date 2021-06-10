@@ -3,6 +3,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { NotebookContent } from "../../types";
+import "./bufferMock";
 import jsesc from "jsesc";
 import { notebookContentToText } from "../serialization";
 

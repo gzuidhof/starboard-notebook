@@ -5,7 +5,7 @@
 import { cellControlsTemplate } from "../components/controls";
 import { StarboardLogo } from "../components/icons";
 import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
-import { createCellProxy } from "../components/helpers/cellProxy";
+import { createCellProxy } from "../components/helpers/proxy/cellProxy";
 import { StarboardTextEditor } from "../components/textEditor";
 import { ConsoleOutputElement } from "../components/output/consoleOutput";
 
@@ -28,7 +28,6 @@ import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
 import { StarboardContentEditor } from "../components/editor/contentEditor";
 import { textToNotebookContent } from "../content/parsing";
 import { hookMarkdownItToCodemirrorHighlighter } from "../components/helpers/highlight";
-import { createStarboardEvent, dispatchStarboardEvent } from "../components/helpers/event";
 
 export function createExports(): RuntimeExports {
   return {
@@ -58,9 +57,6 @@ export function createExports(): RuntimeExports {
       precompileJavascriptCode: precompileJavascriptCode,
       textToNotebookContent: textToNotebookContent,
       hookMarkdownItToCodemirrorHighlighter: hookMarkdownItToCodemirrorHighlighter,
-
-      createStarboardEvent: createStarboardEvent,
-      dispatchStarboardEvent: dispatchStarboardEvent,
     },
     elements: {
       StarboardTextEditor: StarboardTextEditor,

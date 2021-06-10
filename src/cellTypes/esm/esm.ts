@@ -37,7 +37,7 @@ export class ESModuleCellHandler extends BaseCellHandler {
     const runButton: ControlButton = {
       icon,
       tooltip,
-      callback: (evt, dispatch) => dispatch("sb:run_cell", { id: this.cell.id }),
+      callback: (_evt) => this.runtime.controls.runCell({ id: this.cell.id }),
     };
     return cellControlsTemplate({ buttons: [runButton] });
   }

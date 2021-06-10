@@ -8,7 +8,6 @@ import { cellControlsTemplate } from "../components/controls";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell, CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../types";
 import { katexLoader } from "../components/helpers/katex";
-import { dispatchStarboardEvent } from "../components/helpers/event";
 
 export const LATEX_CELL_TYPE_DEFINITION = {
   name: "LateX (KaTeX)",
@@ -32,7 +31,7 @@ export class LatexCellHandler extends BaseCellHandler {
       editOrRunButton = {
         icon: "bi bi-play-circle",
         tooltip: "Render LaTeX",
-        callback: (evt, dispatch) => dispatch("sb:run_cell", { id: this.cell.id }),
+        callback: (_evt) => this.runtime.controls.runCell({ id: this.cell.id }),
       };
     } else {
       editOrRunButton = {

@@ -8,8 +8,7 @@ import { customElement, query } from "lit/decorators.js";
 import { createPopper } from "@popperjs/core";
 import { CellTypePicker } from "./cellTypePicker";
 import { CellElement } from "./cell";
-import { Cell } from "../types";
-import { dispatchStarboardEvent } from "./helpers/event";
+import { Cell, Runtime } from "../types";
 
 // Lazily initialized.. but cached for re-use.
 let globalCellTypePicker: CellTypePicker;
@@ -23,6 +22,7 @@ export class InsertionLine extends LitElement {
   hoverArea?: HTMLDivElement;
 
   private insertPosition: "before" | "after" = "after";
+  private runtime: Runtime;
 
   createRenderRoot() {
     return this;
@@ -30,6 +30,8 @@ export class InsertionLine extends LitElement {
 
   constructor() {
     super();
+    // TODO: pass this in..
+    this.runtime = window.runtime;
   }
 
   connectedCallback() {
@@ -82,8 +84,8 @@ export class InsertionLine extends LitElement {
         globalCellTypePicker.onInsert = (cellData: Partial<Cell>) => {
           // Right now we assume the insertion line has a cell as parent
           if (parent && parent instanceof CellElement) {
-            dispatchStarboardEvent(this, "sb:insert_cell", {
-              id: parent.cell.id,
+            this.runtime.controls.insertCell({
+              adjacentCellId: parent.cell.id,
               position: this.insertPosition,
               data: cellData,
             });
@@ -98,8 +100,8 @@ export class InsertionLine extends LitElement {
   quickInsert(cellType: string) {
     const parent = this.parentElement;
     if (parent && parent instanceof CellElement) {
-      dispatchStarboardEvent(this, "sb:insert_cell", {
-        id: parent.cell.id,
+      this.runtime.controls.insertCell({
+        adjacentCellId: parent.cell.id,
         position: this.insertPosition,
         data: { cellType },
       });
