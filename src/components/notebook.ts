@@ -7,7 +7,6 @@ import { customElement, property, query } from "lit/decorators.js";
 
 import { CellElement } from "./cell";
 import "./helpers/minimumBodySize"; // registers starboard-ensure-fits
-import { IFramePage } from "iframe-resizer";
 import { createCellProxy } from "./helpers/proxy/cellProxy";
 import { StarboardLogo } from "./icons";
 import { insertHTMLChildAtIndex } from "./helpers/dom";
@@ -22,11 +21,6 @@ import { arrayMoveElement } from "./helpers/array";
 
 declare global {
   interface Window {
-    parentIFrame: IFramePage;
-    iFrameResizer: {
-      onReady: () => void;
-      onMessage: (msg: any) => void;
-    };
     starboardEditUrl?: string;
   }
 }
