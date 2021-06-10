@@ -4,7 +4,7 @@
 
 import { NotebookMessage, NotebookMessageContentData } from ".";
 
-export type OutboundNotebookMessage = ContentUpdateMessage | ReadySignalMessage | SaveMessage;
+export type OutboundNotebookMessage = ContentUpdateMessage | ReadySignalMessage | SaveMessage | ResizeMessage;
 
 /**
  * Sent from notebook to parent webpage when the textual representation of the notebook changes in any way.
@@ -45,3 +45,5 @@ export type ReadySignalMessage = NotebookMessage<
  * Sent from notebook to parent webpage when the user initiates a save (e.g. by pressing CTRL+S on Windows).
  */
 export type SaveMessage = NotebookMessage<"NOTEBOOK_SAVE_REQUEST", { content: NotebookMessageContentData }>;
+
+export type ResizeMessage = NotebookMessage<"NOTEBOOK_RESIZE_REQUEST", { width: number; height: number }>;

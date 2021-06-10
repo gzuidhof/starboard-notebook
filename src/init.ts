@@ -5,7 +5,6 @@
 import "./styles/main.scss";
 import "./components/notebook";
 
-import "iframe-resizer/js/iframeResizer.contentWindow.js";
 import * as lit from "lit";
 
 import { RuntimeConfig } from "./types";

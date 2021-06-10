@@ -35,7 +35,6 @@
   "devDependencies": {
     "@peculiar/webcrypto": "^1.1.4",
     "@types/bootstrap": "^5.0.8",
-    "@types/iframe-resizer": "^3.5.8",
     "@types/jest": "^25.2.1",
     "@types/js-yaml": "^4.0.1",
     "@types/jsesc": "^2.5.1",
@@ -112,7 +111,6 @@
     "babel-walk": "^3.0.0",
     "bootstrap": "^5.0.0",
     "console-feed-modern": "^3.0.5",
-    "iframe-resizer": "^4.2.10",
     "js-yaml": "^4.1.0",
     "jsesc": "^2.5.2",
     "katex": "^0.13.10",
