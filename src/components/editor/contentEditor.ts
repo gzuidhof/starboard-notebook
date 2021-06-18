@@ -6,8 +6,7 @@ import { LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
 import { EditorState, TextSelection } from "prosemirror-state";
 import type { EditorView } from "prosemirror-view";
-import { Cell, Runtime } from "../../types";
-import { CellElement } from "../cell";
+import { Runtime } from "../../types";
 import { ContentContainer } from "./prosemirror/module";
 
 const prosemirrorPromise = import(/* webpackChunkName: "prosemirror", webpackPrefetch: true */ "./prosemirror/module");
