@@ -90,7 +90,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     dom: {
       cells: [] as CellElement[],
       notebook,
-      getCellById: (id: string) => notebook.querySelector("#" + id) as CellElement | null,
+      getCellById: (id: string) => notebook.querySelector(`[id="${id}"]`) as CellElement | null,
     },
     definitions: {
       cellTypes: cellTypeRegistry,

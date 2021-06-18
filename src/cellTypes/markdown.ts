@@ -126,7 +126,22 @@ export class MarkdownCellHandler extends BaseCellHandler {
         wordWrap: "on",
       });
     } else {
-      this.editor = new StarboardContentEditor(this.cell, this.runtime);
+      this.editor = new StarboardContentEditor(this.cell, this.runtime, {
+        editable: () => {
+          return this.cell.metadata.properties.locked !== true;
+        },
+      });
+
+      let previouslyEditable = this.cell.metadata.properties.locked !== true;
+      this.runtime.controls.subscribeToCellChanges(this.cell.id, () => {
+        if (this.editor instanceof StarboardContentEditor) {
+          const editableNow = this.cell.metadata.properties.locked !== true;
+          if (previouslyEditable !== editableNow) {
+            this.editor.refreshSettings();
+            previouslyEditable = editableNow;
+          }
+        }
+      });
     }
     topElement.appendChild(this.editor);
   }
