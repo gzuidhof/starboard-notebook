@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.12.1
+**Date:** 2021-06-18
+
+* Fix for cells that have an `id` starting with a number. I suggest you avoid those IDs, but when converting from Jupyter it would sometimes happen.
+* Markdown WYSIWYG editor (ProseMirror) now respects the `locked` property (making it non-editable).
+
 ## Release 0.12.0
 **Date:** 2012-06-11
 

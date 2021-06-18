@@ -132,7 +132,7 @@ export class StarboardNotebookElement extends LitElement {
       }
     }
     this.runtime.dom.cells = this.runtime.dom.cells.filter(
-      (c) => desiredCellIds.has(c.cell.id) && !!this.querySelector("#" + c.cell.id)
+      (c) => desiredCellIds.has(c.cell.id) && !!this.querySelector(`[id="${c.cell.id}"]`)
     );
 
     for (let i = 0; i < content.cells.length; i++) {

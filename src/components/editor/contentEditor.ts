@@ -4,7 +4,7 @@
 
 import { LitElement } from "lit";
 import { customElement } from "lit/decorators.js";
-import { TextSelection } from "prosemirror-state";
+import { EditorState, TextSelection } from "prosemirror-state";
 import type { EditorView } from "prosemirror-view";
 import { Runtime } from "../../types";
 import { ContentContainer } from "./prosemirror/module";
@@ -31,13 +31,13 @@ export class StarboardContentEditor extends LitElement {
     return this;
   }
 
-  constructor(content: ContentContainer, runtime: Runtime) {
+  constructor(content: ContentContainer, runtime: Runtime, opts: { editable?: (state: EditorState) => boolean } = {}) {
     super();
     this.runtime = runtime;
     this.content = content;
 
     prosemirrorPromise.then((pm) => {
-      this.view = pm.createProseMirrorEditor(this, this.content, this.runtime);
+      this.view = pm.createProseMirrorEditor(this, this.content, this.runtime, opts);
     });
   }
 
@@ -62,6 +62,11 @@ export class StarboardContentEditor extends LitElement {
         console.warn("ProseMirror plugin: view is undefined in connected callback");
       }
     });
+  }
+
+  public refreshSettings() {
+    // Dummy transaction
+    this.view?.dispatch(this.view.state.tr);
   }
 
   getContentAsMarkdownString() {
