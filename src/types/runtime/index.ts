@@ -56,7 +56,7 @@ export interface RuntimeControls {
   setCellProperty(opts: SetCellPropertyOptions): boolean;
   resetCell(opts: ResetCellOptions): boolean;
   runCell(opts: RunCellOptions): boolean;
-  focusCell(opts: FocusCellOptions): boolean;
+  focusCell(opts: FocusCellOptions): Promise<boolean>;
   clearCell(opts: ClearCellOptions): boolean;
   runAllCells(opts: { onlyRunOnLoad?: boolean }): Promise<void>;
   clearAllCells(opts: Record<string, any>): void;
