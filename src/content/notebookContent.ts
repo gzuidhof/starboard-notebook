@@ -59,7 +59,7 @@ export function addCellToNotebookContent(
   const id = data.id || generateUniqueCellId();
   const cell: Cell = {
     cellType,
-    textContent: data.textContent ? data.textContent + "" : "",
+    textContent: data.textContent || "",
     metadata: {
       properties: {},
       ...(data.metadata ? data.metadata : {}),
