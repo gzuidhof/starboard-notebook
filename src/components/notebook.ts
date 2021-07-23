@@ -93,7 +93,7 @@ export class StarboardNotebookElement extends LitElement {
     if (!this.initialRunStarted) {
       await this.loadPlugins();
       this.initialRunStarted = true;
-      this.runtime.controls.runAllCells({ onlyRunOnLoad: true });
+      this.runtime.controls.runAllCells({ onlyRunOnLoad: true, isInitialRun: true });
     }
   }
 

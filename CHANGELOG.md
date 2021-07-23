@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.12.3
+**Date:** 2021-07-23
+
+* The initial cell run (when the notebook is loaded) now sets `isInitialRun: true` to true on the event `sb:run_all_cells` event.
+
 ## Release 0.12.2
 **Date:** 2021-07-23
 
