@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.12.2
+**Date:** 2021-07-23
+
+* Added `sb:run_all_cells` which gets fired when `runtime.controls.runAllCells` is called. This allows you to cancel that action or otherwise act on it.
+* Fixed `runtime.exports.libraries.litDirectives` not actually containing the `lit` library directives in the bundle.
+
 ## Release 0.12.1
 **Date:** 2021-06-18
 

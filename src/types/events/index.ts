@@ -7,6 +7,7 @@ import { Cell } from "../core";
 declare global {
   interface HTMLElementEventMap {
     "sb:run_cell": RunCellEvent;
+    "sb:run_all_cells": RunCellEvent;
     "sb:insert_cell": InsertCellEvent;
     "sb:change_cell_type": ChangeCellTypeEvent;
     "sb:set_cell_property": SetCellPropertyEvent;
@@ -21,6 +22,7 @@ declare global {
 
 export interface StarboardEventMap {
   "sb:run_cell": RunCellEvent;
+  "sb:run_all_cells": RunAllCellsEvent;
   "sb:insert_cell": InsertCellEvent;
   "sb:change_cell_type": ChangeCellTypeEvent;
   "sb:set_cell_property": SetCellPropertyEvent;
@@ -45,6 +47,9 @@ export type InsertCellEvent = CustomEvent<InsertCellOptions>;
 
 export type RunCellOptions = { id: string };
 export type RunCellEvent = CustomEvent<RunCellOptions>;
+
+export type RunAllCellsOptions = { onlyRunOnLoad?: boolean; isInitialRun?: boolean };
+export type RunAllCellsEvent = CustomEvent<RunAllCellsOptions>;
 
 export type RemoveCellOptions = { id: string };
 export type RemoveCellEvent = CustomEvent<RemoveCellOptions>;
