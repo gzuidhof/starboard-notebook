@@ -9,10 +9,10 @@ if ("serviceWorker" in navigator) {
   );
 
   navigator.serviceWorker.getRegistration().then(function (reg) {
-    // TODO: Or use some other solution
+    // Or use some other solution
     // https://stackoverflow.com/questions/51597231/register-service-worker-after-hard-refresh
     // https://github.com/mswjs/msw/issues/98#issuecomment-612118211
-    if (reg !== undefined && reg.active && !navigator.serviceWorker.controller) {
+    if (reg && reg.active && !navigator.serviceWorker.controller) {
       window.location.reload();
     }
   });

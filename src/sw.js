@@ -7,10 +7,15 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", function (event) {
+  if (event.request.cache === "only-if-cached" && event.request.mode !== "same-origin") {
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then(function (response) {
-        // We only need to set the headers for index.html
+        // It seems like we only need to set the headers for index.html
+        // If you want to be on the safe side, comment this out
         if (!response.url.includes("index.html")) return response;
 
         const newHeaders = new Headers(response.headers);
