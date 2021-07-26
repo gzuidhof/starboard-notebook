@@ -6,6 +6,19 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
 });
 
+self.addEventListener("message", (ev) => {
+  if (ev.data?.type === "removeCrossOriginIsolatedServiceWorker") {
+    self.registration
+      .unregister()
+      .then(function () {
+        return self.clients.matchAll();
+      })
+      .then(function (clients) {
+        clients.forEach((client) => client.navigate(client.url));
+      });
+  }
+});
+
 self.addEventListener("fetch", function (event) {
   if (event.request.cache === "only-if-cached" && event.request.mode !== "same-origin") {
     return;

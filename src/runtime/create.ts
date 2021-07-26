@@ -42,6 +42,7 @@ import {
   RunCellOptions,
   SetCellPropertyOptions,
 } from "src/types/events";
+import { initCrossOriginIsolatedServiceWorker, removeCrossOriginIsolatedServiceWorker } from "../initServiceWorker";
 
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
@@ -62,6 +63,7 @@ function getConfig() {
   let config: RuntimeConfig = {
     persistCellIds: false,
     defaultTextEditor: "codemirror",
+    useCrossOriginIsolationServiceWorker: false,
   };
 
   if (window.runtimeConfig) {
@@ -109,6 +111,12 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     },
     plugins: new MapRegistry<string, any>(),
   };
+
+  if (rt.config.useCrossOriginIsolationServiceWorker) {
+    initCrossOriginIsolatedServiceWorker();
+  } else {
+    removeCrossOriginIsolatedServiceWorker();
+  }
 
   const controls: RuntimeControls = {
     insertCell(opts: InsertCellOptions) {

@@ -255,4 +255,5 @@ export interface RuntimeConfig {
    */
   persistCellIds: boolean;
   defaultTextEditor: "monaco" | "codemirror" | "";
+  useCrossOriginIsolationServiceWorker: boolean;
 }
