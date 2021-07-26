@@ -1,0 +1,58 @@
+# %%--- [python]
+# properties:
+#   run_on_load: true
+# ---%%
+from js import setTimeout
+
+print(setTimeout)
+print("Hello world")
+print("xkcd💩")
+# %% [python]
+x = int(input())
+
+def bottle_or_bottles(num_bottles):
+    if num_bottles != 1:
+        return "bottles"
+    return "bottle"
+
+def song1(num_bottles=99):
+    verse1 = "{0} {1} of beer on the wall, {0} {1} of beer."
+    verse2 = "Take one down and pass it around, {} {} of beer on the wall\n"
+
+    for i in range(num_bottles, 0, -1):
+        # First part of verse
+        print(verse1.format(i, bottle_or_bottles(i)))
+        # Second part of verse
+        num_bottles_next = i - 1
+        if num_bottles_next == 0:
+            num_bottles_next = "no more"
+        print(verse2.format(num_bottles_next,
+                bottle_or_bottles(num_bottles_next)))
+
+    print("No more bottles of beer on the wall, no more bottles of beer.\n" \
+           "Go to the store and buy some more, {} bottles of beer on " \
+            "the wall".format(num_bottles))
+
+song1(x)
+
+# %% [python]
+from js import fetch
+import pandas as pd
+import io
+
+response = await fetch("https://cdn.jsdelivr.net/gh/selva86/datasets/mtcars.csv")
+csv = await response.text()
+print(csv)
+df = pd.read_csv(io.StringIO(csv))
+df
+
+# %% [python]
+import matplotlib.pyplot as plt
+
+plt.plot([x**3 for x in range(100)])
+plt.show()
+
+# %% [python]
+from sympy import *
+x, y, z = symbols('x y z')
+Integral(sqrt(1/x), x)

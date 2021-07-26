@@ -161,6 +161,7 @@ export function updateIframeWhenSizeChanges(runtime: Runtime) {
 }
 
 export async function registerDefaultPlugins(runtime: Runtime) {
+  // @ts-ignore
   await runtime.controls.registerPlugin(pythonPlugin);
 }
 

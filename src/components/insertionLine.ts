@@ -31,6 +31,7 @@ export class InsertionLine extends LitElement {
   constructor() {
     super();
     // TODO: pass this in..
+    // @ts-ignore
     this.runtime = window.runtime;
   }
 

@@ -113,10 +113,6 @@ const baseConfig = {
         port: 9001,
         hot: true,
         historyApiFallback: false,
-        headers: {
-            "Cross-Origin-Embedder-Policy": "require-corp",
-            "Cross-Origin-Opener-Policy": "same-origin"
-        }
     },
 }
 

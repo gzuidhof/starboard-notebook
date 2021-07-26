@@ -1,0 +1,104 @@
+# %% [javascript]
+let shownContent = null;
+
+function showNotebookBelow() {
+  const notebookText = runtime.exports.core.notebookContentToText(runtime.content);
+  console.log(notebookText);
+  const thisId = runtime.content.cells[0].id;
+  runtime.controls.insertCell({ 
+    adjacentCellId: thisId, 
+    position: "after", 
+    data: {
+      cellType: "plaintext",
+      textContent: notebookText
+    }
+  });
+  
+  shownContent = runtime.content;
+
+  navigator.clipboard.writeText(notebookText).then(function() {
+  console.log("copied to clipboard");
+}, function() {
+  console.log("failed");
+});
+  
+}
+
+// TODO: This wouldn't work, because it fails to serialize the IDs.
+// and I'm using the IDs further below
+function noteDownNotebookBelow() {
+  shownContent = runtime.exports.core.textToNotebookContent(
+    runtime.content.cells[1].textContent
+  );
+  console.log(shownContent)
+}
+
+function cellsEqual(a, b) {
+    // TODO: Better way of comparing metadata
+    return a.cellType === b.cellType &&
+      a.textContent === b.textContent && 
+      JSON.stringify(a.metadata) === JSON.stringify(b.metadata);
+}
+
+function updateNotebook() {
+  const newContent = runtime.exports.core.textToNotebookContent(
+    runtime.content.cells[1].textContent
+  ); // TODO: Correctly serialize cells containing # %% and stuff
+  console.log(newContent);
+  if(prompt("Update notebook???") === null) return;
+
+  if(JSON.stringify(shownContent.metadata) !== JSON.stringify(newContent.metadata)) {
+    runtime.content.metadata = newContent.metadata;
+  }
+
+  // TODO: More graceful cell moving support
+  // TODO: Better handling for empty cells
+  // TODO: Remove the cells at the end
+  let i = 0;
+  newContent.cells.forEach(cell => {
+    if(cellsEqual(shownContent.cells[i], cell)) {
+      // Nice, the cells are equal, do nothing
+      i++;
+    } else {
+      let foundMatch = false;
+      // Look ahead
+      for(let j = i + 1; j < shownContent.cells.length; j++) {
+        if(cellsEqual(shownContent.cells[j], cell)) {
+          // Remove cells inbetween
+          for(let k = i + 1; k < j; k++) {
+            runtime.controls.removeCell(shownContent.cells[k].id);
+          }
+          i = j;
+          foundMatch = true;
+          break;
+        }
+      }
+      if(foundMatch) {
+        // Nice, the cells are equal, do nothing
+        i++;
+      } else {
+        // Alrighty, let's insert this bad boy
+        runtime.controls.insertCell({ 
+          adjacentCellId: shownContent.cells[i].id, 
+          position: "before", 
+          data: cell
+        });
+      }
+    }
+  });
+  
+}
+
+html`
+<button class="btn btn-primary m-2" @click=${() => showNotebookBelow()}>Show Notebook </button>
+<button class="btn btn-primary m-2" @click=${() => noteDownNotebookBelow()}>I haz notebook </button>
+<button class="btn btn-primary m-2" @click=${() => updateNotebook()}>Update Notebook </button>
+`
+# %% [plaintext]
+
+# %% [plaintext]
+
+# %% [javascript]
+console.log(runtime.controls)
+console.log(runtime.content)
+console.log(runtime.exports.core)
