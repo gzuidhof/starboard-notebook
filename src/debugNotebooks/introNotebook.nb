@@ -1,3 +1,7 @@
+---
+nbtest:
+  skip: true
+---
 # %% [markdown]
 # Introducing Starboard Notebook
 Starboard brings cell-by-cell notebooks to the browser, no code is running on the backend here!  

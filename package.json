@@ -24,6 +24,7 @@
     "build:stats": "rimraf ./dist && mkdir dist && webpack --mode=production --stats normal",
     "start": "webpack-dev-server --mode=development",
     "test": "jest && npm run lint",
+    "nbtest": "starlit nbtest src/debugNotebooks --starboard_artifacts ./dist/",
     "lint": "eslint src/**/*.ts test/**/*.ts && prettier -c src test",
     "format": "prettier -w src test",
     "prepublishOnly": "npm i && npm t && npm run build"
@@ -70,6 +71,7 @@
     "rimraf": "^3.0.2",
     "sass": "1.32.13",
     "sass-loader": "^7.3.1",
+    "starlit": "^0.1.13",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "4.2.3",
     "ts-jest": "^26.4.1",

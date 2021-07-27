@@ -109,6 +109,10 @@ const baseConfig = {
     ],
     devServer: {
         // contentBase: path.join(__dirname, './dist/'),
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, OPTIONS",
+        },
         compress: true,
         port: 9001,
         hot: true,

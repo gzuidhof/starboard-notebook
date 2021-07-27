@@ -2,7 +2,7 @@
 # properties:
 #   run_on_load: true
 # ---%%
-import {plugin} from "http://localhost:8080/dist/starboard-observable.js";
+import {plugin} from "https://cdn.skypack.dev/starboard-observable";
 runtime.controls.registerPlugin(plugin);
 # %% [markdown]
 # Standard markdown cell
