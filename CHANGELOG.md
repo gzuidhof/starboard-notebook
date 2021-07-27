@@ -4,6 +4,8 @@
 **Date:** Unreleased
 
 * Starlit is now used for notebook testing in starboard-notebook repo.
+* ESBuild loader plugin for webpack is now used (cutting build time in half or so).
+* Added `build:nominify` option for faster building (and easier debugging).
 
 ## Release 0.12.3
 **Date:** 2021-07-23
