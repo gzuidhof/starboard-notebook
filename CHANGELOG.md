@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.12.4
+**Date:** Unreleased
+
+* Starlit is now used for notebook testing in starboard-notebook repo.
+
 ## Release 0.12.3
 **Date:** 2021-07-23
 

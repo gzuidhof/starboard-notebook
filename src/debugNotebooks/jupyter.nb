@@ -1,4 +1,6 @@
 ---
+nbtest:
+  skip: true
 starboard:
   plugins: 
     - src: "http://localhost:8080/dist/index.js"

@@ -1,3 +1,7 @@
+---
+nbtest:
+  skip: true
+---
 # %%--- [esm]
 # properties:
 #   run_on_load: true

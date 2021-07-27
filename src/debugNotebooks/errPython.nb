@@ -1,3 +1,7 @@
+---
+nbtest:
+  skip: true
+---
 # %%--- [python]
 # properties:
 #   run_on_load: true
