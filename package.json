@@ -24,7 +24,7 @@
     "build:stats": "rimraf ./dist && mkdir dist && webpack --mode=production --stats normal",
     "start": "webpack-dev-server --mode=development",
     "test": "jest",
-    "nbtest": "starlit nbtest src/debugNotebooks --starboard_artifacts ./dist/ --timeout 90",
+    "nbtest": "starlit nbtest src/debugNotebooks --starboard_artifacts ./dist/ --timeout 90 --concurrency 4",
     "lint": "eslint src/**/*.ts test/**/*.ts && prettier -c src test",
     "format": "prettier -w src test",
     "prepublishOnly": "npm i && npm t && npm run build"
