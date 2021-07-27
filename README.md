@@ -18,9 +18,7 @@ You have two options:
 * You can view the barebones [demo](https://unpkg.com/starboard-notebook/dist/index.html), click the small button in the top right to create the initial cell. This link will always point to the latest version on NPM.
 
 ## Development
-Install Node and NPM, and run `npm i && npm start dev` in the root.
-
-To run the notebook tests you will need to install [starlit](https://github.com/gzuidhof/starlit)
+Install Node and NPM, and run `npm i && npm start dev` in the root. Run the unit tests using `npm test`, and you can run end-to-end notebook tests using `npm run nbtest`, which requires you to have Chrome or Chromium installed.
 
 ## Viewing and editing notebooks locally
 Use the [`starboard` CLI tool](https://github.com/gzuidhof/starboard-cli) to edit notebook files that live on your computer.
