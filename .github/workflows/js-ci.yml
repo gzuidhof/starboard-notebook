@@ -17,6 +17,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 16.x
+        
+    - name: Setup Chromium
+      uses: browser-actions/setup-chrome@latest
 
     - name: Build
       run: |
@@ -28,3 +31,6 @@ jobs:
 
     - name: Lint
       run: npm run lint
+      
+    - name: Starlit NBTest
+      run: npm run nbtest
