@@ -23,7 +23,7 @@
     "build:nominify": "rimraf ./dist && webpack --mode=production --env minify=disabled && tsc",
     "build:stats": "rimraf ./dist && mkdir dist && webpack --mode=production --stats normal",
     "start": "webpack-dev-server --mode=development",
-    "test": "jest && npm run lint",
+    "test": "jest",
     "nbtest": "starlit nbtest src/debugNotebooks --starboard_artifacts ./dist/",
     "lint": "eslint src/**/*.ts test/**/*.ts && prettier -c src test",
     "format": "prettier -w src test",
