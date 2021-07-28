@@ -1,6 +1,6 @@
 {
   "name": "starboard-notebook",
-  "version": "0.12.1",
+  "version": "0.12.3",
   "description": "Starboard Notebook",
   "author": "Guido Zuidhof <me@guido.io>",
   "funding": {
@@ -19,11 +19,12 @@
     "literate"
   ],
   "scripts": {
-    "build": "rimraf ./dist && npm run build:notebook && tsc",
-    "build:notebook": "webpack --mode=production",
+    "build": "rimraf ./dist && webpack --mode=production && tsc",
+    "build:nominify": "rimraf ./dist && webpack --mode=production --env minify=disabled && tsc",
     "build:stats": "rimraf ./dist && mkdir dist && webpack --mode=production --stats normal",
     "start": "webpack-dev-server --mode=development",
-    "test": "jest && npm run lint",
+    "test": "jest",
+    "nbtest": "starlit nbtest src/debugNotebooks --starboard_artifacts ./dist/ --timeout 90 --concurrency 4",
     "lint": "eslint src/**/*.ts test/**/*.ts && prettier -c src test",
     "format": "prettier -w src test",
     "prepublishOnly": "npm i && npm t && npm run build"
@@ -56,6 +57,7 @@
     "@typescript-eslint/parser": "^4.26.0",
     "css-loader": "^5.2.6",
     "css-minimizer-webpack-plugin": "^3.0.1",
+    "esbuild-loader": "^2.13.1",
     "eslint": "^7.25.0",
     "file-loader": "^6.2.0",
     "html-loader": "^2.1.2",
@@ -70,8 +72,10 @@
     "rimraf": "^3.0.2",
     "sass": "1.32.13",
     "sass-loader": "^7.3.1",
+    "starlit": "^0.1.13",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "4.2.3",
+    "thread-loader": "^3.0.4",
     "ts-jest": "^26.4.1",
     "ts-loader": "^9.2.2",
     "typescript": "^4.2.4",

@@ -34,6 +34,7 @@ const baseConfig = {
         moduleIds: "named",
         chunkIds: "named",
         usedExports: true,
+        splitChunks: false,
         minimizer: [
             new CssMinimizerPlugin(),
             new TerserPlugin({
@@ -53,7 +54,13 @@ const baseConfig = {
         rules: [{
             test: /\.tsx?$/,
             use: [
-                'ts-loader'
+                {
+                    loader: "esbuild-loader",
+                    options: {
+                        loader: "ts",
+                        target: "es2018",
+                    },
+                }
             ],
             exclude: [/node_modules/],
         },
@@ -109,6 +116,10 @@ const baseConfig = {
     ],
     devServer: {
         // contentBase: path.join(__dirname, './dist/'),
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, OPTIONS",
+        },
         compress: true,
         port: 9001,
         hot: true,
@@ -138,6 +149,11 @@ module.exports = (env, argv) => {
         config.plugins.push(new BundleAnalyzerPlugin({
             analyzerMode: "static"
         }))
+    }
+
+    if (env.minify === "disabled") {
+        console.log("Building without minimization");
+        config.optimization.minimizer = [];
     }
 
     return config;

@@ -44,7 +44,7 @@ export class StarboardNotebookElement extends LitElement {
     return this;
   }
 
-  public hasHadInitialRun = false;
+  public initialRunStarted = false;
 
   connectedCallback() {
     super.connectedCallback();
@@ -90,10 +90,10 @@ export class StarboardNotebookElement extends LitElement {
   async notebookInitialize() {
     await this.updateComplete;
 
-    if (!this.hasHadInitialRun) {
+    if (!this.initialRunStarted) {
       await this.loadPlugins();
-      this.runtime.controls.runAllCells({ onlyRunOnLoad: true });
-      this.hasHadInitialRun = true;
+      this.initialRunStarted = true;
+      this.runtime.controls.runAllCells({ onlyRunOnLoad: true, isInitialRun: true });
     }
   }
 

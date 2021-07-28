@@ -10,7 +10,7 @@ import { StarboardTextEditor } from "../components/textEditor";
 import { ConsoleOutputElement } from "../components/output/consoleOutput";
 
 import * as lit from "lit";
-import * as litDirectives from "lit/directive.js";
+import * as litDirectives from "./helpers/litDirectives";
 import * as litDecorators from "lit/decorators.js";
 
 import MarkdownIt from "markdown-it";

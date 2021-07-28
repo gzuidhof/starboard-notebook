@@ -1,11 +1,13 @@
 ---
+nbtest:
+  skip: true
 starboard:
   plugins:
-    - src: "https://unpkg.com/starboard-jupyter@0.2.8/dist/index.js"
+    - src: "https://unpkg.com/starboard-jupyter@0.2.10/dist/index.js"
       args:
         serverSettings: 
           baseUrl: "http://localhost:8888"
-    - src: "https://unpkg.com/@illumidesk/starboard-nbgrader@0.1.6/dist/plugin.js"
+    - src: "https://unpkg.com/@illumidesk/starboard-nbgrader@0.3.0/dist/plugin.js"
       async: true
 ---
 # %%--- [jupyter]

@@ -1,0 +1,36 @@
+name: JS Testing
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+        
+    - name: Setup Chromium
+      uses: browser-actions/setup-chrome@latest
+
+    - name: Build
+      run: |
+        npm install
+        npm run build:nominify
+    
+    - name: Test
+      run: npm t
+
+    - name: Lint
+      run: npm run lint
+      
+    - name: Starlit NBTest
+      run: npm run nbtest

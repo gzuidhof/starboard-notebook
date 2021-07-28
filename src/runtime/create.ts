@@ -264,17 +264,21 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       return false;
     },
 
-    async runAllCells(opts: { onlyRunOnLoad?: boolean } = {}) {
-      let cellElement: CellElement | null = rt.dom.cells[0] || null;
+    async runAllCells(opts: { onlyRunOnLoad?: boolean; isInitialRun?: boolean } = {}) {
+      if (dispatchStarboardEvent(rt.dom.notebook, "sb:run_all_cells", opts)) {
+        let cellElement: CellElement | null = rt.dom.cells[0] || null;
 
-      while (cellElement) {
-        if (opts.onlyRunOnLoad && !cellElement.cell.metadata.properties.run_on_load) {
-          // Don't run this cell..
-        } else {
-          await cellElement.run();
+        while (cellElement) {
+          if (opts.onlyRunOnLoad && !cellElement.cell.metadata.properties.run_on_load) {
+            // Don't run this cell..
+          } else {
+            await cellElement.run();
+          }
+          cellElement = cellElement.nextSibling as CellElement | null;
         }
-        cellElement = cellElement.nextSibling as CellElement | null;
+        return true;
       }
+      return false;
     },
 
     clearAllCells() {

@@ -18,7 +18,7 @@ import type { StarboardTextEditor } from "../../components/textEditor";
 import type { ConsoleOutputElement } from "../../components/output/consoleOutput";
 
 import type * as litLibrary from "lit";
-import type * as litDirectives from "lit/directive";
+import type * as litDirectives from "../../runtime/helpers/litDirectives";
 import type * as litDecorators from "lit/decorators";
 import type katex from "katex";
 import type * as YAML from "js-yaml";
@@ -58,7 +58,7 @@ export interface RuntimeControls {
   runCell(opts: RunCellOptions): boolean;
   focusCell(opts: FocusCellOptions): boolean;
   clearCell(opts: ClearCellOptions): boolean;
-  runAllCells(opts: { onlyRunOnLoad?: boolean }): Promise<void>;
+  runAllCells(opts: { onlyRunOnLoad?: boolean; isInitialRun?: boolean }): Promise<boolean>;
   clearAllCells(opts: Record<string, any>): void;
 
   moveCellToIndex(opts: { id: string; toIndex: number }): boolean;

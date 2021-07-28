@@ -85,7 +85,7 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
             if (contentHasBeenSetFromParentIframe) return; // be idempotent
             runtime.content = textToNotebookContent(msg.payload.content);
             contentHasBeenSetFromParentIframe = true;
-            nb.hasHadInitialRun = false;
+            nb.initialRunStarted = false;
             nb.notebookInitialize();
             nb.requestUpdate();
 
