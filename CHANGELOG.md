@@ -6,6 +6,8 @@
 * Starlit is now used for notebook testing in starboard-notebook repo.
 * ESBuild loader plugin for webpack is now used (cutting build time in half or so).
 * Added `build:nominify` option for faster building (and easier debugging).
+* Add [COOP/COEP headers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements) to enable the use of the `SharedArrayBuffer` and `Atomics` APIs.
+* Add optional COOP/COEP enabling service worker. Useful when you cannot change the HTTP headers that the server sends.
 
 ## Release 0.12.3
 **Date:** 2021-07-23

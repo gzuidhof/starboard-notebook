@@ -123,7 +123,11 @@ const baseConfig = {
         compress: true,
         port: 9001,
         hot: true,
-        historyApiFallback: false
+        historyApiFallback: false,
+        headers: {
+            "Cross-Origin-Embedder-Policy": "require-corp",
+            "Cross-Origin-Opener-Policy": "same-origin"
+        }
     },
 }
 
