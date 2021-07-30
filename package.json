@@ -20,6 +20,7 @@
   ],
   "scripts": {
     "build": "rimraf ./dist && webpack --mode=production && tsc",
+    "build:tsc": "tsc",
     "build:nominify": "rimraf ./dist && webpack --mode=production --env minify=disabled",
     "build:stats": "rimraf ./dist && mkdir dist && webpack --mode=production --stats normal",
     "start": "webpack-dev-server --mode=development",
