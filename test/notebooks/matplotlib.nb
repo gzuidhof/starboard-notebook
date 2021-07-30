@@ -1,0 +1,13 @@
+# %% [python]
+import matplotlib.pyplot as plt
+
+plt.plot([1,2,3,4,5])
+plt.show()
+
+# %% [esm]
+function assert(condition, message) {
+    if (!condition)
+        throw Error('Assert failed: ' + (message || ''));
+};
+
+assert(!!document.querySelector("canvas") === true, "A canvas element should be present after plotting and showing.");

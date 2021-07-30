@@ -8,6 +8,7 @@
 * Added `build:nominify` option for faster building (and easier debugging).
 * Add [COOP/COEP headers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements) to enable the use of the `SharedArrayBuffer` and `Atomics` APIs.
 * Add optional COOP/COEP enabling service worker. Useful when you cannot change the HTTP headers that the server sends.
+* Update to `starboard-python` version `0.7.0`, which has many internal changes, but for now exposes the same API. This opens the door to outside-of-main-thread-Python.
 
 ## Release 0.12.3
 **Date:** 2021-07-23

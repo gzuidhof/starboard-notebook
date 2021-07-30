@@ -1,0 +1,29 @@
+---
+starboard:
+  plugins:
+    - src: "https://cdn.jsdelivr.net/npm/nasync-js@0.1.0/dist/index.js"
+---
+# %%--- [nasync]
+# properties: 
+#   run_on_load: true
+# ---%%
+const websiteText = fetch("https://enable-cors.org/").text();
+
+console.log("Website text length", websiteText.length);
+
+function doNothing(a) {
+  return a;
+}
+
+const hello = doNothing(new Promise(x => setTimeout(_ => x("Hello"), 1000)))
+console.log("Some print message :)")
+
+hello + " world"
+
+# %% [esm]
+function assert(condition, message) {
+    if (!condition)
+        throw Error(message ? 'Assert failed.' : `Assert failed: ${message}`);
+};
+
+assert($_ === "Hello world", "nasync cell return value wasn't as expected.");

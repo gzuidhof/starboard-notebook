@@ -1,6 +1,6 @@
 {
   "name": "starboard-notebook",
-  "version": "0.12.3",
+  "version": "0.12.4",
   "description": "Starboard Notebook",
   "author": "Guido Zuidhof <me@guido.io>",
   "funding": {
@@ -20,11 +20,12 @@
   ],
   "scripts": {
     "build": "rimraf ./dist && webpack --mode=production && tsc",
-    "build:nominify": "rimraf ./dist && webpack --mode=production --env minify=disabled && tsc",
+    "build:nominify": "rimraf ./dist && webpack --mode=production --env minify=disabled",
     "build:stats": "rimraf ./dist && mkdir dist && webpack --mode=production --stats normal",
     "start": "webpack-dev-server --mode=development",
     "test": "jest",
-    "nbtest": "starlit nbtest src/debugNotebooks --starboard_artifacts ./dist/ --timeout 90 --concurrency 4",
+    "nbtest": "starlit nbtest test/notebooks --starboard_artifacts ./dist/ --timeout 90",
+    "nbtest:dev": "starlit nbtest test/notebooks --starboard_artifacts http://localhost:9001 --timeout 45 --serve",
     "lint": "eslint src/**/*.ts test/**/*.ts && prettier -c src test",
     "format": "prettier -w src test",
     "prepublishOnly": "npm i && npm t && npm run build"
@@ -72,7 +73,7 @@
     "rimraf": "^3.0.2",
     "sass": "1.32.13",
     "sass-loader": "^7.3.1",
-    "starlit": "^0.1.13",
+    "starlit": "^0.1.16",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "4.2.3",
     "thread-loader": "^3.0.4",
@@ -83,7 +84,8 @@
     "webpack": "^5.38.1",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.0",
-    "webpack-dev-server": "^4.0.0-beta.3"
+    "webpack-dev-server": "^4.0.0-beta.3",
+    "worker-loader": "^3.0.8"
   },
   "dependencies": {
     "@babel/parser": "^7.10.5",
@@ -135,6 +137,6 @@
     "prosemirror-state": "^1.3.4",
     "prosemirror-transform": "^1.2.12",
     "prosemirror-view": "^1.18.1",
-    "starboard-python": "^0.6.7"
+    "starboard-python": "^0.7.0"
   }
 }

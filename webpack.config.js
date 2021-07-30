@@ -16,6 +16,7 @@ const baseConfig = {
         path: path.resolve(__dirname, 'dist/'),
         filename: "starboard-notebook.js",
         chunkFilename: '[name].chunk.js',
+        crossOriginLoading: 'anonymous',
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.d.ts'],
@@ -126,7 +127,8 @@ const baseConfig = {
         historyApiFallback: false,
         headers: {
             "Cross-Origin-Embedder-Policy": "require-corp",
-            "Cross-Origin-Opener-Policy": "same-origin"
+            "Cross-Origin-Opener-Policy": "same-origin",
+            "Access-Control-Allow-Origin": "*",
         }
     },
 }
