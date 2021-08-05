@@ -52,44 +52,54 @@ const baseConfig = {
     },
     stats: "minimal",
     module: {
-        rules: [{
-            test: /\.tsx?$/,
-            use: [
-                {
-                    loader: "esbuild-loader",
-                    options: {
-                        loader: "ts",
-                        target: "es2018",
+        rules: [
+            {
+                test: /\.tsx?$/,
+                use: [
+                    {
+                        loader: "esbuild-loader",
+                        options: {
+                            loader: "ts",
+                            target: "es2018",
+                        },
+                    }
+                ],
+                exclude: [/node_modules/, /initServiceWorker\.ts$/],
+            },
+            { // The ESBuild plugin is problematic for the service worker, so we use ts-loader for that..
+                test: /initServiceWorker\.tsx?$/,
+                use: [
+                    {
+                        loader: "ts-loader"
+                    }
+                ],
+                exclude: [/node_modules/],
+            },
+            {
+                test: /\.(s?css|sass)$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {}
                     },
-                }
-            ],
-            exclude: [/node_modules/],
-        },
-        {
-            test: /\.(s?css|sass)$/,
-            use: [
-                MiniCssExtractPlugin.loader,
-                {
-                    loader: 'css-loader',
-                    options: {}
-                },
-                'sass-loader'
-            ]
-        },
-        {
-            test: /\.ttf$|\.woff2$/,
-            use: ['file-loader?name=[name].[ext]'],
-            exclude: [/.*KaTeX.*.ttf/],
-        },
-        { // KaTeX ttf fonts are not omitted. Starboard only supports browsers that understand woff2 anyway.
-            test: /(KaTeX).*\.ttf$/,
-            use: ['file-loader?emitFile=false'],
-        },
-        {
-            test: /\.ico$|\.svg$|\.eot|\.woff$/,
-            use: ['file-loader?emitFile=false'],
+                    'sass-loader'
+                ]
+            },
+            {
+                test: /\.ttf$|\.woff2$/,
+                use: ['file-loader?name=[name].[ext]'],
+                exclude: [/.*KaTeX.*.ttf/],
+            },
+            { // KaTeX ttf fonts are not omitted. Starboard only supports browsers that understand woff2 anyway.
+                test: /(KaTeX).*\.ttf$/,
+                use: ['file-loader?emitFile=false'],
+            },
+            {
+                test: /\.ico$|\.svg$|\.eot|\.woff$/,
+                use: ['file-loader?emitFile=false'],
 
-        },
+            },
         ]
     },
     plugins: [

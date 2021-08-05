@@ -35,10 +35,10 @@ import type { renderIfHtmlOutput } from "../../components/output/htmlOutput";
 import type { hookMarkdownItToEmojiPlugin } from "../../components/helpers/emoji";
 import type { OutboundNotebookMessage } from "../messages";
 import type { StarboardContentEditor } from "../../components/editor/contentEditor";
-import { StarboardPlugin } from "../plugins";
-import { textToNotebookContent } from "../../content/parsing";
-import { hookMarkdownItToCodemirrorHighlighter } from "../../components/helpers/highlight";
-import {
+import type { StarboardPlugin } from "../plugins";
+import type { textToNotebookContent } from "../../content/parsing";
+import type { hookMarkdownItToCodemirrorHighlighter } from "../../components/helpers/highlight";
+import type {
   ChangeCellTypeOptions,
   ClearCellOptions,
   FocusCellOptions,
@@ -48,6 +48,7 @@ import {
   RunCellOptions,
   SetCellPropertyOptions,
 } from "../events";
+import type { getMarkdownItWithDefaultPlugins } from "../../components/helpers/markdown";
 
 export interface RuntimeControls {
   insertCell(opts: InsertCellOptions): string | false;
@@ -140,9 +141,13 @@ export interface RuntimeExports {
     ConsoleCatcher: typeof ConsoleCatcher;
     renderIfHtmlOutput: typeof renderIfHtmlOutput;
     createCellProxy: typeof createCellProxy;
+    /**  @deprecated: use getMarkdownItWithDefaultPlugins instead */
     hookMarkdownItToKaTeX: typeof hookMarkdownItToKaTeX;
+    /**  @deprecated: use getMarkdownItWithDefaultPlugins instead */
     hookMarkDownItToEmojiPlugin: typeof hookMarkdownItToEmojiPlugin;
+    /**  @deprecated: use getMarkdownItWithDefaultPlugins instead */
     hookMarkdownItToCodemirrorHighlighter: typeof hookMarkdownItToCodemirrorHighlighter;
+    getMarkdownItWithDefaultPlugins: typeof getMarkdownItWithDefaultPlugins;
     cellToText: typeof cellToText;
     notebookContentToText: typeof notebookContentToText;
     textToNotebookContent: typeof textToNotebookContent;
@@ -255,5 +260,5 @@ export interface RuntimeConfig {
    */
   persistCellIds: boolean;
   defaultTextEditor: "monaco" | "codemirror" | "";
-  useCrossOriginIsolationServiceWorker: boolean;
+  useCrossOriginIsolationServiceWorker?: boolean;
 }

@@ -28,6 +28,7 @@ import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
 import { StarboardContentEditor } from "../components/editor/contentEditor";
 import { textToNotebookContent } from "../content/parsing";
 import { hookMarkdownItToCodemirrorHighlighter } from "../components/helpers/highlight";
+import { getMarkdownItWithDefaultPlugins } from "../components/helpers/markdown";
 
 export function createExports(): RuntimeExports {
   return {
@@ -57,6 +58,7 @@ export function createExports(): RuntimeExports {
       precompileJavascriptCode: precompileJavascriptCode,
       textToNotebookContent: textToNotebookContent,
       hookMarkdownItToCodemirrorHighlighter: hookMarkdownItToCodemirrorHighlighter,
+      getMarkdownItWithDefaultPlugins: getMarkdownItWithDefaultPlugins,
     },
     elements: {
       StarboardTextEditor: StarboardTextEditor,

@@ -18,6 +18,7 @@ import { flatPromise } from "./helpers/flatPromise";
 import { renderIcon } from "./helpers/icon";
 import { downloadAsHtml } from "../content/export";
 import { arrayMoveElement } from "./helpers/array";
+import { initPythonExecutionMode } from "../runtime/core";
 
 declare global {
   interface Window {
@@ -83,6 +84,8 @@ export class StarboardNotebookElement extends LitElement {
         syncPluginsPromise = syncPluginsPromise.then(() => promise);
       }
     }
+
+    initPythonExecutionMode(this.runtime);
 
     return syncPluginsPromise;
   }

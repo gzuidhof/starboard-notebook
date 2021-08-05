@@ -16,6 +16,7 @@ export const createCellProxy = l.createCellProxy;
 export const hookMarkdownItToKaTeX = l.hookMarkdownItToKaTeX;
 export const hookMarkDownItToEmojiPlugin = l.hookMarkDownItToEmojiPlugin;
 export const hookMarkdownItToCodemirrorHighlighter = l.hookMarkdownItToCodemirrorHighlighter;
+export const getMarkdownItWithDefaultPlugins = l.getMarkdownItWithDefaultPlugins;
 export const cellToText = l.cellToText;
 export const notebookContentToText = l.notebookContentToText;
 export const precompileJavascriptCode = l.precompileJavascriptCode;

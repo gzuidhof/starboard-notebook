@@ -4,12 +4,28 @@
 
 import { textToNotebookContent } from "../content/parsing";
 import { CellPropertyDefinition, CellTypeDefinition, RegistryEvent, Runtime } from "../types";
+import type { plugin as StarboardPythonPlugin } from "starboard-python";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { plugin as pythonPlugin } from "starboard-python/dist/index.js";
+import { plugin as pythonPlugin } from "starboard-python";
 import { InboundNotebookMessage } from "../types/messages";
 import { notebookContentToText } from "../content/serialization";
+import { isSharedArrayBufferAndAtomicsReady } from "../components/helpers/crossOriginIsolated";
+
+export function initPythonExecutionMode(runtime: Runtime) {
+  let executionMode = runtime.content.metadata.starboard?.python?.execution_mode || "pyodide_webworker";
+
+  if (executionMode === "auto") {
+    executionMode = isSharedArrayBufferAndAtomicsReady() ? "pyodide_webworker" : "pyodide_main_thread";
+  }
+
+  if (executionMode === "pyodide_main_thread") {
+    const plug = runtime.plugins.get("starboard-python") as typeof StarboardPythonPlugin;
+    plug.exports.updatePluginOptions({
+      runInMainThread: true,
+    });
+  }
+}
 
 /**
  * When new cell types are registered, or overwritten, the corresponding cells should update.
@@ -161,7 +177,7 @@ export function updateIframeWhenSizeChanges(runtime: Runtime) {
 }
 
 export async function registerDefaultPlugins(runtime: Runtime) {
-  await runtime.controls.registerPlugin(pythonPlugin);
+  await runtime.controls.registerPlugin(pythonPlugin as any);
 }
 
 export function setupGlobalKeybindings(runtime: Runtime) {

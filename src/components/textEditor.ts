@@ -11,13 +11,11 @@ import { html, LitElement, render } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html";
 import { customElement, query } from "lit/decorators.js";
 
-import mdlib from "markdown-it";
-import { hookMarkdownItToCodemirrorHighlighter } from "./helpers/highlight";
 import { Cell, Runtime } from "../types";
 import { copyToClipboard } from "./helpers/clipboard";
 import { trySetLocalStorage } from "./helpers/localStorage";
 import Dropdown from "bootstrap/js/dist/dropdown";
-import { hookMarkdownItToEmojiPlugin } from "./helpers/emoji";
+import { getMarkdownItWithDefaultPlugins } from "./helpers/markdown";
 
 export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python" | "latex"; // latex is not actually supported..
 export type WordWrapSetting = "off" | "on";
@@ -47,9 +45,8 @@ try {
   console.warn("Could not read editor preference (localStorage is probably not available)");
 }
 
-const md = new mdlib();
-hookMarkdownItToCodemirrorHighlighter(md);
-hookMarkdownItToEmojiPlugin(md);
+const mdloader = getMarkdownItWithDefaultPlugins();
+const md = mdloader.md;
 
 /**
  * StarboardTextEditor abstracts over different text editors that are loaded dynamically.

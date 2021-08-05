@@ -31,7 +31,7 @@ export class InsertionLine extends LitElement {
   constructor() {
     super();
     // TODO: pass this in..
-    this.runtime = window.runtime;
+    this.runtime = (window as any).runtime;
   }
 
   connectedCallback() {

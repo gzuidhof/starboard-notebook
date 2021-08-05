@@ -1,0 +1,18 @@
+# %% [markdown]
+$\LaTeX$
+
+An image should be visible below:
+![Image of a birb](https://upload.wikimedia.org/wikipedia/commons/f/f9/Phoenicopterus_ruber_in_S%C3%A3o_Paulo_Zoo.jpg)
+
+# %% [javascript]
+const im = document.querySelector("img");
+
+for (let i = 0; i < 100*5; i++) {
+  await new Promise(x => setTimeout(() => x(), 10))
+  if (im.complete) {
+    console.log("✅ image complete")
+    return;
+    }
+}
+
+throw new Error("Image was not loaded, was there a CORS issue?")

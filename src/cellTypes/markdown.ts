@@ -12,17 +12,13 @@ import { Cell } from "../types";
 import { CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../types";
 import { promiseState } from "./javascript/util";
 
-import { hookMarkdownItToCodemirrorHighlighter } from "../components/helpers/highlight";
-import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
-import { hookMarkdownItToKaTeX } from "../components/helpers/katex";
 import { StarboardContentEditor } from "../components/editor/contentEditor";
 import { hasParentWithId } from "../components/helpers/dom";
+import { getMarkdownItWithDefaultPlugins } from "../components/helpers/markdown";
 
-const md = new mdlib({ html: true });
-hookMarkdownItToCodemirrorHighlighter(md);
-hookMarkdownItToEmojiPlugin(md);
-
-const katexHookPromise = hookMarkdownItToKaTeX(md);
+const mdLoader = getMarkdownItWithDefaultPlugins();
+const md = mdLoader.md;
+const katexHookPromise = mdLoader.katexLoaded;
 
 async function isKatexAlreadyLoaded() {
   return (await promiseState(katexHookPromise)) === "fulfilled";
@@ -159,7 +155,6 @@ export class MarkdownCellHandler extends BaseCellHandler {
   async run() {
     this.editMode = "display";
     const topElement = this.elements.topElement;
-
     topElement.innerHTML = "";
 
     const outDiv = document.createElement("div");
@@ -169,9 +164,19 @@ export class MarkdownCellHandler extends BaseCellHandler {
     // Re-render when katex becomes available
     if (!(await isKatexAlreadyLoaded())) {
       // Possible improvement: we could detect if any latex is present before we load katex
-      katexHookPromise.then(() => (outDiv.innerHTML = md.render(this.cell.textContent)));
+      katexHookPromise.then(() => {
+        outDiv.innerHTML = md.render(this.cell.textContent);
+      });
     }
+
     topElement.appendChild(outDiv);
+
+    // This works around a weird situation in which more than one output is present when
+    // a cell is marked as run_on_load
+    if (topElement.children.length > 1) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      topElement.children.item(0)!.remove();
+    }
     render(this.getControls(), this.elements.topControlsElement);
   }
 

@@ -1,14 +1,24 @@
 # Changelog
 
-## Release 0.12.4
-**Date:** Unreleased
+## Release 0.13.0
+**Date:** 2021-08-05
 
-* Starlit is now used for notebook testing in starboard-notebook repo.
+Starboard is now geared to run in *cross origin secure* environments, which can be a breaking change for some notebooks.
+
+* Add [COOP/COEP headers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements) support to enable the use of the `SharedArrayBuffer` and `Atomics` APIs.
+* Add optional COOP/COEP enabling service worker. Useful when you cannot change the HTTP headers that the server sends.
+* Update to `starboard-python` version `0.7.3`, which has many internal changes.
+* Python cells now default to running out-of-core in a webworker.
+* Inserting cells with `textContent` now works as expected.
+* Added `getMarkdownItWithDefaultPlugins`, and deprecated `hookMarkdownItToKaTeX`, `hookMarkdownItToEmojiPlugin` and `hookMarkdownItToCodemirrorHighlighter`.
+* Images in markdown now get the `crossorigin="anonymous"` attribute added by default, which fixes them not showing in secure contexts.
+* Fixed issue where sometimes markdown cells would get rendered twice when using `sb:run_all_cells`.
+
+Build changes:
+* Starlit is now used for notebook testing in starboard-notebook repo. Use `npm run nbtest` after building, or `npm run nbtest:dev` to connect it to the webpack dev server.
 * ESBuild loader plugin for webpack is now used (cutting build time in half or so).
 * Added `build:nominify` option for faster building (and easier debugging).
-* Add [COOP/COEP headers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer#security_requirements) to enable the use of the `SharedArrayBuffer` and `Atomics` APIs.
-* Add optional COOP/COEP enabling service worker. Useful when you cannot change the HTTP headers that the server sends.
-* Update to `starboard-python` version `0.7.0`, which has many internal changes, but for now exposes the same API. This opens the door to outside-of-main-thread-Python.
+
 
 ## Release 0.12.3
 **Date:** 2021-07-23
