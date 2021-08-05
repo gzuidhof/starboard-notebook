@@ -36,8 +36,8 @@ self.addEventListener("fetch", function (event) {
         //if (!response.url.includes("index.html")) return response;
 
         const newHeaders = new Headers(response.headers);
-        newHeaders.append("Cross-Origin-Embedder-Policy", "require-corp");
-        newHeaders.append("Cross-Origin-Opener-Policy", "same-origin");
+        newHeaders.set("Cross-Origin-Embedder-Policy", "require-corp");
+        newHeaders.set("Cross-Origin-Opener-Policy", "same-origin");
 
         const moddedResponse = new Response(response.body, {
           status: response.status,

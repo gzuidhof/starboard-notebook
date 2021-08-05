@@ -1,5 +1,9 @@
 # Changelog
 
+## Release 0.13.1
+**Date:** 2021-08-5
+* Fix service worker appending headers instead of setting them in case a partial COOP or COEP header is present.
+
 ## Release 0.13.0
 **Date:** 2021-08-05
 
