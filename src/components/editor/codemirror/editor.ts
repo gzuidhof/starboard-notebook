@@ -37,6 +37,8 @@ const commonExtensions = [
 
   keymap.of([
     { key: "Shift-Enter", run: () => true },
+    { key: "Alt-Enter", run: () => true },
+    { key: "Ctrl-Enter", run: () => true },
     ...defaultKeymap,
     ...commentKeymap,
     ...completionKeymap,
@@ -73,7 +75,8 @@ export function createCodeMirrorEditor(
           const firstLine = target.state.doc.line(1);
           const cursorPosition = target.state.selection.ranges[0].head;
           if (firstLine.from <= cursorPosition && cursorPosition <= firstLine.to) {
-            return runtime.controls.focusCell({ id: cell.id, focusTarget: "previous" });
+            runtime.controls.focusCell({ id: cell.id, focusTarget: "previous" });
+            return true;
           }
         }
         return false;
@@ -86,7 +89,8 @@ export function createCodeMirrorEditor(
           const lastline = target.state.doc.line(target.state.doc.lines);
           const cursorPosition = target.state.selection.ranges[0].head;
           if (lastline.from <= cursorPosition && cursorPosition <= lastline.to) {
-            return runtime.controls.focusCell({ id: cell.id, focusTarget: "next" });
+            runtime.controls.focusCell({ id: cell.id, focusTarget: "next" });
+            return true;
           }
         }
         return false;

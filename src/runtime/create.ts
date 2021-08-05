@@ -215,24 +215,21 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       return false;
     },
 
-    focusCell(opts: FocusCellOptions) {
+    async focusCell(opts: FocusCellOptions) {
       const idx = requireIndexOfCellId(rt.content.cells, opts.id);
+      await rt.dom.notebook.updateComplete;
       const cellElements = rt.dom.cells;
       const cell = cellElements[idx];
 
       if (dispatchStarboardEvent(cell, "sb:focus_cell", opts)) {
         if (opts.focusTarget === "previous") {
-          window.setTimeout(() => {
-            const next = cellElements[idx - 1];
-            if (next) next.focusEditor({ position: "end" });
-          });
+          const next = cellElements[idx - 1];
+          if (next) next.focusEditor({ position: "end" });
         } else if (opts.focusTarget === "next") {
-          window.setTimeout(() => {
-            const next = cellElements[idx + 1];
-            if (next) {
-              next.focusEditor({ position: "start" });
-            }
-          });
+          const next = cellElements[idx + 1];
+          if (next) {
+            next.focusEditor({ position: "start" });
+          }
         } else if (opts.focusTarget === undefined) {
           cell.focus({});
         }
