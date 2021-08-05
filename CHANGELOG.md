@@ -9,7 +9,7 @@ Starboard is now geared to run in *cross origin secure* environments, which can 
 * Add optional COOP/COEP enabling service worker. Useful when you cannot change the HTTP headers that the server sends.
 * Update to `starboard-python` version `0.7.3`, which has many internal changes.
 * Python cells now default to running out-of-core in a webworker.
-* Inserting cells with `textContent` now works as expected.
+* ~Inserting cells with `textContent` now works as expected.~ Didn't make it into this release by accident.
 * Added `getMarkdownItWithDefaultPlugins`, and deprecated `hookMarkdownItToKaTeX`, `hookMarkdownItToEmojiPlugin` and `hookMarkdownItToCodemirrorHighlighter`.
 * Images in markdown now get the `crossorigin="anonymous"` attribute added by default, which fixes them not showing in secure contexts.
 * Fixed issue where sometimes markdown cells would get rendered twice when using `sb:run_all_cells`.
