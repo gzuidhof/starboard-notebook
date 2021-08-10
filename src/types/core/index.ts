@@ -96,7 +96,7 @@ export interface NotebookMetadata {
     plugins?: PluginDependency[];
     python?: {
       /**
-       * Where to run python code, defaults to "pyodide_webworker". "auto" switches based on the availability of SharedArrayBuffer and Atomics.
+       * Where to run python code, defaults to "pyodide_main_thread". "auto" switches based on the availability of SharedArrayBuffer and Atomics.
        */
       execution_mode?: "pyodide_webworker" | "pyodide_main_thread" | "auto";
     };

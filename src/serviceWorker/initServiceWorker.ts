@@ -15,13 +15,13 @@ export function initCrossOriginIsolatedServiceWorker() {
       return;
     }
     // This won't make a difference on Safari, because Safari just outright doesn't support atomics
-    console.warn("No shared array buffer/atomics support detected. Injecting global service worker...");
+    console.debug("No shared array buffer/atomics support detected. Injecting global service worker...");
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register(new URL("./starboard-sw.js", import.meta.url)).then(
         async function (registration) {
           console.log("COOP/COEP Service Worker registered", registration.scope);
 
-          registration.addEventListener("updatefound", (ev) => {
+          registration.addEventListener("updatefound", (_ev) => {
             window.location.reload();
           });
 

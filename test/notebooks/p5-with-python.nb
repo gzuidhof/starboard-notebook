@@ -1,0 +1,87 @@
+# %% [markdown]
+# Procedural art using P5.js in a Javascript and Python notebook
+
+This notebook shows how you can use [p5.js](https://p5js.org/) (a library for generative art) in a notebook environment. After that we'll call p5.js from Python - note that everything here runs in the browser!
+
+Let's go!
+# %%--- [esm]
+# properties:
+#   run_on_load: true
+# ---%%
+// Note that each of the cells are marked as 'run_on_load', so they all execute immediately on notebook load
+import "https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.min.js"
+new p5();
+
+console.log("P5 library initialized.");
+# %%--- [js]
+# properties:
+#   run_on_load: true
+# ---%%
+var n = 12;
+var speed = 2;
+
+function draw() {
+  background('#eee');
+  translate(400 / 2, 400 / 2);
+  for (let i = 0; i < n; i++) {
+    push();
+    rotate(frameCount * speed / 1000 * (i + 1));
+    fill(i * 5, i * 100, i * 150);
+    const s = 200 - i * 10;
+    rect(0, 0, s, s);
+    pop();
+  }
+}
+# %%--- [js]
+# properties:
+#   run_on_load: true
+# ---%%
+function setup () {
+  const cnv = createCanvas(400, 400);
+  rectMode(CENTER);
+  return cnv.canvas
+}
+
+var output = setup();
+output; // The last line gets shown below - in this case it's the canvas
+# %% [markdown]
+Actually we can make it interactive! 
+
+> Click on the Play ▶️ button on the left of the cell below to run it.
+# %% [javascript]
+html`
+<div style="display: flex; align-items: center">
+    Change Speed
+    <input @change=${(e) => {speed = e.target.value/10; e.target.nextElementSibling.value = speed}} type="range" min="1" max="100" value=${speed * 10} class="slider">
+    <output>${speed}</output>
+</div>`
+# %% [markdown]
+We can override the draw function in Python! This allows you to use p5.js from Python, entirely in the browser 🤯. 
+
+> It may take some seconds to load (it downloads and initializes a Python Pyodide runtime in your browser)
+# %% [python]
+from js import window as w
+
+# Set the speed back to a reasonable value.. Note the slider above still works!
+w.speed = 3
+n = 28
+
+def draw():
+  w.background('#edf');
+  w.translate(400 / 2, 400 / 2);
+  for i in range(n):
+    w.push();
+    w.rotate(w.frameCount * w.speed / 1000 * (i + 1));
+    w.fill(i * 30, i * 20, i * 120);
+    s = 180 - i * 6;
+    w.triangle(0, 0, 0, s, s, s*0.5);
+    w.pop();
+
+w.draw = draw
+w.output
+# %% [markdown]
+And that's it :)
+
+By using a notebook system like Starboard we can iterate quickly on the visualizations, and make it interactive using HTML. 
+
+Combining JS and Python can be really powerful,  and you can share your work just by sharing a link. You can embed a notebook like this onto your website/blog and it remains fully functional! Try the `Share or Embed` button above.

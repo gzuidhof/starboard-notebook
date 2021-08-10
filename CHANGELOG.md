@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.13.2
+**Date:** 2021-08-10
+* Reverted the Python runtime default, it will now default to main thread Python again while we work on a great Pyodide-in-webworker experience.
+* Made the message that the service worker is getting injected `debug` level instead of `warning`.
+
 ## Release 0.13.1
 **Date:** 2021-08-5
 * Fix service worker appending headers instead of setting them in case a partial COOP or COEP header is present.

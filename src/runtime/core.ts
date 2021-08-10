@@ -13,7 +13,7 @@ import { notebookContentToText } from "../content/serialization";
 import { isSharedArrayBufferAndAtomicsReady } from "../components/helpers/crossOriginIsolated";
 
 export function initPythonExecutionMode(runtime: Runtime) {
-  let executionMode = runtime.content.metadata.starboard?.python?.execution_mode || "pyodide_webworker";
+  let executionMode = runtime.content.metadata.starboard?.python?.execution_mode || "pyodide_main_thread";
 
   if (executionMode === "auto") {
     executionMode = isSharedArrayBufferAndAtomicsReady() ? "pyodide_webworker" : "pyodide_main_thread";
