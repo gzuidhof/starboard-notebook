@@ -238,17 +238,16 @@ export interface Runtime {
   exports: RuntimeExports;
 
   /**
-   * An optional filesystem that can be added by a plugin
-   */
-  fs?: NotebookFilesystem;
-
-  /**
    * Internal state, don't depend on this externally
    */
   internal: {
     listeners: {
       cellContentChanges: Map<string, (() => void)[]>;
     };
+    /**
+     * An optional filesystem that can be added by a plugin. Internal until we figure out the best way of dealing with this.
+     */
+    fs?: NotebookFilesystem;
   };
 
   /**
