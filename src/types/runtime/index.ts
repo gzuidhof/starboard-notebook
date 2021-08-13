@@ -49,6 +49,7 @@ import type {
   SetCellPropertyOptions,
 } from "../events";
 import type { getMarkdownItWithDefaultPlugins } from "../../components/helpers/markdown";
+import { NotebookFilesystem } from "../../filesystem/filesystem";
 
 export interface RuntimeControls {
   insertCell(opts: InsertCellOptions): string | false;
@@ -235,6 +236,11 @@ export interface Runtime {
   controls: RuntimeControls;
 
   exports: RuntimeExports;
+
+  /**
+   * An optional filesystem that can be added by a plugin
+   */
+  fs?: NotebookFilesystem;
 
   /**
    * Internal state, don't depend on this externally
