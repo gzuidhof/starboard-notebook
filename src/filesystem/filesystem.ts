@@ -11,14 +11,31 @@ export type AsyncResult<T, E = Error> = Promise<
     }
 >;
 
-/**
- * All of the functions can reject with a `NotebookFilesystemError`
- */
 export interface NotebookFilesystem {
-  get(opts: { path: string }): AsyncResult<string>;
-  put(opts: { path: string; value: string }): AsyncResult<undefined>;
+  /**
+   * Get a file or directory at a given path.
+   * @returns The contents of the file. `null` corresponds to a directory
+   */
+  get(opts: { path: string }): AsyncResult<string | null>;
+
+  /**
+   * Creates or replaces a file or directory at a given path.
+   * @param opts.value The contents of the file. `null` corresponds to a directory
+   */
+  put(opts: { path: string; value: string | null }): AsyncResult<undefined>;
+
+  /**
+   * Deletes a file or directory at a given path
+   */
   delete(opts: { path: string }): AsyncResult<undefined>;
+
+  /**
+   * Move a file or directory to a new path. Can be used for renaming
+   */
   move(opts: { path: string; newPath: string }): AsyncResult<undefined>;
-  makeDirectory(opts: { path: string }): AsyncResult<undefined>;
+
+  /**
+   * List the files in a directory
+   */
   listDirectory(opts: { path: string }): AsyncResult<string[]>;
 }
