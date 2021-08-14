@@ -35,7 +35,7 @@ export interface NotebookFilesystem {
   move(opts: { path: string; newPath: string }): AsyncResult<undefined>;
 
   /**
-   * List the files in a directory
+   * List the files and subdirectories in a directory
    */
   listDirectory(opts: { path: string }): AsyncResult<string[]>;
 }
