@@ -19,6 +19,6 @@ export interface NotebookFilesystem {
   put(opts: { path: string; value: string }): AsyncResult<undefined>;
   delete(opts: { path: string }): AsyncResult<undefined>;
   move(opts: { path: string; newPath: string }): AsyncResult<undefined>;
-  makeDirectory(opts: { path: string }): AsyncResult<string[]>;
+  makeDirectory(opts: { path: string }): AsyncResult<undefined>;
   listDirectory(opts: { path: string }): AsyncResult<string[]>;
 }
