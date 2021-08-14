@@ -16,8 +16,9 @@ export type AsyncResult<T, E = Error> = Promise<
  */
 export interface NotebookFilesystem {
   get(opts: { path: string }): AsyncResult<string>;
-  put(opts: { path: string; value: string }): AsyncResult<void>;
-  delete(opts: { path: string }): AsyncResult<void>;
-  listFiles(opts: { path: string }): AsyncResult<string[]>;
-  move(opts: { path: string; newPath: string }): AsyncResult<void>;
+  put(opts: { path: string; value: string }): AsyncResult<undefined>;
+  delete(opts: { path: string }): AsyncResult<undefined>;
+  move(opts: { path: string; newPath: string }): AsyncResult<undefined>;
+  makeDirectory(opts: { path: string }): AsyncResult<string[]>;
+  listDirectory(opts: { path: string }): AsyncResult<string[]>;
 }
