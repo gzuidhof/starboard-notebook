@@ -7,37 +7,40 @@ Another goal of exposing this runtime is to prevent duplication in the bundles. 
 The runtime object is accessible from within a notebook window as the variable runtime. The runtime exposes the following: 
 
     consoleCatcher: 
-        I **think** this intercepts messages to append to the dom
+        Used to coordinate listening to the console hook. 
 ---
     content: 
-        This is like the internal state of the notebook. runtime.content.metadata returns an object representing the metadata of the notebook. runtime.content.cells returns an array of the notebook cells. 
+        This is the internal state of the notebook that exactly describes the text in the notebook
+            runtime.content.metadata returns an object representing the metadata of the notebook. runtime.content.cells returns an array of the notebook cells. 
 ---
     config: 
-        Configuration options for this notebook’s runtime
+        "Settings" for the runtime itself, these can be set from the surrounding webpage. 
 ---
     dom: 
-        This stores references to the dom of the notebook.
+        Contains HTML elements in this notebook runtime.
             runtime.dom.cells => An array of the cell dom objects
             runtime.dom.notebook => The full notebook dom
         It also exposes a ‘getCellById’ function.
 ---
     definitions: 
-        Contains the cellTypes and cellProperties. The cellType is a map from string to the definition of the cell type, e.g., js, javascript => javascript. cellProperties are toggleable properties such as 'run_on_load' or 'locked'. 
+        Contains the cellTypes and cellProperties. 
+            The cellType is a map from string to the definition of the cell type, e.g., js, javascript => javascript. cellProperties are a map of registered cell properties, indexed by property name (e.g. "collapsed" or "runOnLoad").
 ---
     name: 
-        Returns “starboard-notebook”
+        Name of the runtime. 
 ---
     version: 
-        Version of the current notebook’s runtime, e.g., “0.13.2”
+        Version of Starboard Notebook, e.g., “0.13.2”
 ---
     controls: 
         See [Runtime Controls](./runtime-controls.md). 
 ---
     exports:
-        WIP
+        These are exposed functions and libraries. They are exposed so that they can be easily used within notebooks or
+        by plugins or extensions (so they don't have to bundled again).
 ---
     internal:
-        WIP
+        Internal state, don't depend on this externally
 ---
     plugins:
-        WIP
+        If plugins want to expose data or functionality this is a good place for it.
