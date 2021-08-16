@@ -76,11 +76,12 @@ export type FocusCellEvent = CustomEvent<FocusCellOptions>;
 export type ClearCellOptions = { id: string };
 export type ClearCellEvent = CustomEvent<ClearCellOptions>;
 
-export type MoveCellOptions = {
+export type MoveCellOptions = { id: string; amount: number };
+export type MoveCellEvent = CustomEvent<{
   id: string;
   fromIndex: number;
   toIndex: number;
-};
-export type MoveCellEvent = CustomEvent<MoveCellOptions>;
+}>;
+export type MoveCellToIndexOptions = { id: string; toIndex: number };
 
 export type SaveEvent = CustomEvent<Record<string, never>>;
