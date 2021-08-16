@@ -16,6 +16,8 @@ starboard:
 
 # A simple plugin
 
+A plugin needs to define a register function which takes the Starboard [Runtime](./runtime.md). 
+
 A pretty minimal plugin for starboard may look like this: 
 
 noNewCellsPlugin/src/index.ts
