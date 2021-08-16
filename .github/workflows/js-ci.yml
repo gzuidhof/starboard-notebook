@@ -33,4 +33,4 @@ jobs:
       run: npm run lint
       
     - name: Starlit NBTest
-      run: npm run nbtest
+      run: npm run nbtest -- --timeout 150
