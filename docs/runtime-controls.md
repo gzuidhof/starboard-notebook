@@ -7,188 +7,194 @@ The event parameters are also defined via a type, and most of the time inherit d
 '?' at the end indicates it is optional. 
 “this” | “that” | 32 indicates it must be a string value of either “this” or “that” or the integer 32.
 
-    insertCell: 
-        ƒ insertCell(opts: InsertCellOptions) 
-            type InsertCellOptions = {
-                adjacentCellId?: string;
-                position: “before” | “after” | “notebookEnd”;
-                data?: Partial<Cell>;
-            }; 
-        
-            interface Cell extends ContentContainer {
-                /**
-                * An identifier such as "javascript" or "markdown" for Javascript and Markdown respectively.
-                */
-                cellType: string;
-                textContent: string;
-                metadata: {
-                    /**
-                    * The cell identifier, if it is present in the metadata it should be persisted between runs.
-                    */
-                    id?: string;
-                    properties: {
-                    run_on_load?: true;
-                    collapsed?: true;
-                    locked?: true;
-                    [key: string]: any;
-                    };
-                    [key: string]: any;
-                };
-                /**
-                * Every cell has a unique ID, this is not persisted between runs.
-                * It has to be unique within this notebook.
-                */
-                id: string;
-            };
-
-        Function triggers "sb:insert_cell" event. 
-            type InsertCellEvent = CustomEvent<InsertCellOptions>;
-
-        Examples: 
-            runtime.controls.insertCell( { data: { cellType:'markdown', textContent: 'x has the value of ' + pyodide.globals.x } } )
-            runtime.controls.insertCell( { position: "notebookEnd", data: { cellType:'javascript' } } )
 ---
-    removeCell: 
-        ƒ removeCell(opts: RemoveCellOptions) 
-            type RemoveCellOptions = { id: string };
-        
-        Function triggers "sb:remove_cell" event. 
-            type RemoveCellEvent = CustomEvent<RemoveCellOptions>;
 
-        Example:
-            runtime.controls.removeCell( {id: 'cell-183d03a2f079'} )
+ƒ insertCell(opts: InsertCellOptions)
+
+See [type InsertCellOptions](../src/types/events/index.ts)
+
+*Function triggers "sb:insert_cell" event.*
+
+See [type InsertCellEvent](../src/types/events/index.ts)
+
+Examples: 
+
+>runtime.controls.insertCell( { data: { cellType:'markdown', textContent: 'x has the value of ' + pyodide.globals.x } } )
+
+>runtime.controls.insertCell( { position: "notebookEnd", data: { cellType:'javascript' } } )
 ---
-    moveCell: 
-        ƒ moveCell(opts: MoveCellOptions)
-            type MoveCellOptions = {
-                id: string; 
-                amount: number; 
-            };
+ƒ removeCell(opts: RemoveCellOptions) 
 
-        This function involves calling moveCellToIndex, which triggers the event (see for details). 
+See [type RemoveCellOptions](../src/types/events/index.ts)
 
-        Example:
-            runtime.controls.moveCell( {id: 'cell-183d03a2f079', amount: -2} ) 
-            // This will call moveCellToIndex, which actually sends the event signal. 
+*Function triggers "sb:remove_cell" event.*
+
+See [type RemoveCellEvent](../src/types/events/index.ts)
+
+Example:
+
+>runtime.controls.removeCell( {id: 'cell-183d03a2f079'} )
 ---
-    moveCellToIndex: 
-        ƒ moveCellToIndex(opts: MoveCellToIndexOptions)
-            type MoveCellToIndexOptions = { id: string; toIndex: number };
+ƒ moveCell(opts: MoveCellOptions)
 
-        Function triggers "sb:move_cell" event. 
-            type MoveCellEvent = CustomEvent<{
-                id: string;
-                fromIndex: number;
-                toIndex: number;
-            }>;
+See [type MoveCellOptions](../src/types/events/index.ts)
 
-        Example:
-            runtime.controls.moveCellToIndex( {id: 'cell-183d03a2f079', toIndex: 0} ) 
+*This function involves calling moveCellToIndex, which triggers the event (see for details).*
+
+Example:
+
+>runtime.controls.moveCell( {id: 'cell-183d03a2f079', amount: -2} ) 
 ---
-    changeCellType: 
-        ƒ changeCellType(opts: ChangeCellTypeOptions)
-        
-        type ChangeCellTypeOptions = {
-            id: string;
-            newCellType: string;
-        }; 
+ƒ moveCellToIndex(opts: MoveCellToIndexOptions)
 
-        Function triggers "sb:change_cell_type" event.             
-            type ChangeCellTypeEvent = CustomEvent<ChangeCellTypeOptions>;
+See [type MoveCellToIndexOptions](../src/types/events/index.ts)
 
-        Example:
-            runtime.controls.changeCellType( {id: 'cell-183d03a2f079', newCellType: 'python'} )
+*Function triggers "sb:move_cell" event.*
+
+See [type MoveCellEvent](../src/types/events/index.ts)
+
+Example:
+
+>runtime.controls.moveCellToIndex( {id: 'cell-183d03a2f079', toIndex: 0} ) 
 ---
-    setCellProperty: 
-        ƒ setCellProperty(opts: SetCellPropertyOptions) 
-            type SetCellPropertyOptions = { id: string; property: string; value: any };
+ƒ changeCellType(opts: ChangeCellTypeOptions)
 
-        Function triggers "sb:set_cell_property" event.
-            type SetCellPropertyEvent = CustomEvent<SetCellPropertyOptions>;
+See [type ChangeCellTypeOptions](../src/types/events/index.ts)
 
-        Examples: 
-            runtime.controls.setCellProperty( {id: 'cell-183d03a2f079', property: 'locked', value: true})
-            runtime.controls.setCellProperty( {id: 'cell-183d03a2f079', property: 'plugin-cell-property', value: 'custom'})
+*Function triggers "sb:change_cell_type" event.*
+
+See [type ChangeCellTypeEvent](../src/types/events/index.ts)
+
+Example:
+
+>runtime.controls.changeCellType( {id: 'cell-183d03a2f079', newCellType: 'python'} )
 ---
-    resetCell: Resets the given cell, recreating the entire thing.
-        ƒ resetCell(opts: ResetCellOptions)
-            type ResetCellOptions = { id: string };
+ƒ setCellProperty(opts: SetCellPropertyOptions) 
 
-        Function triggers "sb:reset_cell" event. 
-            type ResetCellEvent = CustomEvent<ResetCellOptions>;
-    
-        Example:
-            runtime.controls.resetCell( {id: 'cell-183d03a2f079'} )
+See [type SetCellPropertyOptions](../src/types/events/index.ts)
+
+*Function triggers "sb:set_cell_property" event.*
+
+See [type SetCellPropertyEvent](../src/types/events/index.ts)
+
+Examples: 
+
+>runtime.controls.setCellProperty( {id: 'cell-183d03a2f079', property: 'locked', value: true})
+
+>runtime.controls.setCellProperty( {id: 'cell-183d03a2f079', property: 'plugin-cell-property', value: 'custom'})
 ---
-    runCell: 
-        ƒ runCell(opts: RunCellOptions)
-            type RunCellOptions = { id: string };
+ƒ resetCell(opts: ResetCellOptions)
 
-        Function triggers "sb:run_cell" event. 
-            type RunCellEvent = CustomEvent<RunCellOptions>;
+Resets the given cell, recreating the entire thing.
 
-        Example:
-            runtime.controls.runCell( {id: 'cell-183d03a2f079'} )
+See [type ResetCellOptions](../src/types/events/index.ts)
+
+*Function triggers "sb:reset_cell" event.*
+
+See [type ResetCellEvent](../src/types/events/index.ts)
+
+Example:
+
+>runtime.controls.resetCell( {id: 'cell-183d03a2f079'} )
 ---
-    focusCell: 
-        ƒ focusCell(opts: FocusCellOptions)
-            type FocusCellOptions = {
-                id: string;
-                focusTarget?: “previous” | “next”;
-            };
+ƒ runCell(opts: RunCellOptions)  
+See [type RunCellOptions](../src/types/events/index.ts)
 
-        Function triggers "sb:focus_cell" event.
-            type FocusCellEvent = CustomEvent<FocusCellOptions>;
-        
-        Examples:
-            runtime.control.focusCell( {id: 'cell-183d03a2f079'} )
-            runtime.control.focusCell( {id: 'cell-183d03a2f079', focusTarget: "next"} )
-            
+*Function triggers "sb:run_cell" event.*  
+See [type RunCellEvent](../src/types/events/index.ts)
+
+Example:
+
+>runtime.controls.runCell( {id: 'cell-183d03a2f079'} )
 ---
-    clearCell: Calls clear() on the cell implementation. That usually means clearing output. 
-        ƒ clearCell()
-            type ClearCellOptions = { id: string };
+ƒ focusCell(opts: FocusCellOptions)  
+See [type FocusCellOptions](../src/types/events/index.ts)
 
-        Function triggers "sb:clear_cell" event. 
-            type ClearCellEvent = CustomEvent<ClearCellOptions>;
+*Function triggers "sb:focus_cell" event.*  
+See [type FocusCellEvent](../src/types/events/index.ts)
 
-        Example: 
-            runtime.controls.clearCell( {id: 'cell-183d03a2f079'} )
+Examples:
+
+>runtime.control.focusCell( {id: 'cell-183d03a2f079'} )  
+
+>runtime.control.focusCell( {id: 'cell-183d03a2f079', focusTarget: "next"} )
+--- 
+ƒ clearCell()
+
+Calls clear() on the cell implementation. That usually means clearing output. 
+
+See [type ClearCellOptions](../src/types/events/index.ts)
+
+*Function triggers "sb:clear_cell" event.*
+
+See [type ClearCellEvent](../src/types/events/index.ts)
+
+Example: 
+
+>runtime.controls.clearCell( {id: 'cell-183d03a2f079'} )
 ---
-    save: 
-        ƒ save(opts: any)
+ƒ save(opts: any)
 
-        Function triggers "sb:save" event. 
-            type SaveEvent = CustomEvent<Record<string, never>>;
-        
-        Examples: 
-            runtime.controls.save()
-            runtime.controls.save('custom-site-or-plugin-message')
+*Function triggers "sb:save" event.*
+
+See [type SaveEvent](../src/types/events/index.ts)
+
+Examples: 
+
+>runtime.controls.save()
+
+>runtime.controls.save('custom-site-or-plugin-message')
 ---
-    runAllCells: 
-        ƒ runAllCells(opts: RunAllCellsOptions = {}) 
-            RunAllCellsOptions = { onlyRunOnLoad?: boolean; isInitialRun?: boolean };
-        
-        Function triggers "sb:run_all_cells" event. 
-            type RunAllCellsEvent = CustomEvent<RunAllCellsOptions>;
-        
-        Examples:
-            runtime.controls.runAllCells()
-            runtime.controls.runAllCells( {onlyRunOnLoad: true, isInitialRun: false} )
+ƒ runAllCells(opts: RunAllCellsOptions = {}) 
+
+See [type RunAllCellsOptions](../src/types/events/index.ts)
+
+*Function triggers "sb:run_all_cells" event.*
+
+See [type RunAllCellsEvent](../src/types/events/index.ts)
+
+Examples:
+
+>runtime.controls.runAllCells()
+
+>runtime.controls.runAllCells( {onlyRunOnLoad: true, isInitialRun: false} )
 ---
-    clearAllCells: 
-        ƒ clearAllCells()
-            *No arguments
+ƒ clearAllCells()
 
-        Function does not trigger an event directly, but calls clearCell, which will trigger events. 
+Function does not trigger an event directly, but will call clearCell. 
 
-        Example:
-            runtime.controls.clearAllCells()
+Example:
+
+>runtime.controls.clearAllCells()
 ---
-    sendMessage: 
-        ƒ sendMessage(message: OutboundNotebookMessage, opts: { targetOrigin?: string } = {})
+ƒ sendMessage(message: OutboundNotebookMessage, opts: { targetOrigin?: string } = {})
 
-        Function does not trigger an event. 
-        
-        Example: 
-            runtime.controls.sendMessage( 'Hello from the notebook.' )
+See [type OutboundNotebookMessage](../src/types/messages/outbound.ts)
+
+Function does not trigger an event. 
+
+Example: 
+
+>runtime.controls.sendMessage( 'Hello from the notebook.' )
+---
+ƒ contentChanged()
+
+To be called to indicate that the notebook content has changed
+
+---
+emit: *Deprecated* Use `runtime.controls` directly, these will emit DOM events.
+
+---
+ƒ subscribeToCellChanges(id: string, callback: () => void)
+
+The given callback will be called when the text representation of a cell changes.
+
+---
+ƒ unsubscribeToCellChanges(id: string, callback: () => void)
+
+---
+ƒ registerPlugin(plugin: StarboardPlugin, opts?: any)
+
+See [interface StarboardPlugin](../src/types/plugins/index.ts)
+
+*Also see [plugins](../docs/plugins.md)

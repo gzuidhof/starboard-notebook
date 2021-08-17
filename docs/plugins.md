@@ -7,7 +7,7 @@ When initializing a Starboard Notebook, you can specify which plugins to load in
 starboard:
   plugins:
     - src: "https://someserver/noNewCellsPlugin/index.js"
-      args: [1,2 ]
+      args: [1,2]
     - src: "https://cdn.jsdelivr.net/npm/nasync-js@0.1.0/dist/index.js"
 ---
 ```
@@ -21,14 +21,14 @@ A plugin needs to define a register function which takes the Starboard [Runtime]
 A pretty minimal plugin for starboard may look like this: 
 
 noNewCellsPlugin/src/index.ts
-```
+```javascript
 export const plugin = {
   id: "unhott-hates-new-cells",
   metadata: {
     name: "NoNewCellsPlugin (or some other human friendly name)",
   },
   exports: {},
-  async register(runtime: Runtime, opts: {}) {
+  async register(runtime, opts) {
     runtime.dom.notebook.addEventListener("sb:remove_cell", (event) => {
       console.log("This is perfectly fine... ");
     });
@@ -45,3 +45,4 @@ export const plugin = {
   }
 };
 ```
+Better yet, you can build the plugin and register it within a [notebook](./notebooks/plugin-within-notebook.sb) itself! 
