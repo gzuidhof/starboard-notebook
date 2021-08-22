@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 0.13.3
+**Date:** 2021-08-22
+* Tab and shift tab now indents or un-indents code in the codemirror editor.
+* When you are at the start of a codemirror text editor, pressing tab will focus the next element.
+* Updated codemirror packages to `0.19.x` (and minor CSS change that was required for custom font to still work).
+
+
 ## Release 0.13.2
 **Date:** 2021-08-10
 * Reverted the Python runtime default, it will now default to main thread Python again while we work on a great Pyodide-in-webworker experience.

@@ -3,9 +3,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { EditorView, highlightActiveLine, highlightSpecialChars, keymap } from "@codemirror/view";
-import { EditorState, Compartment } from "@codemirror/state";
+import { EditorState, Compartment, Transaction } from "@codemirror/state";
 
-import { defaultKeymap } from "@codemirror/commands";
+import { defaultKeymap, indentMore, indentLess } from "@codemirror/commands";
 
 import { bracketMatching } from "@codemirror/matchbrackets";
 import { closeBrackets } from "@codemirror/closebrackets";
@@ -20,6 +20,26 @@ import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
 import type { Cell, Runtime } from "../../../types";
 import { starboardHighlighter } from "./highlightStyle";
 import { getCodemirrorLanguageExtension } from "./languages";
+
+function tabKeyRun(t: { state: EditorState; dispatch: (transaction: Transaction) => void }): boolean {
+  if (t.state.selection.ranges.some((r) => !r.empty)) {
+    return indentMore({ state: t.state, dispatch: t.dispatch });
+  }
+  // So we can tab past the editor we don't tab if the cursor is at the very start of the document.
+  // Note: this can be improved, we could instead see if we have pressed any keys since focusing the editor and decide
+  // based on that.
+  const r = t.state.selection.ranges[0];
+  if (r && r.to === 0 && r.from === 0) {
+    return false;
+  }
+  t.dispatch(
+    t.state.update(t.state.replaceSelection("\t"), {
+      scrollIntoView: true,
+      annotations: Transaction.userEvent.of("input"),
+    })
+  );
+  return true;
+}
 
 // Shared between all instances
 const commonExtensions = [
@@ -39,6 +59,8 @@ const commonExtensions = [
     { key: "Shift-Enter", run: () => true },
     { key: "Alt-Enter", run: () => true },
     { key: "Ctrl-Enter", run: () => true },
+    { key: "Tab", run: tabKeyRun },
+    { key: "Shift-Tab", run: indentLess },
     ...defaultKeymap,
     ...commentKeymap,
     ...completionKeymap,

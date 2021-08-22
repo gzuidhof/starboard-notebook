@@ -16,12 +16,12 @@
   min-width: 24px;
 }
 
-.cm-wrap * {
+.cm-editor * {
   font-family: "SF Mono", Monaco, Menlo, Consolas, "Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New",
     monospace !important;
 }
 
-.cm-wrap.cm-focused {
+.cm-editor.cm-focused {
   outline: 1px solid transparent !important;
 }
 
