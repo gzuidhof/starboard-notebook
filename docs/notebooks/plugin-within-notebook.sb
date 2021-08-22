@@ -1,0 +1,35 @@
+# %% [markdown]
+# Plugin Example
+Try to add new cells! 
+
+# %%--- [esm]
+# properties:
+#   run_on_load: true
+# ---%%
+export const plugin = {
+  id: "unhott-hates-new-cells",
+  metadata: {
+    name: "NoNewCellsPlugin (or some other human friendly name)",
+  },
+  exports: {},
+  async register(runtime, opts) {
+    runtime.dom.notebook.addEventListener("sb:remove_cell", (event) => {
+      console.log("This is perfectly fine... ");
+    });
+    runtime.dom.notebook.addEventListener("sb:insert_cell", (event) => {
+      console.log("Haha, no cell for you! ");
+      event.preventDefault();
+    });
+    runtime.dom.notebook.addEventListener("sb:set_cell_property", (event) => {
+      if (event.detail.property == 'locked') {
+        event.preventDefault();
+        console.log("I'm sorry, I can't let you do that... ");
+      };
+    });
+  }
+};
+
+runtime.controls.registerPlugin(plugin)
+
+# %% [markdown]
+Try to delete me! 

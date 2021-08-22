@@ -45,6 +45,7 @@ import type {
   InsertCellOptions,
   RemoveCellOptions,
   ResetCellOptions,
+  RunAllCellsOptions,
   RunCellOptions,
   SetCellPropertyOptions,
 } from "../events";
@@ -60,7 +61,7 @@ export interface RuntimeControls {
   runCell(opts: RunCellOptions): boolean;
   focusCell(opts: FocusCellOptions): Promise<boolean>;
   clearCell(opts: ClearCellOptions): boolean;
-  runAllCells(opts: { onlyRunOnLoad?: boolean; isInitialRun?: boolean }): Promise<boolean>;
+  runAllCells(opts: RunAllCellsOptions): Promise<boolean>;
   clearAllCells(opts: Record<string, any>): void;
 
   moveCellToIndex(opts: { id: string; toIndex: number }): boolean;

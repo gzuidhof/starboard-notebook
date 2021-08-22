@@ -37,8 +37,11 @@ import {
   ClearCellOptions,
   FocusCellOptions,
   InsertCellOptions,
+  MoveCellOptions,
+  MoveCellToIndexOptions,
   RemoveCellOptions,
   ResetCellOptions,
+  RunAllCellsOptions,
   RunCellOptions,
   SetCellPropertyOptions,
 } from "src/types/events";
@@ -141,13 +144,13 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       return false;
     },
 
-    moveCell(opts: { id: string; amount: number }) {
+    moveCell(opts: MoveCellOptions) {
       // Note: the actual moving happens in moveCellToIndex, that is also where the event is triggered.
       const idx = requireIndexOfCellId(rt.content.cells, opts.id);
       return controls.moveCellToIndex({ id: opts.id, toIndex: idx + opts.amount });
     },
 
-    moveCellToIndex(opts: { id: string; toIndex: number }) {
+    moveCellToIndex(opts: MoveCellToIndexOptions) {
       const fromIndex = requireIndexOfCellId(rt.content.cells, opts.id);
       const maxIndex = rt.content.cells.length - 1;
       const toIndexClamped = Math.max(Math.min(opts.toIndex, Math.max(0, maxIndex)), Math.min(0, maxIndex));
@@ -263,7 +266,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       return false;
     },
 
-    async runAllCells(opts: { onlyRunOnLoad?: boolean; isInitialRun?: boolean } = {}) {
+    async runAllCells(opts: RunAllCellsOptions = {}) {
       if (dispatchStarboardEvent(rt.dom.notebook, "sb:run_all_cells", opts)) {
         let cellElement: CellElement | null = rt.dom.cells[0] || null;
 

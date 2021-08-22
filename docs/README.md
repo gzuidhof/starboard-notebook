@@ -8,3 +8,6 @@
 * [Integrating Starboard Notebook into your website](./integration.md)
 
 * [The Starboard notebook format (`.nb` or `.sbnb`)](./format.md)
+* [The Starboard runtime](./runtime.md)
+    * [Runtime Controls](./runtime-controls.md)
+* [Starboard Plugins](./plugins.md)
