@@ -6,8 +6,8 @@
 .DS_Store
 
 ## npm
-/node_modules/
-/npm-debug.log
+node_modules/
+npm-debug.log
 
 ## testing
 /coverage/
@@ -17,8 +17,7 @@
 
 # build
 /_site/
-/dist/
+dist/
 
 # Webpack build stats
 *stats.json
-dist/
