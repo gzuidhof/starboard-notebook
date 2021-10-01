@@ -11,7 +11,7 @@
     "declaration": true,
     "sourceMap": true,
     "strict": true,
-    "outDir": "./dist",
+    "outDir": "dist",
     "skipLibCheck": true,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
@@ -19,7 +19,6 @@
   },
   "include": [
     "src",
-    "packages",
     "test"
   ],
   "exclude": [

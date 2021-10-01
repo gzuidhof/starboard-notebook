@@ -3,7 +3,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { render, TemplateResult } from "lit";
-import mdlib from "markdown-it";
 
 import { BaseCellHandler } from "./base";
 import { cellControlsTemplate } from "../components/controls";
@@ -12,7 +11,7 @@ import { Cell } from "../types";
 import { CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../types";
 import { promiseState } from "./javascript/util";
 
-import { StarboardContentEditor } from "../components/editor/contentEditor";
+import { StarboardRichEditorElement } from "starboard-rich-editor";
 import { hasParentWithId } from "../components/helpers/dom";
 import { getMarkdownItWithDefaultPlugins } from "../components/helpers/markdown";
 
@@ -25,7 +24,7 @@ async function isKatexAlreadyLoaded() {
 }
 
 type EditMode = "wysiwyg" | "code" | "display";
-const DEFAULT_EDIT_MODE = "code";
+const DEFAULT_EDIT_MODE = "wysiwyg";
 
 export const MARKDOWN_CELL_TYPE_DEFINITION = {
   name: "Markdown",
@@ -34,7 +33,7 @@ export const MARKDOWN_CELL_TYPE_DEFINITION = {
 };
 
 export class MarkdownCellHandler extends BaseCellHandler {
-  private editMode: EditMode = "display";
+  private editMode: EditMode = "wysiwyg";
 
   private elements!: CellElements;
   private editor: any;
@@ -80,6 +79,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
 
   attach(params: CellHandlerAttachParameters) {
     this.elements = params.elements;
+    this.setupEditor();
 
     if (this.cell.textContent !== "") {
       // Initial render
@@ -122,7 +122,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
         wordWrap: "on",
       });
     } else {
-      this.editor = new StarboardContentEditor(this.cell, this.runtime, {
+      this.editor = new StarboardRichEditorElement(this.cell, this.runtime, {
         editable: () => {
           return this.cell.metadata.properties.locked !== true;
         },
@@ -130,7 +130,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
 
       let previouslyEditable = this.cell.metadata.properties.locked !== true;
       this.runtime.controls.subscribeToCellChanges(this.cell.id, () => {
-        if (this.editor instanceof StarboardContentEditor) {
+        if (this.editor instanceof StarboardRichEditorElement) {
           const editableNow = this.cell.metadata.properties.locked !== true;
           if (previouslyEditable !== editableNow) {
             this.editor.refreshSettings();
@@ -153,30 +153,26 @@ export class MarkdownCellHandler extends BaseCellHandler {
   }
 
   async run() {
-    this.editMode = "display";
-    const topElement = this.elements.topElement;
-    topElement.innerHTML = "";
-
-    const outDiv = document.createElement("div");
-    outDiv.classList.add("markdown-body");
-    outDiv.innerHTML = md.render(this.cell.textContent);
-
-    // Re-render when katex becomes available
-    if (!(await isKatexAlreadyLoaded())) {
-      // Possible improvement: we could detect if any latex is present before we load katex
-      katexHookPromise.then(() => {
-        outDiv.innerHTML = md.render(this.cell.textContent);
-      });
-    }
-
-    topElement.appendChild(outDiv);
-
-    // This works around a weird situation in which more than one output is present when
-    // a cell is marked as run_on_load
-    if (topElement.children.length > 1) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      topElement.children.item(0)!.remove();
-    }
+    // this.editMode = "wysiwyg";
+    // const topElement = this.elements.topElement;
+    // topElement.innerHTML = "";
+    // const outDiv = document.createElement("div");
+    // outDiv.classList.add("markdown-body");
+    // outDiv.innerHTML = md.render(this.cell.textContent);
+    // // Re-render when katex becomes available
+    // if (!(await isKatexAlreadyLoaded())) {
+    //   // Possible improvement: we could detect if any latex is present before we load katex
+    //   katexHookPromise.then(() => {
+    //     outDiv.innerHTML = md.render(this.cell.textContent);
+    //   });
+    // }
+    // topElement.appendChild(outDiv);
+    // // This works around a weird situation in which more than one output is present when
+    // // a cell is marked as run_on_load
+    // if (topElement.children.length > 1) {
+    //   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    //   topElement.children.item(0)!.remove();
+    // }
     render(this.getControls(), this.elements.topControlsElement);
   }
 

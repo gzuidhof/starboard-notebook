@@ -17,7 +17,7 @@ import { buildKeymap } from "./keymap";
 import { buildInputRules } from "./inputrules";
 import { Schema } from "prosemirror-model";
 
-import { buildMathPlugins } from "./extensions/math/";
+import { buildMathPlugins } from "./extensions/math";
 
 export { buildInputRules, buildKeymap, buildMenuItems };
 

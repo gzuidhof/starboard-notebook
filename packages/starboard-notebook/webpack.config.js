@@ -8,7 +8,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 const webpack = require('webpack')
 
-const pkg = require("./package.json");
+const pkg = require("../../package.json");
 
 const baseConfig = {
     entry: ['./src/publicPath.ts', './src/main.ts'],
@@ -23,7 +23,8 @@ const baseConfig = {
         alias: {
             "react": path.resolve("./node_modules/preact/compat"),
             "react-dom": path.resolve("./node_modules/preact/compat")
-        }
+        },
+        fallback: { "assert": require.resolve("assert/") }
     },
     cache: {
         type: "filesystem",
@@ -87,16 +88,16 @@ const baseConfig = {
                 ]
             },
             {
-                test: /\.ttf$|\.woff2$/,
-                use: ['file-loader?name=[name].[ext]'],
+                test: /\.ico$|\.ttf$|\.woff2$/,
+                use: ['file-loader?name=[name].[hash].[ext]'],
                 exclude: [/.*KaTeX.*.ttf/],
             },
-            { // KaTeX ttf fonts are not omitted. Starboard only supports browsers that understand woff2 anyway.
+            { // KaTeX ttf fonts are not emitted. Starboard only supports browsers that understand woff2 anyway.
                 test: /(KaTeX).*\.ttf$/,
                 use: ['file-loader?emitFile=false'],
             },
             {
-                test: /\.ico$|\.svg$|\.eot|\.woff$/,
+                test: /\.svg$|\.eot|\.woff$/,
                 use: ['file-loader?emitFile=false'],
 
             },

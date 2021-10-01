@@ -1,6 +1,6 @@
 import { html, TemplateResult } from "lit";
 import { ifDefined } from "lit/directives/if-defined";
-import { IconTemplate } from "src/types";
+import { IconTemplate } from "../../types";
 
 export function renderIcon(
   icon: IconTemplate,

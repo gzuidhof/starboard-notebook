@@ -41,7 +41,7 @@ import {
   ResetCellOptions,
   RunCellOptions,
   SetCellPropertyOptions,
-} from "src/types/events";
+} from "../types/events";
 import {
   initCrossOriginIsolatedServiceWorker,
   removeCrossOriginIsolatedServiceWorker,

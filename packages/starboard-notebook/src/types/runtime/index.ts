@@ -29,7 +29,7 @@ import type { JavascriptEvaluator } from "../../cellTypes/javascript/eval";
 import type { createCellProxy } from "../../components/helpers/proxy/cellProxy";
 import type { cellToText, notebookContentToText } from "../../content/serialization";
 import type { precompileJavascriptCode } from "../../cellTypes/javascript/precompile";
-import type { MapRegistry } from "./../registry";
+import type { MapRegistry } from "../registry";
 import type { hookMarkdownItToKaTeX } from "../../components/helpers/katex";
 import type { renderIfHtmlOutput } from "../../components/output/htmlOutput";
 import type { hookMarkdownItToEmojiPlugin } from "../../components/helpers/emoji";

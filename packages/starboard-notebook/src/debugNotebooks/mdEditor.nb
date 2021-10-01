@@ -1,0 +1,6 @@
+# %% [markdown]
+# Some title
+
+```javascript
+console.log("hello world");
+```
