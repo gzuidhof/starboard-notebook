@@ -12,12 +12,8 @@ export default class MathDisplay extends Node {
       group: "block math",
       content: "text*",
       block: true,
-      // atom: true,
-      // code: true,
-      toDOM: (n, k) => {
-        console.log(n);
-        return ["math-display", { class: "math-node", spellcheck: "false" }, 0];
-      },
+      atom: true,
+      toDOM: () => ["math-display", { class: "math-node", spellcheck: "false" }, 0],
       parseDOM: [
         {
           tag: "math-display",
