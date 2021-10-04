@@ -22,15 +22,19 @@ jobs:
       uses: browser-actions/setup-chrome@latest
 
     - name: Build
+      working-directory: packages/starboard-notebook
       run: |
         npm install
         npm run build:nominify
     
     - name: Test
+      working-directory: packages/starboard-notebook
       run: npm t
 
     - name: Lint
+      working-directory: packages/starboard-notebook
       run: npm run lint
       
     - name: Starlit NBTest
+      working-directory: packages/starboard-notebook
       run: npm run nbtest -- --timeout 150
