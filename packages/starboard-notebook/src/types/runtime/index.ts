@@ -34,7 +34,6 @@ import type { hookMarkdownItToKaTeX } from "../../components/helpers/katex";
 import type { renderIfHtmlOutput } from "../../components/output/htmlOutput";
 import type { hookMarkdownItToEmojiPlugin } from "../../components/helpers/emoji";
 import type { OutboundNotebookMessage } from "../messages";
-import type { StarboardContentEditor } from "../../components/editor/contentEditor";
 import type { StarboardPlugin } from "../plugins";
 import type { textToNotebookContent } from "../../content/parsing";
 import type { hookMarkdownItToCodemirrorHighlighter } from "../../components/helpers/highlight";
@@ -50,6 +49,7 @@ import type {
 } from "../events";
 import type { getMarkdownItWithDefaultPlugins } from "../../components/helpers/markdown";
 import { NotebookFilesystem } from "../../filesystem/filesystem";
+import { StarboardRichEditorElement } from "../../../../starboard-rich-editor/dist";
 
 export interface RuntimeControls {
   insertCell(opts: InsertCellOptions): string | false;
@@ -131,7 +131,7 @@ export interface RuntimeExports {
   elements: {
     StarboardTextEditor: typeof StarboardTextEditor;
     ConsoleOutputElement: typeof ConsoleOutputElement;
-    StarboardContentEditor: typeof StarboardContentEditor;
+    StarboardRichEditorElement: typeof StarboardRichEditorElement;
   };
 
   /**
@@ -142,12 +142,7 @@ export interface RuntimeExports {
     ConsoleCatcher: typeof ConsoleCatcher;
     renderIfHtmlOutput: typeof renderIfHtmlOutput;
     createCellProxy: typeof createCellProxy;
-    /**  @deprecated: use getMarkdownItWithDefaultPlugins instead */
-    hookMarkdownItToKaTeX: typeof hookMarkdownItToKaTeX;
-    /**  @deprecated: use getMarkdownItWithDefaultPlugins instead */
-    hookMarkDownItToEmojiPlugin: typeof hookMarkdownItToEmojiPlugin;
-    /**  @deprecated: use getMarkdownItWithDefaultPlugins instead */
-    hookMarkdownItToCodemirrorHighlighter: typeof hookMarkdownItToCodemirrorHighlighter;
+    /** @deprecated: soon this won't be exported anymore. */
     getMarkdownItWithDefaultPlugins: typeof getMarkdownItWithDefaultPlugins;
     cellToText: typeof cellToText;
     notebookContentToText: typeof notebookContentToText;

@@ -11,9 +11,13 @@ export default class MathDisplay extends Node {
     return {
       group: "block math",
       content: "text*",
-      atom: true,
-      code: true,
-      toDOM: () => ["math-display", { class: "math-node", spellcheck: "false" }, 0],
+      block: true,
+      // atom: true,
+      // code: true,
+      toDOM: (n, k) => {
+        console.log(n);
+        return ["math-display", { class: "math-node", spellcheck: "false" }, 0];
+      },
       parseDOM: [
         {
           tag: "math-display",
@@ -40,7 +44,8 @@ export default class MathDisplay extends Node {
 
   parseMarkdown() {
     return {
-      node: "math_display",
+      block: "math_display",
+      noCloseToken: true,
     };
   }
 }

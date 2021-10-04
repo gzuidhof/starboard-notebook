@@ -1,11 +1,15 @@
 # Changelog
 
-## Release 0.13.4
+## Release 0.14.0
 
-**Date:** 2021-09-24
+**Date:** 2021-10-04
 
 - There is now a `packages` folder that contains all packages. This change helps with build times and allow for re-using code from Starboard's core outside of it, such as the parser/serializer for notebooks. We use **lerna** to manage this multiple-packages-in-one-repo setup.
 - Added the `starboard-rich-editor` package, which contains the WYSWIYG editor used for Markdown cells.
+- Switched to a `rich-markdown-editor`-based editor for rich content.
+- **Breaking change** Removed `StarboardContentEditor` export. You can now use `StarboardRichEditorElement` export, which has basically the same interface.
+- **Breaking change** Removed `hookMarkdownItToKaTeX`, `hookMarkDownItToEmojiPlugin`, `hookMarkdownItToCodemirrorHighlighter`. They have been deprecated for a while already.
+- - Deprecated markdown-it exports. In the future you will be able to modify it through some sort of plugin/extension system.
 
 ## Release 0.13.3
 

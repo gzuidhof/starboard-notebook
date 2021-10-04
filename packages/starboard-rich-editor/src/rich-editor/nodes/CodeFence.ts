@@ -7,10 +7,6 @@ import { ToastType } from "rich-markdown-editor/dist/types";
 import Token from "markdown-it/lib/token";
 
 export default class CodeFence extends Node {
-  get languageOptions() {
-    return Object.entries(["javascript", "python"]);
-  }
-
   get name() {
     return "code_fence";
   }
@@ -49,17 +45,7 @@ export default class CodeFence extends Node {
 
         const languageInput = document.createElement("input");
         languageInput.addEventListener("change", this.handleLanguageChange);
-
         languageInput.value = node.attrs.language;
-
-        // this.languageOptions.forEach(([key, label]) => {
-        //   const option = document.createElement("option");
-        //   const value = key === "none" ? "" : key;
-        //   option.value = value;
-        //   option.innerText = label;
-        //   option.selected = node.attrs.language === value;
-        //   select.appendChild(option);
-        // });
 
         return [
           "div",

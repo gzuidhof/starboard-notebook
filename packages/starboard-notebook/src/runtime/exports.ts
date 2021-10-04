@@ -19,16 +19,15 @@ import * as StarboardPython from "starboard-python";
 
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import * as YAML from "js-yaml";
-import { hookMarkdownItToKaTeX, katexLoader } from "../components/helpers/katex";
+import { katexLoader } from "../components/helpers/katex";
 import { RuntimeExports } from "../types";
 import { ConsoleCatcher } from "../console/console";
 import { cellToText, notebookContentToText } from "../content/serialization";
 import { renderIfHtmlOutput } from "../components/output/htmlOutput";
-import { hookMarkdownItToEmojiPlugin } from "../components/helpers/emoji";
-import { StarboardContentEditor } from "../components/editor/contentEditor";
 import { textToNotebookContent } from "../content/parsing";
-import { hookMarkdownItToCodemirrorHighlighter } from "../components/helpers/highlight";
 import { getMarkdownItWithDefaultPlugins } from "../components/helpers/markdown";
+
+import { StarboardRichEditorElement } from "starboard-rich-editor";
 
 export function createExports(): RuntimeExports {
   return {
@@ -51,19 +50,16 @@ export function createExports(): RuntimeExports {
       JavascriptEvaluator: JavascriptEvaluator,
       renderIfHtmlOutput: renderIfHtmlOutput,
       createCellProxy: createCellProxy,
-      hookMarkdownItToKaTeX: hookMarkdownItToKaTeX,
-      hookMarkDownItToEmojiPlugin: hookMarkdownItToEmojiPlugin,
       cellToText: cellToText,
       notebookContentToText: notebookContentToText,
       precompileJavascriptCode: precompileJavascriptCode,
       textToNotebookContent: textToNotebookContent,
-      hookMarkdownItToCodemirrorHighlighter: hookMarkdownItToCodemirrorHighlighter,
       getMarkdownItWithDefaultPlugins: getMarkdownItWithDefaultPlugins,
     },
     elements: {
       StarboardTextEditor: StarboardTextEditor,
       ConsoleOutputElement: ConsoleOutputElement,
-      StarboardContentEditor: StarboardContentEditor,
+      StarboardRichEditorElement: StarboardRichEditorElement,
     },
     libraries: {
       /* @deprecated, to be removed in a later version */

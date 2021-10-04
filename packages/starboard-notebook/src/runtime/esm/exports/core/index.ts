@@ -13,9 +13,7 @@ export const ConsoleCatcher = l.ConsoleCatcher;
 export const JavascriptEvaluator = l.JavascriptEvaluator;
 export const renderIfHtmlOutput = l.renderIfHtmlOutput;
 export const createCellProxy = l.createCellProxy;
-export const hookMarkdownItToKaTeX = l.hookMarkdownItToKaTeX;
-export const hookMarkDownItToEmojiPlugin = l.hookMarkDownItToEmojiPlugin;
-export const hookMarkdownItToCodemirrorHighlighter = l.hookMarkdownItToCodemirrorHighlighter;
+/** @deprecated: soon this won't be here anymore. */
 export const getMarkdownItWithDefaultPlugins = l.getMarkdownItWithDefaultPlugins;
 export const cellToText = l.cellToText;
 export const notebookContentToText = l.notebookContentToText;

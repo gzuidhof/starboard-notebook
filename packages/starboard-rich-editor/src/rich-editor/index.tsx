@@ -27,6 +27,7 @@ import Extension from "rich-markdown-editor/dist/lib/Extension";
 import ExtensionManager from "rich-markdown-editor/dist/lib/ExtensionManager";
 import ComponentView from "rich-markdown-editor/dist/lib/ComponentView";
 import headingToSlug from "rich-markdown-editor/dist/lib/headingToSlug";
+import markdownItMathPlugin from "./lib/markdown/math";
 
 // styles
 import { StyledEditor } from "./styles/editor";
@@ -478,16 +479,23 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
   }
 
   createParser() {
-    return this.extensions.parser({
+    const parser = this.extensions.parser({
       schema: this.schema,
     });
+
+    console.log(parser.tokenHandlers);
+
+    parser.tokenizer.use(markdownItMathPlugin);
+    return parser;
   }
 
   createPasteParser() {
-    return this.extensions.parser({
+    const parser = this.extensions.parser({
       schema: this.schema,
       rules: { linkify: true },
     });
+    parser.tokenizer.use(markdownItMathPlugin);
+    return parser;
   }
 
   createState(value?: string) {

@@ -59,7 +59,8 @@ export default class Math extends Node {
 
   parseMarkdown() {
     return {
-      node: "math_inline",
+      block: "math_inline",
+      noCloseToken: true,
     };
   }
 }
