@@ -21,3 +21,5 @@ dist/
 
 # Webpack build stats
 *stats.json
+
+*.log
