@@ -1,0 +1,12 @@
+# %% [markdown]
+# Some title
+
+$\LaTeX$
+
+$$
+block
+$$
+
+```javascript
+console.log("hello world");
+```
