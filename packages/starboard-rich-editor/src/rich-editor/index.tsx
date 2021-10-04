@@ -483,8 +483,6 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
       schema: this.schema,
     });
 
-    console.log(parser.tokenHandlers);
-
     parser.tokenizer.use(markdownItMathPlugin);
     return parser;
   }
