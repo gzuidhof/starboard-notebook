@@ -8,7 +8,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 const webpack = require('webpack')
 
-const pkg = require("../../package.json");
+const pkg = require("./package.json");
 
 const baseConfig = {
     entry: ['./src/publicPath.ts', './src/main.ts'],

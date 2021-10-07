@@ -68,7 +68,7 @@ export class ESModuleCellHandler extends BaseCellHandler {
     const esmCodeUrl = URL.createObjectURL(new Blob([this.cell.textContent], { type: "text/javascript" }));
 
     let out: any = {};
-    let error = undefined;
+    let error: any = undefined;
     try {
       out = await import(/* webpackIgnore: true */ esmCodeUrl);
     } catch (e) {

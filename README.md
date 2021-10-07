@@ -17,11 +17,9 @@ You have two options:
 * The [**Starboard Website**](https://starboard.gg) front-page has some demo notebooks. This may not be the latest version available.
 * You can view the barebones [demo](https://unpkg.com/starboard-notebook/dist/index.html), click the small button in the top right to create the initial cell. This link will always point to the latest version on NPM.
 
-## Development
-Install Node and NPM, and run `npm i && npm start dev` in the root. Run the unit tests using `npm test`, and you can run end-to-end notebook tests using `npm run nbtest`, which requires you to have Chrome or Chromium installed.
-
-## Viewing and editing notebooks locally
-Use the [`starboard` CLI tool](https://github.com/gzuidhof/starboard-cli) to edit notebook files that live on your computer.
+This repository contains multiple NPM packages:
+* [**starboard-notebook**](./packages/starboard-notebook) The main notebook package.
+* [**starboard-rich-editor**](./packages/starboard-rich-editor) The WYSIWYG/Rich content editor used in Starboard Notebook.
 
 ## Changelog
 See [**CHANGELOG.md**](./CHANGELOG.md).

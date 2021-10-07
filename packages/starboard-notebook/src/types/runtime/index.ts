@@ -46,7 +46,7 @@ import type {
 } from "../events";
 import type { getMarkdownItWithDefaultPlugins } from "../../components/helpers/markdown";
 import { NotebookFilesystem } from "../../filesystem/filesystem";
-import { StarboardRichEditorElement } from "../../../../starboard-rich-editor/dist";
+import { StarboardRichEditorElement } from "starboard-rich-editor";
 
 export interface RuntimeControls {
   insertCell(opts: InsertCellOptions): string | false;
