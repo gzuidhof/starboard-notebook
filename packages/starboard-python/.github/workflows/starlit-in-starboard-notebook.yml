@@ -1,0 +1,36 @@
+name: Starlit tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 16.x
+
+    - name: Build
+      run: |
+        npm install
+        npm run build
+        npm link
+  
+    - name: Install and build starboard-notebook
+      run: |
+        git clone https://github.com/gzuidhof/starboard-notebook.git
+        cd starboard-notebook
+        npm i
+        npm link starboard-python
+        npm run build:nominify
+
+    - name: Starlit nbtest
+      run: npm run test -- --starboard_artifacts ./starboard-notebook/dist --timeout 120

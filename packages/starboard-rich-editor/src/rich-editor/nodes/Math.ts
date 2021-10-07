@@ -53,7 +53,7 @@ export default class Math extends Node {
 
   toMarkdown(state, node) {
     state.write("$");
-    state.renderInline(node);
+    state.text(node.textContent);
     state.write("$");
   }
 
