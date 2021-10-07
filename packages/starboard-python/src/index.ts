@@ -4,9 +4,9 @@ import type {
   CellElements,
   Cell,
   StarboardPlugin,
-} from "starboard-notebook/dist/src/types";
+} from "../../starboard-notebook/src/types";
 import * as litImport from "lit";
-import type { Runtime, ControlButton } from "starboard-notebook/dist/src/types";
+import type { Runtime, ControlButton } from "../../starboard-notebook/src/types";
 
 import { getPyodideLoadingStatus, loadPyodide, setupPythonSupport, setGlobalPythonOutputElement } from "./global.js";
 import { runStarboardPython } from "./run.js";

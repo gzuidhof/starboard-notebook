@@ -1,4 +1,4 @@
-import type { Runtime } from "starboard-notebook/dist/src/types";
+import type { Runtime } from "../../starboard-notebook/src/types";
 import { flatPromise } from "./flatPromise";
 import {
   loadPyodide,

@@ -45,8 +45,8 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "rollup-plugin-web-worker-loader": "^1.6.1",
-    "starboard-notebook": "^0.14.1",
     "starlit": "^0.1.17",
     "typescript": "^4.3.5"
-  }
+  },
+  "gitHead": "b15f45c8b05fc307df6d9c36953098eb0b0167d2"
 }

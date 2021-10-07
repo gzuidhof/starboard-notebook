@@ -6,7 +6,7 @@ import { assertUnreachable } from "./util";
 import type { KernelManagerMessage, KernelManagerResponse, KernelSource } from "./worker/kernel";
 import type { PyodideWorkerOptions, PyodideWorkerResult } from "./worker/worker-message";
 import { AsyncMemory } from "./worker/async-memory";
-import type { Runtime } from "starboard-notebook/dist/src/types";
+import type { Runtime } from "../../starboard-notebook/src/types";
 import { ObjectProxyHost } from "./worker/object-proxy";
 import { mainThreadPyodide } from "./main-thread-pyodide";
 
