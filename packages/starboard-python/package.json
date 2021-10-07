@@ -1,6 +1,6 @@
 {
   "name": "starboard-python",
-  "version": "0.7.3",
+  "version": "0.14.1",
   "description": "Python cells for Starboard Notebook",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -45,7 +45,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "rollup-plugin-web-worker-loader": "^1.6.1",
-    "starboard-notebook": "^0.14.0",
+    "starboard-notebook": "^0.14.1",
     "starlit": "^0.1.17",
     "typescript": "^4.3.5"
   }
