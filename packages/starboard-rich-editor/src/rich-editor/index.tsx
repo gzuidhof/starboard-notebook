@@ -20,7 +20,7 @@ import { SearchResult } from "rich-markdown-editor/dist/components/LinkEditor";
 import { EmbedDescriptor, ToastType } from "rich-markdown-editor/dist/types";
 import SelectionToolbar from "rich-markdown-editor/dist/components/SelectionToolbar";
 import BlockMenu from "rich-markdown-editor/dist/components/BlockMenu";
-// import EmojiMenu from "rich-markdown-editor/dist/components/EmojiMenu";
+import EmojiMenu from "rich-markdown-editor/dist/components/EmojiMenu";
 import LinkToolbar from "rich-markdown-editor/dist/components/LinkToolbar";
 import Tooltip from "rich-markdown-editor/dist/components/Tooltip";
 import Extension from "rich-markdown-editor/dist/lib/Extension";
@@ -41,7 +41,7 @@ import BulletList from "rich-markdown-editor/dist/nodes/BulletList";
 import CodeBlock from "./nodes/CodeBlock";
 import CodeFence from "./nodes/CodeFence";
 import CheckboxList from "rich-markdown-editor/dist/nodes/CheckboxList";
-// import Emoji from "rich-markdown-editor/dist/nodes/Emoji";
+import Emoji from "rich-markdown-editor/dist/nodes/Emoji";
 import CheckboxItem from "rich-markdown-editor/dist/nodes/CheckboxItem";
 import Embed from "rich-markdown-editor/dist/nodes/Embed";
 import HardBreak from "rich-markdown-editor/dist/nodes/HardBreak";
@@ -69,7 +69,7 @@ import Underline from "rich-markdown-editor/dist/marks/Underline";
 
 // plugins
 import BlockMenuTrigger from "rich-markdown-editor/dist/plugins/BlockMenuTrigger";
-// import EmojiTrigger from "rich-markdown-editor/dist/plugins/EmojiTrigger";
+import EmojiTrigger from "rich-markdown-editor/dist/plugins/EmojiTrigger";
 // import Folding from "rich-markdown-editor/dist/plugins/Folding";
 import History from "rich-markdown-editor/dist/plugins/History";
 import Keys from "rich-markdown-editor/dist/plugins/Keys";
@@ -119,7 +119,7 @@ export type Props = {
     | "td"
     | "th"
     | "tr"
-    // | "emoji"
+    | "emoji"
   )[];
   autoFocus?: boolean;
   readOnly?: boolean;
@@ -163,7 +163,7 @@ type State = {
   blockMenuOpen: boolean;
   linkMenuOpen: boolean;
   blockMenuSearch: string;
-  // emojiMenuOpen: boolean;
+  emojiMenuOpen: boolean;
 };
 
 type Step = {
@@ -196,7 +196,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
     blockMenuOpen: false,
     linkMenuOpen: false,
     blockMenuSearch: "",
-    // emojiMenuOpen: false,
+    emojiMenuOpen: false,
   };
 
   isBlurred: boolean;
@@ -324,7 +324,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
             dictionary,
             onShowToast: this.props.onShowToast,
           }),
-          // new Emoji(),
+          new Emoji(),
           new Text(),
           new CheckboxList(),
           new CheckboxItem(),
@@ -387,14 +387,14 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
             onOpen: this.handleOpenBlockMenu,
             onClose: this.handleCloseBlockMenu,
           }),
-          // new EmojiTrigger({
-          //   onOpen: (search: string) => {
-          //     this.setState({ emojiMenuOpen: true, blockMenuSearch: search });
-          //   },
-          //   onClose: () => {
-          //     this.setState({ emojiMenuOpen: false });
-          //   },
-          // }),
+          new EmojiTrigger({
+            onOpen: (search: string) => {
+              this.setState({ emojiMenuOpen: true, blockMenuSearch: search });
+            },
+            onClose: () => {
+              this.setState({ emojiMenuOpen: false });
+            },
+          }),
           new Placeholder({
             placeholder: this.props.placeholder,
           }),
@@ -764,7 +764,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   onClose={this.handleCloseLinkMenu}
                   tooltip={tooltip}
                 />
-                {/* <EmojiMenu
+                <EmojiMenu
                   view={this.view}
                   commands={this.commands}
                   dictionary={dictionary}
@@ -772,7 +772,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
                   isActive={this.state.emojiMenuOpen}
                   search={this.state.blockMenuSearch}
                   onClose={() => this.setState({ emojiMenuOpen: false })}
-                /> */}
+                />
                 <BlockMenu
                   view={this.view}
                   commands={this.commands}

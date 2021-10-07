@@ -77,6 +77,6 @@
         "prosemirror-transform": "^1.2.12",
         "prosemirror-view": "^1.18.1",
         "react-popper": "^2.2.5",
-        "rich-markdown-editor": "^11.18.4"
+        "rich-markdown-editor": "^11.18.6"
     }
 }

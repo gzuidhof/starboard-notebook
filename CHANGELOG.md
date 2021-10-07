@@ -9,6 +9,7 @@
   - One copy of `prosemirror-view` instead of two.  
   This saves around 30% in final Javascript bundle size.
 - Fix an additional `\` being added to any `\` inside of inline LaTeX blocks (e.g. `$\LaTeX$` would become `$\\LaTeX$`).
+- Fix emoji menu in rich markdown editor when inserting emoji's through colon codes such as `:rocket:`.
 
 ## Release 0.14.0
 

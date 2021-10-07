@@ -1,4 +1,6 @@
 ---
+nbtest:
+  skip: true
 starboard:
   plugins:
     - src: "https://cdn.jsdelivr.net/npm/nasync-js@0.1.0/dist/index.js"
