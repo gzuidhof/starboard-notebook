@@ -21,6 +21,18 @@ jobs:
     - name: Setup Chromium
       uses: browser-actions/setup-chrome@latest
 
+    - name: Build Starboard Python
+      working-directory: packages/starboard-python
+      run: |
+        npm install
+        npm run build
+  
+    - name: Build Starboard Rich Editor
+      working-directory: packages/starboard-rich-editor
+      run: |
+        npm install
+        npm run build
+
     - name: Build
       working-directory: packages/starboard-notebook
       run: |

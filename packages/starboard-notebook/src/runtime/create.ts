@@ -50,8 +50,8 @@ import {
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
 function getInitialContent() {
-  if (window.initialNotebookContent) {
-    return textToNotebookContent(window.initialNotebookContent);
+  if ((window as any).initialNotebookContent) {
+    return textToNotebookContent((window as any).initialNotebookContent);
   }
 
   const notebookContentElement = document.querySelector('script[type="application/vnd.starboard.nb"]');
@@ -68,10 +68,10 @@ function getConfig() {
     defaultTextEditor: "codemirror",
   };
 
-  if (window.runtimeConfig) {
+  if ((window as any).runtimeConfig) {
     config = {
       ...config,
-      ...window.runtimeConfig,
+      ...(window as any).runtimeConfig,
     };
   }
   return config;

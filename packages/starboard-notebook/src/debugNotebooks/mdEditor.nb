@@ -1,10 +1,12 @@
 # %% [markdown]
 # Some title
 
+:rocket:
+
 $\LaTeX$
 
 $$
-block
+\frac{\LaTeX}{\LaTeX}
 $$
 
 ```javascript

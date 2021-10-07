@@ -46,6 +46,7 @@
         "@types/react-dom": "^17.0.9",
         "@types/styled-components": "^5.1.14",
         "prettier": "^2.2.1",
+        "process": "^0.11.10",
         "raw-loader": "^4.0.0",
         "rimraf": "^3.0.2",
         "typescript": "^4.2.4",
@@ -76,6 +77,6 @@
         "prosemirror-transform": "^1.2.12",
         "prosemirror-view": "^1.18.1",
         "react-popper": "^2.2.5",
-        "rich-markdown-editor": "^11.18.4"
+        "rich-markdown-editor": "^11.18.6"
     }
 }

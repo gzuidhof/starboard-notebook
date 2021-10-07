@@ -1,14 +1,13 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const { ESBuildMinifyPlugin } = require('esbuild-loader')
 
 const webpack = require('webpack')
-
-const pkg = require("../../package.json");
+  
+const pkg = require("././package.json");
 
 const baseConfig = {
     entry: ['./src/publicPath.ts', './src/main.ts'],
@@ -22,7 +21,9 @@ const baseConfig = {
         extensions: ['.ts', '.tsx', '.js', '.d.ts'],
         alias: {
             "react": path.resolve("./node_modules/preact/compat"),
-            "react-dom": path.resolve("./node_modules/preact/compat")
+            "react-dom": path.resolve("./node_modules/preact/compat"),
+            "markdown-it" : path.resolve(path.join(__dirname, 'node_modules/markdown-it')),
+            "prosemirror-view" : path.resolve(path.join(__dirname, 'node_modules/starboard-rich-editor/node_modules/rich-markdown-editor/node_modules/prosemirror-view')),
         },
         fallback: { "assert": require.resolve("assert/") }
     },
@@ -37,18 +38,12 @@ const baseConfig = {
         chunkIds: "named",
         usedExports: true,
         splitChunks: false,
+        
         minimizer: [
-            new CssMinimizerPlugin(),
-            new TerserPlugin({
-                parallel: true,
-                terserOptions: {
-                    compress: {
-                        passes: 3,
-                    },
-                    ecma: 2018,
-                    // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
-                }
-            }),
+            new ESBuildMinifyPlugin({
+                target: "es2018",
+                css: true
+            })
         ]
     },
     stats: "minimal",
