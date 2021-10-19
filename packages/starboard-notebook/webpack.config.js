@@ -23,8 +23,8 @@ const baseConfig = {
             "react": path.resolve("./node_modules/preact/compat"),
             "react-dom": path.resolve("./node_modules/preact/compat"),
             "markdown-it": path.resolve(path.join(__dirname, 'node_modules/markdown-it')),
-            "prosemirror-view": path.resolve(path.join(__dirname, 'node_modules/starboard-rich-editor/node_modules/rich-markdown-editor/node_modules/prosemirror-view')),
-            "katex": path.resolve(path.join(__dirname, 'node_modules/starboard-rich-editor/node_modules/katex')),
+            "prosemirror-view": path.resolve(path.join(__dirname, '../starboard-rich-editor/node_modules/rich-markdown-editor/node_modules/prosemirror-view')),
+            "katex": path.resolve(path.join(__dirname, '../starboard-rich-editor/node_modules/katex')),
         },
         fallback: { "assert": require.resolve("assert/") }
     },
