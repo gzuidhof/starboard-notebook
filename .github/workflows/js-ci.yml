@@ -20,6 +20,9 @@ jobs:
         
     - name: Setup Chromium
       uses: browser-actions/setup-chrome@latest
+    - name: Install using Lerna
+      run: |
+        npm run lerna install
 
     - name: Build Starboard Python
       working-directory: packages/starboard-python
