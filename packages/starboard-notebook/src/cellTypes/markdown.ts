@@ -9,19 +9,9 @@ import { cellControlsTemplate } from "../components/controls";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell } from "../types";
 import { CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../types";
-import { promiseState } from "./javascript/util";
 
 import { StarboardRichEditorElement } from "starboard-rich-editor";
 import { hasParentWithId } from "../components/helpers/dom";
-import { getMarkdownItWithDefaultPlugins } from "../components/helpers/markdown";
-
-const mdLoader = getMarkdownItWithDefaultPlugins();
-const md = mdLoader.md;
-const katexHookPromise = mdLoader.katexLoaded;
-
-async function isKatexAlreadyLoaded() {
-  return (await promiseState(katexHookPromise)) === "fulfilled";
-}
 
 type EditMode = "wysiwyg" | "code" | "display";
 const DEFAULT_EDIT_MODE = "wysiwyg";

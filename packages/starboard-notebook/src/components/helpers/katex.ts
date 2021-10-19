@@ -3,10 +3,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import katex from "katex";
-import MarkdownIt from "markdown-it";
 import { flatPromise } from "./flatPromise";
 
-const { resolve, promise: katexPromise } = flatPromise<{ katex: typeof katex /*katexPlugin: any*/ }, undefined>();
+const { resolve, promise: katexPromise } = flatPromise<{ katex: typeof katex }, undefined>();
 
 /**
  * Will eventually resolve to katex if loadModule is ever called (indirectly).
@@ -14,18 +13,10 @@ const { resolve, promise: katexPromise } = flatPromise<{ katex: typeof katex /*k
 export const katexEventualPromise = katexPromise;
 
 async function loadModule() {
-  resolve(await import(/* webpackChunkName: "katex", webpackPrefetch: true */ "./katexModule"));
+  resolve(await import(/* webpackChunkName: "katex", webpackPrefetch: false */ "./katexModule"));
   return katexPromise;
 }
 
 export function katexLoader() {
   return loadModule().then((m) => m.katex);
 }
-
-export async function hookMarkdownItToKaTeX(markdownItInstance: MarkdownIt) {}
-//   const m = await loadModule();
-//   markdownItInstance.use(m.katexPlugin, {
-//     throwOnError: false,
-//     errorColor: " #cc0000",
-//   });
-// }
