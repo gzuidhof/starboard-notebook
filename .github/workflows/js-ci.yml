@@ -24,15 +24,15 @@ jobs:
       run: |
         npm i
         npm run lerna bootstrap
-
-    - name: Build Starboard Python
-      working-directory: packages/starboard-python
+        
+    - name: Build Starboard Rich Editor
+      working-directory: packages/starboard-rich-editor
       run: |
         npm install
         npm run build
-  
-    - name: Build Starboard Rich Editor
-      working-directory: packages/starboard-rich-editor
+
+    - name: Build Starboard Python
+      working-directory: packages/starboard-python
       run: |
         npm install
         npm run build
