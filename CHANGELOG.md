@@ -1,5 +1,16 @@
 # Changelog
+
+## Release 0.14.2
+
+**Date:** 2021-10-19
+
+- Fix Python not running in main thread by default in the previous release (0.14.1).
+- Fixed some Typescript typing issues in starboard-python, it should now build out of the box.
+- Starboard now includes full source maps (finally!), so errors are much easier to debug.
+- KaTeX fonts are no longer included twice.
+
 ## Release 0.14.1
+
 **Date:** 2021-10-07
 
 - Fix version number in the footer of the notebook
@@ -7,7 +18,7 @@
 - Decreased bundle size a bit by convincing Webpack to only include
   - One copy of `markdown-it` instead of three.
   - One copy of `prosemirror-view` instead of two.  
-  This saves around 30% in final Javascript bundle size.
+    This saves around 30% in final Javascript bundle size.
 - Fix an additional `\` being added to any `\` inside of inline LaTeX blocks (e.g. `$\LaTeX$` would become `$\\LaTeX$`).
 - Fix emoji menu in rich markdown editor when inserting emoji's through colon codes such as `:rocket:`.
 

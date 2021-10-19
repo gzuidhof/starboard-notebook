@@ -8,28 +8,25 @@ import type { KernelManagerType, WorkerKernel } from "./kernel";
 import { PyodideWorkerOptions, PyodideWorkerResult } from "./worker-message";
 import { EMFS } from "./emscripten-fs";
 
+type LoadPyodideFunction = (config: {
+      indexURL: string;
+      stdin?: () => any | null;
+      print?: (text: string) => void;
+      printErr?: (text: string) => void;
+    }) =>  Promise<PyodideType>;
+
 declare global {
   interface WorkerGlobalScope {
     /**
      * The object managing all the kernels in this web worker
      */
     manager: KernelManagerType;
+    loadPyodide: LoadPyodideFunction
   }
 }
 
-declare global {
-  interface WorkerGlobalScope {
-    loadPyodide(config: {
-      indexURL: string;
-      stdin?: () => any | null;
-      print?: (text: string) => void;
-      printErr?: (text: string) => void;
-    }): Promise<PyodideType>;
-  }
-}
-
-const manager: KernelManagerType = self?.manager ?? (globalThis as any).manager;
-const loadPyodide: typeof self.loadPyodide = self?.loadPyodide ?? (globalThis as any).loadPyodide;
+const manager: KernelManagerType = (globalThis as any)?.manager ?? (globalThis as any).manager;
+const loadPyodide: LoadPyodideFunction = (self as any)?.loadPyodide ?? (globalThis as any).loadPyodide;
 
 class PyodideKernel implements WorkerKernel {
   kernelId: string;

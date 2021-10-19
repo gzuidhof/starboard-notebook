@@ -6,7 +6,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const { ESBuildMinifyPlugin } = require('esbuild-loader')
 
 const webpack = require('webpack')
-  
+
 const pkg = require("././package.json");
 
 const baseConfig = {
@@ -22,8 +22,9 @@ const baseConfig = {
         alias: {
             "react": path.resolve("./node_modules/preact/compat"),
             "react-dom": path.resolve("./node_modules/preact/compat"),
-            "markdown-it" : path.resolve(path.join(__dirname, 'node_modules/markdown-it')),
-            "prosemirror-view" : path.resolve(path.join(__dirname, 'node_modules/starboard-rich-editor/node_modules/rich-markdown-editor/node_modules/prosemirror-view')),
+            "markdown-it": path.resolve(path.join(__dirname, 'node_modules/markdown-it')),
+            "prosemirror-view": path.resolve(path.join(__dirname, 'node_modules/starboard-rich-editor/node_modules/rich-markdown-editor/node_modules/prosemirror-view')),
+            "katex": path.resolve(path.join(__dirname, 'node_modules/starboard-rich-editor/node_modules/katex')),
         },
         fallback: { "assert": require.resolve("assert/") }
     },
@@ -38,7 +39,7 @@ const baseConfig = {
         chunkIds: "named",
         usedExports: true,
         splitChunks: false,
-        
+
         minimizer: [
             new ESBuildMinifyPlugin({
                 target: "es2018",
@@ -84,7 +85,7 @@ const baseConfig = {
             },
             {
                 test: /\.ico$|\.ttf$|\.woff2$/,
-                use: ['file-loader?name=[name].[hash].[ext]'],
+                use: ['file-loader?name=[name].[ext]'],
                 exclude: [/.*KaTeX.*.ttf/],
             },
             { // KaTeX ttf fonts are not emitted. Starboard only supports browsers that understand woff2 anyway.
@@ -151,6 +152,8 @@ module.exports = (env, argv) => {
             test: /\.(nb|sbnb)$/,
             use: 'raw-loader',
         })
+    } else {
+        config.devtool = "source-map";
     }
 
     if (argv.stats) {

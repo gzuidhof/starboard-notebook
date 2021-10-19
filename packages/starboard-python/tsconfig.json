@@ -3,7 +3,14 @@
     "target": "es2020",
     "module": "es2020",
     "moduleResolution": "node",
-    "lib": ["es2020", "es2019", "es2018", "es2017", "dom"],
+    "lib": [
+      "es2020",
+      "es2019",
+      "es2018",
+      "es2017",
+      "dom",
+      "WebWorker"
+    ],
     "declaration": false,
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
@@ -12,6 +19,12 @@
     "esModuleInterop": true,
     "experimentalDecorators": true
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "src/worker/pyodide-worker.ts", "src/worker/tsconfig.json"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/worker/pyodide-worker.ts",
+    "src/worker/tsconfig.json"
+  ]
 }

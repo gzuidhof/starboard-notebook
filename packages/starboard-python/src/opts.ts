@@ -15,7 +15,6 @@ export function getPluginOpts() {
 
 export function setPluginOpts(opts: StarboardPythonPluginOpts) {
   pluginOpts = opts;
-  pluginOpts.runInMainThread = false;
 }
 
 /**
@@ -26,5 +25,4 @@ export function updatePluginOptions(opts: Partial<StarboardPythonPluginOpts>) {
     ...pluginOpts,
     ...opts,
   };
-  pluginOpts.runInMainThread = false;
 }

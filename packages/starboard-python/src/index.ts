@@ -17,7 +17,6 @@ export { runStarboardPython } from "./run.js";
 
 declare global {
   interface Window {
-    runtime: Runtime;
     $_: any;
   }
 }

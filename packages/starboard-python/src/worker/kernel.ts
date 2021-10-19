@@ -181,14 +181,6 @@ class KernelManager {
 // https://stackoverflow.com/questions/49392409/in-typescript-how-to-export-the-type-of-a-private-class-without-exporting-class
 export type KernelManagerType = InstanceType<typeof KernelManager>;
 
-declare global {
-  interface WorkerGlobalScope {
-    /**
-     * The object managing all the kernels in this web worker
-     */
-    manager: KernelManagerType;
-  }
-}
 
 // @ts-ignore
 globalThis.manager = new KernelManager();

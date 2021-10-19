@@ -56,7 +56,6 @@
         "@babel/parser": "^7.10.5",
         "@benrbray/prosemirror-math": "^0.1.4",
         "@github/mini-throttle": "^2.0.1",
-        "@iktakahiro/markdown-it-katex": "^4.0.1",
         "@popperjs/core": "^2.10.1",
         "katex": "^0.13.10",
         "lit": "*",
