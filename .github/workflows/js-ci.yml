@@ -23,7 +23,7 @@ jobs:
     - name: Install using Lerna
       run: |
         npm i
-        npm run lerna install
+        npm run lerna bootstrap
 
     - name: Build Starboard Python
       working-directory: packages/starboard-python
