@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.14.3
+**Date:** Unreleased
+
+- Update Pyodide to 0.18.1 (from 0.17.0).
+
 ## Release 0.14.2
 
 **Date:** 2021-10-19

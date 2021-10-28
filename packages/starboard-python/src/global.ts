@@ -3,7 +3,7 @@ import css from "./pyodide/pyodide-styles.css";
 import { getPluginOpts } from "./opts";
 import { nanoid } from "nanoid";
 import { assertUnreachable } from "./util";
-import type { KernelManagerMessage, KernelManagerResponse, KernelSource } from "./worker/kernel";
+import type { KernelManagerMessage, KernelManagerResponse, KernelSource, WorkerKernel } from "./worker/kernel";
 import type { PyodideWorkerOptions, PyodideWorkerResult } from "./worker/worker-message";
 import { AsyncMemory } from "./worker/async-memory";
 import type { Runtime } from "../../starboard-notebook/src/types";
@@ -18,7 +18,7 @@ import pyodideWorkerScriptSource from "../dist/pyodide-worker.js";
 let setupStatus: "unstarted" | "started" | "completed" = "unstarted";
 let loadingStatus: "unstarted" | "loading" | "ready" = "unstarted";
 let pyodideLoadSingleton: Promise<string> | undefined = undefined;
-let mainThreadPyodideRunner: ((code: string) => Promise<any>) | undefined = undefined;
+let mainThreadPyodideRunner: WorkerKernel | undefined = undefined;
 let kernelManager: Worker;
 let objectProxyHost: ObjectProxyHost | null = null;
 const runningCode = new Map<string, (value: any) => void>();
@@ -36,7 +36,7 @@ function drawCanvas(pixels: number[], width: number, height: number) {
   if (!CURRENT_HTML_OUTPUT_ELEMENT) {
     console.log("HTML output from pyodide but nowhere to put it, will append to body instead.");
     document.querySelector("body")!.appendChild(elem);
-  } else {
+  } else { 
     CURRENT_HTML_OUTPUT_ELEMENT.appendChild(elem);
   }
   const image = new ImageData(new Uint8ClampedArray(pixels), width, height);
@@ -62,21 +62,21 @@ export function setupPythonSupport() {
   }
   setupStatus = "started";
 
-  /** Naughty matplotlib WASM backend captures and disables contextmenu globally.. hack to prevent that */
-  window.addEventListener(
-    "contextmenu",
-    function (event) {
-      if (
-        event.target instanceof HTMLElement &&
-        event.target.id.startsWith("matplotlib_") &&
-        event.target.tagName === "CANVAS"
-      ) {
-        return false;
-      }
-      event.stopPropagation();
-    },
-    true
-  );
+  // /** Naughty matplotlib WASM backend captures and disables contextmenu globally.. hack to prevent that */
+  // window.addEventListener(
+  //   "contextmenu",
+  //   function (event) {
+  //     if (
+  //       event.target instanceof HTMLElement &&
+  //       event.target.id.startsWith("matplotlib_") &&
+  //       event.target.tagName === "CANVAS"
+  //     ) {
+  //       return false;
+  //     }
+  //     event.stopPropagation();
+  //   },
+  //   true
+  // );
 
   const styleSheet = document.createElement("style");
   styleSheet.id = "pyodide-styles";
@@ -297,7 +297,7 @@ export async function runPythonAsync(code: string, runtime: Runtime) {
 
   if (getPluginOpts().runInMainThread) {
     if (mainThreadPyodideRunner) {
-      const result = await mainThreadPyodideRunner(code);
+      const result = await mainThreadPyodideRunner.runCode(code);
       return await convertResult(result, runtime);
     } else {
       console.error("Missing main thread pyodide");

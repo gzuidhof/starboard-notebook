@@ -2,12 +2,12 @@
  * Matplotlib currently creates a dom element which never gets attached to the DOM.
  * Without a way to specify our own DOM node creation function, we override it here - saving us from shipping our own matplotlib package.
  */
-export function patchMatplotlib(module: { runPythonSimple: (code: string) => any }) {
+export function patchMatplotlib(module: { runPython: (code: string) => any }) {
   // Switch to simpler matplotlib backend https://github.com/jupyterlite/jupyterlite/blob/main/packages/pyolite-kernel/py/pyolite/pyolite/patches.py
-  module.runPythonSimple(`import os
+  module.runPython(`import os
 os.environ["MPLBACKEND"] = "AGG"`);
 
-  module.runPythonSimple(`import matplotlib
+  module.runPython(`import matplotlib
 import matplotlib.pyplot
 from pyodide import create_proxy
 from js import drawPyodideCanvas

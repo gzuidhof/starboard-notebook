@@ -9,7 +9,8 @@
     "build": "rimraf dist && rollup -c rollup.config.ts",
     "test": "starlit nbtest test --timeout=60",
     "test:nocoi": "starlit nbtest test --timeout=60 --cross_origin_isolated=false",
-    "prepublishOnly": "npm i && npm run build"
+    "prepublishOnly": "npm i && npm run build",
+    "postinstall": "patch-package"
   },
   "repository": {
     "type": "git",
@@ -30,7 +31,7 @@
   "homepage": "https://github.com/gzuidhof/starboard-notebook#readme",
   "dependencies": {
     "@types/katex": "^0.11.1",
-    "lit": "*"
+    "pyodide": "^0.18.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^19.0.2",
@@ -38,6 +39,7 @@
     "@types/markdown-it": "^12.0.3",
     "clean-css": "^5.1.3",
     "nanoid": "^3.1.23",
+    "patch-package": "^6.4.7",
     "rimraf": "^3.0.2",
     "rollup": "^2.55.0",
     "rollup-plugin-dts": "^3.0.2",
