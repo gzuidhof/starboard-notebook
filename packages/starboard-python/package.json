@@ -45,6 +45,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "rollup-plugin-web-worker-loader": "^1.6.1",
+    "starboard-rich-editor": "^0.14.2",
     "starlit": "^0.1.17",
     "typescript": "^4.3.5"
   },

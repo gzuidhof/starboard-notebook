@@ -1,15 +1,14 @@
 {
-    "name": "starboard-monorepo",
-    "version": "0.0.1",
-    "private": true,
-    "files": [],
-    "scripts": {
-        "bootstrap": "lerna bootstrap",
-        "build": "lerna run build",
-        "lerna": "lerna",
-        "build:all": "lerna run build:all"
-    },
-    "devDependencies": {
-        "lerna": "^4.0.0"
-    }
+  "name": "starboard-monorepo",
+  "version": "0.0.1",
+  "private": true,
+  "files": [],
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build --sort",
+    "lerna": "lerna"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
 }
