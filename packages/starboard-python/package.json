@@ -9,7 +9,6 @@
     "build": "rimraf dist && rollup -c rollup.config.ts",
     "test": "starlit nbtest test --timeout=60",
     "test:nocoi": "starlit nbtest test --timeout=60 --cross_origin_isolated=false",
-    "prepublishOnly": "npm i && npm run build",
     "postinstall": "patch-package"
   },
   "repository": {
@@ -51,5 +50,5 @@
     "starlit": "^0.1.17",
     "typescript": "^4.3.5"
   },
-  "gitHead": "10cdf2a7e9ec6a48bbe14acdb2cc4322e63730c4"
+  "gitHead": "02292236883300338a1f65002286472353294169"
 }
