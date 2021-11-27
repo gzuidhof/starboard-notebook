@@ -63,8 +63,6 @@ class PyodideKernel implements WorkerKernel {
     let artifactsURL = this.options.artifactsUrl || "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/";
     if (!artifactsURL.endsWith("/")) artifactsURL += "/";
 
-    /* self.importScripts(artifactsURL + "pyodide.js"); // Not used, we're importing our own pyodide.ts*/
-
     if (!manager.proxy && !this.options.isMainThread) {
       console.warn("Missing object proxy, some Pyodide functionality will be restricted");
     }
@@ -84,7 +82,6 @@ class PyodideKernel implements WorkerKernel {
 
     if (manager.syncFs) {
       const FS = this.pyodide._module.FS;
-      console.log(FS);
       try {
         FS.mkdir("/mnt");
       } catch (e) {
@@ -162,13 +159,8 @@ class PyodideKernel implements WorkerKernel {
         result = result._repr_latex_();
         displayType = "latex";
       } else {
-        const temp = result;
-        result = result.toJs();
-
-        if (typeof globalThis === "undefined") {
-          this.destroyToJsResult(result);
-          temp?.destroy();
-        }
+        result = result.__str__();
+        displayType = "default"
       }
     } else if (result instanceof this.pyodide.PythonError) {
       result = result + "";

@@ -142,8 +142,8 @@ function loadKernelManager(runtime?: Runtime) {
     return prompt();
   });
   // TODO: Remove 'as any' once the starboard typings get updated
-  const filesystemId = (runtime?.internal as any)?.fs
-    ? objectProxyHost?.registerRootObject((runtime?.internal as any)?.fs)
+  const filesystemId = runtime?.internal?.fs
+    ? objectProxyHost?.registerRootObject(runtime?.internal?.fs)
     : undefined;
 
   worker.addEventListener("message", (ev: MessageEvent) => {

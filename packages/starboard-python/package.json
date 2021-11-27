@@ -2,9 +2,9 @@
   "name": "starboard-python",
   "version": "0.14.2",
   "description": "Python cells for Starboard Notebook",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "dist/starboardPython.js",
+  "module": "dist/starboardPython.js",
+  "typings": "dist/starboardPython.d.ts",
   "scripts": {
     "build": "rimraf dist && rollup -c rollup.config.ts",
     "test": "starlit nbtest test --timeout=60",

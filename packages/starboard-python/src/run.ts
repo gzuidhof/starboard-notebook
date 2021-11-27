@@ -46,7 +46,7 @@ export async function runStarboardPython(
   try {
     pythonRunChain = runPythonAsync(codeToRun, runtime);
     val = await pythonRunChain;
-    window.$_ = val;
+    
   
     if (val !== undefined) {
       // The result can be multiple types
@@ -109,7 +109,7 @@ export async function runStarboardPython(
         });
       }
     }
-  } catch (e) {
+  } catch (e: any) {
     error = e;
     outputElement.addEntry({
       method: "error",

@@ -14,12 +14,6 @@ import { setPluginOpts, StarboardPythonPluginOpts, updatePluginOptions } from ".
 export { getPyodideLoadingStatus, setupPythonSupport, loadPyodide, setGlobalPythonOutputElement };
 export { runStarboardPython } from "./run.js";
 
-declare global {
-  interface Window {
-    $_: any;
-  }
-}
-
 export function registerPython(runtime: Runtime) {
   setupPythonSupport();
 

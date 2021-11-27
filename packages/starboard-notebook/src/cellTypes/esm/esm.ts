@@ -78,7 +78,6 @@ export class ESModuleCellHandler extends BaseCellHandler {
     await this.outputElement.unhookAfterOneTick(this.runtime.consoleCatcher);
 
     const val = out.default;
-    window.$_ = val;
 
     if (out) {
       Object.assign(window, out);
