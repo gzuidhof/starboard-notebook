@@ -28,12 +28,12 @@ const baseConfig = {
         },
         fallback: { "assert": require.resolve("assert/") }
     },
-    // cache: {
-    //     type: "filesystem",
-    //     buildDependencies: {
-    //         config: [__filename],
-    //     },
-    // },
+    cache: {
+        type: "filesystem",
+        buildDependencies: {
+            config: [__filename],
+        },
+    },
     optimization: {
         moduleIds: "named",
         chunkIds: "named",
