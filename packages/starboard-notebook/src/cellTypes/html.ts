@@ -5,7 +5,7 @@
 import { html, render, TemplateResult } from "lit";
 import { BaseCellHandler } from "./base";
 import { cellControlsTemplate } from "../components/controls";
-import { unsafeHTML } from "lit/directives/unsafe-html";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell, CellElements, CellHandlerAttachParameters, ControlButton, Runtime } from "../types";
 

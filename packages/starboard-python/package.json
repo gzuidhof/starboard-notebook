@@ -9,7 +9,7 @@
     "build": "rimraf dist && rollup -c rollup.config.ts",
     "test": "starlit nbtest test --timeout=60",
     "test:nocoi": "starlit nbtest test --timeout=60 --cross_origin_isolated=false",
-    "postinstall": "patch-package"
+    "postinstall": "node node_modules/patch-package/dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
   "homepage": "https://github.com/gzuidhof/starboard-notebook#readme",
   "dependencies": {
     "@types/katex": "^0.11.1",
+    "lit": "^2.0.2",
     "pyodide": "^0.18.1"
   },
   "devDependencies": {

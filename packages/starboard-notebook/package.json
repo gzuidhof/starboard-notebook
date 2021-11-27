@@ -29,7 +29,7 @@
     "nbtest:dev": "starlit nbtest test/notebooks --starboard_artifacts http://localhost:9001 --timeout 45 --serve",
     "lint": "eslint src/**/*.ts test/**/*.ts && prettier -c src test",
     "format": "prettier -w src test",
-    "prepublishOnly": "npm i && npm t && npm run build"
+    "prepublishOnly": "yarn iinstall && yarn test && yarn run build"
   },
   "main": "dist/starboard-notebook.js",
   "files": [
@@ -68,7 +68,6 @@
     "mini-css-extract-plugin": "^2.4.2",
     "monaco-editor-webpack-plugin": "^3.1.0",
     "node-fetch": "^2.6.1",
-    "patch-package": "^6.4.7",
     "prettier": "^2.2.1",
     "process": "^0.11.10",
     "raw-loader": "^4.0.0",
@@ -122,7 +121,7 @@
     "js-yaml": "^4.1.0",
     "jsesc": "^2.5.2",
     "katex": "^0.13.10",
-    "lit": "*",
+    "lit": "^2.0.2",
     "markdown-it": "^12.2.0",
     "markdown-it-emoji": "^2.0.0",
     "monaco-editor": "^0.23.0",

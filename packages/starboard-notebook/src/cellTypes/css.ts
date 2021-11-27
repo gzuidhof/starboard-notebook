@@ -4,7 +4,7 @@
 
 import { html, render } from "lit";
 import { BaseCellHandler } from "./base";
-import { unsafeHTML } from "lit/directives/unsafe-html";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { StarboardTextEditor } from "../components/textEditor";
 import { Cell, CellElements, CellHandlerAttachParameters, Runtime } from "../types";
 

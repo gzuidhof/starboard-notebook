@@ -8,7 +8,7 @@
  */
 
 import { html, LitElement, render } from "lit";
-import { unsafeHTML } from "lit/directives/unsafe-html";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { customElement, query } from "lit/decorators.js";
 
 import { Cell, Runtime } from "../types";

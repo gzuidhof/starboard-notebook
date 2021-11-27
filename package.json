@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "files": [],
+  "license": "MPL-2.0",
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build --sort",

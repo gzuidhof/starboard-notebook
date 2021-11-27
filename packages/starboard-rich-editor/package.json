@@ -58,7 +58,7 @@
         "@github/mini-throttle": "^2.0.1",
         "@popperjs/core": "^2.10.1",
         "katex": "^0.13.10",
-        "lit": "*",
+        "lit": "^2.0.2",
         "lodash": "^4.17.21",
         "markdown-it": "^12.2.0",
         "markdown-it-emoji": "^2.0.0",
@@ -76,7 +76,8 @@
         "prosemirror-transform": "^1.2.12",
         "prosemirror-view": "^1.18.1",
         "react-popper": "^2.2.5",
-        "rich-markdown-editor": "^11.18.6"
+        "rich-markdown-editor": "^11.18.6",
+        "styled-components": "^5.3.3"
     },
     "gitHead": "02292236883300338a1f65002286472353294169"
 }

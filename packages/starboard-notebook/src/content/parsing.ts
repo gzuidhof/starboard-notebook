@@ -116,7 +116,7 @@ export function parseNotebookContent(notebookContentString: string) {
     }
   }
 
-  let metadata = {};
+  let metadata: any = {};
   if (yamlHeaderStartIndex !== undefined) {
     if (yamlHeaderEndIndex === undefined) {
       console.warn("Notebook YAML header didn't have closing '---', all lines before the first cell will be used");
@@ -139,7 +139,7 @@ export function parseNotebookContent(notebookContentString: string) {
       if (typeof metadata !== "object") {
         throw new Error("Failed to parse notebook metadata - it should be a map at the root.");
       }
-    } catch (e) {
+    } catch (e: any) {
       // The metadata is invalid, throw error - we can't recover.
       console.error("Notebook metadata failed to parse");
       throw e;
@@ -220,7 +220,7 @@ export function parseNotebookContent(notebookContentString: string) {
                   )}), it must be a YAML map (e.g. not a primitive value or an array).`
                 );
               }
-            } catch (e) {
+            } catch (e: any) {
               console.error(
                 `Cell (type: ${currentCell.type}) metadata (${JSON.stringify(
                   currentCell.lines

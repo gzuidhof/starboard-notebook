@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.15.1
+**Date:** 2021-11-26
+
+- Switch from NPM to Yarn.. to fix issues in `rich-markdown-editor`, which caused 0.15.0 to be broken undeterministically.
+
 ## Release 0.15.0
 **Date:** 2021-11-26
 
