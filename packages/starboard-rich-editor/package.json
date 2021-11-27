@@ -1,6 +1,6 @@
 {
     "name": "starboard-rich-editor",
-    "version": "0.15.0",
+    "version": "0.15.1",
     "description": "Rich text editor used in Starboard Notebook",
     "author": "Guido Zuidhof <me@guido.io>",
     "funding": {
