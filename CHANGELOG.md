@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.15.3
+**Date:** 2021-11-27
+
+- Add workaround for pyodide global not being present.
+
 ## Release 0.15.2
 **Date:** 2021-11-27
 

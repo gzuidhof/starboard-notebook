@@ -114,6 +114,9 @@ class PyodideKernel implements WorkerKernel {
       return;
     }
 
+    // Again: no clue why this is necessary and only doing it in init doesn't suffice
+    (globalThis as any).pyodide = this.pyodide;
+
     // We prevent some spam, otherwise every time you run a cell with an import it will show
     // "Loading bla", "Bla was already loaded from default channel", "Loaded bla"
     let wasAlreadyLoaded: boolean | undefined = undefined;
@@ -165,6 +168,8 @@ class PyodideKernel implements WorkerKernel {
     } else if (result instanceof this.pyodide.PythonError) {
       result = result + "";
     }
+
+    this.destroyToJsResult(result);
 
     return {
       display: displayType,
@@ -264,11 +269,6 @@ class PyodideKernel implements WorkerKernel {
     if (this.pyodide.isPyProxy(x)) {
       x.destroy();
       return;
-    }
-    if (x[Symbol.iterator]) {
-      for (let k of x) {
-        this.destroyToJsResult(k);
-      }
     }
   }
 }

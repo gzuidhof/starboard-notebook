@@ -1,6 +1,5 @@
-## Unreleased
-
-- Fixed some build woes where Lerna couldn't figure out the build order when building from scratch.
+## >0.15.0
+See the global changelog in the root folder.
 
 ## 0.14.1
 
