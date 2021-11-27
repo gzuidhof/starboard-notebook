@@ -1,6 +1,6 @@
 {
   "name": "starboard-notebook",
-  "version": "0.15.2",
+  "version": "0.15.3",
   "description": "Starboard Notebook",
   "author": "Guido Zuidhof <me@guido.io>",
   "funding": {
@@ -137,7 +137,7 @@
     "prosemirror-state": "^1.3.4",
     "prosemirror-transform": "^1.2.12",
     "prosemirror-view": "^1.18.1",
-    "starboard-python": "^0.15.2",
+    "starboard-python": "^0.15.3",
     "starboard-rich-editor": "^0.15.2"
   },
   "gitHead": "80123a45d37bca591f5d3e04e098ef2e1234dd6a"
