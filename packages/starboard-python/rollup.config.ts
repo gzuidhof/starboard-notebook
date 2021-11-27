@@ -66,7 +66,7 @@ export default [
   },
   {
     input: `src/index.ts`,
-    output: [{ file: "dist/index.js", format: "es" }],
+    output: [{ file: "dist/starboardPython.js", format: "es" }],
     plugins: [
       resolve({ browser: true }),
       typescript({
@@ -81,7 +81,7 @@ export default [
   },
   {
     input: `src/index.ts`,
-    output: [{ file: "dist/index.d.ts", format: "es" }],
+    output: [{ file: "dist/starboardPython.d.ts", format: "es" }],
     plugins: [dts()],
   },
 ];

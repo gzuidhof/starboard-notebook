@@ -5,7 +5,6 @@ import type {
   Cell,
   StarboardPlugin,
 } from "../../starboard-notebook/src/types";
-import * as litImport from "lit";
 import type { Runtime, ControlButton } from "../../starboard-notebook/src/types";
 
 import { getPyodideLoadingStatus, loadPyodide, setupPythonSupport, setGlobalPythonOutputElement } from "./global.js";
@@ -14,12 +13,6 @@ import { setPluginOpts, StarboardPythonPluginOpts, updatePluginOptions } from ".
 
 export { getPyodideLoadingStatus, setupPythonSupport, loadPyodide, setGlobalPythonOutputElement };
 export { runStarboardPython } from "./run.js";
-
-declare global {
-  interface Window {
-    $_: any;
-  }
-}
 
 export function registerPython(runtime: Runtime) {
   setupPythonSupport();
@@ -52,7 +45,7 @@ export function registerPython(runtime: Runtime) {
       this.runtime = runtime;
     }
 
-    private getControls(): litImport.TemplateResult | string {
+    private getControls(): any /* lit.TemplateResult */ | string {
       const icon = this.isCurrentlyRunning ? "bi bi-hourglass" : "bi bi-play-circle";
       const tooltip = this.isCurrentlyRunning ? "Cell is running" : "Run Cell";
       const runButton: ControlButton = {
@@ -104,7 +97,6 @@ export function registerPython(runtime: Runtime) {
 
       try {
         const val = await runStarboardPython(this.runtime, codeToRun, this.elements.bottomElement);
-        // TODO dedupe
         this.isCurrentlyLoadingPyodide = false;
         if (this.lastRunId === currentRunId) {
           this.isCurrentlyRunning = false;
@@ -112,7 +104,6 @@ export function registerPython(runtime: Runtime) {
         }
         return val;
       } catch (e) {
-        // TODO dedupe
         this.isCurrentlyLoadingPyodide = false;
         if (this.lastRunId === currentRunId) {
           this.isCurrentlyRunning = false;

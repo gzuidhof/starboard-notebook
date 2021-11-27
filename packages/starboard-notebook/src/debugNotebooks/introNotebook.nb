@@ -41,9 +41,6 @@ titleElement
 # %% [js]
 // There's a little bit of (optional) magic, if you use `var` your variable will be available globally.
 var magic = "I can print this in the next cell!";
-
-// The previous cell's result is available as $_
-console.log($_)
 # %% [js]
 // Poof!
 console.log(magic);

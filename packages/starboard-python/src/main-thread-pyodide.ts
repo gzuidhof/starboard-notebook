@@ -60,10 +60,5 @@ export async function mainThreadPyodide(opts: KernelManagerMessage & { type: "im
   // Not quite as elegant as it could be, but whatevs
   (kernel as any).proxiedDrawCanvas = drawCanvas;
 
-  async function run(code: string) {
-    const result = await kernel.runCode(code);
-    return result;
-  }
-
-  return run;
+  return kernel;
 }

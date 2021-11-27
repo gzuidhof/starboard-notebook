@@ -1,5 +1,12 @@
 # Changelog
 
+## Release 0.15.0
+**Date:** 2021-11-26
+
+- Update Pyodide to 0.18.1 (from 0.17.0).
+- **Breaking change** The previous cell's output is no longer present in the global `$_` variable.
+- The last line of a Python cell is no longer automatically converted to a Javascript equivalent (which would leak a bit of memory every time and lead to confusing outputs sometimes).
+
 ## Release 0.14.2
 
 **Date:** 2021-10-19

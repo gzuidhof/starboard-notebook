@@ -276,6 +276,7 @@ export interface WorkerKernel {
    * @returns A result that can be sent using postMessage
    */
   runCode(code: string): Promise<any>;
+
   customMessage(message: any): void;
 }
 

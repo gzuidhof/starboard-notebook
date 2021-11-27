@@ -39,21 +39,30 @@ export async function runStarboardPython(
   lit.render(html`${outputElement}${htmlOutput}`, renderOutputIntoElement);
   setGlobalPythonHtmlOutputElement(htmlOutput);
 
-  await pyoPromise;
+  (globalThis as any).pyodide = await pyoPromise;
 
   let val = undefined;
   let error: any = undefined;
   try {
     pythonRunChain = runPythonAsync(codeToRun, runtime);
     val = await pythonRunChain;
-    window.$_ = val;
-
+    
+  
     if (val !== undefined) {
-      if (val instanceof HTMLElement) {
+      // The result can be multiple types
+
+      if (val instanceof HTMLElement) { // A plain HTML element
         htmlOutput.appendChild(val);
-      } else if (isPyProxy(val)) {
+      } else if (typeof val === "object" && val.name === "PythonError" && val.__error_address) { // A python error
+        error = val;
+        outputElement.addEntry({
+          method: "error",
+          data: [`${val.toString()}`],
+        });
+        }
+      else if (isPyProxy(val)) { // Something that is proxied
         let hadHTMLOutput = false;
-        if (val._repr_html_ !== undefined) {
+        if (val._repr_html_ !== undefined) { // Has a HTML representation (e.g. a Pandas table)
           let result = val._repr_html_();
           if (typeof result === "string") {
             let div = document.createElement("div");
@@ -62,7 +71,7 @@ export async function runStarboardPython(
             htmlOutput.appendChild(div);
             hadHTMLOutput = true;
           }
-        } else if (val._repr_latex_ !== undefined) {
+        } else if (val._repr_latex_ !== undefined) { // It has a LateX representation (e.g. Sympy output)
           let result = val._repr_latex_();
           if (typeof result === "string") {
             let div = document.createElement("div");
@@ -100,7 +109,7 @@ export async function runStarboardPython(
         });
       }
     }
-  } catch (e) {
+  } catch (e: any) {
     error = e;
     outputElement.addEntry({
       method: "error",

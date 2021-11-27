@@ -8,7 +8,6 @@ import { promiseState } from "./util";
 
 declare global {
   interface Window {
-    $_: any;
     eval: (command: string) => any;
   }
 }
@@ -44,7 +43,6 @@ export class JavascriptEvaluator {
       const cellResult = await window.eval(codeToRun);
       if (cellResult === undefined) {
         res.value = undefined;
-        window["$_"] = res.value;
         return res;
       }
 
@@ -56,7 +54,6 @@ export class JavascriptEvaluator {
         // Result is a promise that was not awaited, "finish" the cell.
         res.value = cellResult.returnValue;
       }
-      window["$_"] = res.value;
 
       return res;
     } catch (error) {

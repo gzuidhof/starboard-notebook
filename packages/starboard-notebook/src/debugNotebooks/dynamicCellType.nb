@@ -51,7 +51,6 @@ class CoffeeScriptCellHandler {
 
         try {
             const val = compile(codeToRun, {bare: true});
-            window.$_ = val;
 
             if (val !== undefined) {
                 this.outputElement.addEntry({
@@ -124,6 +123,3 @@ cube   = (x) -> square(x) * x
 
 
 (cube num for num in [1,2,3,4,5,6])
-# %% [javascript]
-eval($_)
-# %% [javascript]

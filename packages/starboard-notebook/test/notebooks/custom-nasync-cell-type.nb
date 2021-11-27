@@ -28,4 +28,3 @@ function assert(condition, message) {
         throw Error(message ? 'Assert failed.' : `Assert failed: ${message}`);
 };
 
-assert($_ === "Hello world", "nasync cell return value wasn't as expected.");

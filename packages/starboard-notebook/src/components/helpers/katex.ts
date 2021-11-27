@@ -13,7 +13,7 @@ const { resolve, promise: katexPromise } = flatPromise<{ katex: typeof katex }, 
 export const katexEventualPromise = katexPromise;
 
 async function loadModule() {
-  resolve(await import(/* webpackChunkName: "katex", webpackPrefetch: false */ "./katexModule"));
+  resolve(await import(/* webpackChunkName: "katex" */ "./katexModule"));
   return katexPromise;
 }
 

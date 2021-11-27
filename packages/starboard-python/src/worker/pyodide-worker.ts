@@ -2,17 +2,21 @@
 /// <reference lib="es2020" />
 /// <reference lib="WebWorker" />
 
-import "../pyodide/pyodide";
+// @ts-ignore
+import "pyodide/pyodide";
+
 import type { Pyodide as PyodideType } from "../pyodide/typings";
 import type { KernelManagerType, WorkerKernel } from "./kernel";
 import { PyodideWorkerOptions, PyodideWorkerResult } from "./worker-message";
 import { EMFS } from "./emscripten-fs";
+import {patchMatplotlib} from "../pyodide/matplotlib";
 
 type LoadPyodideFunction = (config: {
       indexURL: string;
       stdin?: () => any | null;
       print?: (text: string) => void;
       printErr?: (text: string) => void;
+      fullStdLib?: boolean;
     }) =>  Promise<PyodideType>;
 
 declare global {
@@ -56,10 +60,8 @@ class PyodideKernel implements WorkerKernel {
       this.proxiedDrawCanvas.apply({}, [pixels, width, height]);
     };
 
-    let artifactsURL = this.options.artifactsUrl || "https://cdn.jsdelivr.net/pyodide/v0.17.0/full/";
+    let artifactsURL = this.options.artifactsUrl || "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/";
     if (!artifactsURL.endsWith("/")) artifactsURL += "/";
-
-    /* self.importScripts(artifactsURL + "pyodide.js"); // Not used, we're importing our own pyodide.ts*/
 
     if (!manager.proxy && !this.options.isMainThread) {
       console.warn("Missing object proxy, some Pyodide functionality will be restricted");
@@ -74,10 +76,12 @@ class PyodideKernel implements WorkerKernel {
       printErr: (text) => {
         manager.logError(this, text + "");
       },
+      fullStdLib: false,
     });
+    (globalThis as any).pyodide = this.pyodide;
+
     if (manager.syncFs) {
       const FS = this.pyodide._module.FS;
-      console.log(FS);
       try {
         FS.mkdir("/mnt");
       } catch (e) {
@@ -103,11 +107,47 @@ class PyodideKernel implements WorkerKernel {
       this.pyodide.registerJsModule("js", this.proxiedGlobalThis); // TODO: Or should we register a new module? Like js_main
     }
   }
+
   async runCode(code: string): Promise<any> {
     if (!this.pyodide) {
       console.warn("Worker has not yet been initialized");
       return;
     }
+
+    // We prevent some spam, otherwise every time you run a cell with an import it will show
+    // "Loading bla", "Bla was already loaded from default channel", "Loaded bla"
+    let wasAlreadyLoaded: boolean | undefined = undefined;
+    let msgBuffer: string[] = [];
+
+    await this.pyodide.loadPackagesFromImports(code, (msg) => {
+      if (wasAlreadyLoaded === true) return;
+
+      if (msg.indexOf("Loaded matplotlib") !== -1) {
+        console.debug("Hooking matplotlib output to Starboard");
+        patchMatplotlib(this.pyodide!);
+      }
+
+      if (wasAlreadyLoaded === false) {
+        if (msg.match(/already loaded from default channel$/)) {
+          return; // This is not the main package being loaded but another dependency that is
+          // already loaded - no need to list it.
+        }
+        console.debug(msg);
+      }
+      
+      if (wasAlreadyLoaded === undefined) {
+        if (msg.match(/already loaded from default channel$/)) {
+          wasAlreadyLoaded = true;
+          return;
+        }
+        if (msg.match(/^Loading [a-z\-]* from http/)) {
+          wasAlreadyLoaded = false;
+          msgBuffer.forEach(m => console.debug(m));
+          console.debug(msg);
+        }
+      }
+    });
+
     let result = await this.pyodide.runPythonAsync(code).catch((error) => error);
     let displayType: PyodideWorkerResult["display"];
 
@@ -119,10 +159,8 @@ class PyodideKernel implements WorkerKernel {
         result = result._repr_latex_();
         displayType = "latex";
       } else {
-        const temp = result;
-        result = result.toJs();
-        this.destroyToJsResult(result);
-        temp?.destroy();
+        result = result.__str__();
+        displayType = "default"
       }
     } else if (result instanceof this.pyodide.PythonError) {
       result = result + "";
@@ -133,6 +171,8 @@ class PyodideKernel implements WorkerKernel {
       value: result,
     } as PyodideWorkerResult;
   }
+
+
   customMessage(message: any): void {
     // No custom messages are supported nor used.
     return;
@@ -233,5 +273,4 @@ class PyodideKernel implements WorkerKernel {
   }
 }
 
-// @ts-ignore
-globalThis.PyodideKernel = PyodideKernel;
+(globalThis as any).PyodideKernel = PyodideKernel;
