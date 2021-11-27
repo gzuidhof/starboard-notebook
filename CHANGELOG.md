@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.15.2
+**Date:** 2021-11-27
+
+- Fix missing build artifacts in `starboard-notebook` package.
+
 ## Release 0.15.1
 **Date:** 2021-11-26
 
