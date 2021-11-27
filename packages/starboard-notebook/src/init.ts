@@ -27,4 +27,4 @@ window.svg = lit.svg;
 window.lit = lit;
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-window.initialNotebookContent = require("./debugNotebooks/python.nb").default;
+// window.initialNotebookContent = require("./debugNotebooks/python.nb").default;

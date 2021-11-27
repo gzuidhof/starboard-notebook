@@ -62,22 +62,6 @@ export function setupPythonSupport() {
   }
   setupStatus = "started";
 
-  // /** Naughty matplotlib WASM backend captures and disables contextmenu globally.. hack to prevent that */
-  // window.addEventListener(
-  //   "contextmenu",
-  //   function (event) {
-  //     if (
-  //       event.target instanceof HTMLElement &&
-  //       event.target.id.startsWith("matplotlib_") &&
-  //       event.target.tagName === "CANVAS"
-  //     ) {
-  //       return false;
-  //     }
-  //     event.stopPropagation();
-  //   },
-  //   true
-  // );
-
   const styleSheet = document.createElement("style");
   styleSheet.id = "pyodide-styles";
   styleSheet.innerHTML = css;
