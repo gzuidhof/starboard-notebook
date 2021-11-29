@@ -1,32 +1,38 @@
 # starboard-notebook
 
 ## Development
-  Run `npm run i` and `npm run build` in the other packages first.
 
-  Then to develop with auto-reload use
-  ```
-  npm run start
-  ```
+Run `yarn run bootstrap` and `yarn run install` in the root of the project first.
+
+Then to develop with auto-reload use
+
+```
+yarn run start
+```
 
 ## Building
+
 To build quickly (<10 seconds)
+
 ```
-npm run build:nominify
+yarn run build:nominify
 ```
 
 Or to do a proper build
+
 ```
-npm run build
+yarn run build
 ```
 
 And finally, to generate a build size visualization:
+
 ```
-npm run build:stats
+yarn run build:stats
 ```
 
 ## Testing
 
 ```
-npm t
-npm run nbtest
+yarn test
+yarn run nbtest
 ```

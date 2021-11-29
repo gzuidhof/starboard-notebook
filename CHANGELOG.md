@@ -1,21 +1,31 @@
 # Changelog
 
+## Release 0.15.4
+
+**Date:** 2021-11-29
+
+- Fix for NPM install of starboard-notebook package (thank you @bartbroere!).
+
 ## Release 0.15.3
+
 **Date:** 2021-11-27
 
 - Add workaround for pyodide global not being present.
 
 ## Release 0.15.2
+
 **Date:** 2021-11-27
 
 - Fix missing build artifacts in `starboard-notebook` package.
 
 ## Release 0.15.1
+
 **Date:** 2021-11-26
 
 - Switch from NPM to Yarn.. to fix issues in `rich-markdown-editor`, which caused 0.15.0 to be broken undeterministically.
 
 ## Release 0.15.0
+
 **Date:** 2021-11-26
 
 - Update Pyodide to 0.18.1 (from 0.17.0).
