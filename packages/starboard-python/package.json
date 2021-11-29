@@ -9,7 +9,7 @@
     "build": "rimraf dist && rollup -c rollup.config.ts",
     "test": "starlit nbtest test --timeout=60",
     "test:nocoi": "starlit nbtest test --timeout=60 --cross_origin_isolated=false",
-    "postinstall": "node ../../node_modules/patch-package/dist/index.js"
+    "postinstall": "node $INIT_CWD/node_modules/patch-package/dist/index.js"
   },
   "repository": {
     "type": "git",
