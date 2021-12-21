@@ -31,19 +31,22 @@ jobs:
       run: |
         yarn install
         yarn run build
+        yarn pack
 
     - name: Build Starboard Python
       working-directory: packages/starboard-python
       run: |
         yarn install
         yarn run build
+        yarn pack
 
     - name: Build
       working-directory: packages/starboard-notebook
       run: |
+        yarn add ../starboard-*/**.tgz
         yarn install
         yarn run build:nominify
-    
+
     - name: Test
       working-directory: packages/starboard-notebook
       run: yarn test

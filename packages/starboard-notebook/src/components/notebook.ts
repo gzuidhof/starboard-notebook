@@ -166,9 +166,9 @@ export class StarboardNotebookElement extends LitElement {
   showSourceModal() {
     const source = this.runtime.exports.core.notebookContentToText(this.runtime.content);
     (this.querySelector("#starboard-source-modal-content") as Element).textContent = source;
-    (this.querySelector(
-      "#download-source-button"
-    ) as HTMLAnchorElement).href = `data:nb;charset=utf-8,${encodeURIComponent(source)}`;
+    (
+      this.querySelector("#download-source-button") as HTMLAnchorElement
+    ).href = `data:nb;charset=utf-8,${encodeURIComponent(source)}`;
     this.sourceModal.show();
   }
 

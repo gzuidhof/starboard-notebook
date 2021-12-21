@@ -193,9 +193,9 @@ i {
 // Why on earth is this needed? I had to add it after switching from NPM to yarn.
 .placeholder {
   opacity: 1;
-      display: unset;
-    min-height: 0;
-    vertical-align: unset;
-    cursor: unset;
-    background-color: unset;
+  display: unset;
+  min-height: 0;
+  vertical-align: unset;
+  cursor: unset;
+  background-color: unset;
 }
