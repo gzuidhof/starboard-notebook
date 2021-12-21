@@ -11,5 +11,6 @@
   },
   "devDependencies": {
     "lerna": "^4.0.0"
-  }
+  },
+  "workspaces": ["packages/starboard-rich-editor", "packages/starboard-python", "packages/starboard-notebook"]
 }
