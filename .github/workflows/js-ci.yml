@@ -22,7 +22,6 @@ jobs:
       uses: browser-actions/setup-chrome@latest
     - name: Install using Lerna
       run: |
-        npm i -g patch-package
         npm install
         npm run lerna bootstrap
         
@@ -46,6 +45,7 @@ jobs:
         npm install ../starboard-python/**.tgz
         npm install
         npm run build:nominify
+        npm pack
 
     - name: Test
       working-directory: packages/starboard-notebook
@@ -58,3 +58,10 @@ jobs:
     - name: Starlit NBTest
       working-directory: packages/starboard-notebook
       run: npm run nbtest -- --timeout 150
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist-without-markdown
+        path: |
+          packages/starboard-*/**.tgz
