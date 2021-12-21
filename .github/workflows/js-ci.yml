@@ -43,6 +43,7 @@ jobs:
     - name: Build
       working-directory: packages/starboard-notebook
       run: |
+        npm install ../starboard-python/**.tgz
         npm install
         npm run build:nominify
 
