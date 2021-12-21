@@ -23,32 +23,32 @@ jobs:
     - name: Install using Lerna
       run: |
         npm i -g patch-package
-        yarn install
-        yarn run lerna bootstrap
+        npm install
+        npm run lerna bootstrap
         
     - name: Build Starboard Rich Editor
       working-directory: packages/starboard-rich-editor
       run: |
-        yarn install
-        yarn run build
-        yarn pack
+        npm install
+        npm run build
+        npm pack
 
     - name: Build Starboard Python
       working-directory: packages/starboard-python
       run: |
-        yarn install
-        yarn run build
-        yarn pack
+        npm install
+        npm run build
+        npm pack
 
     - name: Build
       working-directory: packages/starboard-notebook
       run: |
-        yarn install
-        yarn run build:nominify
+        npm install
+        npm run build:nominify
 
     - name: Test
       working-directory: packages/starboard-notebook
-      run: yarn test
+      run: npm test
 
     - name: Lint
       working-directory: packages/starboard-notebook
