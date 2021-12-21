@@ -43,7 +43,6 @@ jobs:
     - name: Build
       working-directory: packages/starboard-notebook
       run: |
-        yarn add ../starboard-*/**.tgz
         yarn install
         yarn run build:nominify
 
