@@ -54,6 +54,7 @@ export default [
   {
     input: `src/worker/pyodide-worker.ts`,
     output: [{ file: "dist/pyodide-worker.js", format: "es" }],
+    inlineDynamicImports: true,
     plugins: [
       resolve({ browser: true }),
       typescript({
