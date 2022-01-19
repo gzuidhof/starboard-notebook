@@ -60,7 +60,7 @@ class PyodideKernel implements WorkerKernel {
       this.proxiedDrawCanvas.apply({}, [pixels, width, height]);
     };
 
-    let artifactsURL = this.options.artifactsUrl || "https://cdn.jsdelivr.net/pyodide/v0.18.1/full/";
+    let artifactsURL = this.options.artifactsUrl || "https://cdn.jsdelivr.net/pyodide/v0.19.0/full/";
     if (!artifactsURL.endsWith("/")) artifactsURL += "/";
 
     if (!manager.proxy && !this.options.isMainThread) {
