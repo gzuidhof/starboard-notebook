@@ -1,5 +1,11 @@
 # Changelog
 
+## Release 0.15.5
+
+**Date:** 2022-02-07
+
+- Upgrade Pyodide to v0.19.0
+
 ## Release 0.15.4
 
 **Date:** 2021-11-29
