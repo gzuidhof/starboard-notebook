@@ -9,7 +9,7 @@ export declare type Pyodide = {
   loadPackagesFromImports(code: string, messageCallback?: (msg: any) => void, errorCallback?: (err: any) => void): Promise<any>;
 
   version: () => string;
-  checkABI: any;
+  // checkABI: any;
   _module: any;
   isPyProxy(v: any): boolean;
 

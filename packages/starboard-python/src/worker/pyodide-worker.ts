@@ -2,14 +2,17 @@
 /// <reference lib="es2020" />
 /// <reference lib="WebWorker" />
 
-// @ts-ignore
-import "pyodide/pyodide";
+//@ts-ignore
+import {loadPyodide} from "../../dist/pyodide.js"
 
 import type { Pyodide as PyodideType } from "../pyodide/typings";
 import type { KernelManagerType, WorkerKernel } from "./kernel";
 import { PyodideWorkerOptions, PyodideWorkerResult } from "./worker-message";
 import { EMFS } from "./emscripten-fs";
 import {patchMatplotlib} from "../pyodide/matplotlib";
+
+// TODO: We no longer need to do this.
+(globalThis as any).loadPyodide = loadPyodide;
 
 type LoadPyodideFunction = (config: {
       indexURL: string;
@@ -30,7 +33,7 @@ declare global {
 }
 
 const manager: KernelManagerType = (globalThis as any)?.manager ?? (globalThis as any).manager;
-const loadPyodide: LoadPyodideFunction = (self as any)?.loadPyodide ?? (globalThis as any).loadPyodide;
+// const loadPyodide: LoadPyodideFunction = (self as any)?.loadPyodide ?? (globalThis as any).loadPyodide;
 
 class PyodideKernel implements WorkerKernel {
   kernelId: string;
@@ -60,7 +63,7 @@ class PyodideKernel implements WorkerKernel {
       this.proxiedDrawCanvas.apply({}, [pixels, width, height]);
     };
 
-    let artifactsURL = this.options.artifactsUrl || "https://cdn.jsdelivr.net/pyodide/v0.19.0/full/";
+    let artifactsURL = this.options.artifactsUrl || "https://cdn.jsdelivr.net/pyodide/v0.20.0/full/";
     if (!artifactsURL.endsWith("/")) artifactsURL += "/";
 
     if (!manager.proxy && !this.options.isMainThread) {
@@ -70,14 +73,19 @@ class PyodideKernel implements WorkerKernel {
     this.pyodide = await loadPyodide({
       indexURL: artifactsURL,
       stdin: this.createStdin(),
-      print: (text) => {
+      print: (text: any) => {
         manager.log(this, text + "");
       },
-      printErr: (text) => {
+      printErr: (text: any) => {
         manager.logError(this, text + "");
       },
       fullStdLib: false,
-    });
+    })!;
+
+    if (!this.pyodide) {
+      throw new Error("Pyodide is undefined unexpectedly");
+    }
+
     (globalThis as any).pyodide = this.pyodide;
 
     if (manager.syncFs) {
