@@ -3674,9 +3674,9 @@ flatted@^3.1.0:
   integrity sha512-8/sOawo8tJ4QOBX8YlQBMxL8+RLZfxMQOif9o0KUKTNTjMYElWPE0r/m5VNFxTRd0NSw8qSy8dajrwX4RYI1Hw==
 
 follow-redirects@^1.0.0:
-  version "1.14.5"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.5.tgz#f09a5848981d3c772b5392309778523f8d85c381"
-  integrity sha512-wtphSXy7d4/OR+MvIFbCVBDzZ5520qV8XfPklSN5QtxuMUJZ+b0Wnst1e1lCDocfzuCkHqj8k0FpZqO+UIaKNA==
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.0.tgz#06441868281c86d0dda4ad8bdaead2d02dca89d4"
+  integrity sha512-aExlJShTV4qOUOL7yF1U5tvLCB0xQuudbf6toyYA0E/acBNw71mvjFTnLaRp50aQaYocMR0a/RMMBIHeZnGyjQ==
 
 foreach@^2.0.5:
   version "2.0.5"
@@ -6371,10 +6371,10 @@ pvutils@latest:
   resolved "https://registry.yarnpkg.com/pvutils/-/pvutils-1.0.17.tgz#ade3c74dfe7178944fe44806626bd2e249d996bf"
   integrity sha512-wLHYUQxWaXVQvKnwIDWFVKDJku9XDCvyhhxoq8dc5MFdIlRenyPI9eSfEtcvgHgD7FlvCyGAlWgOzRnZD99GZQ==
 
-pyodide@^0.18.1:
-  version "0.18.2"
-  resolved "https://registry.yarnpkg.com/pyodide/-/pyodide-0.18.2.tgz#6c2dbfcac3f0a5f6e2bd5d2d2766aea50e4c29f0"
-  integrity sha512-t4Mi75oDHc3NPmF8CjpiQ6/oMrxzT7ktv0WAyCnM4PcVG4uQ5bce3jZpeOQhrbUWUYhx3clwhsSGj9JawMm3Ug==
+pyodide@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/pyodide/-/pyodide-0.20.0.tgz#05ca12eb2f8a04e04de1402955d0f9793bcb5537"
+  integrity sha512-15fov4N0QUWmzCAC9vsYJMA8n1u/vsVH1QLczkMa4fKepcm8PhTqKPOtdbd6tKkMvHE5s3X/PcvJ7sHHdkGvNQ==
   dependencies:
     base-64 "^1.0.0"
     node-fetch "^2.6.1"
@@ -6985,14 +6985,14 @@ stack-utils@^2.0.3:
   dependencies:
     escape-string-regexp "^2.0.0"
 
-starboard-python@^0.15.4:
-  version "0.15.4"
-  resolved "https://registry.yarnpkg.com/starboard-python/-/starboard-python-0.15.4.tgz#c48cde8cf2260cfc7810d2948499f4755ceee05f"
-  integrity sha512-sLeK+7LkJcEMrkOGzCHxycG60mQfWOyRD3BuQqsNehNUQtGF3li/vbPnHD6b9iSRlpw2r1CYbR6P+KnbkWQnYA==
+starboard-python@^0.15.6:
+  version "0.15.6"
+  resolved "https://registry.yarnpkg.com/starboard-python/-/starboard-python-0.15.6.tgz#2a750f7000c270479cd21d8d8fd98e25acbf78ba"
+  integrity sha512-5008tHn/MDdZK+gsZ20WMA0Cg55zClmNdY8KuPSJg/AUMpgqPjSWpHpRyC9B7gBNkiCZJ+YHbtbmq+RAIqDAow==
   dependencies:
     "@types/katex" "^0.11.1"
     lit "^2.0.2"
-    pyodide "^0.18.1"
+    pyodide "^0.20.0"
 
 starboard-rich-editor@^0.15.2:
   version "0.15.2"
