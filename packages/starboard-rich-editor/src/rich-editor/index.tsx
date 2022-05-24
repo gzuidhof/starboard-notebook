@@ -40,6 +40,7 @@ import Blockquote from "rich-markdown-editor/dist/nodes/Blockquote";
 import BulletList from "rich-markdown-editor/dist/nodes/BulletList";
 import CodeBlock from "./nodes/CodeBlock";
 import CodeFence from "./nodes/CodeFence";
+import HardBreak_ from "./nodes/HardBreak";
 import CheckboxList from "rich-markdown-editor/dist/nodes/CheckboxList";
 import Emoji from "rich-markdown-editor/dist/nodes/Emoji";
 import CheckboxItem from "rich-markdown-editor/dist/nodes/CheckboxItem";
@@ -314,6 +315,7 @@ class RichMarkdownEditor extends React.PureComponent<Props, State> {
         ...[
           new Doc(),
           new HardBreak(),
+          new HardBreak_(),
           new Paragraph(),
           new Blockquote(),
           new CodeBlock({
