@@ -1,5 +1,6 @@
 # 🌑 starboard-notebook
-[![NPM badge](https://img.shields.io/npm/v/starboard-notebook)](https://www.npmjs.com/package/starboard-notebook)
+[![NPM badge](https://img.shields.io/npm/v/starboard-notebook)](https://www.npmjs.com/package/starboard-notebook) 
+[![DOI](https://zenodo.org/badge/281976889.svg)](https://zenodo.org/badge/latestdoi/281976889)
 
 In-browser literal notebook runtime used in [**Starboard**](https://starboard.gg). 
 
