@@ -52,6 +52,10 @@ jobs:
       working-directory: packages/starboard-notebook
       run: npm run lint
       
+    - name: Postinstall Starlit
+      working-directory: packages/starboard-notebook/node_modules/starlit
+      run: npm run postinstall
+      
     - name: Starlit NBTest
       working-directory: packages/starboard-notebook
       run: npm run nbtest -- --timeout 150
