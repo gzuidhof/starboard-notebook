@@ -1,9 +1,9 @@
 # Changelog
 
-## Release 0.15.7 (unreleased)
+## Release 0.15.7
 
 - Fix matplotlib plotting (regression in 0.15.6).
-
+- Fix hard breaks in markdown content.
 
 ## Release 0.15.6
 **Date:** 2022-05-08
