@@ -133,7 +133,7 @@ class PyodideKernel implements WorkerKernel {
     await this.pyodide.loadPackagesFromImports(code, (msg) => {
       if (wasAlreadyLoaded === true) return;
 
-      if (msg.indexOf("Loaded matplotlib") !== -1) {
+      if (msg.match(/Loaded.*\smatplotlib/)) {
         console.debug("Hooking matplotlib output to Starboard");
         patchMatplotlib(this.pyodide!);
       }
@@ -151,7 +151,7 @@ class PyodideKernel implements WorkerKernel {
           wasAlreadyLoaded = true;
           return;
         }
-        if (msg.match(/^Loading [a-z\-]* from http/)) {
+        if (msg.match(/^Loading [a-z\-, ]*/)) {
           wasAlreadyLoaded = false;
           msgBuffer.forEach(m => console.debug(m));
           console.debug(msg);

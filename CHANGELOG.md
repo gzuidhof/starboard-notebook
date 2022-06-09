@@ -1,5 +1,9 @@
 # Changelog
 
+## Release 0.15.7 (unreleased)
+
+- Fix matplotlib plotting (regression in 0.15.6).
+
 
 ## Release 0.15.6
 **Date:** 2022-05-08
