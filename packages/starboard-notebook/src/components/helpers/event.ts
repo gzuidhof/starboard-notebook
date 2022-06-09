@@ -14,7 +14,7 @@ export function createStarboardEvent<E extends StarboardEventName>(
     composed: true,
     // TODO: Can we do this without the unknown cast? In usage this typing seems correct (intellisense works and type checking when called)..
     // Is the Typescript type system powerful enough?
-    detail: (detail as unknown) as StarboardEventMap[E],
+    detail: detail as unknown as StarboardEventMap[E],
   });
 }
 

@@ -143,7 +143,7 @@ export function updateIframeWhenSizeChanges(runtime: Runtime) {
             width = Math.max(width, boxSize.inlineSize);
           }
         } else if (entry.borderBoxSize) {
-          const size = (entry.borderBoxSize as any) as ResizeObserverSize;
+          const size = entry.borderBoxSize as any as ResizeObserverSize;
           height = Math.max(height, size.blockSize);
           width = Math.max(width, size.inlineSize);
         }
