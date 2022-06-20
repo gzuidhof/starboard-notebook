@@ -77,7 +77,7 @@
         "prosemirror-view": "^1.18.1",
         "react-popper": "^2.2.5",
         "rich-markdown-editor": "^11.18.6",
-        "styled-components": "^5.3.3"
+        "styled-components": "5.3.3"
     },
     "gitHead": "80123a45d37bca591f5d3e04e098ef2e1234dd6a"
 }
