@@ -72,8 +72,8 @@ export async function runStarboardPython(
             // Just putting HTML with script tags on the DOM will not get them evaluated
             // Using this hack we execute them anyway
             // TODO Don't re-evaluate all cells, but only do this for the current cell
-            document.querySelectorAll('div.cell-bottom * script[type|="text/javascript"]').forEach(
-              function(e) { eval(e.innerText); }
+            div.querySelectorAll('script[type|="text/javascript"]').forEach(
+              function(e) { eval(e.textContent); }
             )
             hadHTMLOutput = true;
           }
