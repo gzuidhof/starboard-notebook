@@ -69,6 +69,12 @@ export async function runStarboardPython(
             div.className = "rendered_html cell-output-html";
             div.appendChild(new DOMParser().parseFromString(result, "text/html").body.firstChild as any);
             htmlOutput.appendChild(div);
+            // Just putting HTML with script tags on the DOM will not get them evaluated
+            // Using this hack we execute them anyway
+            // TODO Don't re-evaluate all cells, but only do this for the current cell
+            document.querySelectorAll('div.cell-bottom * script[type|="text/javascript"]').forEach(
+              function(e) { eval(e.innerText); }
+            )
             hadHTMLOutput = true;
           }
         } else if (val._repr_latex_ !== undefined) { // It has a LateX representation (e.g. Sympy output)
