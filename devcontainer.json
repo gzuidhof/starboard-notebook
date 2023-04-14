@@ -1,5 +1,6 @@
 {
   "build": { "dockerfile": "Dockerfile" },
+  "postCreateCommand": "bash -i -c 'yarn run bootstrap && yarn build'",
   "customizations": {
     "vscode": {
       "extensions": ["dbaeumer.vscode-eslint"]

@@ -2,5 +2,3 @@
 # See devcontainer.json
 FROM mcr.microsoft.com/devcontainers/typescript-node:0-18
 RUN npm install -g lerna yarn
-RUN yarn run bootstrap
-RUN yarn build
