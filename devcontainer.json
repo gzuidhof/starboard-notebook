@@ -1,3 +1,9 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-18"
+  "build": { "dockerfile": "Dockerfile" },
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint"]
+    }
+  },
+  "forwardPorts": [9001]
 }
