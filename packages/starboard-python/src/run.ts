@@ -53,6 +53,13 @@ export async function runStarboardPython(
 
       if (val instanceof HTMLElement) { // A plain HTML element
         htmlOutput.appendChild(val);
+        val.querySelectorAll('script[type|="text/javascript"]').forEach(
+              function(e) {
+                if (e.textContent !== null) {
+                  eval(e.textContent);
+                }
+              }
+            )
       } else if (typeof val === "object" && val.name === "PythonError" && val.__error_address) { // A python error
         error = val;
         outputElement.addEntry({
