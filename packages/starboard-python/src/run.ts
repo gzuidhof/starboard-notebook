@@ -53,6 +53,8 @@ export async function runStarboardPython(
 
       if (val instanceof HTMLElement) { // A plain HTML element
         htmlOutput.appendChild(val);
+        // Just putting HTML with script tags on the DOM will not get them evaluated
+        // Using this hack we execute them anyway
         val.querySelectorAll('script[type|="text/javascript"]').forEach(
               function(e) {
                 if (e.textContent !== null) {
@@ -76,8 +78,7 @@ export async function runStarboardPython(
             div.className = "rendered_html cell-output-html";
             div.appendChild(new DOMParser().parseFromString(result, "text/html").body.firstChild as any);
             htmlOutput.appendChild(div);
-            // Just putting HTML with script tags on the DOM will not get them evaluated
-            // Using this hack we execute them anyway
+            // Evaluate all script tags manually, see previous comment
             div.querySelectorAll('script[type|="text/javascript"]').forEach(
               function(e) {
                 if (e.textContent !== null) {
