@@ -8,7 +8,6 @@ One service you could use this file with is [Github Codespaces](https://github.c
 If you have started up your dev container, a development server can be started from the Terminal:
 ```bash
 cd packages/starboard-notebook
-yarn install
 yarn start
 ```
 
