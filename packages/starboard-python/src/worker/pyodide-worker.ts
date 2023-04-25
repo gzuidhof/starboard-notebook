@@ -63,7 +63,7 @@ class PyodideKernel implements WorkerKernel {
       this.proxiedDrawCanvas.apply({}, [pixels, width, height]);
     };
 
-    let artifactsURL = this.options.artifactsUrl || "https://cdn.jsdelivr.net/pyodide/v0.20.0/full/";
+    let artifactsURL = this.options.artifactsUrl || "https://cdn.jsdelivr.net/pyodide/v0.23.1/full/";
     if (!artifactsURL.endsWith("/")) artifactsURL += "/";
 
     if (!manager.proxy && !this.options.isMainThread) {
@@ -162,7 +162,7 @@ class PyodideKernel implements WorkerKernel {
     let result = await this.pyodide.runPythonAsync(code).catch((error) => error);
     let displayType: PyodideWorkerResult["display"];
 
-    if (this.pyodide.isPyProxy(result)) {
+    if (instanceof this.pyodide.isPyProxy(result)) {
       if (result._repr_html_ !== undefined) {
         result = result._repr_html_();
         displayType = "html";
