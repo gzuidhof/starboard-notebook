@@ -1,4 +1,4 @@
-export declare type ffi = {
+declare type ffi = {
   PyProxy: any,
   PythonError: any,
 };
