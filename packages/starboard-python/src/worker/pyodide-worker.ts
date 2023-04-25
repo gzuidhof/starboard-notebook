@@ -130,7 +130,7 @@ class PyodideKernel implements WorkerKernel {
     let wasAlreadyLoaded: boolean | undefined = undefined;
     let msgBuffer: string[] = [];
 
-    await this.pyodide.loadPackagesFromImports(code, (msg) => {
+    await this.pyodide.loadPackagesFromImports(code, {messageCallback: (msg) => {
       if (wasAlreadyLoaded === true) return;
 
       if (msg.match(/Loaded.*\smatplotlib/)) {
@@ -157,7 +157,7 @@ class PyodideKernel implements WorkerKernel {
           console.debug(msg);
         }
       }
-    });
+    }});
 
     let result = await this.pyodide.runPythonAsync(code).catch((error) => error);
     let displayType: PyodideWorkerResult["display"];
