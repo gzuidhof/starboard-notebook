@@ -162,7 +162,7 @@ class PyodideKernel implements WorkerKernel {
     let result = await this.pyodide.runPythonAsync(code).catch((error) => error);
     let displayType: PyodideWorkerResult["display"];
 
-    if (this.pyodide.isPyProxy(result)) {
+    if (result instanceof this.pyodide.ffi.PyProxy) {
       if (result._repr_html_ !== undefined) {
         result = result._repr_html_();
         displayType = "html";
@@ -173,7 +173,7 @@ class PyodideKernel implements WorkerKernel {
         result = result.__str__();
         displayType = "default"
       }
-    } else if (result instanceof this.pyodide.PythonError) {
+    } else if (result instanceof this.pyodide.ffi.PythonError) {
       result = result + "";
     }
 
@@ -274,7 +274,7 @@ class PyodideKernel implements WorkerKernel {
     if (!x) {
       return;
     }
-    if (this.pyodide.isPyProxy(x)) {
+    if (x instanceof this.pyodide.ffi.PyProxy) {
       x.destroy();
       return;
     }
