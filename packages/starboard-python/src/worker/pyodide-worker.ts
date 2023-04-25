@@ -162,7 +162,7 @@ class PyodideKernel implements WorkerKernel {
     let result = await this.pyodide.runPythonAsync(code).catch((error) => error);
     let displayType: PyodideWorkerResult["display"];
 
-    if (instanceof this.pyodide.isPyProxy(result)) {
+    if (this.pyodide.isPyProxy(result)) {
       if (result._repr_html_ !== undefined) {
         result = result._repr_html_();
         displayType = "html";
