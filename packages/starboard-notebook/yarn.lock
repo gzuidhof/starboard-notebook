@@ -6478,9 +6478,9 @@
     "lit" "^2.0.2"
     "pyodide" "^0.20.0"
 
-"starboard-rich-editor@^0.15.8":
+"starboard-rich-editor@^0.15.2":
   "resolved" "file:../starboard-rich-editor"
-  "version" "0.15.8"
+  "version" "0.15.2"
   dependencies:
     "@babel/parser" "^7.10.5"
     "@benrbray/prosemirror-math" "^0.1.4"
