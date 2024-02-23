@@ -31,7 +31,7 @@
   "dependencies": {
     "@types/katex": "^0.11.1",
     "lit": "^2.0.2",
-    "pyodide": "^0.25.0"
+    "pyodide": "~0.25.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^19.0.2",
