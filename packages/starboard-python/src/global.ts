@@ -45,7 +45,7 @@ function drawCanvas(pixels: number[], width: number, height: number) {
   canvas.height = height;
   const ctx = canvas.getContext("2d");
   if (!ctx) {
-    console.warn("Failed to aquire canvas context");
+    console.warn("Failed to acquire canvas context");
     return;
   }
   ctx.putImageData(image, 0, 0);
