@@ -7,7 +7,7 @@
   "typings": "dist/starboardPython.d.ts",
   "scripts": {
     "build": "rimraf dist && npm run build:pyodide && rollup -c rollup.config.ts",
-    "build:pyodide": "esbuild node_modules/pyodide/pyodide.ts --bundle --outfile=dist/pyodide.js --external:fs/* --external:vm --external:path --format=esm",
+    "build:pyodide": "mkdir dist && cp node_modules/pyodide/pyodide.js dist/pyodide.js",
     "test": "starlit nbtest test --timeout=60",
     "test:nocoi": "starlit nbtest test --timeout=60 --cross_origin_isolated=false"
   },
@@ -31,7 +31,7 @@
   "dependencies": {
     "@types/katex": "^0.11.1",
     "lit": "^2.0.2",
-    "pyodide": "^0.20.0"
+    "pyodide": "^0.25.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^19.0.2",

@@ -43,6 +43,19 @@ jobs:
       run: |
         yarn install
         yarn run build:nominify
+        tar -czvf starboard-notebook.tar.gz dist/*
+    
+    - name: Upload built starboard-notebook.tar.gz as Github artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: starboard-notebook.tar.gz
+        path: packages/starboard-notebook/starboard-notebook.tar.gz
+        retention-days: 10
+    
+    - name: Remove artifact from working directory
+      working-directory: packages/starboard-notebook
+      run: |
+        rm starboard-notebook.tar.gz
     
     - name: Test
       working-directory: packages/starboard-notebook
@@ -59,3 +72,4 @@ jobs:
     - name: Starlit NBTest
       working-directory: packages/starboard-notebook
       run: npm run nbtest -- --timeout 150
+

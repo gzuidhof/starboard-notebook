@@ -351,7 +351,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       listeners.splice(idx, 1);
     },
 
-    async registerPlugin<A, B>(plugin: StarboardPlugin<A, B>, opts: A) {
+    async registerPlugin<A, B extends Record<string, any> | undefined>(plugin: StarboardPlugin<A, B>, opts: A) {
       await plugin.register(rt, opts);
       rt.plugins.register(plugin.id, plugin);
     },
