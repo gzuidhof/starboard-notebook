@@ -1,0 +1,10 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:0-16",
+  "postCreateCommand": "bash -i -c 'npm install -g lerna && yarn run bootstrap && yarn install && yarn run build'",
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint"]
+    }
+  },
+  "forwardPorts": [9001]
+}
